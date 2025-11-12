@@ -43,3 +43,15 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     ![Publish branch button on Github Desktop]({{ site.baseurl }}/github_publish.png)
     9. Once the branch is published, return to the course Github page and click on the "main" button and verify that your branch is listed in the dropdown menu.
     ![Verify new branch on Github repo]({{ site.baseurl }}/github_newbranch.png)
+
+## Stata
+
+Test: with dynamic directory
+
+![Clone button on Github repo]({{ site.baseurl }}/github_clone.png)
+
+Test: no directory
+
+![Clone button on Github repo](github_clone.png)
+
+Purchase a...

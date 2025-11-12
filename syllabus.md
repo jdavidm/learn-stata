@@ -128,76 +128,6 @@ It is highly recommended that students purchase a physical copy of [*The Effect*
 ### Required Materials
 A laptop computer (not tablet). The University of Arizona Libraries have laptops that can be borrowed: [https://lib.arizona.edu/borrow/tech/laptops](https://lib.arizona.edu/borrow/tech/laptops).
 
-Exams and Evaluation:
-Whether you pass in this course will depend on the following factors
-
-*Undergraduate Point Total*
-| Activity            | Points  |
-| :---                | ---:    |
-| Coding assignments  | 750     |
-| Final exam          | 250     |
-| **Total**           | 1000    |
-
-*Graduate Point Total*
-| Activity            | Points  |
-| :---                | ---:    |
-| Coding assignments  | 750     |
-| Final exam          | 250     |
-| Replication project | 250     |
-| **Total**           | 1250    |
-
-### Grading Scale: The grading scheme will be as follows (out of 100):
-A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
-
-
-## Course Policies
-
-### Attendance Policy
-
-Attendance will not be taken or factor into the grades for this class. However,
-experience suggests that students who regularly miss class often struggle to learn the material.
-
-
-### Quiz/Exam Policy
-
-There are no quizzes or exams in this course.
-
-
-### Make-up policy
-
-Life happens and therefore there is an automatic grace period of 48 hours for
-the submission of late assignments with no need to request an extension.
-However, it is highly recommended that you submit assignments on time when
-possible because assignments build on one another and it can be hard to catch up
-if you fall behind. Reasonable requests for longer extensions will also be granted.
-Assignments turned in after the 48 hour grace period without an extension will be
-be graded with a 20% penalty.
-
-
-### Assignment policy
-
-Assignments are due Monday night by 11:59 pm Eastern Time.
-This timing allows you to be finished with one week's material before starting the next week's material.
-Assignments should be submitted as links to via Canvas.
-
-### Course Technology
-
-Students are required to provide their own laptops and to install free and open
-source software on those laptops. Support will be provided by the instructor in
-the installation of required software. If you don't have access to a laptop
-please contact the instructor and they will do their best to provide you with
-one.
-
-
-### Materials and Supplies Fees
-
-There are no materials and supplies fees for this course.
-
-
-## UF Policies
-
-Information on UF academic policies, academic resources, and compus health and wellness resources is available on the [Academic Policies & Resources webpage](https://go.ufl.edu/syllabuspolicies).
-
 ## Grading Policies
 
 The goal of grading in this class is to encourage practice, which is crucial to learning computing skills.
@@ -209,34 +139,37 @@ Because the goal is practice, exercises in assignments will be graded as follows
 * Attempts to solve the problem and makes some progress using the core concept, but does not produce approximately the correct answer or demonstrate basic comfort with the core concept: 50%
 * Not submitted or no meaningful effort demonstrated: 0%
 
-Students also enter the class with different levels of experience.
-The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding.
-Therefore, on many assignments there are optional *Challenge* exercises that are both more difficult and require integrating all of the weeks material.
-Students who are already familiar with the basics may choose to submit *Challenge* exercises in place of regular exercises if they wish.
-One *Challenge* exercise counts for two regular exercises.
-Alternatively *Challenge* exercises can be completed in addition to all regular exercises for up to 10 pts of extra credit.
-Please indicate at the top of your assignment if you are substituting *Challenge* exercises.
+Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on many assignments there are optional *Challenge* exercises that are both more difficult and require integrating all of the weeks material. Students who are already familiar with the basics may choose to submit *Challenge* exercises in place of regular exercises if they wish. One *Challenge* exercise counts for two regular exercises. Alternatively *Challenge* exercises can be completed in addition to all regular exercises for up to 10 pts of extra credit. Please indicate at the top of your assignment if you are substituting *Challenge* exercises.
 
-### Grading scale
+*Undergraduate Point Total*
 
-- **A 93-100**
-- **A- 90-92.9**
-- **B+ 87-89.9**
-- **B 83-86.9**
-- **B- 80-82.9**
-- **C+ 77-79.9**
-- **C 73-76.9**
-- **C- 70-72.9**
-- **D+ 67-69.9**
-- **D 60-66.9**
-- **E <60**
+| Activity            | Points  |
+| :---                | ---:    |
+| Coding assignments  | 750     |
+| Final exam          | 250     |
+| Total               | 1000    |
+| :---                | ---:    |
+
+*Graduate Point Total*
+
+| Activity            | Points  |
+| :---                | ---:    |
+| Coding assignments  | 750     |
+| Final exam          | 250     |
+| Replication project | 250     |
+| Total               | 1250    |
+| :---                | ---:    |
+
+### Grading Scale: The grading scheme will be as follows (out of 100):
+A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
 
 
-### UF grading policies for assigning grade points
+## UA Policies
 
-UF policies related to grades are available on the [Grades and Grading Policies webpage](https://catalog.ufl.edu/UGRD/academic-regulations/grades-grading-policies/).
+Information on UA academic policies, academic resources, and compus health and wellness resources is available on the [Syllabus Policies & Recommended Statements webpage](http://catalog.arizona.edu/syllabus-policies.).
+
 
 ## Course Schedule
 
-The detailed course schedule is available on Canvas and on the course website at:
+The detailed course schedule is available on Brightspace and on the course website at:
 [{{ site.url }}/schedule]({{ site.baseurl }}/schedule).
