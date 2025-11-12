@@ -131,6 +131,24 @@ A laptop computer (not tablet). The University of Arizona Libraries have laptops
 Exams and Evaluation:
 Whether you pass in this course will depend on the following factors
 
+*Undergraduate Point Total*
+| Activity            | Points  |
+| :---                | ---:    |
+| Coding assignments  | 750     |
+| Final exam          | 250     |
+| **Total**           | 1000    |
+
+*Graduate Point Total*
+| Activity            | Points  |
+| :---                | ---:    |
+| Coding assignments  | 750     |
+| Final exam          | 250     |
+| Replication project | 250     |
+| **Total**           | 1250    |
+
+### Grading Scale: The grading scheme will be as follows (out of 100):
+A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
+
 
 ## Course Policies
 
