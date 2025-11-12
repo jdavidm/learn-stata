@@ -1,0 +1,12 @@
+---
+layout: default
+---
+
+<div class="page">
+  <h1>{{ page.title }} ({{ page.topic }})</h1>
+  {{ content }}
+  {% capture output_url %}{{ page.url | remove: 'exercises' | remove: 'docs/templates' | remove: '/' | prepend: 'https://dcsem-solutions.weecology.org/solutions/' }}{% endcapture %}
+  {% unless site.no_solution contains output_url %}
+    <em><a href="{{ output_url }}" aria-label="Expected output for {{page.title}}">Expected outputs for {{ page.title }}</a></em>
+  {% endunless %}
+</div>

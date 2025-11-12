@@ -1,0 +1,29 @@
+<h3> Exercises </h3>
+
+<ol>
+{% for exercise in page.exercises %}
+  {% assign exercise_loop = forloop %}
+  {% for otherpage in site.pages %}
+    {% if exercise == otherpage.title and page.language == otherpage.language and otherpage.layout == 'exercise' and otherpage.translation != 'es'%}
+      <li><h4><a href="{{ site.baseurl }}{{ otherpage.url }}">
+        {% if page.points[exercise_loop.index0] == 'optional' or page.points[exercise_loop.index0] == 'Challenge - optional' %}
+        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: ")"}}</font></a></h4>
+        {% elsif page.points[exercise_loop.index0] %}
+        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: " pts)"}}</font></a></h4>
+        {% else %}
+        <font color="000000">{{ otherpage.title }}</font></a></h4>
+        {% endif %}
+        {{ otherpage.content }}
+        {% capture output_url %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates' | remove: '/' | prepend: 'https://dcsem-solutions.weecology.org/solutions/' }}{% endcapture %}
+        {% unless site.no_solution contains output_url %}
+          <em><a href="{{ output_url }}" aria-label="Expected output for {{otherpage.title}}">Expected outputs for {{ otherpage.title }}</a></em>
+        {% endunless %}
+        {% capture output_file %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates'| remove: '/' | prepend: '/solutions/' }}{% endcapture %}
+        {% assign loop_count = 0 %}
+      </li>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+</ol>
+
+<a href="{{ site.baseurl }}/materials/turn-in-checklist"> Assignment submission & checklist</a>
