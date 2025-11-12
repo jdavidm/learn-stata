@@ -6,7 +6,6 @@ title: Home
 An introduction to working with data for applied economists and other applied social scientists including: data structure, data manipulation, visualization, basic programming, and databases.
 It is designed to be used as a flipped university course.
 
-For Students
 : <a href="{{ site.baseurl}}/syllabus">
   <i class="fa fa-file-text-o fa-fw"></i> Syllabus</a>
 : <a href="{{ site.baseurl}}/schedule">

@@ -50,8 +50,17 @@ Test: with dynamic directory
 
 ![Clone button on Github repo]({{ site.baseurl }}/github_clone.png)
 
+Test: relative path
+
+![Clone button on Github repo](/github_clone.png)
+
+Test: absolute path
+
+![Clone button on Github repo](https://jdavidm.github.io/learn-stata/github_clone.png)
+
 Test: no directory
 
 ![Clone button on Github repo](github_clone.png)
+
 
 Purchase a...
