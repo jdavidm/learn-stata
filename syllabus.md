@@ -1,19 +1,16 @@
 ---
 layout: page
 title: Syllabus
-catalog: ALS 6501
-credits: 3
-semester: Fall 2025
-professor: Dr. Ethan White (he/him)
-office: Room 1 Building 150
-email: ethanwhite@ufl.edu
-phone: 352-294-2081
-schedule: ['Tuesdays, 12:50-1:40 pm ET', 'Wednesdays, 10:40-12:35 pm ET']
-location: "Newins-Ziegler Hall (NZH) 222"
-office_hours: "Fridays, 10-11 am"
-office_hours_location: "Building 150 (and Zoom - [link](https://ufl.zoom.us/j/95159104000?pwd=MDjrM5MYJNbehlc6lEHkWPkPjwS6UC.1))" 
-TA: Alex Blochel
-TA_email: alexanderblochel@ufl.edu
+catalog: AAE 497A/597A
+credits: 2
+semester: Spring 2026
+professor: Dr. Jeffrey D. Michler (he/him)
+office: Room N215 Building ENR2
+email: jdmichler@arizona.edu
+schedule: ['Fridays, 12:30-2:00 pm MST']
+location: "McClelland Park 207"
+office_hours: ['Tuesdays, 1:00-2:00 pm MST', 'Thursdays, 1:00-2:00 pm MST', 'Fridays, 10:00-11:00 am MST']
+office_hours_location: "Room N215 Building ENR2 (and Zoom - [link](https://arizona.zoom.us/my/jdmichler), by appointment)" 
 ---
 
 ## Course
@@ -52,28 +49,17 @@ Times: {{ page.office_hours }}
 
 Location: {{ page.office_hours_location }}
 
-Or by appointment - please message both {{ page.professor }} and {{ page.TA }} in Canvas
-
-
-### Teaching Assistant
-
-{{ page.TA }}
-
-Email: [{{ page.TA_email }}](mailto:{{ page.TA_email }})
-
 
 ### Website
 
 The syllabus and other relevant class information and resources will be posted
-on Canvas and at [{{ site.url}}]({{ site.baseurl }}/).
-Changes to the schedule will be posted to both and announced on Canvas.
+on Brightspace and at [{{ site.url}}]({{ site.baseurl }}/).
+Changes to the schedule will be posted to Slack and announced on Brightspace.
 
 
 ### Course Communications
 
-Canvas: Messages in canvas are the preferred method for course communication
-
-Email: [{{ page.email }}](mailto:{{ page.email }})
+Slack: Messages in Slack are the preferred method for course communication
 
 
 ### Required Texts
@@ -88,49 +74,31 @@ available on the web.
 
 ### Course Description
 
-An introduction to data management, manipulation, and analysis, with an emphasis
-on biological problems. Class consists of short introductions to new concepts
-followed by hands on computing exercises using R and SQLite, but the concepts
-apply to programming languages and databases more generally. No background in
-computing is required.
+This workshop course is designed to give students the skills they need to code for economics, while also providing bits and pieces of information about programming more generally. It’s suitable for complete beginners who have never written any code before. Throughout the course, programming assignments will focus on applications important for applied economists. The course also introduces technical for causal inference.
 
 
 ### Prerequisite Knowledge and Skills
 
-Knowledge of basic biology to provide context for exercises.
+AREC 339, ECON 376, or equivalent economic statistics course
+AREC 496/596A
 
 
-### Purpose of Course
+### Course Objectives
 
-In this course you will learn all of the fundamental aspects of computer
-programming that are necessary for conducting biological research. By the end of
-the course you will be able to use these tools to import data into R, perform
-analysis on that data, and export the results to graphs, text files, and
-databases. By learning how to get the computer to do your work for you, you will
-be able to do more science faster.
+1.	Introduce students to coding languages used in economic analysis.
+2.	Familiarize students with a specific language.
+3.	Apply that language to answer quantitative economic research questions.
+4.	Prepare students for job market and graduate school applications.
 
 
-### Course Objectives and Goals
+### Course Learning Outcomes
 
-Students completing this course will be able to:
+Upon completing this course, students will be able to:
 
-* Create well structured data
-* Extract information from data
-* Write computer programs in R
-* Automate data analysis
-* Apply these tools to address biological questions
-* Apply general data management and analysis concepts to other programming
-  languages and database management systems
-
-
-### How this course relates to the Student Learning Outcomes in Wildlife Ecology and Conservation
-
-This course contributes to the 'Quantitative Skills' and 'Conducting and
-Analyzing Independent/Original Research' Student Learning Outcomes specified in
-the
-[Ph.D. and MS in Wildlife Ecology and Conservation Academic Assessment Plans](https://fora.aa.ufl.edu/docs/1//16Apr13//CALS_WIE_PHD_GAAP_2012-2013_final.pdf),
-by providing students the skills and knowledge they need to manage and analyze
-the data used in research.
+1.	Demonstrate the ability to analyze data using the coding language of instruction.
+2.	Describe key concepts, methods, issues and approaches in applied economics.
+3.	Create and communicate comprehension of a programming language.
+4.	Apply practical and technical skills such as modelling (abstraction, logic, succinctness), quantitative analysis, and general IT literacy. (Graduate Students Only)
 
 
 ### Instructional Methods
@@ -142,19 +110,6 @@ they find confusing, explain misunderstandings and help identify mistakes that
 are preventing students from completing the exercises, and discuss novel
 applications and alternative approaches to the data analysis challenges students
 are attempting to solve.
-
-### Gender-Neutral and Family Restrooms
-
-There are two gender-neutral restrooms available in the building where the course is taught:
-* 1st floor in Room 124
-* 3rd floor in Room 304
-
-There are also two gender-neutral restrooms available in the building where the instructor's office is located.
-
-For more information on gender-neutral and family restrooms see:
-
-- [UF Campus Map](https://campusmap.ufl.edu/#/) (click the menu in top left corner, select `Wellness`, and select either `Inclusive, Unisex Restrooms` or `Inclusive, Family Restrooms`)
-- [Gender-Neutral Restrooms at UF Map](https://www.google.com/maps/d/u/0/edit?mid=1q6SbWhwmYRCz1KHqyeUHjhyGguI&ll=29.644933459100784%2C-82.36141954894258&z=14)
 
 ## Course Policies
 
