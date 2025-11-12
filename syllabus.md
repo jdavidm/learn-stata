@@ -111,6 +111,27 @@ are preventing students from completing the exercises, and discuss novel
 applications and alternative approaches to the data analysis challenges students
 are attempting to solve.
 
+
+### Assignments
+Students are required to read the assigned chapters, complete coding assignments, and take a final exam.
+
+Replication Project
+Graduate students are expected to complete a replication project in which they replicate the results in a published paper. Students will log their work on the [Social Science Reproduction Platform](https://www.socialsciencereproduction.org/).
+
+
+### Required Texts
+Turrell, A. 2022. *Coding for Economists*. [https://aeturrell.github.io/coding-for-economists/](https://aeturrell.github.io/coding-for-economists/)
+Huntington-Klain, N. 2022. *The Effect: An Introduction to Research Design and Causality*. [https://theeffectbook.net/](https://theeffectbook.net/)
+
+It is highly recommended that students purchase a physical copy of [*The Effect*](https://www.routledge.com/The-Effect-An-Introduction-to-Research-Design-and-Causality/Huntington-Klein/p/book/9781032580227). However, both books are open access and available for free online.
+
+### Required Materials
+A laptop computer (not tablet). The University of Arizona Libraries have laptops that can be borrowed: [https://lib.arizona.edu/borrow/tech/laptops](https://lib.arizona.edu/borrow/tech/laptops).
+
+Exams and Evaluation:
+Whether you pass in this course will depend on the following factors
+
+
 ## Course Policies
 
 ### Attendance Policy
