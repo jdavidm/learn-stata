@@ -31,15 +31,15 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 6. Check if the installation is working:
     1. If you have not already done so, Slack your username to your instructor. Once you have received a GitHub invite to the class organization accept it and only then proceed.
     2. On the GitHub course webpage, click the green code button.
-    <img src="https://github.com/jdavidm/learn-stata/images/github_clone.png" alt="Clone button on Github repo" title="Clone repo">
+    ![Clone button on Github repo](/images/github_clone.png)
     3. From the dropdown menu select "Open with GitHub Desktop".
     4. In the pop up window on GitHub Desktop change the local path to `C:\Users\`your username`\git\`repo name`\`.
     5. Click "Clone"
     6. From the buttons along the top of GitHub Desktop, click "Fetch origin"
-    <img src="https://github.com/jdavidm/learn-stata/images/github_fetch.png" alt="Fetch origin button on Github Desktop" title="Fetch origin">
+    ![Fetch origin button on Github Desktop](/images/github_fetch.png)
     7. Once you have fetched the repo from the internet, click on the button "Current branch" and create a new branch and name it using your last name.
-    <img src="https://github.com/jdavidm/learn-stata/images/github_branch.png" alt="Name new branch on Github Desktop" title="New branch">
+    ![Name new branch on Github Desktop](/images/github_branch.png)
     8. Having created a new branch, you now need to publish it to the internet by click on the "Publish branch" button.
-    <img src="https://github.com/jdavidm/learn-stata/images/github_publish.png" alt="Publish branch button on Github Desktop" title="Publish branch">
+    ![Publish branch button on Github Desktop](/images/github_publish.png)
     9. Once the branch is published, return to the course Github page and click on the "main" button and verify that your branch is listed in the dropdown menu.
-    <img src="https://github.com/jdavidm/learn-stata/images/github_newbranch.png" alt="Verify new branch on Github repo" title="New branch on repo">
+    ![Verify new branch on Github repo](/images/github_newbranch.png)
