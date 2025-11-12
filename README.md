@@ -1,4 +1,4 @@
-# Data Carpentry for Biologists - Semester Course
+# Coding for Applied Economists - Semester Course
 
 [![JOSE DOI](https://jose.theoj.org/papers/10.21105/jose.00139/status.svg)](https://doi.org/10.21105/jose.00139)
 [![Zenodo DOI](https://zenodo.org/badge/31911336.svg)](https://zenodo.org/badge/latestdoi/31911336)
