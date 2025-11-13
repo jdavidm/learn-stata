@@ -5,9 +5,10 @@ title: Readings
 
 ## Stata
 
-* [Introduction to Stata](01-intro)
-* [Working with Data](R-data)
-* [Data Visualization](R-datavis)
+* [Introduction to Stata & Github](01-intro)
+* [Data Management](02-datamgmt)
+* [Describing Variables](R-data)
+* [Describing Relationships](R-datavis)
 * [Programming Fundamentals 1](R-fundamentals-1)
 * [Programming Fundamentals 2](R-fundamentals-2)
 * [Working with Spatial Data](R-spatial)

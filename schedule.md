@@ -3,9 +3,10 @@ layout: page
 title: Assignment Schedule
 assignments:
   [
-    "Introduction to R and RStudio",
-    "Data in Tables",
-    "Grouping & Joining Data",
+    "Introduction to Stata & Github",
+    "Data Management",
+    "Describing Variables",
+    "Describing Relationships",
     "Data Visualization",
     "Solving Bigger Problems",
     "Functions",

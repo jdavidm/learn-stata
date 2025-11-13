@@ -1,7 +1,7 @@
 ---
 layout: page
 element: reading
-title: Introduction to Stata
+title: Introduction to Stata & Github
 language: Stata
 ---
    
@@ -10,7 +10,6 @@ language: Stata
 * The Stata interface
 * Browsing and sorting data
 * Some basic commands
-* Creating and changing variables
 * Importing Data
 * Readable Code
 
@@ -23,4 +22,4 @@ language: Stata
 
 #### Effectively using Stata
 
-* [Starting to coding](https://grodri.github.io/stata/index)
+* Reading (just section 1.2): [Starting to coding](https://grodri.github.io/stata/index)
