@@ -4,11 +4,11 @@ title: Assignment Schedule
 assignments:
   [
     "Introduction to Stata & Github",
+    "Effectively Using Stata",
     "Data Management",
     "Describing Variables",
     "Describing Relationships",
-    "Data Visualization",
-    "Solving Bigger Problems",
+    "Solving Problems",
     "Functions",
     "Making Choices",
     "Repeating Things 1",
