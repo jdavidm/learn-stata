@@ -48,19 +48,19 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 
 Test: with dynamic directory
 
-![Clone button on Github repo]({{ site.baseurl }}/github_clone.png)
+![Clone button on Github repo]({{ site.baseurl }}/github_clone.PNG)
 
 Test: relative path
 
-![Clone button on Github repo](/github_clone.png)
+![Clone button on Github repo](/github_clone.PNG)
 
 Test: absolute path
 
-![Clone button on Github repo](https://jdavidm.github.io/learn-stata/github_clone.png)
+![Clone button on Github repo](https://jdavidm.github.io/learn-stata/github_clone.PNG)
 
 Test: no directory
 
-![Clone button on Github repo](github_clone.png)
+![Clone button on Github repo](github_clone.PNG)
 
 
 Purchase a...
