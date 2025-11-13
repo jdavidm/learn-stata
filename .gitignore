@@ -1,10 +1,6 @@
-**/.ipynb_checkpoints/
-_site/
-Gemfile.lock
-*~
-#*
-*.Rhistory
-.jekyll-metadata
-node_modules/
 .Rproj.user
-*.Rproj
+.Rhistory
+.RData
+.httr-oauth
+.DS_Store
+.quarto
