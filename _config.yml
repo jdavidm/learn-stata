@@ -29,5 +29,3 @@ github:
   repo:           https://github.com/jdavidm/learn-stata
   #               Be sure the 'Issues' feature is activated in 'Settings'
 
-plugins:
-  - jekyll-sitemap
