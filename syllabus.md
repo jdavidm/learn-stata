@@ -153,6 +153,9 @@ Students also enter the class with different levels of experience. The goal of a
 ### Grading Scale: The grading scheme will be as follows (out of 100):
 A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
 
+### Using of Generative AI
+
+
 ### Final Exam Policy
 Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
 

@@ -15,7 +15,6 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 3. Accept the invitation and join the workspace by creating a username.
 
 ## GitHub
-
 1. Create an account on GitHub (https://github.com) using the `Sign up for
    GitHub` form on the right side of the page.
 2. Send your username to your instructor **via a direct message (DM) on Slack**.
@@ -27,8 +26,11 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     2. Sign in if necessary.
     3. In the upper left corner click on the dropdown with your name.
     4. Confirm that the name of the course GitHub repository is present
-5. Download [Github Desktop](https://desktop.github.com/download/) and install it.
-6. Check if the installation is working:
+
+
+## GitHub Desktop
+1. Download [Github Desktop](https://desktop.github.com/download/) and install it.
+2. Check if the installation is working:
     1. If you have not already done so, Slack your username to your instructor. Once you have received a GitHub invite to the class organization accept it and only then proceed.
     2. On the GitHub course webpage, click the green code button.
     ![Clone button on Github repo]({{ site.baseurl }}/images/github_clone.PNG)

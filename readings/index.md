@@ -3,14 +3,9 @@ layout: page
 title: Readings
 ---
 
-## SQL
+## Stata
 
-* [Data Entry and Storage](SQL-data)
-* [Database Queries](SQL-queries)
-
-## R
-
-* [Introduction to R and RStudio](R-intro)
+* [Introduction to Stata](01-intro)
 * [Working with Data](R-data)
 * [Data Visualization](R-datavis)
 * [Programming Fundamentals 1](R-fundamentals-1)
@@ -23,6 +18,6 @@ title: Readings
 * [Advanced Topics](R-advanced)
 * [Additional Resources](R-additional)
 
-## Git
+## Github
 
-* [Git with R](R-git)
+* [Github and Github Desktop](github)
