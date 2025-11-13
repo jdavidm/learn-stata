@@ -7,7 +7,8 @@ language: Stata
    
 ### Topics
 
-* Process
+* Project directory
+* Log files
 * Relative paths
 * Format
 * Style

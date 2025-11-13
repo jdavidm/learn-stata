@@ -7,14 +7,13 @@ language: Stata
 
 ### Topics
 
-* Data storage
-* Importing data
-* labeling data
-* Creating and manipulating data
-* Joining data
-* Repeating things
+* Types of variables
+* The distribution of a variable
+* Summarizing the distribution
+* Plotting the distribution
+* Creating theoretical distributions
 
 ### Readings
 
-* Reading (chapter 5): [Research Ethics for Applied Economics]({{ site.baseurl }}/readings/chapter_5.PDF)
-* Reading: [Data Management](https://grodri.github.io/stata/dataManagement)
+* Reading (chapter 3): [*The Effect*](https://theeffectbook.net/ch-DescribingVariables.html)
+* Reading: [Stata Tables](https://grodri.github.io/stata/tables)

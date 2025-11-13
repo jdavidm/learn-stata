@@ -11,16 +11,21 @@ title: Assignments
 * [Data Management](03-datamgmt)
 * [Describing Variables](04-data)
 * [Describing Relationships](05-datarlt)
-* [Solving Problems](06-solving)
-* [Programming Fundamentals 2](R-fundamentals-2)
-* [Working with Spatial Data](R-spatial)
-* [Working with Databases](R-databases)
-* [Version Control Basics](R-git)
-* [Putting It All Together](R-capstone)
-* [Low-level Database Management Libraries](R-sql)
-* [Advanced Topics](R-advanced)
-* [Additional Resources](R-additional)
+* [Programming Fundamentals](06-programming)
+* [Solving Problems](07-solving)
+* [Research Design](08-design)
+* [Basic Regressions](09-regress)
+* [Producing Results](10-results)
+* [Simulations](11-simulate)
+* [Fixed Effects](12-FE)
+* [Difference-in-Difference](13-did)
+* [Event Studies](14-event)
+* [Basic Machine Learning](15-ml)
 
 ## Github
 
 * [Github and Github Desktop](github)
+
+## LaTeX
+
+* [LaTeX and Overleaf](latex)

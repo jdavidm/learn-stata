@@ -7,14 +7,12 @@ language: Stata
 
 ### Topics
 
-* Data storage
-* Importing data
-* labeling data
-* Creating and manipulating data
-* Joining data
-* Repeating things
+* Scatter plots
+* Beautifying plots
+* Conditional distributions
+* Line fitting
 
 ### Readings
 
-* Reading (chapter 5): [Research Ethics for Applied Economics]({{ site.baseurl }}/readings/chapter_5.PDF)
-* Reading: [Data Management](https://grodri.github.io/stata/dataManagement)
+* Reading (chapter 4): [*The Effect*](https://theeffectbook.net/ch-DescribingRelationships.html)
+* Reading: [Stata Graphics](https://grodri.github.io/stata/graphics)
