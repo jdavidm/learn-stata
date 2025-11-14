@@ -10,7 +10,7 @@ assignments:
     "Describing Relationships",
     "Programming Fundamentals",
     "Solving Problems",
-    "Reseearch Design",
+    "Research Design",
     "Basic Regressions",
     "Producing Results",
     "Simulations",
@@ -25,10 +25,6 @@ assignments:
 
 {% include assignments.html %}
 
-The above assignments are for this specific version of the course, but other
-assignments are available as well. You can see the full list of
-[assignments]({{ site.baseurl }}/assignments/), which may be useful if you're using this material
-outside of an organized course.
 
 <!-- Schedule Management
 - Update the `assignments:` list with `title:` from `assignments/` files.

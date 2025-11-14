@@ -15,10 +15,10 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 3. Accept the invitation and join the workspace by creating a username.
 
 ## GitHub
-1. Create an account on GitHub (https://github.com) using the `Sign up for
+1. Create an account on [GitHub](https://github.com) using the `Sign up for
    GitHub` form on the right side of the page.
 2. Send your username to your instructor **via a direct message (DM) on Slack**.
-3. Once your instructor adds you to the course GitHub organization you will
+3. Once your instructor adds you to the course GitHub repository you will
    receive an email asking you to accept the invitation. Click on the link to
    accept.
 4. Check if this worked
@@ -40,9 +40,20 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     6. From the buttons along the top of GitHub Desktop, click "Fetch origin"
     ![Fetch origin button on Github Desktop]({{ site.baseurl }}/images/github_fetch.PNG)
     7. Once you have fetched the repo from the internet, click on the button "Current branch" and create a new branch and name it using your last name.
-    ![Name new branch on Github Desktop]({{ site.baseurl }}/images/github_branch.PNGg)
+    ![Name new branch on Github Desktop]({{ site.baseurl }}/images/github_branch.PNG)
     8. Having created a new branch, you now need to publish it to the internet by click on the "Publish branch" button.
     ![Publish branch button on Github Desktop]({{ site.baseurl }}/images/github_publish.PNG)
     9. Once the branch is published, return to the course Github page and click on the "main" button and verify that your branch is listed in the dropdown menu.
     ![Verify new branch on Github repo]({{ site.baseurl }}/images/github_newbranch.PNG)
 
+## Overleaf and LaTeX
+1.  Create an account on [Overleaf](https://www.overleaf.com/) using using the `Sign up for
+   free` on the center of the page.
+2. Send your username to your instructor **via a direct message (DM) on Slack**.
+3. Once your instructor adds you to the course Overleaf project you will
+   receive an email asking you to accept the invitation. Click on the link to
+   accept.
+4. Go to the course Overleaf project and create a new `.tex` file by clicking on the "New File" icon on the far right just below the "Menu" button. Use your last name for the file name.
+    ![Create new file in Overleaf]({{ site.baseurl }}/images/overleaf_new_file.PNG)
+5. Go to the file `michler.tex` and copy everything in that file.
+6. Paste the content that you copied into the file with your name.

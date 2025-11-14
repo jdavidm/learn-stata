@@ -28,9 +28,6 @@ Office: {{ page.office }}
 Email:
 [{{ page.email }}](mailto:{{ page.email }})
 
-Phone: {{ page.phone }}
-
-
 ### Location
 
 {{location}}

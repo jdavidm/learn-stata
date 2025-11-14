@@ -1,7 +1,7 @@
 ---
 layout: page
 element: reading
-title: Solving Problems
+title: Research Design
 language: Stata
 ---
 
