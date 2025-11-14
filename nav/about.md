@@ -14,7 +14,9 @@ Contact Us
   <i class="fa fa-envelope fa-fw"></i> Via Email</a>
 {% else %}
 Contact Us
-: About Course Materials: <a href="{{ site.github.repo }}"> 
+: About Course Materials:
+  <a href="{{ site.github.repo }}"> 
   <i class="fa fa-github fa-fw"></i> On GitHub</a> | 
   <a href="mailto:{{ site.email }}"> 
   <i class="fa fa-envelope fa-fw"></i> Via Email</a>
+{% endif %}
