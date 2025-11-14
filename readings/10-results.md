@@ -8,8 +8,9 @@ language: Stata
 ### Topics
 
 * LaTeX
-* Outputting descriptive statistics
-* Outputting regression results
+* Descriptive statistics in tables
+* Regression results in tables
+* Regression results as graphics
 
 
 ### Readings

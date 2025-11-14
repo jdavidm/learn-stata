@@ -8,11 +8,9 @@ language: Stata
 ### Topics
 
 * How event studies work
-* First differences
-* Difference-in-differences
-* Two-way fixed effects
-* Triple differences
-* Parallel trends
+* Event study regressions
+* Visualizing event studies
+* Time series analysis
 
 ### Readings
 

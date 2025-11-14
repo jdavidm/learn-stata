@@ -33,18 +33,18 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 2. Check if the installation is working:
     1. If you have not already done so, Slack your username to your instructor. Once you have received a GitHub invite to the class organization accept it and only then proceed.
     2. On the GitHub course webpage, click the green code button.
-    ![Clone button on Github repo]({{ site.baseurl }}/images/github_clone.PNG)
+    ![Clone button on Github repo]({{ site.baseurl }}/images/github_clone.png)
     3. From the dropdown menu select "Open with GitHub Desktop".
     4. In the pop up window on GitHub Desktop change the local path to `C:\Users\`your username`\git\`repo name`\`.
     5. Click "Clone"
     6. From the buttons along the top of GitHub Desktop, click "Fetch origin"
-    ![Fetch origin button on Github Desktop]({{ site.baseurl }}/images/github_fetch.PNG)
+    ![Fetch origin button on Github Desktop]({{ site.baseurl }}/images/github_fetch.png)
     7. Once you have fetched the repo from the internet, click on the button "Current branch" and create a new branch and name it using your last name.
-    ![Name new branch on Github Desktop]({{ site.baseurl }}/images/github_branch.PNG)
+    ![Name new branch on Github Desktop]({{ site.baseurl }}/images/github_branch.png)
     8. Having created a new branch, you now need to publish it to the internet by click on the "Publish branch" button.
-    ![Publish branch button on Github Desktop]({{ site.baseurl }}/images/github_publish.PNG)
+    ![Publish branch button on Github Desktop]({{ site.baseurl }}/images/github_publish.png)
     9. Once the branch is published, return to the course Github page and click on the "main" button and verify that your branch is listed in the dropdown menu.
-    ![Verify new branch on Github repo]({{ site.baseurl }}/images/github_newbranch.PNG)
+    ![Verify new branch on Github repo]({{ site.baseurl }}/images/github_newbranch.png)
 
 ## Overleaf and LaTeX
 1.  Create an account on [Overleaf](https://www.overleaf.com/) using using the `Sign up for
@@ -54,6 +54,6 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
    receive an email asking you to accept the invitation. Click on the link to
    accept.
 4. Go to the course Overleaf project and create a new `.tex` file by clicking on the "New File" icon on the far right just below the "Menu" button. Use your last name for the file name.
-    ![Create new file in Overleaf]({{ site.baseurl }}/images/overleaf_new_file.PNG)
+    ![Create new file in Overleaf]({{ site.baseurl }}/images/overleaf_new_file.png)
 5. Go to the file `michler.tex` and copy everything in that file.
 6. Paste the content that you copied into the file with your name.

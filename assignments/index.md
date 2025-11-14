@@ -3,7 +3,6 @@ layout: page
 title: Assignments
 ---
 
-
 ## Stata
 
 * [Introduction to Stata & Github](01-intro)

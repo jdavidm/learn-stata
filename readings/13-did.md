@@ -1,18 +1,18 @@
 ---
 layout: page
 element: reading
-title: Fixed Effects
+title: Difference-in-Difference
 language: Stata
 ---
 
 ### Topics
 
 * How fixed effects work
-* Individual intercepts
-* First differencing
-* De-meaning
+* First differences
+* Difference-in-differences
 * Two-way fixed effects
-* Clustered standard errors
+* Triple differences
+* Parallel trends
 
 
 ### Readings
