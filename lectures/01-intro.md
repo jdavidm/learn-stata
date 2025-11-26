@@ -1,7 +1,7 @@
 ---
 layout: page
 element: lecture
-title: Introduction to Stata
+title: Introduction to Stata & Github
 language: Stata
 ---
 
