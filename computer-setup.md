@@ -5,11 +5,11 @@ title: Computer Setup
 
 ***AAE 497A/597A students will need their own laptops set up with Stata before the first class meeting along with Github Desktop and Slack Desktop by week 2.***
 
-## Stata
+## [Stata]({{ site.baseurl }}/computer-setup#stata)
 
 Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profplus/student-pricing/) for $48. Stata will send you a license, username, and password to [download and install](https://download.stata.com/download/).
 
-## Slack Desktop
+## [Slack Desktop]({{ site.baseurl }}/computer-setup#slack)
 1. Download either [Slack for Windows](https://slack.com/downloads/windows) or [Slack for Mac](https://slack.com/downloads/mac).
 2. Your instructor will send an invitation to join a Slack Workspace to your `@arizona.edu` email address.
 3. Accept the invitation and join the workspace by creating a username.
@@ -28,7 +28,7 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     4. Confirm that the name of the course GitHub repository is present
 
 
-## GitHub Desktop
+## [GitHub Desktop]({{ site.baseurl }}/computer-setup#github)
 1. Download [Github Desktop](https://desktop.github.com/download/) and install it.
 2. Check if the installation is working:
     1. If you have not already done so, Slack your username to your instructor. Once you have received a GitHub invite to the class organization accept it and only then proceed.
@@ -46,7 +46,7 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     9. Once the branch is published, return to the course Github page and click on the "main" button and verify that your branch is listed in the dropdown menu.
     ![Verify new branch on Github repo]({{ site.baseurl }}/images/github_newbranch.png)
 
-## Overleaf and LaTeX
+## [Overleaf and LaTeX]({{ site.baseurl }}/computer-setup#latex)
 1.  Create an account on [Overleaf](https://www.overleaf.com/) using using the `Sign up for
    free` on the center of the page.
 2. Send your username to your instructor **via a direct message (DM) on Slack**.

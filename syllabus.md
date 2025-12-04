@@ -99,7 +99,6 @@ Huntington-Klain, N. 2022. *The Effect: An Introduction to Research Design and C
 
 It is highly recommended that students purchase a physical copy of [*The Effect*](https://www.routledge.com/The-Effect-An-Introduction-to-Research-Design-and-Causality/Huntington-Klein/p/book/9781032580227). However, both books are open access and available for free online.
 
-
 ### Required Materials
 A laptop computer (not tablet). The University of Arizona Libraries have laptops that can be borrowed: [https://lib.arizona.edu/borrow/tech/laptops](https://lib.arizona.edu/borrow/tech/laptops).
 
@@ -117,8 +116,7 @@ Attendance will not be taken or factor into the grades for this class. However, 
 
 ## Grading Policies
 
-The goal of grading in this class is to encourage practice, which is crucial to learning computing skills.
-Given that goal grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
+The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
 
 Because the goal is practice, exercises in assignments will be graded as follows:
 
@@ -126,7 +124,7 @@ Because the goal is practice, exercises in assignments will be graded as follows
 * Attempts to solve the problem and makes some progress using the core concept, but does not produce approximately the correct answer or demonstrate basic comfort with the core concept: 50%
 * Not submitted or no meaningful effort demonstrated: 0%
 
-Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on many assignments there are optional *Challenge* exercises that are both more difficult and require integrating all of the weeks material. Students who are already familiar with the basics may choose to submit *Challenge* exercises in place of regular exercises if they wish. One *Challenge* exercise counts for two regular exercises. Alternatively *Challenge* exercises can be completed in addition to all regular exercises for up to 10 pts of extra credit. Please indicate at the top of your assignment if you are substituting *Challenge* exercises.
+Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on many assignments there are optional *Challenge* exercises that are both more difficult and require integrating all of the weeks material. Students who are already familiar with the basics may choose to submit *Challenge* exercises in place of regular exercises if they wish. One *Challenge* exercise counts for two regular exercises. Alternatively *Challenge* exercises can be completed in addition to all regular exercises for up to 10 pts of extra credit. You will need to indicate via a tag in Github if you are substituting *Challenge* exercises.
 
 *Undergraduate Point Total*
 
@@ -162,7 +160,7 @@ Final grade must be disputed within two weeks of receiving the grade.
 
 
 ### Late Policy: 
-An assignment turned in late will be reduced by 10% of its earned value for every day it is late including weekends.
+There is an automatic 48 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 48 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
 
 
 ## UA Policies
@@ -218,7 +216,7 @@ The University Libraries have some excellent tips for avoiding plagiarism, avail
 
 ## Course Schedule
 
-The detailed course schedule is available on Brightspace and on the course website at:
+The detailed course schedule is available on this website as well as on the course Github repo:
 [{{ site.url }}/schedule]({{ site.baseurl }}/schedule).
 
 

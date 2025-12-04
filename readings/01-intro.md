@@ -7,6 +7,7 @@ language: Stata
    
 ### Topics
 
+* Using Github
 * The Stata interface
 * Importing data
 * Browsing and sorting data

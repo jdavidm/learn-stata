@@ -6,24 +6,21 @@ title: Course Introduction
 
 ### Welcome
 
-* Introduce yourself (include your pronouns)
-* Introduce co-instructors/TAs
-* Depending on class size have students introduce themselves
+* Introduce yourself
+* Have students introduce themselves
 
 ### Course goals
 
-* Data and how to work with it
-* Data entry & storage -> Import -> Manipulate -> Visualize -> Model -> Evaluate
-* This class focuses on  the first 4
-* Not statistics or machine learning
+1.	Introduce students to coding languages used in economic analysis.
+2.	Familiarize students with a specific language.
+3.	Apply that language to answer quantitative economic research questions.
+4.	Prepare students for job market and graduate school applications.
 
 ### Expected background
 
-* Assumes no background in R or any of the other things we'll learn
-* If you're already good at R it's worth spending some time with the website
-  (which we're about to look at) to see if this a good fit for you
+* Assumes no background in Stata or any of the other things we'll learn
+* Assumes a familiarity with statistics (AAE 339 or equivalent)
 
- 
 ### Teaching methods
 
 * You don't learn how ride a bike just by listening to someone talk about it and the same is true for computing
@@ -38,8 +35,6 @@ title: Course Introduction
 	* You are at least as likely to learn from your peers as from me
     * If you already know some of the material and are getting ahead, see if
       there's someone you can help
-	* Introduce yourself to one of your neighbors you don't know
-* If you can't make it to class, this workflow is replicated on the website on the Lessons tab for each week, with a combination of short video lessons and exercises to reinforce what you just learned
 
 ### Course structure
 
@@ -47,14 +42,16 @@ title: Course Introduction
 
 * Lessons integrated with weekly assignments
 * Practice is really important for learning skills like this
-* All exercises are part of the assignments.
+* All exercises are part of the assignments
 * Work on them until you get stuck and then ask for help, don't struggle for hours on online help sites
-* Assignments for the first 12 weeks of class and then optional ungraded content though the end of the semester
-* Assignments due end of the day on Monday
-* I encourage you to keep up with deadlines whenever possible.
-Each step of the course builds on the last step and students who get behind often have a hard time catching up.
-* That said, life happens, so there is an automatic 48 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late.
-* If you need a longer extension just ask. You don't need to disclose personal information to me to get an extension. Just let me know how long you need.
+* Assignments for each of the 15 weeks of class
+* Assignments due 11:59 the day before class (Thursday night)
+* Final exam in which you will be given buggy and inefficient code that you will need to debug and improve upon
+* Graduate students will (in groups) replicate a published paper
+* I encourage you to keep up with deadlines whenever possible. Each step of the course builds on the last step and students who get behind often have a hard time catching up.
+* That said, life happens, so there is an automatic 48 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late. While I will grade late assignments, I will not provide any feedback on the assignment. So if you want feedback on your work, you need to turn it in on time.
+* If an assignment turned in after the 48 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
+* If you need a longer extension just ask. I am happy to work with you on accomidations, but you need to ask prior to the due date.
 
 ### Website
 
@@ -69,11 +66,11 @@ Each step of the course builds on the last step and students who get behind ofte
     * Alternating short videos (to introduce idea) and exercise (to start using that idea)
     * Alternating between video and exercise will be most effective for most folks
 * Lectures
-    * Lectures notes used in class
+    * Lecture notes used in class
 	* Not expected to read in advance; may be useful for review
 	* May not match lecture precisely
 * Assignments
-    * Answers provided
+    * Submitted via Github or Overleaf
 
 ### Syllabus
 
@@ -86,28 +83,32 @@ Each step of the course builds on the last step and students who get behind ofte
 
 ### Office Hours
 
-* Friday, 10-11 am, in-person in Building 150, or on Zoom
+* Tuesdays, 1:00-2:00 pm MST, Thursdays, 1:00-2:00 pm MST, Fridays, 10:00-11:00 am MST
+* In-person in ENR2 N215, or on Zoom (most Slack me if you want to meet on Zoom)
 
+### Slack, Github, and Overleaf
 
-### Canvas
-
-* Show Canvas
+* All communications should go through Slack, either via a channel or a DM to me
+* All assignments will be published on Github
 * Will publish modules as soon as the material is ready to be worked on
 * First thing Monday at the latest, but hopefully much earlier
-* Handle assignment submission, grading, and announcements through Canvas
+* All assignments will be submitted through Github 
+  * To submit, push commits
+  * Then create an `issue` on the class repo
+  * Assignments must be tagged with `submission` when you want to submit the assignment for grading
+  * If you are submitting late, the assignment must be tagged with `late`
+  * If you are submitting a *challenge* exercise, you must tab it with `challenge`
+  * Failure to tag assignments will results in a reduction by 10% of the assignment's earned value 
+* Starting with Assignment 10, submissions will need to be made in both Github and Overleaf
+* We will only use Brightspace to record grades
 
 ### Inclusive and Accessible Course
 
 * Learning computing is hard
 * Learning computing in a classroom that doesn't provide a supportive environment is awful
 * It's really important to me that this course provide a positive, inclusive, accessible, learning environment for everyone
-* If that is not the experience you are having for any reason, just let me know and I'll actively work to correct it.
-* There are two gender-inclusive restrooms available in the building where the course is taught:
-  * 1st floor in Room 124
-  * 3rd floor in Room 304 
-
+* If that is not the experience you are having for any reason, just let me know and I'll actively work to correct it
 
 ### First day demo
 
-* With the little time we have left I just want to do a quick demo of some of
-  the things you'll be able to do by the time we're half way through the class
+* With the time we have left I will introduce Github and Stata
