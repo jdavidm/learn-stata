@@ -77,6 +77,15 @@ language: Stata
 ```
 * Stata files end in `.dta`
 * Stata can input data in almost any format
+* You can look directly at the data using Stata's Data Editor/Browser
+
+* Look at the data
+
+```stata
+    sort price
+```
+
+* Take a look at the data again
 
 ### Variables
 
@@ -87,7 +96,7 @@ language: Stata
 
 ```stata
     sum weight
-    replace weight = weight / 2000
+    replace weight = weight * 2.205
     sum weight
 ```
 
@@ -98,10 +107,18 @@ language: Stata
     sum mpg kmpl
 ```
 
+* Often more useful than looking at the data in the data frame is visualizing the data
+* Stata has numerous different graphics commands
+* However, most start with `graph twoway`
+
+```stata
+    graph twoway (scatter price mpg) (lfit price mpg)
+```
+
 ### Basic Stata syntax
 
 ```stata
-    command [varlist] [=exp] [if exp] [in range] [weight] [, options]
+    command [varlist] [= exp] [if exp] [in range] [weight] [, options]
 ```
 * `command`: The specific Stata command you want to run, such as `summarize`, `list`, or `graph`. Most commands can be shortened (e.g., `sum` for `summarize`).
 * `[varlist]`: A list of one or more variables to be used by the command.
@@ -117,132 +134,35 @@ language: Stata
 * For humans, not computers
 * Use the `*`
 
-```r
-# Calculate weight of Kangaroo Rat in pounds
+```stata
+* Convert imperial to metric
 ```
 
 ### Assignments format
 
-* **SEPARATE FILES FOR CLASS CODE ALONG AND HOMEWORK**
+* **SEPARATE FILES FOR IN-CLASS CODING AND HOMEWORK**
 * Comment before each problem and each sub-problem
-* Make sure result prints out on `Source with echo`
 
-```r
-# Problem 1
+```stata
+**# Problem 1
 
-# 1.1
-2 + 2
+**## 1.1 - convert length to metric
 
-# 1.2
-2 - 8
+    replace     length = length * 2.54
 
-# Problem 2
+**## 1.2 - compare mpg across car type
+    sum         mpg, by(foreign)
 
-width = 2
-height = 3
-length = 1.5
-volume = width * height * length
-volume
+**# Problem 2
+
+* regress price on mpg and repair record
+    reg         price mpg rep78
 ```
 > Create assignment script, put in new folder
 
 * Now we're going to work on some exercises to get a feel for this
 * In class we will often only do part of an exercise and save the rest for later
 
-> Do [Exercise 1.1-1.3 - Basic Expressions]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-expressions-R/)
+> Do [Exercise 1.1-1.3 - Basic Expressions]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-expressions/)
 
-> Do [Exercise 2 - Basic Variables]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-variables-R/)
-
-
-### Functions
-
-* A function is a complicated expression.
-* Command that returns a value
-
-```r
-sqrt(49)
-```
-
-* A function call is composed of two parts.
-    * Name of the function
-    * Arguments that the function requires to calculate the value it returns.
-    * `sqrt()` is the name of the function, and `49` is the argument.
-* We can also pass variables as the argument
-
-```r
-weight_lb <- 0.11
-sqrt(weight_lb)
-```
-
-* Another function that we'll use a lot is `str()`
-* All values and therefore all variables have types
-* `str`, short for "structure", lets us look at them
-
-```r
-str(weight_lb)
-```
-
-* Another data type is for text data
-* We write text inside of quotation makes
-
-```r
-"hello world"
-```
-
-* If we look at the structure of some text we see that it is type character
-
-```r
-str("hello world")
-```
-
-* Functions can take multiple arguments.
-    * Round `weight_lb` to one decimal place
-    * Typing `round()` shows there are two arguments
-    * Number to be rounded and number of digits
-
-```r
-round(weight_lb, 1)
-```
-
-* Functions return values, so as with other values and expressions, if we don't save the output of a function then there is no way to access it later
-* It is common to forget this when dealing with functions and expect the
-  function to have changed the value of the variable
-* But looking at `weight_lb` we see that it hasn't been rounded
-
-```r
-weight_lb
-```
-
-* To save the output of a function we assign it to a variable.
-
-```r
-weight_rounded <- round(weight_lb, 1)
-weight_rounded
-```
-
-#### Optional arguments
-
-* When we looked at the tip for the `round()` function it showed `x` and `digits = 0` as the arguments.
-* When you see the argument name followed by `=` and a value that means that argument is optional
-* If you don't include that argument it will use the default value shown after the `=`
-
-```r
-round(weight_lb)
-```
-
-* Since the default was 0 the weight is rounded to 0 decimal places
-* So, this is the same as
-
-```r
-round(weight_lb, 0)
-```
-
-* Optional arguments are often written using the name of the argument
-
-```r
-round(weight_lb, digits = 1)
-```
-
-* When there are multiple optional arguments this lets us change only the ones where we don't want the defaults
-
-> Do [Exercise 4.1-4.3 - Built-in Functions]({{ site.baseurl }}/exercises/Functions-built-in-functions-R/)
+> Do [Exercise 2 - Basic Variables]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-variables/)
