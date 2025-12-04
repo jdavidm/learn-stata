@@ -1,19 +1,12 @@
 ---
 layout: page
 title: Exercises
-languages: ['SQL', 'R', 'Python', 'Access']
+languages: ['Stata', 'Git', 'LaTeX']
 ---
-<a href="#SQL">SQL</a> \| <a href="#R">R</a> \| <a href="#Python">Python</a> \|  <a href="#Access">Access</a>
+<a href="#Stata">Stata</a> \| <a href="#Git">Git</a> \| <a href="#LaTeX">LaTeX</
 
 {% for language in page.languages %}
   <h2> {{ language }} <a name="{{ language }}"></a></h2>
-
-  {% if language == 'Python' or language == 'Access' %}
-  <i>{{ language }} exercises were used in 
-  <a href="http://www.programmingforbiologists.org/">previous iterations</a>
-  of the course at Utah State University, but are no longer under active 
-  development.</i>
-  {%endif%}
 
   <table>
     <tr>

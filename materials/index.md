@@ -1,8 +1,9 @@
 ---
 layout: page
 title: Lecture Materials
+languages: ['Stata', 'Git', 'LaTeX']
 ---
-<a href="#Git">Git</a> \| <a href="#Stata">Stata</a> \| <a href="#LaTeX">LaTeX</a>
+<a href="#Stata">Stata</a> \| <a href="#Git">Git</a> \| <a href="#LaTeX">LaTeX</
 
 ## General Programing Resources
 -   [Problem Decomposition]({{ site.baseurl }}/materials/problem-decomposition)
@@ -89,5 +90,7 @@ title: Lecture Materials
 -   [Style Guide]({{ site.baseurl }}/materials/style-guide-Python)
 -   [Testing](http://nbviewer.ipython.org/urls/github.com/datacarpentry/semester-biology/blob/main/materials/testing-in-ipynb.ipynb) ([notebook](https://raw.github.com/datacarpentry/semester-biology/master/materials/testing-in-ipynb.ipynb))
 -   [Using Help]({{ site.baseurl }}/materials/using-help)
+
+## Github <a name="Github"></a>
 
 ## LaTeX <a name="LaTeX"></a>
