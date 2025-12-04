@@ -2,7 +2,7 @@
 
 layout: page
 element: assignment
-title: Introduction to Stata
+title: Introduction to Stata & Github
 language: Stata
 exercises: ['Basic Expressions', 'Basic Variables', 'More Variables', 'Built-in Functions', 'Modify the Code', 'Basic Vectors', 'Nulls in Vectors', 'Shrub Volume Vectors', 'Check That Your Code Runs', 'Biomass vectors']
 points: [10, 10, 10, 10, 10, 10, 15, 15, 10, Challenge - optional]
