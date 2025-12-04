@@ -4,14 +4,6 @@ element: notes
 title: A quick introduction to Git and GitHub
 ---
 
-## Setup
-
-In a browser:
-
-* http://www.phdcomics.com/comics/archive.php?comicid=1531
-* http://www.phdcomics.com/comics/archive.php?comicid=1323
-* http://github.com
-
 ## Introduction
 
 Who has a directory on their computer with a bunch of filenames that look like
