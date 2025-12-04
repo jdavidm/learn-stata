@@ -16,5 +16,6 @@ language: Stata
 
 ### Readings
 
+* Reading: [Github flow](https://docs.github.com/en/get-started/using-github/github-flow)
 * Reading (just section 1.1): [Getting started with Stata](https://grodri.github.io/stata/index)
 * Video (45 min): [Ready. Set. Go Stata.](https://www.youtube.com/watch?v=cdGV5SASDjk)

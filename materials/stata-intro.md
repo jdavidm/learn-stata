@@ -7,7 +7,9 @@ language: Stata
 ---
 
 > Remind students to install Stata
+>
 > Have students open Github Desktop
+>
 > Have students open Stata.
 
 ### Stata
@@ -163,6 +165,6 @@ language: Stata
 * Now we're going to work on some exercises to get a feel for this
 * In class we will often only do part of an exercise and save the rest for later
 
-> Do [Exercise 1.1-1.3 - Basic Expressions]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-expressions/)
+> Do [Exercise 1.1-1.3 - Basic Expressions]({{ site.baseurl }}/exercises/01-basic-expressions/)
 
-> Do [Exercise 2 - Basic Variables]({{ site.baseurl }}/exercises/Expressions-and-variables-basic-variables/)
+> Do [Exercise 2 - Basic Variables]({{ site.baseurl }}/exercises/01-basic-variables/)

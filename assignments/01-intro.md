@@ -1,0 +1,24 @@
+---
+
+layout: page
+element: assignment
+title: Introduction to Stata
+language: Stata
+exercises: ['Basic Expressions', 'Basic Variables', 'More Variables', 'Built-in Functions', 'Modify the Code', 'Basic Vectors', 'Nulls in Vectors', 'Shrub Volume Vectors', 'Check That Your Code Runs', 'Biomass vectors']
+points: [10, 10, 10, 10, 10, 10, 15, 15, 10, Challenge - optional]
+---
+
+### Learning Objectives
+
+> Following this assignment students should be able to:
+>
+> - fetch a branch, make commits, and push commits
+> - execute simple math in the Stata console
+> - import data in Stata
+> - assign and manipulate variables
+> - use built-in functions for math and stats
+> - visualize simple relationships between data
+
+{% include reading.html %}
+
+{% include assignment.html %}
