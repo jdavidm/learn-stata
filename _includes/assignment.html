@@ -34,13 +34,10 @@
           /learn-stata/exercises/01-basic-expressions/
         want:
           /learn-stata/solutions/01-basic-expressions.txt
-
-        Robust approach:
-          - remove site.baseurl
-          - remove known prefixes
-          - split on "/"
-          - compact removes empty strings
-          - last gives the slug without any trailing "/"
+        Approach:
+          - remove baseurl and known prefixes
+          - build solutions path
+          - fix any trailing-slash-before-.txt with replace
         {%- endcomment -%}
 
         {% assign rel = otherpage.url
@@ -50,13 +47,12 @@
           | remove_first: 'docs/templates/'
         %}
 
-        {% assign rel_parts = rel | split: '/' | compact %}
-        {% assign slug = rel_parts | last %}
-
         {% assign output_url = site.baseurl
           | append: '/solutions/'
-          | append: slug
+          | append: rel
           | append: '.txt'
+          | replace: '/.txt', '.txt'
+          | replace: '//solutions/', '/solutions/'
         %}
 
         {% unless site.no_solution contains output_url %}
