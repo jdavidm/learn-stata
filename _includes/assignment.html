@@ -14,9 +14,9 @@
         <font color="000000">{{ otherpage.title }}</font></a></h4>
         {% endif %}
         {{ otherpage.content }}
-        {% capture output_url %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates' | remove: '/' | prepend: 'https://jdavidm.github.io/learn-stata/solutions/' }}{% endcapture %}
+        {% capture output_url %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates' | remove: '/' | prepend: 'https://jdavidm.github.io/learn-stata/solutions/' | append: '.txt' }}{% endcapture %}
         {% unless site.no_solution contains output_url %}
-          <em><a href="{{ solution.path | prepend: site.baseurl }}" aria-label="Expected output for {{otherpage.title}}">Expected outputs for {{ otherpage.title }}</a></em>
+          <em><a href="{{ output_url }}" aria-label="Expected output for {{otherpage.title}}">Expected outputs for {{ otherpage.title }}</a></em>
         {% endunless %}
         {% capture output_file %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates'| remove: '/' | prepend: '/solutions/' }}{% endcapture %}
         {% assign loop_count = 0 %}
