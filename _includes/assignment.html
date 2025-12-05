@@ -17,9 +17,9 @@
         {% assign rel = otherpage.url
           | remove_first: site.baseurl
           | remove_first: '/'
-          | remove_last: '/'
           | remove_first: 'exercises/'
           | remove_first: 'docs/templates/'
+          | remove_last: '/'
         %}
         {% assign output_url = site.baseurl | append: '/solutions/' | append: rel | append: '.txt' %}
         {% unless site.no_solution contains output_url %}

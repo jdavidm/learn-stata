@@ -18,7 +18,7 @@ title: Assignment Submission & Checklist
   your answers should match those provided. For example, if there are three
   separate plots your code should produce three separate plots.
 - Some errors can lead to only subtle differences so check carefully
-- Sometimes small differences result from changes in packages. If you see a
+- Sometimes small differences result from changes in packages and versions. If you see a
   difference but you think your answer is right, let us know and we can check.
 
 ### Make sure your code follows the instructions
@@ -31,22 +31,22 @@ title: Assignment Submission & Checklist
 
 Code should be easy to read and understand.
 
+- Code must follow my style guide.
 - Only include code and comments necessary for the assignment. Remove anything else (e.g., notes taken during class, commented code that isn't needed anymore).
 - Remove extra/duplicate files. Only turn in what is necessary for the assignment.
-- Remove any uses of `install.packages`
 - Clearly label problems using comments.
 
 ### Make sure your code runs like you think it does
 
 Code should run from the start of the file to the end of the file without problems. To make sure this is true:
 
-- Clear the R environment by clicking on the the broom icon.
-- Run the entire file by either clicking the `Source` button or using the `Ctrl-Shift-S` keyboard shortcut (`Cmd-Shift-S` on macOS).
+- Clear the Stata environment by typing `clear all`.
+- Run the entire file by either clicking the `Execute` button or using the `Ctrl+D` keyboard shortcut (`Cmd+Shift+D` on macOS).
 
 ### Work with data files appropriately
 
 Code should run the same way regardless of which computer it is run on. In order to grade your code someone will need to run it on another computer. To make sure your code will work on another computer:
 
-- Do not use setwd()
-- Use relative paths, not absolute paths. E.g., use `data/mydata.csv` instead of `C:\Users\Batman\DataCarp\data\mydata.csv`.
-- Make filenames in the code match the actual filenames exactly including capitalization
+- Use you `project.do` file to set the development environment
+- Use relative paths, not absolute paths. E.g., use `$data/mydata.csv` instead of `C:\Users\Batman\DataCarp\data\mydata.csv`.
+- Make filenames in the code match the actual filenames exactly
