@@ -3,12 +3,11 @@ layout: page
 title: Assignment Submission & Checklist
 ---
 
-- All assignments should be submitted through [Canvas](http://ufl.instructure.com/)
+- All assignments should be submitted through the course [Github](https://github.com/jdavidm/semester26) page.
 
 - What files to submit: 
-    - **Week 1** - one text form, one .xlsx file
-    - **Weeks 2-6** - a link to your Posit Cloud project
-    - **Weeks 7+** - either a link to your Posit Cloud project or a zip of you local RStudio project directory
+    - **Weeks 1-10** - the code you wrote for the assignment in `.do` format plus a `.txt` file with your solutions
+    - **Weeks 10+** - the code you wrote for the assignment in `.do` format plus a `.tex` file with your solutions in [Overleaf](https://www.overleaf.com/5595112223xhspvdgjjqpt#e3fb94)
 
 
 ## Code Checklist

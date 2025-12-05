@@ -1,8 +1,8 @@
 ---
 layout: exercise
 topic: dplyr
-title: Shrub Volume Data Basics
-language: R
+title: Data Basics
+language: Stata
 ---
 
 Dr. Morales is interested in studying the factors controlling the size and
