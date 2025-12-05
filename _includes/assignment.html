@@ -4,24 +4,61 @@
 {% for exercise in page.exercises %}
   {% assign exercise_loop = forloop %}
   {% for otherpage in site.pages %}
-    {% if exercise == otherpage.title and page.language == otherpage.language and otherpage.layout == 'exercise' and otherpage.translation != 'es'%}
-      <li><h4><a href="{{ site.baseurl }}{{ otherpage.url }}">
-        {% if page.points[exercise_loop.index0] == 'optional' or page.points[exercise_loop.index0] == 'Challenge - optional' %}
-        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: ")"}}</font></a></h4>
-        {% elsif page.points[exercise_loop.index0] %}
-        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: " pts)"}}</font></a></h4>
-        {% else %}
-        <font color="000000">{{ otherpage.title }}</font></a></h4>
-        {% endif %}
+    {% if exercise == otherpage.title
+          and page.language == otherpage.language
+          and otherpage.layout == 'exercise'
+          and otherpage.translation != 'es' %}
+
+      <li>
+        <h4>
+          <a href="{{ site.baseurl }}{{ otherpage.url }}">
+            {% if page.points[exercise_loop.index0] == 'optional'
+               or page.points[exercise_loop.index0] == 'Challenge - optional' %}
+              <font color="000000">
+                {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: ")" }}
+              </font>
+            {% elsif page.points[exercise_loop.index0] %}
+              <font color="000000">
+                {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: " pts)" }}
+              </font>
+            {% else %}
+              <font color="000000">{{ otherpage.title }}</font>
+            {% endif %}
+          </a>
+        </h4>
+
         {{ otherpage.content }}
+
+        {%- comment -%}
+        otherpage.url example:
+          /learn-stata/exercises/01-basic-expressions/
+        want:
+          /learn-stata/solutions/01-basic-expressions.txt
+
+        Robust approach:
+          - remove site.baseurl
+          - remove known prefixes
+          - split on "/"
+          - compact removes empty strings
+          - last gives the slug without any trailing "/"
+        {%- endcomment -%}
+
         {% assign rel = otherpage.url
           | remove_first: site.baseurl
           | remove_first: '/'
           | remove_first: 'exercises/'
           | remove_first: 'docs/templates/'
-          | remove_last: '/'
         %}
-        {% assign output_url = site.baseurl | append: '/solutions/' | append: rel | append: '.txt' %}
+
+        {% assign rel_parts = rel | split: '/' | compact %}
+        {% assign slug = rel_parts | last %}
+
+        {% assign output_url = site.baseurl
+          | append: '/solutions/'
+          | append: slug
+          | append: '.txt'
+        %}
+
         {% unless site.no_solution contains output_url %}
           <em>
             <a href="{{ output_url }}"
@@ -30,12 +67,17 @@
             </a>
           </em>
         {% endunless %}
+
         {% assign output_file = output_url %}
+
         {% assign loop_count = 0 %}
       </li>
+
     {% endif %}
   {% endfor %}
 {% endfor %}
 </ol>
 
-<a href="{{ site.baseurl }}/materials/turn-in-checklist"> Assignment submission & checklist</a>
+<a href="{{ site.baseurl }}/materials/turn-in-checklist">
+  Assignment submission & checklist
+</a>
