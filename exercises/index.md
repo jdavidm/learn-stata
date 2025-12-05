@@ -3,7 +3,7 @@ layout: page
 title: Exercises
 languages: ['Stata', 'Git', 'LaTeX']
 ---
-<a href="#Stata">Stata</a> \| <a href="#Git">Git</a> \| <a href="#LaTeX">LaTeX</
+<a href="#Stata">Stata</a> \| <a href="#Git">Git</a> \| <a href="#LaTeX">LaTeX</a>
 
 {% for language in page.languages %}
   <h2> {{ language }} <a name="{{ language }}"></a></h2>
