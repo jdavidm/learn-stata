@@ -16,15 +16,14 @@
                or page.points[exercise_loop.index0] == 'Challenge - optional' %}
               <font color="000000">
                 {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: ")" }}
-              </font>
+              </font></a>
             {% elsif page.points[exercise_loop.index0] %}
               <font color="000000">
                 {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: " pts)" }}
-              </font>
+              </font></a>
             {% else %}
-              <font color="000000">{{ otherpage.title }}</font>
+              <font color="000000">{{ otherpage.title }}</font></a>
             {% endif %}
-          </a>
         </h4>
 
         {{ otherpage.content }}
@@ -32,27 +31,18 @@
         {%- comment -%}
         otherpage.url example:
           /learn-stata/exercises/01-basic-expressions/
-        want:
+        We want:
           /learn-stata/solutions/01-basic-expressions.txt
-        Approach:
-          - remove baseurl and known prefixes
-          - build solutions path
-          - fix any trailing-slash-before-.txt with replace
+
+        Do it by:
+          1) replace exercises -> solutions
+          2) replace LAST trailing "/" with ".txt"
         {%- endcomment -%}
 
-        {% assign rel = otherpage.url
-          | remove_first: site.baseurl
-          | remove_first: '/'
-          | remove_first: 'exercises/'
-          | remove_first: 'docs/templates/'
-        %}
-
-        {% assign output_url = site.baseurl
-          | append: '/solutions/'
-          | append: rel
-          | append: '.txt'
-          | replace: '/.txt', '.txt'
-          | replace: '//solutions/', '/solutions/'
+        {% assign output_url = otherpage.url
+          | replace_first: '/exercises/', '/solutions/'
+          | replace_first: '/docs/templates/', '/solutions/'
+          | replace_last: '/', '.txt'
         %}
 
         {% unless site.no_solution contains output_url %}
@@ -65,8 +55,8 @@
         {% endunless %}
 
         {% assign output_file = output_url %}
-
         {% assign loop_count = 0 %}
+
       </li>
 
     {% endif %}
