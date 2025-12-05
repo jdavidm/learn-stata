@@ -12,51 +12,58 @@
       <li>
         <h4>
           <a href="{{ site.baseurl }}{{ otherpage.url }}">
-            {% if page.points[exercise_loop.index0] == 'optional'
-               or page.points[exercise_loop.index0] == 'Challenge - optional' %}
-              <font color="000000">
-                {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: ")" }}
-              </font></a>
-            {% elsif page.points[exercise_loop.index0] %}
-              <font color="000000">
-                {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: " pts)" }}
-              </font></a>
-            {% else %}
-              <font color="000000">{{ otherpage.title }}</font></a>
-            {% endif %}
+          {% if page.points[exercise_loop.index0] == 'optional'
+             or page.points[exercise_loop.index0] == 'Challenge - optional' %}
+            <font color="000000">
+              {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: ")" }}
+            </font>
+          {% elsif page.points[exercise_loop.index0] %}
+            <font color="000000">
+              {{ otherpage.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: " pts)" }}
+            </font>
+          {% else %}
+            <font color="000000">{{ otherpage.title }}</font>
+          {% endif %}
+          </a>
         </h4>
 
         {{ otherpage.content }}
 
         {%- comment -%}
-        otherpage.url example:
-          /learn-stata/exercises/01-basic-expressions/
-        We want:
-          /learn-stata/solutions/01-basic-expressions.txt
-
-        Do it by:
-          1) replace exercises -> solutions
-          2) replace LAST trailing "/" with ".txt"
+        Build a prefix like "/solutions/01-basic-expressions"
+        (same as your working exercises index page),
+        then find the matching static file (e.g. "...01-basic-expressions.txt")
+        and link to its real path.
         {%- endcomment -%}
 
-        {% assign output_url = otherpage.url
-          | replace_first: '/exercises/', '/solutions/'
-          | replace_first: '/docs/templates/', '/solutions/'
-          | replace_last: '/', '.txt'
-        %}
+        {% capture output_file %}
+          {{ otherpage.url
+             | remove: 'exercises'
+             | remove: 'docs/templates'
+             | remove: '/'
+             | prepend: '/solutions/'
+          }}
+        {% endcapture %}
 
-        {% unless site.no_solution contains output_url %}
-          <em>
-            <a href="{{ output_url }}"
-               aria-label="Expected output for {{ otherpage.title }}">
-              Expected outputs for {{ otherpage.title }}
-            </a>
-          </em>
-        {% endunless %}
+        {% assign output_url = nil %}
+        {% for solution in site.static_files %}
+          {% if solution.path contains output_file %}
+            {% assign output_url = solution.path | prepend: site.baseurl %}
+          {% endif %}
+        {% endfor %}
 
-        {% assign output_file = output_url %}
+        {% if output_url %}
+          {% unless site.no_solution contains output_url %}
+            <em>
+              <a href="{{ output_url }}"
+                 aria-label="Expected output for {{ otherpage.title }}">
+                Expected outputs for {{ otherpage.title }}
+              </a>
+            </em>
+          {% endunless %}
+        {% endif %}
+
         {% assign loop_count = 0 %}
-
       </li>
 
     {% endif %}
