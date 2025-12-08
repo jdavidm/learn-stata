@@ -5,21 +5,19 @@ title: Data Basics
 language: Stata
 ---
 
-Dr. Morales is interested in studying the factors controlling the size and
-carbon storage of shrubs. She has conducted an experiment looking at the effect
-of three different treatments on shrub volume at four different locations. She
-has placed the data file on the web for you to download:
+To get a sense of how to work with data and the types of data that Stata handles, we will look at a data set on life expectancy in 68 countries:
 
-If the file [`shrub-volume-data.csv`]({{ site.baseurl }}/data/shrub-volume-data.csv) is not already in your working directory (it probably is if you're taking this class using Posit Cloud) then download it into your working directory.
+If the file [`lifeexp.dta`]({{ site.baseurl }}/data/lifeexp.dta) is not already in your course folder then download it into your course folder.
 
-Get familiar with the data by importing it using `read_csv()` and use `dplyr` to complete the following tasks.
+Get familiar with the data by importing it using `use` then complete the following tasks. One thing to remember is that in Stata creating a variable requires one equal sign (`=`) while using logic expressions, like `[if exp]` requires two equal signs (`==`).
 
-1. Select the data from the length column (using `select`).
-2. Select the data from the site and experiment columns (using `select`).
-3. Add a new column named `area` containing the area of the shrub, which is the length times the width (using `mutate`).
-4. Sort the data by length (using `arrange`).
-5. Filter the data to include only plants with heights greater than 5 (using `filter`).
-6. Filter the data to include only plants with heights greater than 4 and widths greater than 2 (using `,` or `&` to include two conditions).
-7. Filter the data to include only plants from Experiment 1 or Experiment 3 (using `|` for "or").
-8. Remove rows with null values in the `height` column (using `drop_na`)
-9. Create a new data frame called `shrub_volumes` that includes all of the original data and a new column containing the volumes (length * width * height), and display it.
+1. Describe the data (using `describe`). Which variable has a value label?
+2. Calculate the mean life expectancy (using `sum` for summarize). What is the mean and standard deviation of life expectancy?
+3. Calculate the median life expectancy (using the `detail` option to `sum`). What is median life expectancy?
+4. Sort the data by country (using `sort`). Alphabetically, what is the first and last country in the data set?
+5. List the regions in the data set (using `tab` for tabulate). How many regions are there?
+6. Stata can label data (recall the region label). This means when you look at the data you see the label, but the label actually applies to a number. List the regions by their number (using the `nolab` option to `tab`). What number is assigned the label South America?
+7. Calculate the mean life expectancy by region (using the prefix `bys` for bysort to the `sum` command). What is mean life expectancy in Europe and Central Asia?
+8. Filter the data to calculate median population growth for North America (using the `if [exp]` conditional on `sum`). What is median population growth in the region?
+9. Remove rows with null values of safewater (using `drop if`). How many observations were dropped?
+10. Create a new data file called `lifeexp_no-sw` for no safewater (using `save`). What is the size in KB of this new file (look under data in the Properties Window)?

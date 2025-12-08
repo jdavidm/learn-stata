@@ -120,8 +120,9 @@ language: Stata
 ### Basic Stata syntax
 
 ```stata
-    command [varlist] [= exp] [if exp] [in range] [weight] [, options]
+    prefix: command [varlist] [= exp] [if exp] [in range] [weight] [, options]
 ```
+* `prefix`: A prefix to a Stata command that modifies how or on what the command is carried out, such as `by` or `quietly`.
 * `command`: The specific Stata command you want to run, such as `summarize`, `list`, or `graph`. Most commands can be shortened (e.g., `sum` for `summarize`).
 * `[varlist]`: A list of one or more variables to be used by the command.
 * `[=exp]`: An optional expression to create a new variable.

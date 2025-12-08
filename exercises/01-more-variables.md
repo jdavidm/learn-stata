@@ -5,18 +5,12 @@ title: More Variables
 language: Stata
 ---
 
-Calculate a total biomass in grams for 3 white-throated woodrats
-([*Neotoma albigula*](https://en.wikipedia.org/wiki/White-throated_woodrat)) and
-then convert it to kilograms. The total biomass is three times the average size
-of a single individual. An average individual weighs 250 grams.
+Calculate GDP per capita for the US and then convert it to Euros. The GDP for the US is 30,490,000,000,000. The population of the US is 342,900,000. Use the echange rate from problem 2.
 
-* Add a new section to your R script starting with a comment.
-* Create a variable `grams` and assign it the mass of a single
-*Neotoma albigula* (250).
-* Create a variable `number` and assign it the number of individuals (3).
-* Create a variable `biomass` and assign it a value by multiplying
-the `grams` and `number` variables together.
-* Convert the value of `biomass` into kilograms (there are 1000
-grams in a kilogram so divide by 1000) and assign this value to a new
-variable.
-* Print the final answer to the screen.
+* Clear any data you might have loaded in Stata.
+* Create an "empty" data set by typing `set obs 1`. This creates a single row in Stata's data frame.
+* Create a variable `gdp` and assign it the GDP of the US.
+* Create a variable `pop` and assign it the population of the US.
+* Create a variable `gdp_pc` and assign it a value by dividing GDP by population.
+* Convert the value of `gdp_pc` into Euros and assign this value to a new variable.
+* Display the final answer to the screen.
