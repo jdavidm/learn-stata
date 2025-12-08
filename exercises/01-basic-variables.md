@@ -12,7 +12,7 @@ Here is a small program that converts a price in U.S. dollars to a price in Euro
     gen         p_euro = p_usd * 0.86
     display     p_euro
 ```
-Create similar code to calculate the exchange rate between Euros British Pounds.
+Create similar code to calculate the exchange rate between Euros and British Pounds.
 * Create a variable to store a price in Euros. Assign this variable a value of 5.87 [(the price of a BigMac](https://www.visualcapitalist.com/mapped-the-price-of-a-big-mac-across-the-world/)).
 * Create a variable to store a price in Pounds. Assign this variable a value of 5.09.
 * Calculate and print the exchange rate (the value of 1 Euro in GBP).

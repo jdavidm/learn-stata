@@ -3,7 +3,7 @@ layout: page
 title: Getting Started
 ---
 
-Semester-long Course Students
+How to get started on the semester long course
 : <a href="{{ site.baseurl}}/computer-setup">
   <i class="fa fa-download fa-fw"></i> Setup</a>
 : <a href="{{ site.baseurl}}/syllabus">

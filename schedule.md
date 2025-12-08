@@ -21,7 +21,7 @@ assignments:
   ]
 ---
 
-[Assignment submission & checklist]({{ site.baseurl }}/materials/turn-in-checklist)
+[Assignment submission checklist]({{ site.baseurl }}/materials/turn-in-checklist)
 
 {% include assignments.html %}
 
