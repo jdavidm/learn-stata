@@ -5,28 +5,29 @@ title: Modify the Code
 language: Stata
 ---
 
-The following code estimates the total net primary productivity (NPP) per day
-for two sites. It does this by multiplying the grams of carbon produced in a
-single square meter per day by the total area of the site. It then prints the
-daily NPP for each site.
+The following code explores wages and correlates using the National Longitudinal Surveys, Women sample, 1988. We will explore relationship in the entire data and then modify the code to explore differences in these relationships by union membership and college graduate.
 
-```r
-site1_g_carbon_m2_day <- 5
-site2_g_carbon_m2_day <- 2.3
-site1_area_m2 <- 200
-site2_area_m2 <- 450
-site1_npp_day <- site1_g_carbon_m2_day * site1_area_m2
-site2_npp_day <- site2_g_carbon_m2_day * site2_area_m2
-site1_npp_day
-site2_npp_day
+```stata
+sysuse                  nlsw88.dta, clear
+sum                     wage hours
+tab                     married race, row
+bys married race:       sum wage hours           
 ```
 
-Copy this code into your assignment and then add additional lines of code to do the following steps and print them out after the
-daily NPP values (the ones currently printed by the code):
+Copy this code into your assignment and then add additional lines of code to calculate the following for union/non-union members and college grads/non-college grads:
 
-1.  The sum of the total daily NPP for the two sites.
-2.  The difference between the daily NPP for the two sites. We only want
-    an absolute difference, so use abs() function to make sure the
-    number is positive.
-3.  The total NPP over a year for the two sites combined (the sum of the total
-    daily NPP values from part (1) multiplied by 365).
+1.  Mean wage and hours (use `bys` and `sum`)
+    1. For union members
+    3. For non-union members
+    2. For college grads
+    4. For non-college grads
+2.  The percentage of Blacks who are (use `tab`)
+    1. Union member
+    3. Non-union members
+    2. College grads
+    4. Non-college gradss
+3.  Mean wage and hours of 
+    1. Union members who are college grads
+    2. Union members who are non-college grads
+    3. Non-union members who are college grads
+    4. Non-union members who are non-college grads
