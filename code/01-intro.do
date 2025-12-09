@@ -40,7 +40,40 @@
 
 **# exercise 3
 	clear			all
-	sysuse			lifeexp
+	sysuse			"lifeexp.dta"
+
+**## 3.1
+	describe
+	
+**## 3.2
+	sum				lexp
+	
+**## 3.3
+	sum				lexp, detail
+	
+**## 3.4
+	sort			country
+	
+**## 3.5
+	tab				region
+	
+**## 3.6
+	tab				region, nolab
+	
+**## 3.7
+	bys				region: ///
+						sum lexp
+	
+**## 3.8
+	sum				popgrowth if region == 2, detail
+	
+**## 3.9
+	drop if			safewater == .
+	
+**## 3.10
+	save			"lifeexp_no-sw.dta", replace
+	
+
 	 
 **# exercise 4
 	clear			all
