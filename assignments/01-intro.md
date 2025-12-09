@@ -1,5 +1,4 @@
 ---
-
 layout: page
 element: assignment
 title: Introduction to Stata & Github

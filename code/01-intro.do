@@ -36,38 +36,43 @@
 	 gen			p_euro = 5.87
 	 gen			p_gbp = 5.09
 	 display		p_gbp / p_euro
-	 
-	 
+
+
 **# exercise 3
 	clear			all
-	 set 			obs 1
-	 gen			gdp = 30490000000000
-	 gen			pop = 342900000
-	 gen			gdp_pc = gdp / pop
-	 gen			gdp_pc_euro = gdp_pc * 0.86
-	
-	
+	sysuse			lifeexp
+	 
 **# exercise 4
-
-**## 4.1
-	display			abs(-15.5)
-
-**## 4.2
-	display			round(4.483847,0.1)
+	clear			all
+	set 			obs 1
+	gen				gdp = 30490000000000
+	gen				pop = 342900000
+	gen				gdp_pc = gdp / pop
+	gen				gdp_pc_euro = gdp_pc * 0.86
 	
-**## 4.3
-	display			round(3.8)
-
-**## 4.4
-	display			strupper("unemployment")
-
-**## 4.5
-	display			strlower("INFLATION")
-
-**## 4.6
-	display			round(sqrt(2.6),0.01)
 	
 **# exercise 5
+
+**## 5.1
+	display			abs(-15.5)
+
+**## 5.2
+	display			round(4.483847,0.1)
+	
+**## 5.3
+	display			round(3.8)
+
+**## 5.4
+	display			strupper("unemployment")
+
+**## 5.5
+	display			strlower("INFLATION")
+
+**## 5.6
+	display			round(sqrt(2.6),0.01)
+	
+	
+**# exercise 6
 	clear			all
 	sysuse			nlsw88.dta, clear
     sum				wage hours
@@ -75,12 +80,12 @@
     bys 			married race:  ///
 						sum wage hours
 						
-**## 4.1
+**## 6.1
 
-* 4.1.1 & 4.1.2
+* 6.1.1 & 6.1.2
 	bys				union: ///
 						sum wage hours
-* 4.1.3 & 4.1.4
+* 6.1.3 & 6.1.4
 	bys				collgrad: ///
 						sum wage hours
 
