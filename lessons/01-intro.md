@@ -5,24 +5,17 @@ title: Introduction to Stata & Github
 language: Stata
 ---
 
-1\. Setup an Posit Cloud account linked to course by using the following steps:
-* In Canvas, click on the RStudio Signup Link on the Course Links page.
-* Click "Sign up" (under the "Log in" button)
-* Enter you UF email address
-* Click out of the email address box, which will cause the screen to change
-* Click "Log in via University of Florida", which will redirect you to the UF login page
-* Log in through UF, which will return you to Posit Cloud
-* Enter your name and finish creating the account
+1\. Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profplus/student-pricing/), download, and install it.
 
-2\. Watch the Introduction to R and RStudio Video:
+2\. Setup a Github account following the instructions on [computer setup]({{ site.baseurl }}/computer-setup)
+
+3\. Watch the Introduction to R and RStudio Video:
 
 <iframe title="Introduction to R and RStudio Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/zqUQL8OOtMQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-3\. Watch the Introduction Posit Cloud Video:
+4\. Watch the Introduction Posit Cloud Video:
 
 <iframe title="Introduction Posit Cloud Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/5eJ5sdKKi9c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-4\. Make sure you have RStudio installed or access to Posit Cloud
 
 5\. Watch the Expressions and Variables in R video:
 
