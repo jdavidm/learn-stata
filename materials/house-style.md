@@ -3,7 +3,7 @@ layout: page
 title: House Style
 ---
 
-When writing code, ensure you use *headings* and *subheadings*, *bookmarks*, *documentation*, *tabs*, and *comments* in a way that is consistent with template .do files.
+When writing code, ensure you use **headings** and **subheadings**, **bookmarks**, **documentation**, **tabs**, and **comments** in a way that is consistent with template .do files.
 
 * Headings open large sections of code and are numbered. For assignments, headings should correspond with an exercise. Headings are bookmarked with `**# 1`. Subheadings are numbered following the heading but with a decimal point followed by a number. For assignments, subheadings should correspond with a sub-questions within an exercise. Subheadings are bookmarketed at one level down with `**## 1.1`.
 

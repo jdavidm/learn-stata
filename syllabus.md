@@ -162,7 +162,7 @@ Final grade must be disputed within two weeks of receiving the grade.
 
 
 ### Late Policy: 
-There is an automatic 48 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 48 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
+There is an automatic 24 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 24 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
 
 
 ## UA Policies

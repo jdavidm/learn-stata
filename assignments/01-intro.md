@@ -23,4 +23,4 @@ points: [10, 5, 15, 10, 10, 15, 15, Challenge - optional, 20]
 
 {% include assignment.html %}
 
-{% include solutions.html %}
+{% include solution.html %}

@@ -30,11 +30,13 @@
 **## 1.7
 	display			8 / 2^2
 	
+	
 **# exercise 2
 	 set 			obs 1
 	 gen			p_euro = 5.87
 	 gen			p_gbp = 5.09
 	 display		p_gbp / p_euro
+	 
 	 
 **# exercise 3
 	clear			all
@@ -43,6 +45,7 @@
 	 gen			pop = 342900000
 	 gen			gdp_pc = gdp / pop
 	 gen			gdp_pc_euro = gdp_pc * 0.86
+	
 	
 **# exercise 4
 
@@ -64,4 +67,21 @@
 **## 4.6
 	display			round(sqrt(2.6),0.01)
 	
+**# exercise 5
+	clear			all
+	sysuse			nlsw88.dta, clear
+    sum				wage hours
+    tab				married race, row
+    bys 			married race:  ///
+						sum wage hours
+						
+**## 4.1
+
+* 4.1.1 & 4.1.2
+	bys				union: ///
+						sum wage hours
+* 4.1.3 & 4.1.4
+	bys				collgrad: ///
+						sum wage hours
+
 	
