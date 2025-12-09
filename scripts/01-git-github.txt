@@ -1,0 +1,158 @@
+In this video, I’m going to give you a quick tour of Git and GitHub, and show you how we’ll use GitHub Desktop in this course.
+
+---
+
+### 1. What are Git and GitHub?
+
+Git is **version control software**.
+You can think of it as a time machine for your files: it lets you save snapshots of your work, go back to older versions, and see what changed over time.
+
+GitHub is a **website that hosts Git repositories** in the cloud.
+So:
+
+* **Git** = the *tool* that tracks changes.
+* **GitHub** = the *place* where those Git repositories live and where you can collaborate with other people.
+
+On your computer, you’ll work locally with Git (through GitHub Desktop). When you’re ready to share your changes or back them up, you **push** them to GitHub.
+
+---
+
+### 2. Cloning the course repo and creating your branch
+
+Before you can follow along, you need:
+
+* A GitHub account
+* GitHub Desktop installed
+* The course repo cloned and your own branch created
+
+I’m *not* going to walk through every click here, because I’ve written that all out for you.
+
+👉 **If you haven’t done this yet, pause this video and go to:**
+`jdavidm.github.io/learn-stata/computer-setup/`
+
+Follow the instructions there to:
+
+1. Clone the course repository
+2. Create your personal branch
+3. Publish your branch to GitHub
+
+Once you’ve done that, come back here.
+
+---
+
+### 3. How GitHub tracks changes (simple example)
+
+Now I’m in **GitHub Desktop**.
+
+[On screen: show GitHub Desktop]
+
+Up at the top left, you should see the **current repository**. I’ll make sure it’s set to the course repo, `semester26`.
+
+Right next to that is the **current branch**. I’m going to switch to my personal branch for the course.
+
+Now let’s make a change so you can see how Git tracks it.
+
+[On screen:
+
+* Click “Repository” → “Show in Finder / Explorer”, or “Open in VS Code” / your editor of choice.]
+
+I’ll open one simple file in the repo — for example, a markdown or text file.
+
+[On screen: open a file and add a small edit, e.g.:
+“Adding a short note for the GitHub video demo.”
+Then save the file.]
+
+Now I switch back to **GitHub Desktop**.
+
+You’ll see that GitHub Desktop has detected that I changed a file.
+
+---
+
+### 4. Tour of GitHub Desktop panes
+
+Let’s walk through the main parts of GitHub Desktop.
+
+1. **Top bar**
+
+   * **Current repository**: which project you’re working on.
+   * **Current branch**: which version/line of development you’re on. In this class, you should almost always be on *your* branch, not `main`.
+   * On the right side:
+
+     * **Fetch origin**: checks if there are new changes on GitHub that you don’t have yet.
+     * **Push origin**: sends your local commits up to GitHub.
+     * If the branch is new, you may see **Publish branch** instead of push. That uploads your branch to GitHub for the first time.
+
+2. **Left side: Changes / History**
+
+   * The **Changes** tab shows all files you’ve modified but *not yet committed*.
+   * The **History** tab shows past commits with messages, dates, and who made them.
+
+3. **Center pane**
+
+   * When you click on a file in the Changes list, the center shows a **diff**:
+
+     * Removed lines are highlighted.
+     * Added lines are highlighted.
+   * This is how GitHub Desktop shows exactly what changed.
+
+4. **Bottom left: Commit box**
+
+   * This is where you write a **Summary** and optional **Description** for your commit.
+   * The button below (e.g., “Commit to `<your-branch>`”) creates the commit.
+
+---
+
+### 5. Making a commit (with a good summary)
+
+Let’s commit the change we just made.
+
+In the **Summary** box, you should always write something short but meaningful.
+Bad summary: “stuff” or “changes”
+Better summary: “Add note to GitHub demo file”
+
+[On screen: type a summary like “Add note to GitHub demo file”. Optionally add a longer explanation in the Description box.]
+
+Once that looks good, I’ll click:
+
+[On screen: click **“Commit to `<your-branch>`”**]
+
+Notice that:
+
+* The file disappears from the **Changes** list, because there are no uncommitted changes now.
+* If I click over to **History**, I can see the new commit with my summary.
+
+That commit is now saved **locally** on my computer.
+
+---
+
+### 6. Pushing the commit and seeing it on GitHub
+
+Right now, Git knows about the change on my machine, but GitHub doesn’t.
+To share it with GitHub, I need to **push**.
+
+At the top right, I’ll click:
+
+[On screen: click **“Push origin”** (or “Publish branch” if it’s the first time).]
+
+That sends my new commit from my computer up to the remote repo on GitHub.
+
+Now I’ll go to the course GitHub site in my browser:
+
+`github.com/jdavidm/semester26`
+
+[On screen: open the repo, switch to your branch, navigate to the file you edited, and show that the change is there.]
+
+You can see that:
+
+* I’m on **my branch**.
+* The file we edited now includes the new text.
+* The commit shows up in the commit history with the summary we wrote.
+
+That’s the basic GitHub Desktop workflow we’ll use all semester:
+
+1. Make changes in your files
+2. Check them in GitHub Desktop (Changes pane + diff)
+3. Write a clear commit summary and **commit**
+4. **Push** to GitHub so it’s saved and shared
+
+We’ll build on this as we go, but if you can do these steps, you’ve got the core Git/GitHub skills you need for this course.
