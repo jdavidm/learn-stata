@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Expressions and Variables
-title: 01 Modify the Code
+title: Modify the Code
 language: Stata
 ---
 
