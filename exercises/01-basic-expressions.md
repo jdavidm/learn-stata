@@ -27,7 +27,7 @@ To tell someone reading the code what this section of the code is about, add a c
 So, the start of your program should look something like:
 
 ```stata
-**# Exercise 1
+**# exercise 1
 
 **## 1.1
 display 2 - 10

@@ -106,6 +106,9 @@ A laptop computer (not tablet). The University of Arizona Libraries have laptops
 ### Assignments
 Students are required to read the assigned chapters, complete coding assignments, and take a final exam.
 
+### House style
+All code submitted for grading *must* follow this course's [house style]({{ site.baseurl }}/materials/house-style). Code not following the house style will be returned un-graded. Students will then have a chance to re-submit the assignment in the correct style. If assignments are re-submitted the same day, they will be graded without penalty. If they are submitted late, the earned grade will be reduced 10%. If the assignment is never re-submitted, it will be graded a 0.
+
 ### Replication Project
 Graduate students are expected to complete a replication project in which they replicate the results in a published paper. Students will log their work on the [Social Science Reproduction Platform](https://www.socialsciencereproduction.org/).
 
@@ -115,7 +118,6 @@ Attendance will not be taken or factor into the grades for this class. However, 
 
 
 ## Grading Policies
-
 The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
 
 Because the goal is practice, exercises in assignments will be graded as follows:

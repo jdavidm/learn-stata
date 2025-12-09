@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Assignment Submission & Checklist
+title: Assignment Submission Checklist
 ---
 
 - All assignments should be submitted through the course [Github](https://github.com/jdavidm/semester26) page.
@@ -11,6 +11,28 @@ title: Assignment Submission & Checklist
 
 
 ## Code Checklist
+
+### Make sure your assignment has a preamble in the house style
+
+Every `.do` file that you turn in must have a preamble that contains the following information and is in the following "house syle".
+
+```stata
+* course: 597A
+* assignment: 1
+* created on: dec 25
+* created by: jdm
+* edited on: 9 dec 25
+* edited by: jdm
+* Stata v.19.5
+```
+
+After the preamble, exercises and sub-exercises should be labelled with bookmarks in the following style
+
+```stata
+**# exercise 1
+
+**## 1.1
+```
 
 ### Make sure your code matches the provided answers
 
@@ -31,7 +53,7 @@ title: Assignment Submission & Checklist
 
 Code should be easy to read and understand.
 
-- Code must follow my style guide.
+- Code must follow this course's [house style]({{ site.baseurl }}/materials/house-style).
 - Only include code and comments necessary for the assignment. Remove anything else (e.g., notes taken during class, commented code that isn't needed anymore).
 - Remove extra/duplicate files. Only turn in what is necessary for the assignment.
 - Clearly label problems using comments.
