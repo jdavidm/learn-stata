@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Expressions and Variables
-title: Variable Names
+title: Variable Names R
 language: R
 ---
 

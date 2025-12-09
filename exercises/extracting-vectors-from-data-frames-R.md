@@ -1,4 +1,4 @@
----
+SS---
 layout: exercise
 topic: dplyr
 title: Extracting vectors from data frames
