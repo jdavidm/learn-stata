@@ -1,29 +1,85 @@
 <h3> Exercises </h3>
 
 <ol>
-{% for exercise in page.exercises %}
+{% for ex_slug in page.exercises %}
   {% assign exercise_loop = forloop %}
+  {% assign matched_page = nil %}
+
+  {%- comment -%}
+  We match exercises by slug / filename:
+  ex_slug: "01-more-variables"
+  expected URL: "/exercises/01-more-variables/"
+  {%- endcomment -%}
+
+  {% capture expected_url %}/exercises/{{ ex_slug }}/{% endcapture %}
+
   {% for otherpage in site.pages %}
-    {% if exercise | strip == otherpage.title | strip and page.language | strip == otherpage.language | strip and otherpage.layout == 'exercise' %}
-      <li><h4><a href="{{ site.baseurl }}{{ otherpage.url }}">
-        {% if page.points[exercise_loop.index0] == 'optional' or page.points[exercise_loop.index0] == 'Challenge - optional' %}
-        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: ")"}}</font></a></h4>
-        {% elsif page.points[exercise_loop.index0] %}
-        <font color="000000">{{ otherpage.title | append: " (" }}{{page.points[exercise_loop.index0] | append: " pts)"}}</font></a></h4>
-        {% else %}
-        <font color="000000">{{ otherpage.title }}</font></a></h4>
-        {% endif %}
-        {{ otherpage.content }}
-        {% capture output_url %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates' | remove: '/' | prepend: 'https://dcsem-solutions.weecology.org/solutions/' }}{% endcapture %}
-        {% unless site.no_solution contains output_url %}
-          <em><a href="{{ output_url }}" aria-label="Expected output for {{otherpage.title}}">Expected outputs for {{ otherpage.title }}</a></em>
-        {% endunless %}
-        {% capture output_file %}{{ otherpage.url | remove: 'exercises' | remove: 'docs/templates'| remove: '/' | prepend: '/solutions/' }}{% endcapture %}
-        {% assign loop_count = 0 %}
-      </li>
+    {% if otherpage.url == expected_url
+          and otherpage.layout == 'exercise'
+          and otherpage.translation != 'es'
+          and (page.language == otherpage.language or page.language == nil) %}
+      {% assign matched_page = otherpage %}
+      {% break %}
     {% endif %}
   {% endfor %}
+
+  {% if matched_page %}
+    <li>
+      <h4>
+        <a href="{{ site.baseurl }}{{ matched_page.url }}">
+          {% if page.points[exercise_loop.index0] == 'optional'
+             or page.points[exercise_loop.index0] == 'Challenge - optional' %}
+            <font color="000000">
+              {{ matched_page.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: ")" }}
+            </font>
+          {% elsif page.points[exercise_loop.index0] %}
+            <font color="000000">
+              {{ matched_page.title | append: " (" }}{{ page.points[exercise_loop.index0] | append: " pts)" }}
+            </font>
+          {% else %}
+            <font color="000000">{{ matched_page.title }}</font>
+          {% endif %}
+        </a>
+      </h4>
+
+      {{ matched_page.content }}
+
+      {%- comment -%}
+      Expected outputs link logic (unchanged)
+      {%- endcomment -%}
+
+      {% capture output_file %}
+        {{ matched_page.url
+           | remove: 'exercises'
+           | remove: 'docs/templates'
+           | remove: '/'
+           | prepend: '/solutions/'
+        }}
+      {% endcapture %}
+
+      {% assign output_url = nil %}
+      {% for solution in site.static_files %}
+        {% if solution.path contains output_file %}
+          {% assign output_url = solution.path | prepend: site.baseurl %}
+        {% endif %}
+      {% endfor %}
+
+      {% if output_url %}
+        {% unless site.no_solution contains output_url %}
+          <em>
+            <a href="{{ output_url }}"
+               aria-label="Expected output for {{ matched_page.title }}">
+              Expected outputs for {{ matched_page.title }}
+            </a>
+          </em>
+        {% endunless %}
+      {% endif %}
+    </li>
+  {% endif %}
+
 {% endfor %}
 </ol>
 
-<a href="{{ site.baseurl }}/materials/turn-in-checklist"> Assignment submission checklist</a>
+<a href="{{ site.baseurl }}/materials/turn-in-checklist">
+  Assignment submission & checklist
+</a>
