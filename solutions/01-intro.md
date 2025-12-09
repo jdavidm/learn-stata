@@ -12,3 +12,4 @@ language: Stata
 5. [Built-in Functions]({{ site.baseurl }}/solutions/01-built-in-functions.txt)
 6. [Modify the Code]({{ site.baseurl }}/solutions/01-modify-the-code.txt)
 7. [Basic Graphs]({{ site.baseurl }}/solutions/01-basic-graphs.png)
+8. [Challenge]({{ site.baseurl }}/solutions/01-challenge.png)

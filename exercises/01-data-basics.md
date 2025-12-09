@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: dplyr
-title: Data Basics
+title: Data Analysis
 language: Stata
 ---
 
