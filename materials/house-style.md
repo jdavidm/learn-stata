@@ -76,8 +76,8 @@ Finally, the code should be documented and aligned using tabs. Long lines of cod
     } 	
 		
 * keep essential variables
- 	keep            zone state lga sector ea hhid plotid own* chown chmgmt ///
-					    mgmt* collat cert*
+ 	keep            zone state lga sector ea hhid plotid own* ///
+                        chown chmgmt mgmt* collat cert*
 ```
 
 Finally, each `.do` file should close with the same end matter.

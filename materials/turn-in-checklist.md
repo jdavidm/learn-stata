@@ -14,7 +14,7 @@ title: Assignment Submission Checklist
 
 ### Make sure your assignment has a preamble in the house style
 
-Every `.do` file that you turn in must have a preamble that contains the following information and is in the following "house syle".
+Every `.do` file that you turn in must have a preamble that contains the following information and is in this course's [house style]({{ site.baseurl }}/materials/house-style).
 
 ```stata
 * course: 597A

@@ -8,10 +8,10 @@ language: Stata
 The following code explores wages and correlates using the National Longitudinal Surveys, Women sample, 1988. We will explore relationship in the entire data and then modify the code to explore differences in these relationships by union membership and college graduate.
 
 ```stata
-sysuse                  nlsw88.dta, clear
-sum                     wage hours
-tab                     married race, row
-bys married race:       sum wage hours           
+    sysuse                  nlsw88.dta, clear
+    sum                     wage hours
+    tab                     married race, row
+    bys married race:       sum wage hours           
 ```
 
 Copy this code into your assignment and then add additional lines of code to calculate the following for union/non-union members and college grads/non-college grads:
