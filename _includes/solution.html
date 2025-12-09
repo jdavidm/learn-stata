@@ -1,0 +1,7 @@
+<h4>Solution</h4>
+{% for solutionpage in site.pages %}
+  {% if solutionpage.title == page.title and solutionpage.element == 'solution' %}
+   {{ solutionpage.content }}
+  {% endif %}
+{% endfor %}
+<hr>

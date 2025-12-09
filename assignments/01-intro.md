@@ -4,8 +4,8 @@ layout: page
 element: assignment
 title: Introduction to Stata & Github
 language: Stata
-exercises: ['Basic Expressions', 'Basic Variables', 'Data Basics', 'More Variables', 'Built-in Functions', 'Modify the Code', 'Basic Graphs', 'Check That Your Code Runs', 'Challenge 1']
-points: [10, 5, 15, 10, 10, 15, 15, 20, Challenge - optional]
+exercises: ['Basic Expressions', 'Basic Variables', 'Data Basics', 'More Variables', 'Built-in Functions', 'Modify the Code', 'Basic Graphs', 'Challenge 1', 'Check That Your Code Runs']
+points: [10, 5, 15, 10, 10, 15, 15, Challenge - optional, 20]
 ---
 
 ### Learning Objectives
@@ -22,3 +22,5 @@ points: [10, 5, 15, 10, 10, 15, 15, 20, Challenge - optional]
 {% include reading.html %}
 
 {% include assignment.html %}
+
+{% include solutions.html %}
