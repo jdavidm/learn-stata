@@ -9,11 +9,11 @@ language: Stata
 
 2\. Setup a Github account following the instructions on [computer setup]({{ site.baseurl }}/computer-setup)
 
-3\. Watch the Introduction to R and RStudio Video:
+3\. Watch the Introduction to Github Video:
 
 <iframe title="Introduction to R and RStudio Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/zqUQL8OOtMQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-4\. Watch the Introduction Posit Cloud Video:
+4\. Watch the Introduction to Stata Video:
 
 <iframe title="Introduction Posit Cloud Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/5eJ5sdKKi9c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
