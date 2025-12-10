@@ -14,6 +14,8 @@ It is designed to be used as a flipped university course.
   <i class="fa fa-download fa-fw"></i> Setup</a>
 : <a href="{{ site.baseurl }}/assignments">
   <i class="fa fa-check-square fa-fw"></i> Assignments</a>
+: <a href="{{ site.baseurl}}/materials/house-style">
+  <i class="fa fa-file-text-o fa-fw"></i> Coding Style Guide</a>
 : <a href="{{ site.baseurl }}/materials/turn-in-checklist">
   <i class="fa fa-check-square fa-fw"></i> Assignment Submission Checklist</a>
 : <a href="{{ site.baseurl}}/materials/datasets">
