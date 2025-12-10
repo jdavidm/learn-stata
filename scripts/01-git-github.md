@@ -99,12 +99,11 @@ Right next to the repo dropdown is the current branch. I’m going to switch to 
 
 * Fetch / Push
 
-The Fetch origin button is how you tell Github Desktop to check with GitHub online to see if there are any changes to the repo that you don’t have yet. Once
-
-Push origin: sends your local commits up to GitHub.
+The Fetch origin button is how you tell Github Desktop to check with GitHub online to see if there are any changes to the repo that you don’t have yet. Once you make a commit, the Fetch button will change to a Push origin button. This sends your local commits up to GitHub. 
 
 If the branch is new, you may see Publish branch instead of Push. That uploads your branch to GitHub for the first time.
 
+* Simple example
 
 Now let’s make a change so you can see how Git tracks it.
 
@@ -131,6 +130,8 @@ You’ll see that GitHub Desktop has detected that I changed a file. The file ap
 
 The History tab shows past commits with messages, dates, and who made them. This is the entire history of every change I made - and committed to - on this repository. This is Git’s “time machine” that allows me to go back to any point in time to see what I was doing. And, if necessary, I can revert to that version of the code. With Git, nothing is ever lost as long as you make commits.
 
+* Center pane (diff)
+
 [On screen: Click the changed file in the Changes list.]
 
 When you click on a file in the Changes list, the center shows the changes you've made. Removed lines are highlighted in red and added lines are highlighted in green.
@@ -138,7 +139,6 @@ When you click on a file in the Changes list, the center shows the changes you'v
 [On screen: Point with the mouse to the newly added line in the diff.]
 
 This shows exactly what your are changing relative to your most recent commit.
-
 
 * Bottom left: Commit box
 
@@ -150,43 +150,39 @@ The button below (e.g., “Commit to <your-branch>”) creates the commit.
 
 5. Making a commit (with a good summary)
 
-Let’s commit the change we just made.
+Let’s commit to the change we just made.
 
 In the Summary box, you should always write something short but meaningful.
 
-Bad summary: “stuff” or “changes”
-Better summary: “Add note to GitHub demo file”
+A bad summary is “stuff” or “changes”. A better summary is “Add note to GitHub demo file”
 
 [On screen: Click in the Summary box and type:
-“Add note to GitHub demo file”
-Optionally type a sentence in the Description box.]
+“Add note to GitHub demo file”.]
 
 Once that looks good, I’ll click the commit button.
 
 [On screen: Click “Commit to <your-branch>”.]
 
-Notice that:
-
-The file disappears from the Changes list, because there are no uncommitted changes now.
-
-If I click over to History, I can see the new commit with my summary.
+Notice that the file disappears from the Changes list, because there are no uncommitted changes now.
 
 [On screen: Click the History tab and point at the new commit.]
+
+If I click over to History, I can see the new commit with my summary.
 
 That commit is now saved locally on my computer using Git.
 
 6. Pushing the commit and seeing it on GitHub
 
 Right now, Git knows about the change on my machine, but GitHub doesn’t.
-To share it with GitHub, I need to push.
+To share it with GitHub, I need to push my commits.
 
 [On screen: Switch back to the Changes tab if needed, then move the mouse to the top right.]
 
-At the top right, I’ll click:
+At the top right, you'll notice Fetch has changed to Push origin.
 
 [On screen: Click “Push origin” (or “Publish branch” if it’s the first time).]
 
-That sends my new commit from my computer up to the remote repo on GitHub.
+ I’ll click on that, which sends my new commit from my computer up to the remote repo on GitHub.
 
 Now let’s see it on the GitHub website.
 
@@ -200,11 +196,7 @@ Make sure I’m on my branch, not main.
 
 [On screen: Navigate through the folders to the file you edited and click it to open.]
 
-You can see that:
-
-I’m on my branch.
-
-The file we edited now includes the new text.
+You can see that the file I edited now includes the new text.
 
 [On screen: Click on the “History” for that file or the repository’s “Commits” view, and point at the most recent commit.]
 
@@ -220,12 +212,10 @@ And GitHub Desktop is the tool we use to bridge between the two without having t
 
 That’s the basic GitHub Desktop workflow we’ll use all semester:
 
-Make changes in your files
+[On screen: Go back to Desktop.]
 
-Check them in GitHub Desktop (Changes pane + diff)
+Ensure you are on the correct repo and branch. Fetch any changes that might be on Github but not on your machine. 
 
-Write a clear commit summary and commit
-
-Push to GitHub so it’s saved and shared
+Make changes in your files. Check them in GitHub Desktop. Write a clear commit summary and commit to those changes. And finally, push the commit to GitHub so it’s saved and shared.
 
 We’ll build on this as we go, but if you can do these steps, you’ve got the core Git/GitHub skills you need for this course.
