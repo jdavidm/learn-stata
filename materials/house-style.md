@@ -32,9 +32,9 @@ Every `.do` file that you turn in must have a preamble that contains the followi
 After the preamble, if the assignment uses data, define the paths using relative pathways. Then open a log file. The name of log files should correspond with the name of the `.do` file.
 
 ```stata
-********************************************************************************
+**********************************************************************
 **# 0 - setup
-********************************************************************************
+**********************************************************************
 
 * define paths
 	global	root 	"$data/assignments/data"
@@ -48,9 +48,9 @@ After the preamble, if the assignment uses data, define the paths using relative
 Exercises and sub-exercises should be labelled with bookmarks in the following style, with stars above and below that extend to the right-hand-side page break in the `.do` file.
 
 ```stata
-********************************************************************************
+**********************************************************************
 **# exercise 1
-********************************************************************************
+**********************************************************************
 
 **## 1.1
 ```
@@ -87,9 +87,9 @@ Finally, the code should be documented and aligned using tabs. Long lines of cod
 Finally, each `.do` file should close with the same end matter.
 
 ```stata
-********************************************************************************
+**********************************************************************
 **# 2 - end matter, clean up to save
-********************************************************************************
+**********************************************************************
 
 * prepare for export
 	qui:            compress
