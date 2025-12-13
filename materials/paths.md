@@ -1,23 +1,26 @@
 ---
 layout: page
 element: notes
-title: Paths
-language: R
+title: Pathways
+language: Stata
 ---
 
-### (optional) If Using Posit Cloud
-
-* So far in this course we've been using Posit Cloud and placing data files where R knows to find them for you
-* Working with data files on your own computer is a little more complicated
+* So far in this course we've been
+    * Creating data right in the Stata window: `gen`
+    * Downloading data from the internet directly into Stata: `sysuse`
+    * Opening data files where Stata knows to find them: `use`
+* Inputing and outputting data files on your own computer is not much more complicated, as long as you are working with a small  number of files for a single project
+* Things become more complicated when we have many files to clean, combine, and analyze
+* Things become much more complicated when we want to share data and code with others
 * But in this lesson we'll learn how to do this effectively
 
 ### Introduction to Paths
 
-* To use data stored on a computer we need to tell R where it is
+* To use data stored on a computer we need to tell Stata where it is
 * This is done using paths
 * This is a description of the directories where our files are stored
 * Let's go to the course website and download some data
-* https://datacarpentry.org/semester-biology/materials/datasets
+* [https://https://jdavidm.github.io/learn-stata/materials/datasets]({{ site.baseurl }}/materials/datasets)
 * This page contains all of the data we use in class
 * Download Shrub Dimensions data
 * If we click on this link it will download, but where did it download to

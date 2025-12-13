@@ -1,8 +1,8 @@
 ---
 layout: page
 element: notes
-title: Basic Reproducibility
-language: R
+title: Setting up your Development Environment
+language: Stata
 ---
 
 ### Setup
