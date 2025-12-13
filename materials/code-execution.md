@@ -13,10 +13,12 @@ language: Stata
 * Write code to calculate GDP growth from GDP in 2025 and 2024
 
 ```stata
-gen gdp_d = gdp_25 - gdp_24 / gdp_24
-gen gdp_24 = 12.9
-gen gdp_25 = 13.5
-display gdp_d
+    clear           all
+    set obs         1
+    gen             gdp_d = gdp_25 - gdp_24 / gdp_24
+    gen             gdp_24 = 12.9
+    gen             gdp_25 = 13.5
+    display         gdp_d
 ```
 
 * Returns an error because neither `gdp_24` or `gdp_25` exists yet
@@ -29,10 +31,12 @@ display gdp_d
 * Rearrange the code so that all variables are created before they are used
 
 ```stata
-gen gdp_24 = 12.9
-gen gdp_25 = 13.5
-gen gdp_d = gdp_25 - gdp_24 / gdp_24
-display gdp_d
+    clear           all
+    set obs         1
+    gen             gdp_24 = 12.9
+    gen             gdp_25 = 13.5
+    gen             gdp_d = gdp_25 - gdp_24 / gdp_24
+    display         gdp_d
 ```
 
 * This executes in the following sequence
@@ -46,11 +50,24 @@ display gdp_d
 * It assigns the resulting scalar to the variable `gdp_d`
 * The fourth line first looks up the variable `gdp_d` and then prints its value on the screen
 
-### Code executes inside to outside
+### Operator Precedence in Expressions
 
 * The above code will execute but it will give the wrong answer
-* That is because code executes right to left and from the inside out
-* For mathmatical operations, execution follows the order of operations
+* That is because code executes following Stata's order of operations (similar to the order of operations in math: PEMDAS)
+* Within a single command that involves a complex expression (e.g., in a `gen` or `replace` command), Stata follows the following order (from first to last): 
+    * `!` (or `~`): Logical NOT
+    * `^`: Exponentiation
+    * `-`: Negation
+    * `/`, `*`: Division, Multiplication
+    `-`, `+`: Subtraction, Addition
+    * `!=` (or `~=`), `>`, `<`, `<=`, `>=`, `==`: Relational operators (not equal, greater than, etc.)
+    * `&`: Logical AND
+   `|`: Logical OR 
+* Like in PEMDAS, parentheses can be used to override this default order and force specific parts of an expression to be evaluated first. 
+* Stata processes the entire dataset for a single command, then moves to the next command. This is different from some other statistical software, where a command is executed for one observation before moving to the next.
+
+### Our Exampls
+
 * The sequence of execution for the third line is
     * Look up the variable `gdp_25` and replaces it with its value
     * Look up the the variable `gdp_24` and replaces it with its value
@@ -65,10 +82,12 @@ display gdp_d
 * If you get an unwanted or unexpected result, the problem is with your directions NOT with how the program executed your directions
 
 ```stata
-gen gdp_24 = 12.9
-gen gdp_25 = 13.5
-gen gdp_d = (gdp_25 - gdp_24) / gdp_24
-display gdp_d
+    clear           all
+    set obs         1
+    gen             gdp_24 = 12.9
+    gen             gdp_25 = 13.5
+    gen             gdp_d = (gdp_25 - gdp_24) / gdp_24
+    display         gdp_d
 ```
 
 * One needs to take care in how you order actions to the right of the equal sign

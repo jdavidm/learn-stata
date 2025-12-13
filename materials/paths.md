@@ -20,22 +20,22 @@ language: Stata
 * This is done using paths
 * This is a description of the directories where our files are stored
 * Let's go to the course website and download some data
-* [https://https://jdavidm.github.io/learn-stata/materials/datasets]({{ site.baseurl }}/materials/datasets)
+* [https://jdavidm.github.io/learn-stata/materials/datasets]({{ site.baseurl }}/materials/datasets)
 * This page contains all of the data we use in class
-* Download Shrub Dimensions data
+* Download `eth_allrounds_final.dta` data
 * If we click on this link it will download, but where did it download to
 * Click on the arrow to 'Show in Folder'
 * The details will look different depending on the operating system
 * But, generally, across the top you'll see the folder that things are stored in
 
-* Go back to RStudio
+* Go back to Stata
 * If we try to load this data just using it's filename it won't work
 
-```r
-data = read_csv("shrub-dimensions-labeled.csv")
+```stata
+    use         "eth_allrounds_final.dta", clear
 ```
 
-* Returns the error "Cannot open file", "No such file or directory"
+* Returns the error `r(601)`, "file eth_allrounds_final.dta not found"
 * That's because it can't find the file where we've tried to load it from
 
 
@@ -47,16 +47,16 @@ data = read_csv("shrub-dimensions-labeled.csv")
 * On mac and Linux it is `/home/username`
 * Within that is the `Downloads` directory
 
-```r
-# OSX/Linux
-data = read_csv('/home/ethan/Downloads/shrub-dimensions-labeled.csv')
+```stata
+* osx/linux
+    use             "/home/jdmichler/Downloads/eth_allrounds_final.dta", clear
 ```
 
 * On Windows change `home` to `Users`
 
-```r
-# Windows
-data = read_csv('/Users/ethan/Downloads/shrub-dimensions-labeled.csv')
+```stata
+* windows
+    use             "C:/Users/jdmichler/Downloads/eth_allrounds_final.dta", clear
 ```
 
 * This successfully loads the data because we've told it exactly where the file is
@@ -68,80 +68,78 @@ data = read_csv('/Users/ethan/Downloads/shrub-dimensions-labeled.csv')
 * Paths can also be relative
 * Do this by not including a starting `/`
 
-```r
-'Downloads/shrub-dimensions-labeled.csv'
+```stata
+* windows
+    use             "Downloads/eth_allrounds_final.dta", clear
 ```
 
-* "From where I am the shrub-dimensions file is in the Downloads subdirectory"
-* The absolute & relative paths here are the same if R thinks it's in `/home/ethan/`
+* "From where I am the Ethiopia file is in the Downloads subdirectory"
+* The absolute & relative paths here are the same if Stata thinks it's in `C:/Users/jdmichler/`
 
 ### Find out where you are
 
-* To find out where R is use `getwd()`
+* To find out where Stata is use `cd`
 
-```r
-getwd()
+```stata
+* define working directory
+    pwd
 ```
 
-* "get working directory"
+* "print working directory"
 * The "working directory" is where the program starts from
 
 ### Loading data
 
 * For data in the working directory just use the file name
 
-```r
-shrub_data <- read_csv('shrub-dimensions-labeled.csv')
+```stata
+* windows
+    use             "eth_allrounds_final.dta", clear
 ```
 
 * This is a relative path, because the file is in the working directory the only remaining piece is the name
 
-* One way to ensure that a file is in the working directory is to download it using `download.file()`
+* One way to ensure that a file is in the working directory is to, when given the chance, select the working directory as the place to download to
+* In contemporary browsers, you are often not given this option because the OS has set the "Download" directory as the default
+    * In this case you need to copy the file from "Download" and move it to the working directory
 
 * For data not in the working directory there are two options
-    * tell R where it is
+    * tell Stata where it is
     * change the working directory to where it is
 * Changing the working directory is common
-    * Who here uses `setwd` regularly?
-    * Does that ever cause any issues?
-        * Working on a different computer?
-        * Working with someone else's files?
-* In general, using `setwd` means that your code will only work on a single computer
+    * But this cause issues if we want to achieve reproducability
+        * Working directory is different on a different computer
+        * Someone else's code files sets a different working directory
+* In general, using `cd` means that your code will only work on a single computer
 * That's bad, so we want to have the working directory set automatically and use relative paths
 
 ### Projects
 
-* The simplest way to do this is using RStudio Projects
-
-* (Posit Cloud) In fact we've already been using them
-* (Posit Cloud) Every time you click on an assignment or click `New Project` this creates a new project
+* The simplest way to do this is using Stata Projects in combination with a `project.do` file
 
 * Each project is a self-contained unit of work in a folder/directory
 * Treat all locations as relative to that directory
-* To do this in regular RStudio we use projects
-* `File` -> `New Project` -> `New Directory` -> `New Project` -> datacarp
-* Or use `Existing Directory` to choose an existing directory
-* Creates .Rproj file
+* Can set-up the `project.do` file so that it sets the working directory automatically based on what computer it is on
+
+#### Stata Projects
+
+* To create a Stata Projectin Stata
+* Click the "new do file editor" button (little notepad with pencil)
+* `File` -> `New` -> `Project` -> learn-stata (or whatever you want to call the Stata Project for this class)
+* Save the Stata Project in the Git repo for this course: `semester26`
+* Creates a Stata Project `.strp` file
     * Isn’t project itself
     * Contains project info
-    * Don’t change manually
-* Then place your data files in the project directory (or a subdirectory)
-* *copy shrub-dimensions-labeled.csv to a /home/user/datacarp/*
 
-```r
-data = read_csv('shrub-dimensions-labeled.csv')
-```
+#### Keep Data and Code Segregated
 
-* It is common to store data in a subdirectory
-* `New Folder` -> data -> `OK`
-* `File checkbox` -> `More` -> `Move` -> data
+* In most coding classes, the next step would be to put the data in the same directory as the project file
+* This is simple, because then data and code all live in the same location on your computer
+* **BUT...**
+* A cardinal rule is that **data is inviolable**
 
-```r
-data = read_csv('data/shrub-dimensions-labeled.csv')
-```
+#### `project.do` Files
 
-* Can switch between projects using `File` -> `Recent Projects` or `Open Project`
-* Keeps track of the state of RStudio when you last worked with that project
 
 ### Sharing code
 

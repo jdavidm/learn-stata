@@ -5,14 +5,10 @@ title: Setting up your Development Environment
 language: Stata
 ---
 
-### Setup
+### Introduction to Development Environments
 
-> Make sure that `Tools` -> `Global Options` -> `General` ->
-> `Save workspace to ~/.RData on exit` is set to the default `Ask`
-
-### Introduction to Reproducibility
-
-* Goal - rerun full analysis with a single click (or command)
+* Goal - fully reproducible cleaning and analysis
+* Code should be able to rerun full analysis with a single click (or command)
 * First step - Make sure your code runs anytime and anywhere
   * next day (who has gotten code working & had it not work the next day?)
 	* desktop vs. laptop
