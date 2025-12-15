@@ -3,7 +3,7 @@ layout: page
 title: House Style
 ---
 
-When writing code, ensure you use **headings** and **subheadings**, **bookmarks**, **documentation**, **tabs**, and **comments** in a way that is consistent with template .do files.
+When writing code, ensure you use **headings** and **subheadings**, **bookmarks**, **documentation**, **tabs**, and **comments** in a way that is consistent with template .do files. Every assignment must also create a `.log` file that records your work.
 
 * Headings open large sections of code and are numbered. For assignments, headings should correspond with an exercise. Headings are bookmarked with `**# 1`. Subheadings are numbered following the heading but with a decimal point followed by a number. For assignments, subheadings should correspond with a sub-questions within an exercise. Subheadings are bookmarketed at one level down with `**## 1.1`.
 
@@ -103,3 +103,19 @@ Finally, each `.do` file should close with the same end matter.
 ```
 
 Code not following the house style will be returned un-graded. Students will then have a chance to re-submit the assignment in the correct style. If assignments are re-submitted the same day, they will be graded without penalty. If they are submitted late, the earned grade will be reduced 10%. If the assignment is never re-submitted, it will be graded a 0.
+
+## Creating and closing log files
+
+In addition to the house style, students will need to use `.log` files to track there work. At the top of every assignment, after the preamble, open a `.log` file.
+
+```stata
+* open log
+	cap log 		close
+	log using		"$logout/assignment_1", append
+```
+
+Here, `cap log close` ensures any open `.log` files are closed before openning a new one. The `$logout` is a global referring to the relative path where you saving your `.log` files. And `append` ensures you keep adding to the `.log` file instead of overwriting the file.
+
+A `.log` file for each assignment does not need to be submitted with your assignment. It is there for two reasons.
+1. For your own record to help you reconstruct the past if you make a mistake
+2. In case there is a concern about plagarism or inappropriate use of generative AI, the `.log` file provides evidence that you wrote the code.

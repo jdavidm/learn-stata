@@ -26,12 +26,32 @@ Every `.do` file that you turn in must have a preamble that contains the followi
 * Stata v.19.5
 ```
 
-After the preamble, exercises and sub-exercises should be labelled with bookmarks in the following style
+Exercises and sub-exercises should be labelled with bookmarks in the following style
 
 ```stata
 **# exercise 1
 
 **## 1.1
+```
+
+### Make sure you have a log file of your work
+
+After the preamble, open a `.log` file to track your work.
+
+```stata
+* open log
+	cap log 		close
+	log using		"$logout/assignment_1", append
+```
+
+Here, `cap log close` ensures any open `.log` files are closed before openning a new one. The `$logout` is a global referring to the relative path where you saving your `.log` files. And `append` ensures you keep adding to the `.log` file instead of overwriting the file. Make sure to close the `.log` file at the end of the assignment and clarify that the assignment is complete using `/* END */`.
+
+```stata
+
+* close the log
+	log	close
+
+/* END */		
 ```
 
 ### Make sure your code matches the provided answers
