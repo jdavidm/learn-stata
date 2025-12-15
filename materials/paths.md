@@ -116,33 +116,37 @@ language: Stata
 ### Projects
 
 * The simplest way to do this is using Stata Projects in combination with a `project.do` file
-
 * Each project is a self-contained unit of work in a folder/directory
 * Treat all locations as relative to that directory
 * Can set-up the `project.do` file so that it sets the working directory automatically based on what computer it is on
 
 #### Stata Projects
 
-* To create a Stata Projectin Stata
+* To create a Stata Project in Stata
 * Click the "new do file editor" button (little notepad with pencil)
 * `File` -> `New` -> `Project` -> learn-stata (or whatever you want to call the Stata Project for this class)
 * Save the Stata Project in the Git repo for this course: `semester26`
 * Creates a Stata Project `.strp` file
     * Isn’t project itself
     * Contains project info
+* At the moment, there is nothing in our project folder
+* In the next lecture we will start putting files into the project
+
+* For now, let's walk through the different windows in a Stata Project
+
+![Stata Project windows]({{ site.baseurl }}/images/stata-project.png)
 
 #### Keep Data and Code Segregated
 
 * In most coding classes, the next step would be to put the data in the same directory as the project file
 * This is simple, because then data and code all live in the same location on your computer
 * **BUT...**
-* A cardinal rule is that **data is inviolable**
-
-#### `project.do` Files
-
+* A cardinal rule of creating a reproducible workflow is that **data is immutable**
+* **Do not ever edit your raw data**
+* Because of this, I highly encourage you to keep data and code in separate locations on your machine and in the cloud
 
 ### Sharing code
 
 * This idea of projects as folders is also important for how we share code
-* Version control, which we'll have the opportunity to learn about later, works with the projects as folders structure
+* Version control works with the projects as folders structure
 * We can also zip a the project folder and send it to someone else and they can work with it
