@@ -50,7 +50,7 @@ language: Stata
 * It assigns the resulting scalar to the variable `gdp_d`
 * The fourth line first looks up the variable `gdp_d` and then prints its value on the screen
 
-### Operator Precedence in Expressions
+### Operator precedence in expressions
 
 * The above code will execute but it will give the wrong answer
 * That is because code executes following Stata's order of operations (similar to the order of operations in math: PEMDAS)
@@ -66,7 +66,7 @@ language: Stata
 * Like in PEMDAS, parentheses can be used to override this default order and force specific parts of an expression to be evaluated first. 
 * Stata processes the entire dataset for a single command, then moves to the next command. This is different from some other statistical software, where a command is executed for one observation before moving to the next.
 
-### Our Exampls
+### Our example
 
 * The sequence of execution for the third line is
     * Look up the variable `gdp_25` and replaces it with its value

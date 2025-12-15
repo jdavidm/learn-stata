@@ -1,11 +1,11 @@
 ---
 layout: page
 element: notes
-title: Setting up your Development Environment
+title: Setting Up Your Development Environment
 language: Stata
 ---
 
-### Introduction to Development Environments
+### Introduction to development environments
 
 * Goal - fully reproducible cleaning and analysis
 * Code should be able to rerun full analysis with a single click (or command)

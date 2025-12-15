@@ -14,7 +14,7 @@ language: Stata
 * Things become much more complicated when we want to share data and code with others
 * But in this lesson we'll learn how to do this effectively
 
-### Introduction to Paths
+### Introduction to paths
 
 * To use data stored on a computer we need to tell Stata where it is
 * This is done using paths
@@ -120,7 +120,7 @@ language: Stata
 * Treat all locations as relative to that directory
 * Can set-up the `project.do` file so that it sets the working directory automatically based on what computer it is on
 
-#### Stata Projects
+### Stata Projects
 
 * To create a Stata Project in Stata
 * Click the "new do file editor" button (little notepad with pencil)
@@ -136,7 +136,23 @@ language: Stata
 
 ![Stata Project windows]({{ site.baseurl }}/images/stata_project.png)
 
-#### Keep Data and Code Segregated
+* On the left is the Project Window
+    * Lists all the folders and files in the project
+    * Like file explorer or finder in Windows or Mac
+* In the center is the `.do` file editor
+    * Where you write and execute your code
+    * Can open multiple tabs
+    * Can drag files for split screen views
+* On the top right is the Navigator Window
+    * Shows the bookmarks in a `.do` file
+    * Assuming you use bookmarks (per the style guide)
+    * Allows for quick jumping from section to section
+* On the bottom right is the Properties Window
+    * Shows info about the current `.do` file
+    * Displays both the relative path
+    * And the absolute path
+
+### Keep data and dode segregated
 
 * In most coding classes, the next step would be to put the data in the same directory as the project file
 * This is simple, because then data and code all live in the same location on your computer

@@ -1,0 +1,25 @@
+---
+layout: page
+element: assignment
+title: Effectively Using Stata
+language: Stata
+exercises: ['Load or Download File', 'Create Project Do', 'Format the Code', 'Basic If Statements', 'Code Shuffle', 'Check That Your Code Runs', 'Challenge 2']
+points: [10, 40, 10, 10, 10, 10, 10, Challenge - optional]
+---
+
+### Learning Objectives
+
+> Following this assignment students should be able to:
+>
+> - Load data from various locations
+> - Create a reproducicble development environment
+> - Construct relative paths
+> - Apply house style 
+> - Employ Stata's order of operations
+> - Revise and reformat code
+
+{% include reading.html %}
+
+{% include assignment.html %}
+
+{% include solution.html %}
