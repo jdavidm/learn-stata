@@ -49,14 +49,14 @@ language: Stata
 
 ```stata
 * osx/linux
-    use             "/home/jdmichler/Downloads/eth_allrounds_final.dta", clear
+    use     "/home/jdmichler/Downloads/eth_allrounds_final.dta", clear
 ```
 
 * On Windows change `home` to `Users`
 
 ```stata
 * windows
-    use             "C:/Users/jdmichler/Downloads/eth_allrounds_final.dta", clear
+    use     "C:/Users/jdmichler/Downloads/eth_allrounds_final.dta", clear
 ```
 
 * This successfully loads the data because we've told it exactly where the file is
@@ -134,7 +134,7 @@ language: Stata
 
 * For now, let's walk through the different windows in a Stata Project
 
-![Stata Project windows]({{ site.baseurl }}/images/stata-project.png)
+![Stata Project windows]({{ site.baseurl }}/images/stata_project.png)
 
 #### Keep Data and Code Segregated
 
