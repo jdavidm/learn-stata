@@ -1,8 +1,8 @@
 ---
 layout: exercise
-topic: Making Choices
+topic: Expressions & Variables
 title: Basic If Statements
-language: R
+language: Stata
 ---
 
 1\. Complete (i.e., copy into your code and them modify) the following `if`

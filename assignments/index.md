@@ -6,7 +6,7 @@ title: Assignments
 ## Stata
 
 * [Introduction to Stata & Github](01-intro)
-* [Effectively Using Stata](02-effective)
+* [Effectively Using Stata](02-using-stata)
 * [Data Management](03-datamgmt)
 * [Describing Variables](04-data)
 * [Describing Relationships](05-datarlt)

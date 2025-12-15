@@ -126,7 +126,9 @@ Because the goal is practice, exercises in assignments will be graded as follows
 * Attempts to solve the problem and makes some progress using the core concept, but does not produce approximately the correct answer or demonstrate basic comfort with the core concept: 50%
 * Not submitted or no meaningful effort demonstrated: 0%
 
-Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on many assignments there are optional *Challenge* exercises that are both more difficult and require integrating all of the weeks material. Students who are already familiar with the basics may choose to submit *Challenge* exercises in place of regular exercises if they wish. One *Challenge* exercise counts for two regular exercises. Alternatively *Challenge* exercises can be completed in addition to all regular exercises for up to 10 pts of extra credit. You will need to indicate via a tag in Github if you are substituting *Challenge* exercises.
+Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on each assignment there are *Challenge* exercises that are both more difficult and require integrating all of the weeks material.
+* Undergraduate students who are already familiar with the basics may choose to submit *Challenge* exercises in addition to regular exercises for up to 10 pts of extra credit. One *Challenge* exercise counts for two regular exercises. If you are an undergraduate, you will need to indicate via a tag in Github if you are submitting *Challenge* exercises.
+* Graduate students must complete *Challenge* exercises as part of their homework. For graduate students, *Challenge* exercises do not count as extra credit but are part of the overall point total on each graded assignment.
 
 *Undergraduate Point Total*
 
