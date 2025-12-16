@@ -24,31 +24,76 @@ language: Stata
 
 ### Clearing environments and restarting R
 
-* Clear R environment using the broom icon on the `Environment` tab.
-  * Doesn't unload packages
-  * Useful when developing code
-* Restart R to get a clean environment
-  * Unloads packages
-  * But won't clear environment by default (at least not on Posit Cloud)
-* Safest thing is to both clear the environment and restart R
-* Then run the entire file using `Source with Echo` button or `Ctrl-Shift-S`
+* Clear Stata using `clear`.
+  * Removes data from memory
+  * Doesn't unload packages or erase globals
+  * Necessary every time you load a new data set
+* Restart Stata or use `clear all` to get a clean environment
+  * Removes data
+  * Unloads packages and erases globals
+  * Drops all results, closes all windows (graphs)
+* Safest thing is to restart Stata
+* Then run your `project.do` file to set up a new development environment
+* Then run your code - ideally from the `project.do`
 * Ensures that the code runs fully and produces desired result
 * Last required exercise of every assignment will walk you through this process
 
-### Stop R from storing the state of the environment
+### Creating a `project.do` file
 
-* When you close RStudio it will often ask if you want to save your workspace
-* *Start to close RStudio*
-* *Show Save dialog*
-* Or on Posit Cloud it will just do this automatically
-* If you do this is will get reloaded when you start R, even when you restart it
-  as described above
-* Stop this by `Tools` -> `Global Options` -> `General` ->
-  `Save workspace to ~/.RData on exit` -> `Never`
-* Unclick `Restore .RData into workspace at startup`
+* For those who use R, the Stata Project is equivalent to an R Studio Project
+* If
+  * We kept all data and code in the same directory as the Stata Project
+  * Only used relative paths
+  * Then we'd be 80% of the way to setting up our dev enviro
+* But we don't keep data and code together
+* And there is still that 20% of set-up remaining
 
-* Only reason not to do this is to if you are performing long running calculations as one step in a process
-* Better solution is to save the results of those calculations and then reload them when needed
+* To completely set-up the dev enviro in a way that is fully reproducible
+* Will create a `proect.do` file that
+  * Sets the version of Stata that the code works on
+  * Determines what computer it is running on
+  * Sets directories for data and code
+  * Loads any necessary user written programs
+  * Sets any preferences we might want
+  * Ideally runs all code for the project
+* It is important to define which version of Stata the code works on because
+  * Different versions have different capabilities and commands
+  * User written packages only work on specific versions
+* If the goal is reproducibility, one needs to tell a user what version of the software they need to ensure that the code works
+
+  * Now we're going to start writing the `project.do` file
+
+> Do [Exercise 5.1 & 5.2 - Create Project Do]({{ site.baseurl }}/exercises/02-create-project/)
+
+### Macros
+
+* A key concept in computer coding is the idea of a `macro`
+* A `macro` is a string of characters, called the `macroname`, that stands for another string of characters, called the `macro contents`.
+* Macros can be
+  * Expressions like `2 + 2`
+  * Functions like `c(username)`
+  * Programs (more on these later in the course)
+* Stata has two types of macros
+  * `global` - a public macro available to all programs whose value remains constant throughout a Stata session until it's value is expliccitly changed
+  * `local` - a private macro available only to the program using the macro and whose value cannot be modified
+* Essentially, a `global` sticks in Stata's memory and can be used and referenced throught a Stata session while a `local` is immediately forgotten by Stata and thus only retains its value when you run the code block that contains the `local`
+
+* We assign values to `global` and `local` macros in the same way
+
+```stata
+  global    globalmacroname   globalmacrocontent
+  local     localmacroname    localmacrocontent
+  ```
+
+  * But we reference or call these macros in very different ways
+
+  ```stata
+  $globalmacroname
+  `localmacroname'
+```
+
+> Do [Exercise 5.3 & 5.4 - Create Project Do]({{ site.baseurl }}/exercises/02-create-project/)
+
 
 ### Make sure code works on other computers
 

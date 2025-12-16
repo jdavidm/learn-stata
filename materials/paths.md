@@ -78,7 +78,7 @@ language: Stata
 
 ### Find out where you are
 
-* To find out where Stata is use `cd`
+* To find out where Stata is use `pwd`
 
 ```stata
 * define working directory
@@ -122,6 +122,7 @@ language: Stata
 
 ### Stata Projects
 
+* Equivalent to an R Studio Project
 * To create a Stata Project in Stata
 * Click the "new do file editor" button (little notepad with pencil)
 * `File` -> `New` -> `Project` -> learn-stata (or whatever you want to call the Stata Project for this class)

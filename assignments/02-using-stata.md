@@ -3,8 +3,8 @@ layout: page
 element: assignment
 title: Effectively Using Stata
 language: Stata
-exercises: ['Load or Download File', 'Create Project Do', 'Format the Code', 'Basic If Statements', 'Code Shuffle', 'Check That Your Code Runs', 'Challenge 2']
-points: [10, 40, 10, 10, 10, 10, 10, Challenge - 20]
+exercises: ['Load or Download File', 'Format the Code', 'Basic If Statements', 'Code Shuffle', 'Create Project Do', 'Check That Your Code Runs', 'Challenge 2']
+points: [10, 10, 10, 10, 10, 40, 10, Challenge - 20]
 ---
 
 ### Learning Objectives
