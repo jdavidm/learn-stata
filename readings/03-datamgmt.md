@@ -7,7 +7,7 @@ language: Stata
 
 ### Topics
 
-* Data storage
+* Types of data
 * Importing data
 * labeling data
 * Creating and manipulating data
