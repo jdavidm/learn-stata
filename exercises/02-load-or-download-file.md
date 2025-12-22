@@ -5,23 +5,12 @@ title: Load or Download File
 language: Stata
 ---
 
-With large data files it can be useful to only download the file if it hasn't
-already been downloaded. One way to do this is to check if the file name exists
-in your working directory. If it does then load it, if not then download it. You
-can use the `list.files()` function to get a list of files and directories in the
-working directory and the `download.file(url, filename)` function to download
-the file at a `url` to a specific `filename`.
+There are a number of different ways to get data into Stata. And Stata can handle a number of different file formats. The way to load data into Stata requires answering several different questions.
+1. Is the data remote (in the cloud) or local (on your machine)?
+2. If the data is local, what is its location relative to your working directory?
+3. What is the file format of the data?
+Knowing the answer to these questions will tell you which of the many ways you will want to load data into Stata.
 
-1. Write a conditional statement that checks if `surveys.csv` exists in the
-   working directory, if it doesn't then downloads it from
-   <https://ndownloader.figshare.com/files/2292172> using `download.file()`, and finally
-   loads the file into a data frame and displays the first few rows using the `head()`
-   function. The url needs to be in quotes since it is character data.
+1. Stata has a number of different example data sets that you can download from online. Download `cancer.dta` using the `sysuse` command. Then `describe` the data.
 
-2. Make a version of this conditional statement that is a function, where the
-   name of the file is the first argument and the link for downloading the file
-   is the second argument. The function should return the resulting data frame.
-   Add some documentation to the top of the function describing what it does.
-   Call this function using "species.csv" as the file name and
-   <https://ndownloader.figshare.com/files/3299483> as the link. Print the first
-   few rows of the resulting data frame using `head()`.
+2. You can also load data into Stata directly from a website. If the data is in Stata's `.dta` format, you can use the standard Stata commands for loading data, just give it the absolute pathway to the location of the data on the internet. Install data from `https://haghish.github.io/github/langlist.dta` and then `describe` the data.

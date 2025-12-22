@@ -8,7 +8,6 @@ language: Stata
 ### Topics
 
 * Project directory
-* Log files
 * Relative paths
 * Format
 * Style

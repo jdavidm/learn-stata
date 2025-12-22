@@ -1,0 +1,40 @@
+[1] Contains data from C:\Program Files\StataNow19\ado\base/c/cancer.dta
+     Observations:            48                  Patient survival in drug trial
+        Variables:             8                  3 Mar 2024 16:09
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Variable      Storage   Display    Value
+        name         type    format    label      Variable label
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    studytime       byte    %8.0g                 Months to death or end of exp.
+    died            byte    %8.0g      diedlbl    Patient died
+    drug            byte    %8.0g      type       Drug type
+    age             byte    %8.0g                 Patient's age at start of exp.
+    _st             byte    %8.0g                 1 if record is to be used; 0 otherwise
+    _d              byte    %8.0g                 1 if failure; 0 if censored
+    _t              byte    %10.0g                Analysis time when record ends
+    _t0             byte    %10.0g                Analysis time when record begins
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Sorted by: 
+[2] Contains data from https://haghish.github.io/github/langlist.dta
+     Observations:            59                  
+        Variables:            14                  18 Dec 2018 11:09
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Variable      Storage   Display    Value
+        name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    address         str44   %44s                  
+    name            str43   %43s                  
+    installable     int     %8.0g                 
+    language        str12   %12s                  
+    star            int     %8.0g                   
+    fork            int     %8.0g                 
+    kb              long    %8.0g                 
+    watchers        int     %8.0g                 
+    description     str199  %199s                 
+    homepage        str73   %73s                  
+    created         double  %tc                   
+    updated         double  %tc                   
+    pushed          double  %tc                   
+    score           float   %9.0g                 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Sorted by: 
