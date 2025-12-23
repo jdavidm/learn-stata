@@ -5,29 +5,11 @@ title: Basic If Statements
 language: Stata
 ---
 
-1\. Complete (i.e., copy into your code and them modify) the following `if`
-   statement so that if `age_class` is equal to "sapling" it sets `y <- 10`.
+1\. Create a variable `y` that equals "1" if `price` is less than or equal to "4195". How many cars have a price less than "4195"?
 
-```r
-age_class = "sapling"
-if (){
-  
-}
-y
-```
+2\. Replace the value of `y` with a "3" if `price` is greater than or equal to "6342". How many cars have a price greater than "6342"?
 
-2\. Complete the following `if` statement so that if `age_class` is equal to
-   "sapling" it sets `y <- 10` and if `age_class` is equal to "seedling" it
-   sets `y <- 5`.
-
-```r
-age_class = "seedling"
-if (){
-  
-}
-y
-```
-
+3\. Replace the value of `y` with a "2" if `price` is greater than "4195" and less than "6342". How many cars have a price between "4195" and "6342"?
 3\. Complete the following `if` statement so that if `age_class` is equal to
    "sapling" it sets `y <- 10` and if `age_class` is equal to "seedling" it
    sets `y <- 5` and if `age_class` is something else then it sets the value of

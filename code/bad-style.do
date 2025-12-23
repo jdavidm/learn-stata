@@ -19,15 +19,19 @@
 ***********************************************************************
 
 * define
-	global				root	=	"C:/Users/jdmichler/git/semester26/data"
+	global				data	=	"C:/Users/jdmichler/git/semester26/data"
 	global				logout	=	"C:/Users/jdmichler/git/semester26/log"
 
 * open log
 	cap log 			close 
 	log using			"$logout/exercise_2_2", append
 	
+	
+***********************************************************************
+**# 1 - create graph
+***********************************************************************
 
-use	"$root/dietary_cleaned.dta", clear	
+use	"$data/dietary_cleaned.dta", clear	
 reshape wide cuml ss cuml_trt cuml_cnt, i(day_count) j(hh)
 gen	cuml_cnt = cuml_cnt5 
 gen	cuml_trt = cuml_trt18 
