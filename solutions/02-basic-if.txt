@@ -1,0 +1,38 @@
+[1]       y |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         19      100.00      100.00
+------------+-----------------------------------
+      Total |         19      100.00
+
+
+[2]       y |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         19       50.00       50.00
+          3 |         19       50.00      100.00
+------------+-----------------------------------
+      Total |         38      100.00
+
+
+[3]       y |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         19       25.68       25.68
+          2 |         36       48.65       74.32
+          3 |         19       25.68      100.00
+------------+-----------------------------------
+      Total |         74      100.00
+
+
+[4] When $pack == 1
+Setup mode: running installation/setup steps...
+
+When $pack != 1
+Run mode: skipping setup and continuing with the analysis.
+
+[5] When $pack == 1
+Setup mode: running installation/setup steps...
+
+When $pack == 2
+Update mode: updating ado files...
+
+When $pack != 1 | $pack != 2
+Run mode: skipping setup and continuing with the analysis.

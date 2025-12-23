@@ -10,20 +10,18 @@ language: Stata
 2\. Replace the value of `y` with a "3" if `price` is greater than or equal to "6342". How many cars have a price greater than "6342"?
 
 3\. Replace the value of `y` with a "2" if `price` is greater than "4195" and less than "6342". How many cars have a price between "4195" and "6342"?
-3\. Complete the following `if` statement so that if `age_class` is equal to
-   "sapling" it sets `y <- 10` and if `age_class` is equal to "seedling" it
-   sets `y <- 5` and if `age_class` is something else then it sets the value of
-   `y <- 0`.
 
-```r
-age_class = "adult"
-if (){
-  
-}
-y
+4\. Create a `global` called `pack` that equals "1". Then complete the code so that if `$pack == 1` the code prints "Setup mode: running installation/setup steps..." and if `$pack` doesn't equal "1" then the code prints "Run mode: skipping setup and continuing with the analysis." Set `$pack` to something other than "1" and run the code again.
+
+```stata
+	global   pack  1
+
+	if XXX == y {
+		
+	}
+	else {
+
+	}
 ```
 
-4\. Convert your `if`/`else if`/ `else` statement from (3) into a function that takes
-   `age_class` as an argument and returns `y`. Call this function 5 times, once
-   with each of the following values for `age_class`: "sapling", "seedling",
-   "adult", "mature", "established".
+5\. Update your code above by adding an `else if` statement that prints "Update mode: updating ado files..." if `$pack == 2`

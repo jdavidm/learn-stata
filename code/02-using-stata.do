@@ -114,35 +114,24 @@
 	tab				y
 	
 **## 3.4
-	drop			y
-	gen				y = .
-	if price <= 4195 {
-		{
-		replace			y = 1
-	}
-	else if	price >= 6342 {
-		replace			y = 3
+	global pack 	1 
+
+	if $pack == 1 {
+		display "Setup mode: running installation/setup steps..."
 	}
 	else {
-		replace			y = 2
+		display "Run mode: skipping setup and continuing with the analysis."
 	}
-	}
-	tab				y
-	
-	
-	
-	if "`adjust'" != "" {
-                    if "`adjust'" == "means" {
-                            ...
-                    }
-                    else if "`adjust'" == "medians" {
-                            ...
-                    }
-                    else {
-                            display as err /*
-                            */ "specify adjust(means) or adjust(medians)"
-                            exit 198
-                    }
-            }
 
+**## 3.5
+	if $pack == 1 {
+		display "Setup mode: running installation/setup steps..."
+	}
+	else if $pack == 2 {
+		display "Update mode: updating ado files..."
+	}
+	else {
+		display "Run mode: skipping setup and continuing with the analysis."
+	}
+	
 	
