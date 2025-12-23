@@ -134,4 +134,19 @@
 		display "Run mode: skipping setup and continuing with the analysis."
 	}
 	
+					
+********************************************************************************
+**# exercise 4
+********************************************************************************
+
+* load the data from the internet
+	import		delimited "https://datacarpentry.org/semester-biology/data/gainesville-precip.csv", clear
 	
+* create year variable
+	gen			year = _n
+	
+* generate variable that is the mean rainfall in each each
+	egen		mean_rain = rowmean(v*)
+	
+* create line graph of mean rainfall across years
+	twoway		(line mean_rain year)

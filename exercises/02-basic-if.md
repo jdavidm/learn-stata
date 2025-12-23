@@ -11,7 +11,7 @@ language: Stata
 
 3\. Replace the value of `y` with a "2" if `price` is greater than "4195" and less than "6342". How many cars have a price between "4195" and "6342"?
 
-4\. Create a `global` called `pack` that equals "1". Then complete the code so that if `$pack == 1` the code prints "Setup mode: running installation/setup steps..." and if `$pack` doesn't equal "1" then the code prints "Run mode: skipping setup and continuing with the analysis." Set `$pack` to something other than "1" and run the code again.
+4\. The code below creates a `global` called `pack` that equals "1". Complete the code so that if `$pack == 1` the code prints "Setup mode: running installation/setup steps..." and if `$pack` doesn't equal "1" then the code prints "Run mode: skipping setup and continuing with the analysis." Set `$pack` to something other than "1" and run the code again.
 
 ```stata
 	global   pack  1
