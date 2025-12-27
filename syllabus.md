@@ -134,19 +134,19 @@ Students also enter the class with different levels of experience. The goal of a
 
 | Activity            | Points  |
 | :---                | ---:    |
-| Coding assignments  | 750     |
-| Final exam          | 250     |
-| Total               | 1000    |
+| Coding assignments  | 1500    |
+| Final exam          | 500     |
+| Total               | 2000    |
 | :---                | ---:    |
 
 *Graduate Point Total*
 
 | Activity            | Points  |
 | :---                | ---:    |
-| Coding assignments  | 750     |
-| Final exam          | 250     |
-| Replication project | 250     |
-| Total               | 1250    |
+| Coding assignments  | 1800    |
+| Final exam          | 500     |
+| Replication project | 700     |
+| Total               | 3000    |
 | :---                | ---:    |
 
 ### Grading Scale: The grading scheme will be as follows (out of 100):

@@ -17,6 +17,7 @@ For this exercise we are going to create a `project.do` file that we will use on
 * edited by: jdm
 * Stata v.19.5
 ```
+
 2. Then type in a a bulletted list of what this file does and what it assumes that a user has on their computer. This part of the preamble isn't required for assignments, since what an assignment `.do` file does and assumes is pretty self explanatory. But when you start doing research, having a list of what a file does, assumes, and if the file is complete (`TO DO`) is very useful. It allows you (or your advisor) to quickly see what a file contains without reading through the code.
 
 ```stata
@@ -33,10 +34,9 @@ For this exercise we are going to create a `project.do` file that we will use on
 	* done
 ```
 
-3. Next, create the `0 - setup` section that comes after the preamble in every file that you write. Typically this is where we set our relative paths. But for the `project.do` file we are going to start by creating a `global` called `pack` (short for package) and we will set the value of this `global` to `0`. We will call this `global` later in the `project.do` file. After we create `pack` we want to specify which version of Stata the code runs on.
+3. Next, create the `0 - setup` section that comes after the preamble in every file that you write. Typically this is where we set our relative paths. But for the `project.do` file we are going to start by creating a `global` called `pack` (short for package) and we will set the value of `pack` to `0`. We will call this `global` later in the `project.do` file. After we create `pack` we want to specify which version of Stata the code runs on.
 
 ```stata
-
 ************************************************************************
 **# 0 - setup
 ************************************************************************
@@ -47,75 +47,34 @@ For this exercise we are going to create a `project.do` file that we will use on
 * Specify Stata version in use
     global          stataVersion 19.5
     version         $stataVersion
+```
 
+4. Now we will use a combination of `local` and `global` macros, along with a conditional `if` statement, to dynamically set the working directory.
+    * The `if` statement will define the global `code` and `data` as absolute paths, depending on which computer the code runs on
+    * The `c(username)` local checks to see what the computer's username is (`c(username)`)
+    * The global `code` is assigned a value that equals the absolute path on the machine `jdmichler` to the git repo where the code lives
+    * The global `data` is assigned a value that equals the absolute path on the machine `jdmichler` to the cloud-based storage system where the data lives
+    	* Since git syncs repos with the cloud, it is redundant to store code on a cloud-based storage system
+    	* This is not true for data, so make sure you save data to Dropbox, OneDrive, Google Drive, Box, or some other storage system that syncs or backs up to the cloud
+	* In addition to defining the globals `code` and `data` for your own machine, make sure you also define them for my office desktop (`jdmichler`) and my laptop (`jdmic`) as written below.
+		* This will allow me to run your code on my machine without changing any of your code.
 
+```stata
 ************************************************************************
 **## 0.1 - Create user specific paths
 ************************************************************************
 
-
 * Define root folder globals
     if `"`c(username)'"' == "jdmichler" {
-        global 		code  	"C:/Users/jdmichler/git/irri_strv"
-		global 		data	"C:/Users/jdmichler/dropbox/irri_strv/SPIA_RMS"
+        global 		code  	"C:/Users/jdmichler/git/semester26"
+		global 		data	"C:/Users/jdmichler/dropbox/teaching/aae_597/sester26/data"
     }
 
     if `"`c(username)'"' == "jdmic" {
-        global 		code  	"C:/Users/jdmic/git/irri_strv"
-		global 		data	"C:/Users/jdmic/dropbox/irri_strv/SPIA_RMS"
+        global 		code  	"C:/Users/jdmic/git/semester26"
+		global 		data	"C:/Users/jdmic/dropbox/teaching/aae_597/sester26/data"
     }
-
-
-************************************************************************
-**## 0.2 - Check if any required packages are installed:
-************************************************************************
-
-* install packages if global is set to 1
-if $pack == 1 {
-	
-	* for packages/commands, make a local containing any required packages
-    * temporarily set delimiter to ; so can break the line
-    #delimit ;		
-	loc userpack = "blindschemes unique mdesc estout palettes reghdfe ftools 
-					mrtab distinct winsor2 catplot colrspace ivreg2 ranktest
-					carryforward missings xtivreg2 fre coefplot colrspace
-					joyplot schemepack heatplot ridgeline graphfunctions labutil 
-					eventstudyinteract avar" ;
-    #delimit cr
-	
-	* install packages that are on ssc	
-		foreach package in `userpack' {
-			capture : which `package', all
-			if (_rc) {
-				capture window stopbox rusure "You are missing some packages." "Do you want to install `package'?"
-				if _rc == 0 {
-					capture ssc install `package', replace
-					if (_rc) {
-						window stopbox rusure `"This package is not on SSC. Do you want to proceed without it?"'
-					}
-				}
-				else {
-					exit 199
-				}
-			}
-		}
-
-	* install -xfill and dm89_1 - packages
-		net install xfill, 	replace from(https://www.sealedenvelope.com/)
-		
-	* update all ado files
-		ado update, update
-
-	* set graph and Stata preferences
-		set scheme plotplain, perm
-		set more off
-}
-
-
-************************************************************************
-**# 1 - run assignment files
-************************************************************************
-
-	do				"$code/assignments/assignment_1.do"
 ```
+
+5. Add an additional section (call it `**# 1 - run assignment files`) to the `project.do` file that runs or executes assignment 2 so that when I check your work I only have to run the `project.do` file and it sets the development environment and runs all the code you wrote for assignment 2. This is what is known as "push button replicability." To do this, you need to use the `do` command and write out the relative path for the location of assignment 2. The path will be "relative" to the absolute path defined in `code` so it should start with the global `$code`.
 

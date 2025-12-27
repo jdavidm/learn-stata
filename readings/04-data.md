@@ -7,7 +7,6 @@ language: Stata
 
 ### Topics
 
-* Types of variables
 * The distribution of a variable
 * Summarizing the distribution
 * Plotting the distribution
