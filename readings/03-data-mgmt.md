@@ -8,8 +8,7 @@ language: Stata
 ### Topics
 
 * Types of data
-* Importing data
-* labeling data
+* Labeling data
 * Creating and manipulating data
 * Joining data
 
