@@ -130,26 +130,26 @@ messy and what we could do to improve it.
 * Use short meaningful names. 
 * Use consistent names, abbreviations, and capitalizations
 * Use good null values (not -999, which is common in older data).
-* Stata has its own null values. For a string, it is just a blank or empty cell. For numerics it is a sysmis (.) AKA a period.
+* Stata has its own null values. For a string, it is just a blank or empty cell. For numerics it is a sysmiss (system missing value) AKA a period.
 * Write dates as YYYY-MM-DD or have separate Year, Month, and Day columns
 
 #### Bad:
 
-| d              | s       |    a      |
+| d              | g       |    i      |
 |----------------|---------|-----------|
-| 02/26/2020     |  dior   |     3     |
-| 02/26/2020     |  disp   |     1     |
-| March 24, 2020 |  DIor   |   -999    |
-| March 24, 2020 |  DISP   | Missing   |
+| 02/26/2020     |  2.43   |     3     |
+| 02/26/2020     |  6.12   |     1     |
+| March 24, 2020 |  1.45   |   -999    |
+| March 24, 2020 |  3.95   | Missing   |
 
 #### Good:
 
-| Date       | Species | Abundance |
+| date       | gdp     | inflat    |
 |------------|---------|-----------|
-| 2020-02-26 |  dior   |     3     |
-| 2020-02-26 |  disp   |     1     |
-| 2020-03-24 |  dior   |     NA    |
-| 2020-03-24 |  disp   |     NA    |
+| 2020-02-26 |  2.43   |     3     |
+| 2020-02-26 |  6.12   |     1     |
+| 2020-03-24 |  1.45   |     .     |
+| 2020-03-24 |  3.95   |     .     |
 
 
 ### Use one table for each category of data
@@ -159,44 +159,56 @@ messy and what we could do to improve it.
 
 #### Bad:
 
-| Family       | Genus     | Species     | Plot | Abundance |
-|--------------|-----------|-------------|------|-----------|
-| Heteromyidae | Dipodomys | Spectabilis | 1    | 2         |
-| Heteromyidae | Dipodomys | Spectabilis | 2    | 7         |
-| Heteromyidae | Dipodomys | Spectabilis | 3    | 5         |
-| Heteromyidae | Dipodomys | Spectabilis | 4    | 3         |
-| Heteromyidae | Dipodomys | Ordii       | 1    | 5         |
-| Heteromyidae | Dipodomys | Ordii       | 2    | 9         |
-| Heteromyidae | Dipodomys | Ordii       | 3    | 12        |
-| Heteromyidae | Dipodomys | Ordii       | 4    | 11        |
+| Division | District | Upazila     | Household_ID | Area | Yield |
+|----------|----------|-------------|--------------|------|-------|
+| Barisal  | Bhola    | Charfesson  | 1            | 2    | 2.45  |
+| Barisal  | Bhola    | Charfesson  | 2            | 7    | 1.89  |
+| Barisal  | Bhola    | Daulatkhan  | 3            | 5    | 1.54  |
+| Barisal  | Bhola    | Daulatkhan  | 4            | 3    | 2.83  |
+| Barisal  | Pirojpur | Nazirpu     | 5            | 5    | 2.51  |
+| Barisal  | Pirojpur | Nazirpu     | 6            | 9    | 1.76  |
+| Barisal  | Pirojpur | Kawkhali    | 7            | 12   | 0.97  |
+| Barisal  | Pirojpur | Kawkhali    | 8            | 11   | 1.23  |
 
-* Difficult to update (e.g., if taxonomy updates)
+* Difficult to update (e.g., if names change)
+* Hard to merge with data from other places (e.g., not all countries have upazilas)
 * More error prone
 * Takes up more space
 
 #### Good:
 
-| SpeciesID | Plot | Abundance |
-|-----------|------|-----------|
-| disp      | 1    | 2         |
-| disp      | 2    | 7         |
-| disp      | 3    | 5         |
-| disp      | 4    | 3         |
-| dior      | 1    | 5         |
-| dior      | 2    | 9         |
-| dior      | 3    | 12        |
-| dior      | 4    | 11        |
+| hhid | area | yield |
+|------|------|-------|
+| 1    | 2    | 2.45  |
+| 2    | 7    | 1.89  |
+| 3    | 5    | 1.54  |
+| 4    | 3    | 2.83  |
+| 5    | 5    | 2.51  |
+| 6    | 9    | 1.76  |
+| 7    | 12   | 0.97  |
+| 8    | 11   | 1.23  |
 
-| SpeciesID | Family       | Genus     | Species     |
-|-----------|--------------|-----------|-------------|
-| disp      | Heteromyidae | Dipodomys | Spectabilis |
-| dior      | Heteromyidae | Dipodomys | Ordii       |
+| admin1 | admin2 | admin3 | hhid |
+|--------|--------|--------|------|
+| 1      | 1      | 1      | 1    |
+| 1      | 1      | 1      | 2    |
+| 1      | 1      | 2      | 3    |
+| 1      | 1      | 2      | 4    |
+| 1      | 2      | 3      | 5    |
+| 1      | 2      | 3      | 6    |
+| 1      | 2      | 4      | 7    |
+| 1      | 2      | 4      | 8    |
 
 * Only need to make changes in a single location
 * Less repetative typing
-
+* Variable names more universal
+* ID numbers allow for easier matching (no variation in spelling or mistakes)
+* Can use the hhid to merge the household production data with the geographic location data
 
 ### Export data into easy to read formats
 
-* Save data in plain text files.
-* Files -> Export -> Select 'Download this sheet as CSV (.csv)
+* Never click `save` or hit `ctrl+S`, which overwrites the file you are working in
+* Always save data with a new file name and do it at the end of a `.do` file
+* In this class you can save data as `.dta` files
+* In general, it is best practice to save data in plain text files
+* The most common being `.csv`
