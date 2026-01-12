@@ -27,22 +27,22 @@ For this challange, you will need to use `if` and `else` statements along with t
 ```stata
 	loc userpack = "blindschemes estout palettes distinct catplot colrspace coefplot"
 	
-	* install packages that are on ssc	
-		foreach package in `userpack' {
-			capture : which `package', all
-			if (_rc) {
-				capture window stopbox rusure "You are missing some packages." "Do you want to install `package'?"
-				if _rc == 0 {
-					capture ssc install `package', replace
-					if (_rc) {
-						window stopbox rusure `"This package is not on SSC. Do you want to proceed without it?"'
-					}
-				}
-				else {
-					exit 199
+* install packages that are on ssc	
+	foreach package in `userpack' {
+		capture : which `package', all
+		if (_rc) {
+			capture window stopbox rusure "You are missing some packages." "Do you want to install `package'?"
+			if _rc == 0 {
+				capture ssc install `package', replace
+				if (_rc) {
+					window stopbox rusure `"This package is not on SSC. Do you want to proceed without it?"'
 				}
 			}
+			else {
+				exit 199
+			}
 		}
+	}
 ```
 
 6. Finally, after the above code block, but still within the `{}` of the original `if` statment, tell Stata to update all user written packages (`ado` files). And then permanently change the graphic scheme to one we just downloaded (`set scheme plotplain, perm`). Lastly, Stata's default is to freeze the output it displays until you tell it to move on. We will turn this feature off (`set more off`).

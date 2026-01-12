@@ -22,7 +22,7 @@ For this exercise we are going to create a `project.do` file that we will use on
 
 ```stata
 * does
-	* establishes an identical development environment between users
+	* establishes identical development environment for users
 	* sets globals that define absolute paths
 	* loads any user written packages needed for analysis
 	* runs all assignment do-files
@@ -37,9 +37,9 @@ For this exercise we are going to create a `project.do` file that we will use on
 3. Next, create the `0 - setup` section that comes after the preamble in every file that you write. Typically this is where we set our relative paths. But for the `project.do` file we are going to start by creating a `global` called `pack` (short for package) and we will set the value of `pack` to `0`. We will call this `global` later in the `project.do` file. After we create `pack` we want to specify which version of Stata the code runs on.
 
 ```stata
-************************************************************************
+******************************************************************
 **# 0 - setup
-************************************************************************
+******************************************************************
 
 * set $pack to 0 to skip package installation
 	global 			pack 	0
@@ -60,20 +60,20 @@ For this exercise we are going to create a `project.do` file that we will use on
 		* This will allow me to run your code on my machine without changing any of your code.
 
 ```stata
-************************************************************************
+******************************************************************
 **## 0.1 - Create user specific paths
-************************************************************************
+******************************************************************
 
 * Define root folder globals
-    if `"`c(username)'"' == "jdmichler" {
-        global 		code  	"C:/Users/jdmichler/git/semester26"
-		global 		data	"C:/Users/jdmichler/dropbox/teaching/aae_597/sester26/data"
-    }
+	if `"`c(username)'"' == "jdmichler" {
+		global	code	"C:/Users/jdmichler/git/semester26"
+		global	data	"C:/Users/jdmichler/dropbox/semester26/data"
+	}
 
-    if `"`c(username)'"' == "jdmic" {
-        global 		code  	"C:/Users/jdmic/git/semester26"
-		global 		data	"C:/Users/jdmic/dropbox/teaching/aae_597/sester26/data"
-    }
+	if `"`c(username)'"' == "jdmic" {
+		global	code	"C:/Users/jdmic/git/semester26"
+		global	data	"C:/Users/jdmic/dropbox/semester26/data"
+	}
 ```
 
 5. Add an additional section (call it `**# 1 - run assignment files`) to the `project.do` file that runs or executes assignment 2 so that when I check your work I only have to run the `project.do` file and it sets the development environment and runs all the code you wrote for assignment 2. This is what is known as "push button replicability." To do this, you need to use the `do` command and write out the relative path for the location of assignment 2. The path will be "relative" to the absolute path defined in `code` so it should start with the global `$code`.
