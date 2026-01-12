@@ -9,7 +9,7 @@ office: Room N215 Building ENR2
 email: jdmichler@arizona.edu
 schedule: ['Fridays, 12:30-2:00 pm MST']
 location: "McClelland Park 207"
-office_hours: ['Tuesdays, 1:00-2:00 pm MST', 'Thursdays, 1:00-2:00 pm MST', 'Fridays, 10:00-11:00 am MST']
+office_hours: ['Tuesdays, 1:00-2:00 pm MST ', 'Thursdays, 1:00-2:00 pm MST ', 'Fridays, 10:00-11:00 am MST']
 office_hours_location: "Room N215 Building ENR2 (and Zoom - [link](https://arizona.zoom.us/my/jdmichler), by appointment)" 
 ---
 
@@ -61,7 +61,7 @@ Slack: Messages in Slack are the preferred method for course communication
 
 ### Course Description
 
-This workshop course is designed to give students the skills they need to code for economics, while also providing bits and pieces of information about programming more generally. It’s suitable for complete beginners who have never written any code before. Throughout the course, programming assignments will focus on applications important for applied economists. The course also introduces technical for causal inference.
+This workshop course is designed to give students the skills they need to code for economics, while also providing bits and pieces of information about programming more generally. It’s suitable for complete beginners who have never written any code before. Throughout the course, programming assignments will focus on applications important for applied economists. The course also introduces techniques for causal inference.
 
 
 ### Prerequisite Knowledge and Skills
@@ -85,7 +85,7 @@ Upon completing this course, students will be able to:
 1.	Demonstrate the ability to analyze data using the coding language of instruction.
 2.	Describe key concepts, methods, issues and approaches in applied economics.
 3.	Create and communicate comprehension of a programming language.
-4.	Apply practical and technical skills such as modelling (abstraction, logic, succinctness), quantitative analysis, and general IT literacy. (Graduate Students Only)
+4.	Apply practical and technical skills such as modelling (abstraction, logic, succinctness), quantitative analysis, and general IT literacy.
 
 
 ### Instructional Methods
@@ -94,8 +94,8 @@ Classes will involve brief introductions to new concepts followed by working on 
 
 
 ### Required Texts
-Turrell, A. 2022. *Coding for Economists*. [https://aeturrell.github.io/coding-for-economists/](https://aeturrell.github.io/coding-for-economists/)
-Huntington-Klain, N. 2022. *The Effect: An Introduction to Research Design and Causality*. [https://theeffectbook.net/](https://theeffectbook.net/)
+1. Turrell, A. 2022. *Coding for Economists*. [https://aeturrell.github.io/coding-for-economists/](https://aeturrell.github.io/coding-for-economists/)
+2. Huntington-Klain, N. 2022. *The Effect: An Introduction to Research Design and Causality*. [https://theeffectbook.net/](https://theeffectbook.net/)
 
 It is highly recommended that students purchase a physical copy of [*The Effect*](https://www.routledge.com/The-Effect-An-Introduction-to-Research-Design-and-Causality/Huntington-Klein/p/book/9781032580227). However, both books are open access and available for free online.
 
@@ -118,7 +118,7 @@ Attendance will not be taken or factor into the grades for this class. However, 
 
 
 ## Grading Policies
-The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
+The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal, grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
 
 Because the goal is practice, exercises in assignments will be graded as follows:
 
@@ -127,7 +127,7 @@ Because the goal is practice, exercises in assignments will be graded as follows
 * Not submitted or no meaningful effort demonstrated: 0%
 
 Students also enter the class with different levels of experience. The goal of assignments to is help students grow as computational scientists whether they are complete novices or have some limited background in coding. Therefore, on each assignment there are *Challenge* exercises that are both more difficult and require integrating all of the weeks material.
-* Undergraduate students who are already familiar with the basics may choose to submit *Challenge* exercises in addition to regular exercises for up to 10 pts of extra credit. One *Challenge* exercise counts for two regular exercises. If you are an undergraduate, you will need to indicate via a tag in Github if you are submitting *Challenge* exercises.
+* Undergraduate students who are already familiar with the basics may choose to submit *Challenge* exercises in addition to regular exercises for up to 10 pts of extra credit. If you are an undergraduate, you will need to indicate via a tag in Github if you are submitting *Challenge* exercises.
 * Graduate students must complete *Challenge* exercises as part of their homework. For graduate students, *Challenge* exercises do not count as extra credit but are part of the overall point total on each graded assignment.
 
 *Undergraduate Point Total*
@@ -153,18 +153,17 @@ Students also enter the class with different levels of experience. The goal of a
 A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
 
 ### Using of Generative AI
-
+The use of generative AI (ChatGPT, etc.) is allowed for the debugging of code. 
 
 ### Final Exam Policy
 Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
 
 
 ### Dispute of Grade Policy: 
-Final grade must be disputed within two weeks of receiving the grade.
-
+Final grade must be disputed within two weeks of receiving the grade. In week 7 we will cover how best to use generative AI to debug. Students should refrain from using generative AI on assignments until that week.
 
 ### Late Policy: 
-There is an automatic 24 hour extension if you need it. You don't need to ask, you can just turn things in up to 48 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 24 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
+There is an automatic 24 hour extension if you need it. You don't need to ask, you can just turn things in up to 24 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 24 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
 
 
 ## UA Policies
@@ -220,7 +219,6 @@ The University Libraries have some excellent tips for avoiding plagiarism, avail
 
 ## Course Schedule
 
-The detailed course schedule is available on this website as well as on the course Github repo:
-[{{ site.url }}/schedule]({{ site.baseurl }}/schedule).
+The detailed course schedule is available on [this website]({{ site.baseurl }}/schedule).
 
 
