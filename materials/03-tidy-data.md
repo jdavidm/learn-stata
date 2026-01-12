@@ -11,9 +11,9 @@ language: Stata
     * Numeric - numbers on which the computer can do math
     * Strings - all non-numerica data on which computers cannot do math
 
-* Stata has four ways to store numeric data, each with a different property and storage requirement
+* Stata has five ways to store numeric data, each with a different property and storage requirement
 
-|                                  |                       |   Closest to |       |
+|         |                        |                       |   Closest to |       |
 | Storage |                        |                       |   0 without  |       |
 | type    |                Minimum |               Maximum |   being 0    | bytes |
 |---------|------------------------|-----------------------|--------------|-------|
@@ -31,14 +31,14 @@ language: Stata
     * `floats` have about 7 digits of accuracy; the magnitude of the number does not matter.  Thus, 1234567 can be stored perfectly as a `float`, as can 1234567e+20.  The number 123456789, however, would be rounded
     * In general, this rounding does not matter. Few people have data that is accurate to 1 part in 10 to the 7th
     * Among the exceptions are banks, who keep records accurate to the penny on amounts of billions of dollars. If you are dealing with such financial data, store your dollar amounts as doubles.
-    * Another exception is if you are storing identification numbers, the rounding could matter. If the identification numbers are integers and take 9 digits or less, store them as `long`; otherwise, store them as `double` and `double` has 16 digits of accuracy.
+    * Another exception is if you are storing identification numbers, the rounding could matter. If the identification numbers are integers and take 9 digits or less, store them as `long`; otherwise, store them as `double` since `double` has 16 digits of accuracy.
 
 * The other type of data that Stata can hand are strings.
     * As with numerics, strings have different levels of accuracy or length denoted by `str#`, with longer strings taking up more storage.
     * `str1` is a string of length 1, `str2` is of length 2, etc.
     * `str5` can hold the word **male** but could only hold **femal** of **female**.
     * A string can be defined up to `str2045` though in more recent versions of Stata there is `strL` which can hold 2,000,000,000 characters.
-    * Number can be stored as strings and any time there is a non-numeric character in a variable, that variable will of necessity be a string.
+    * Numbers can be stored as strings and any time there is a non-numeric character in a variable, that variable will of necessity be a string.
 
 ### Making data tidy
 
