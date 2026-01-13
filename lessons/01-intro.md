@@ -11,7 +11,7 @@ language: Stata
 
 3\. Watch the Introduction to Github Video:
 
-<iframe title="Introduction to R and RStudio Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/zqUQL8OOtMQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe title="Introduction to Git and Github Desktop" width="560" height="315" src="https://www.youtube-nocookie.com/embed/_md5PWslXzg?si=9StMYahXI8TnEGYb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 4\. Watch the Introduction to Stata Video:
 
