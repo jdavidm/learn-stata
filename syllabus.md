@@ -32,13 +32,11 @@ Email:
 
 {{location}}
 
-
 ### Times
 
 {% for class in page.schedule %}
   {{ class }}
 {% endfor %}
-
 
 ### Office Hours
 
@@ -46,29 +44,26 @@ Times: {{ page.office_hours }}
 
 Location: {{ page.office_hours_location }}
 
-
 ### Website
 
 The syllabus and other relevant class information and resources will be posted
 on Brightspace and at [{{ site.url}}]({{ site.baseurl }}/).
 Changes to the schedule will be posted to Slack and announced on Brightspace.
 
-
 ### Course Communications
 
 Slack: Messages in Slack are the preferred method for course communication
 
 
-### Course Description
+## Course Description
 
 This workshop course is designed to give students the skills they need to code for economics, while also providing bits and pieces of information about programming more generally. It’s suitable for complete beginners who have never written any code before. Throughout the course, programming assignments will focus on applications important for applied economists. The course also introduces techniques for causal inference.
-
 
 ### Prerequisite Knowledge and Skills
 
 AREC 339, ECON 376, or equivalent economic statistics course
-AREC 496/596A
 
+AREC 496A/596A
 
 ### Course Objectives
 
@@ -77,7 +72,6 @@ AREC 496/596A
 3.	Apply that language to answer quantitative economic research questions.
 4.	Prepare students for job market and graduate school applications.
 
-
 ### Course Learning Outcomes
 
 Upon completing this course, students will be able to:
@@ -85,37 +79,36 @@ Upon completing this course, students will be able to:
 1.	Demonstrate the ability to analyze data using the coding language of instruction.
 2.	Describe key concepts, methods, issues and approaches in applied economics.
 3.	Create and communicate comprehension of a programming language.
-4.	Apply practical and technical skills such as modelling (abstraction, logic, succinctness), quantitative analysis, and general IT literacy.
-
+4.	Apply practical and technical skills such as modeling (abstraction, logic, succinctness), quantitative analysis, and general IT literacy.
 
 ### Instructional Methods
 
 Classes will involve brief introductions to new concepts followed by working on exercises in class that cover that concept. While students are working on exercises the instructor will actively engage with students to help them understand material they find confusing, explain misunderstandings and help identify mistakes that are preventing students from completing the exercises, and discuss novel applications and alternative approaches to the data analysis challenges students are attempting to solve.
 
-
 ### Required Texts
-1. Turrell, A. 2022. *Coding for Economists*. [https://aeturrell.github.io/coding-for-economists/](https://aeturrell.github.io/coding-for-economists/)
-2. Huntington-Klain, N. 2022. *The Effect: An Introduction to Research Design and Causality*. [https://theeffectbook.net/](https://theeffectbook.net/)
+* Huntington-Klain, N. 2025. *The Effect: An Introduction to Research Design and Causality, 2nd Edition*. [https://theeffectbook.net/](https://theeffectbook.net/)
+* Turrell, A. 2022. *Coding for Economists*. [https://aeturrell.github.io/coding-for-economists/](https://aeturrell.github.io/coding-for-economists/)
 
 It is highly recommended that students purchase a physical copy of [*The Effect*](https://www.routledge.com/The-Effect-An-Introduction-to-Research-Design-and-Causality/Huntington-Klein/p/book/9781032580227). However, both books are open access and available for free online.
 
 ### Required Materials
-A laptop computer (not tablet). The University of Arizona Libraries have laptops that can be borrowed: [https://lib.arizona.edu/borrow/tech/laptops](https://lib.arizona.edu/borrow/tech/laptops).
+* A laptop computer (not tablet). The University of Arizona Libraries have laptops that can be borrowed: [https://lib.arizona.edu/borrow/tech/laptops](https://lib.arizona.edu/borrow/tech/laptops).
+* A licensed copy of Stata. A [6-month student copy of Stata BE](https://www.stata.com/order/new/edu/profplus/student-pricing/) can be purchased for $\$48$. 
 
-
-### Assignments
+## Coding assignments
 Students are required to read the assigned chapters, complete coding assignments, and take a final exam.
 
 ### House style
-All code submitted for grading *must* follow this course's [house style]({{ site.baseurl }}/materials/house-style). Code not following the house style will be returned un-graded. Students will then have a chance to re-submit the assignment in the correct style. If assignments are re-submitted the same day, they will be graded without penalty. If they are submitted late, the earned grade will be reduced 10%. If the assignment is never re-submitted, it will be graded a 0.
+All code submitted for grading **must** follow this course's [house style]({{ site.baseurl }}/materials/02-house-style). Code not following the house style will be returned un-graded. Students will then have a chance to re-submit the assignment in the correct style. If assignments are re-submitted the same day, they will be graded without penalty. If they are submitted late, the earned grade will be reduced 10%. If the assignment is never re-submitted, it will be graded a 0.
 
 ### Replication Project
 Graduate students are expected to complete a replication project in which they replicate the results in a published paper. Students will log their work on the [Social Science Reproduction Platform](https://www.socialsciencereproduction.org/).
 
+### Final Exam Policy
+Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
 
 ### Attendance Policy
 Attendance will not be taken or factor into the grades for this class. However, experience suggests that students who regularly miss class often struggle to learn the material.
-
 
 ## Grading Policies
 The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal, grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
@@ -134,8 +127,8 @@ Students also enter the class with different levels of experience. The goal of a
 
 | Activity            | Points  |
 | :---                | ---:    |
-| Coding assignments  | 1500    |
-| Final exam          | 500     |
+| Coding Assignments  | 1500    |
+| Final Exam          | 500     |
 | Total               | 2000    |
 | :---                | ---:    |
 
@@ -143,8 +136,8 @@ Students also enter the class with different levels of experience. The goal of a
 
 | Activity            | Points  |
 | :---                | ---:    |
-| Coding assignments  | 1800    |
-| Final exam          | 500     |
+| Coding Assignments  | 1800    |
+| Final Exam          | 500     |
 | Replication project | 700     |
 | Total               | 3000    |
 | :---                | ---:    |
@@ -153,11 +146,7 @@ Students also enter the class with different levels of experience. The goal of a
 A: 90-100, B: 80-89, C: 70-79, D: 60-69, E: 0-59. 
 
 ### Using of Generative AI
-The use of generative AI (ChatGPT, etc.) is allowed for the debugging of code. 
-
-### Final Exam Policy
-Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
-
+The use of generative AI (ChatGPT, etc.) is allowed for the debugging of code, which we will talk about more when we talk about debugging, but first trying to fix bugs yourself is important to learning.
 
 ### Dispute of Grade Policy: 
 Final grade must be disputed within two weeks of receiving the grade. In week 7 we will cover how best to use generative AI to debug. Students should refrain from using generative AI on assignments until that week.
@@ -165,11 +154,8 @@ Final grade must be disputed within two weeks of receiving the grade. In week 7 
 ### Late Policy: 
 There is an automatic 24 hour extension if you need it. You don't need to ask, you can just turn things in up to 24 hours late. That said, I will grade late assignments but will not provide any feedback. So if you want feedback on your work, you need to turn it in on time. If an assignment turned in after the 24 hour grace period, the grade on the assignment will be reduced by 10% of its earned value for every day it is late including weekends.
 
-
 ## UA Policies
-
 Information on UA academic policies, academic resources, and campus health and wellness resources is available on the [Syllabus Policies & Recommended Statements webpage](http://catalog.arizona.edu/syllabus-policies). Below I highlight some policies that I find particularly important for students to be aware of.
-
 
 ### Threatening Behavior Policy
 The UA Threatening Behavior by Students Policy prohibits threats of physical harm to any member of the University community, including to oneself. See [http://policy.arizona.edu/education-and-student-affairs/threatening-behavior-students](http://policy.arizona.edu/education-and-student-affairs/threatening-behavior-students).
@@ -187,7 +173,7 @@ If you are facing physical or mental health challenges this semester, please not
 Student Assistance and Advocacy information is available at [https://deanofstudents.arizona.edu/student-assistance](https://deanofstudents.arizona.edu/student-assistance).
 
 ### Lauren's Promise:
-I will listen and believe you if someone is threatening you.
+**I will listen and believe you if someone is threatening you.**
 
 Lauren McCluskey, a 21-year-old honors student athlete, was murdered on 22 October 2018, by a man she briefly dated on the University of Utah campus. We must all take actions to ensure that this never happens again.
 
@@ -216,6 +202,7 @@ Students are encouraged to share intellectual views and discuss freely the princ
 
 The University Libraries have some excellent tips for avoiding plagiarism, available at [http://new.library.arizona.edu/research/citing/plagiarism](http://new.library.arizona.edu/research/citing/plagiarism).
 
+**Selling class notes and/or other course materials to other students or to a third party for resale is not permitted without the instructor's express written consent**. Violations to this and other course rules are subject to the Code of Academic Integrity and may result in course sanctions. Additionally, students who use Brightspace or UA e-mail to sell or buy these copyrighted materials are subject to Code of Conduct Violations for misuse of student e-mail addresses. This conduct may also constitute copyright infringement.
 
 ## Course Schedule
 
