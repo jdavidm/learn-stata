@@ -168,7 +168,7 @@ There is an automatic 24 hour extension if you need it. You don't need to ask, y
 
 ## UA Policies
 
-Information on UA academic policies, academic resources, and compus health and wellness resources is available on the [Syllabus Policies & Recommended Statements webpage](http://catalog.arizona.edu/syllabus-policies). Below I highlight some policies that I find particularly important for students to be aware of.
+Information on UA academic policies, academic resources, and campus health and wellness resources is available on the [Syllabus Policies & Recommended Statements webpage](http://catalog.arizona.edu/syllabus-policies). Below I highlight some policies that I find particularly important for students to be aware of.
 
 
 ### Threatening Behavior Policy
