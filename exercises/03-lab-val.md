@@ -7,8 +7,8 @@ language: Stata
 
 Using the World Bank's LSMS data, 
 
-1. Define a value label set called `yesno` where `0 = No` and `1 = Yes`
-2. Assign the value label set `yesno` to the following variables:
+1\. Define a value label set called `yesno` where `0 = No` and `1 = Yes`
+2\. Assign the value label set `yesno` to the following variables:
     - `hh_shock`
     - `hh_primary_education`
     - `hh_electricity_access`
@@ -21,10 +21,10 @@ You will often have a variable which is a string that you would like to convert 
 
 In this case, we can use `encode` to change the strings to numerical values and then use the string text as a value label for each numerical value. The syntax for the command is `encode varname, gen(newvar)` where `varname` is the name of the existing string variable and `newvar` is the new, numerical variable you want to create.
 
-3. Encode the variable `country` so that it is a numerical variable and uses the string values as labels.
+3\. Encode the variable `country` so that it is a numerical variable and uses the string values as labels.
     - Call the new variable you create `Country`
     - Drop the old variable `country`
     - Rename `Country` as `country`
     - Use the command `order` to place `country` as the first variable in the data set (use `help order` if you need help with the `order` command)
 
-4. Encode the variable `admin_1` so that it is a numerical variable and uses the string values as labels. Follow the same steps as in 4.3 and use `order` to place the new `admin_1` immediately in front of `admin_2`.
+4\. Encode the variable `admin_1` so that it is a numerical variable and uses the string values as labels. Follow the same steps as in 4.3 and use `order` to place the new `admin_1` immediately in front of `admin_2`.

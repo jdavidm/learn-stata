@@ -5,7 +5,7 @@ title: Label Variables
 language: Stata
 ---
 
-Download the World Bank's Living Standards Measurement Survey (LSMS) [household data set]({{ site.baseurl }}/data/lsms_household.dta).
+Download the World Bank's Living Standards Measurement Survey (LSMS) [household data set]({{ site.baseurl }}/materials/datasets/).
 
 Apply the following labels to the corresponding variable
 
