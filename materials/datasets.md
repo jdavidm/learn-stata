@@ -10,3 +10,4 @@ title: List of datasets
 | Land tenure | dta | <https://jdavidm.github.io/learn-stata/data/tenuredata.dta> |
 | Country GDP | xls | <https://jdavidm.github.io/learn-stata/data/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_68.xls> |
 | Dietary info | dta | <https://jdavidm.github.io/learn-stata/data/dietary_cleaned.dta> |
+| LSMS household | dta | <https://jdavidm.github.io/learn-stata/data/lsms_household.dta>
