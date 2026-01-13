@@ -81,7 +81,7 @@ In the Stata command window, you can see the labels of variables in the **Variab
    ![Variable labels in command window]({{ site.baseurl }}/images/lab_var.png)
 
 
-> Do [Exercise 3 - Label Variables]({{ site.baseurl }}/exercises/03-lab-var/)
+> Do [Exercise 3.1-3.10 - Label Variables]({{ site.baseurl }}/exercises/03-lab-var/)
 
 ### Defining value labels
 
@@ -118,7 +118,7 @@ In our practice example, we would define a value label for use with the variable
 
 This creates a mappin `0 → "Male"`, `1 → "Female"`. It does **not** attach this mapping to any variable
 
-> Do [Exercise 3.1 - Label Values]({{ site.baseurl }}/exercises/03-label-vals/)
+> Do [Exercise 4.1 - Label Values]({{ site.baseurl }}/exercises/03-label-vals/)
 
 ### Apply value label
 
@@ -155,7 +155,7 @@ You can also attach the value label to multiple variables at once, assuming each
     lab val     sex spouse sex_lbl
 ```
 
-> Do [Exercise 3.2 - Label Values]({{ site.baseurl }}/exercises/03-label-vals/)
+> Do [Exercise 4.2 - Label Values]({{ site.baseurl }}/exercises/03-label-vals/)
 
 ### How value labels change what you see
 
@@ -232,6 +232,7 @@ And `tab sex, nolab` produces:
       Total |          4      100.00
 ```
 
+> Do [Exercise 4.3 - Label Values]({{ site.baseurl }}/exercises/03-label-vals/)
 
 ### Common pitfalls and good habits
 
