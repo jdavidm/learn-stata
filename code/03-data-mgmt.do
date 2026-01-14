@@ -11,141 +11,133 @@
 **# exercise 1
 ********************************************************************************
 
-**## 1.1
-	use				"https://haghish.github.io/github/langlist.dta", clear
-	
-	describe
-	
-**## 1.2
-	use				"$data/tenuredata.dta", clear
-	
-	describe
-	
-**## 1.3
-	sysuse			"auto.dta", clear
-	
-	describe
-	
-**## 1.4
-	import		delimited "$data/district_size.csv", clear
-	
-	describe
+* describe why data is messy - see solutions
 	
 	
 ********************************************************************************
 **# exercise 2
 ********************************************************************************
 
-* load data
-	use				"$data/dietary_cleaned.dta", clear
-	
-* reshape data from long to wide
-	reshape wide	cuml ss cuml_trt cuml_cnt, i(day_count) j(hh)
-
-* create new variables for cumulative entries
-	gen				cuml_cnt = cuml_cnt5 
-	gen				cuml_trt = cuml_trt18 
-	order			cuml_trt cuml_cnt, after(day_count)
-
-* loop through all households (156) and drop cumulative treatment and control
-	forvalues 		i = 1/156 {
-		drop 		cuml_cnt`i' cuml_trt`i'
-}
-
-* fill in  missing values
-	forvalues 		i = 1/156 {
-		replace 		ss`i' = ss`i'[1]
-}
-	
-* everything following needs to be run as a single code block due to locals
-* create CDF for treatement
-	local 			grt ""
-	forvalues 		i = 1/156 {
-		local 			grt `grt' line cuml`i' day_count ///
-							if ss`i' == 1, lpattern(solid) lcolor(teal%20) lwidth(thin) ||
-}
-
-* create CDF for control		
-	local 			grc ""
-	forvalues 		i = 1/156 {
-		local 			grc `grc' line cuml`i' day_count ///
-							if ss`i' == 0, lpattern(dash) lcolor(sienna%20) lwidth(thin) ||
-}
-		
-* final graph
-	sort 			day_count
-	twoway 			`grc' `grt' ///
-	line 			cuml_cnt day_count, lc(sienna*1.5) lpattern(dash) || ///
-	line			cuml_trt day_count, lc(teal*1.5) lpattern(solid)  ///
-						xlabel(1 7 14 21 28 35 42) xtitle("Day in Study") ///
-						graphregion(fcolor(white)) ytitle("Cumulative Distribution") ///
-						title("B: Accumulation of Diary Entries Over Time") ///
-						legend(pos(6) cols(2) order(314 313) ///
-						label(313 "Control") label(314 "Treatment"))
+* clean up the data - see solutions
 
 						
 ********************************************************************************
 **# exercise 3
 ********************************************************************************
 
-* load auto data
-	sysuse			"auto.dta", clear
-	
-**## 3.1
-	gen				y = 1 if price <= 4195
-	tab				y
+* load world bank lsms data
+	use				"https://jdavidm.github.io/learn-stata/data/lsms_household.dta", clear
+		
+* label unlabelled variables
+
+**## 3.1 
+	lab var 		country "Country"
 	
 **## 3.2
-	replace			y = 3 if price >= 6342
-	tab				y
+	lab var 		wave "Wave number"
 	
 **## 3.3
-	replace			y = 2 if price > 4195 & price < 6342
-	tab				y
+	lab var 		season "Agricultural season"
 	
 **## 3.4
-	global pack 	1 
-
-	if $pack == 1 {
-		display "Setup mode: running installation/setup steps..."
-	}
-	else {
-		display "Run mode: skipping setup and continuing with the analysis."
-	}
-
-**## 3.5
-	if $pack == 1 {
-		display "Setup mode: running installation/setup steps..."
-	}
-	else if $pack == 2 {
-		display "Update mode: updating ado files..."
-	}
-	else {
-		display "Run mode: skipping setup and continuing with the analysis."
-	}
+	lab var 		admin_1 "Administrative level 1"
 	
-					
+**## 3.5
+	lab var 		admin_2 "Administrative level 2"
+	
+**## 3.6
+	lab var 		admin_3 "Administrative level 3"
+	
+**## 3.7
+	lab var 		hh_size "Household size"
+	
+**## 3.8
+	lab var 		hh_shock "Was the household negatively impacted by a shock over the past 12 months?"
+	
+**## 3.9
+	lab var 		hh_primary_education "Did anyone in the household complete primary school?"
+	
+**## 3.10
+	lab var 		hh_electricity_access "Does the household have access to electricity?"
+	
+**## 3.11
+	lab var 		hh_dependency_ratio "Household dependency ratio"
+	
+**## 3.12
+	lab var 		hh_formal_education "Does anyone in the household posses any formal education?"
+	
+**## 3.13
+	lab var 		nonfarm_enterprise "Does anyone in household own a non-farm enterprise?"
+	
+**## 3.14
+	lab var 		nb_fallow_plots "Number of fallow plots under household management"
+	
+**## 3.15
+	lab var 		nb_plots "Number of plots under household management"
+	
+**## 3.16
+	lab var 		share_kg_sold "Share of harvest output (in kg) sold"
+	
+**## 3.17
+	lab var 		totcons_LCU "Consumption aggregate per capita, in LCU"
+	
+**## 3.18
+	lab var 		totcons_USD "Consumption aggregate per capita, in USD" 
+	
+**## 3.19
+	lab var 		cons_quint "Household consumption quintile"
+	
+**## 3.20
+	lab var 		hh_asset_index "Household asset index"
+	
+**## 3.21
+	lab var 		hdds "Household dietary diversity index"
+	
+		
 ********************************************************************************
 **# exercise 4
 ********************************************************************************
 
-* load the data from the internet
-	import		delimited "https://datacarpentry.org/semester-biology/data/gainesville-precip.csv", clear
+**## 4.1
+	lab def			yesno 0 "No" 1 "Yes"
 	
-* create year variable
-	gen			year = _n
-	
-* generate variable that is the mean rainfall in each each
-	egen		mean_rain = rowmean(v*)
-	
-* create line graph of mean rainfall across years
-	twoway		(line mean_rain year)
+**## 4.2
+	lab val			hh_shock hh_primary_education hh_electricity_access ///
+						hh_formal_education nonfarm_enterprise yesno
 				
+**## 4.3
+	encode			country, gen(Country)
+	drop			country
+	rename			Country country
+	order			country
+	
+**## 4.4
+	encode			admin_1, gen(Admin_1)
+	drop			admin_1
+	rename			Admin_1 admin_1
+	order			admin_1, before(admin_2)
+
+
 ********************************************************************************
 **# exercise 5
 ********************************************************************************
 
-* create project.do - see actual project.do file in code/ folder
+**## 5.1
+	gen				sector = 0 if urban == "Rural"
+	replace			sector = 1 if sector == .
+	
+**## 5.2
+	lab var			sector "EA is rural or urban"
+
+**## 5.3
+	lab def			sec_lbl 0 "Rural" 1 "Urban"
+	
+**## 5.4
+	lab val			sector sec_lbl
+	
+**## 5.5
+	drop			urban
+	order			sector, after(eaid)
 
 
 ********************************************************************************

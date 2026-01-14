@@ -11,3 +11,4 @@ Using the World Bank's LSMS data,
 2. Label that variable "EA is rural or urban"
 3. Define a value label set called `sec_lbl` where `0 = Rural` and `1 = Urban`
 4. Assign the value label set `sec_lbl` to the variable `sector`
+5. Drop `urban` and place `sector` after `eaid`

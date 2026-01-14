@@ -156,7 +156,7 @@
 * return stata to default scheme
 	set 			scheme s2color
 	
-* 7.1
+**## 7.1
 	twoway			(scatter wage tenure)
 	save			"$answ/01-basic-graphs-1.png", replace
 	
@@ -164,11 +164,11 @@
 	ssc 			install blindschemes
 	set 			scheme plotplain, perm
 	
-* 7.2
+**## 7.2
 	twoway			(scatter wage tenure)
 	save			"$answ/01-basic-graphs-2.png", replace
 	
-* 7.3
+**## 7.3
 	twoway			(scatter wage tenure) (lfit wage tenure)
 	save			"$answ/01-basic-graphs-3.png", replace
 	
@@ -177,8 +177,7 @@
 **# challenge 1
 ********************************************************************************
 
-
-* 7.3
+* create scatter plot with line of best fit
 	twoway			(scatter wage tenure) (lfit wage tenure, lc(maroon) ), ///
 						xtitle("Wages (hourly)") ytitle("Tenure (years)") ///
 						legend( col(2) pos(6))
