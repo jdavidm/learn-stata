@@ -106,6 +106,15 @@
 						hh_formal_education nonfarm_enterprise yesno
 				
 **## 4.3
+	gen				sector = 0 if urban == "Rural"
+	replace			sector = 1 if sector == .
+	lab var			sector "EA is rural or urban"
+	lab def			sec_lbl 0 "Rural" 1 "Urban"
+	lab val			sector sec_lbl
+	drop			urban
+	order			sector, after(eaid)
+
+**## 4.4
 	encode			country, gen(Country)
 	drop			country
 	rename			Country country
@@ -122,22 +131,6 @@
 **# exercise 5
 ********************************************************************************
 
-**## 5.1
-	gen				sector = 0 if urban == "Rural"
-	replace			sector = 1 if sector == .
-	
-**## 5.2
-	lab var			sector "EA is rural or urban"
-
-**## 5.3
-	lab def			sec_lbl 0 "Rural" 1 "Urban"
-	
-**## 5.4
-	lab val			sector sec_lbl
-	
-**## 5.5
-	drop			urban
-	order			sector, after(eaid)
 
 
 ********************************************************************************
