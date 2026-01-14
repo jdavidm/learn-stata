@@ -14,7 +14,7 @@ title: Assignment Submission Checklist
 
 ### Make sure your assignment has a preamble in the house style
 
-Every `.do` file that you turn in must have a preamble that contains the following information and is in this course's [house style]({{ site.baseurl }}/materials/house-style).
+Every `.do` file that you turn in must have a preamble that contains the following information and is in this course's [house style]({{ site.baseurl }}/materials/02-house-style).
 
 ```stata
 * course: 597A
@@ -73,7 +73,7 @@ Here, `cap log close` ensures any open `.log` files are closed before openning a
 
 Code should be easy to read and understand.
 
-- Code must follow this course's [house style]({{ site.baseurl }}/materials/house-style).
+- Code must follow this course's [house style]({{ site.baseurl }}/materials/02-house-style).
 - Only include code and comments necessary for the assignment. Remove anything else (e.g., notes taken during class, commented code that isn't needed anymore).
 - Remove extra/duplicate files. Only turn in what is necessary for the assignment.
 - Clearly label problems using comments.

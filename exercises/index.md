@@ -12,7 +12,7 @@ languages: ['Stata', 'Git', 'LaTeX']
     <tr>
       <th>Topic</th>
       <th>Title</th>
-      <th>Output</th>
+      <th>Solutions</th>
     </tr>
   {% for exercise in site.pages %}
     {% if exercise.layout == 'exercise' and exercise.language == language %}

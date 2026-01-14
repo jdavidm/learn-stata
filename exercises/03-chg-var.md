@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Tidy Data
+topic: Data Management
 title: Change Variables
 language: Stata
 ---
