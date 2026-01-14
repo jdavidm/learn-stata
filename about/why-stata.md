@@ -8,7 +8,7 @@ I chose to add teach this course in Stata for a handful of reasons including:
 1. **It is the de facto standard in empirical economics.** Data and code submitted to the AEA Data Editor show that Stata is used in the clear majority of packages for AEA journal articles, year after year, far more than Matlab, R, Python, or other software. Learning Stata lets you open, understand, and extend the vast bulk of existing empirical work in economics.
 
    ![Software use by papers submitted to AEA journals]({{ site.baseurl }}/images/econ_software.png)
-   Figure presents bar graphs of the number of papers submitted to the Data Editor of the AEA journals that used a specific software package. Reprinted from \cite{VilhuberEtAl20} under CC BY 4.0.
+   Figure presents bar graphs of the number of papers submitted to the Data Editor of the AEA journals that used a specific software package. Reprinted from Vilhuber et al. (2020) under CC BY 4.0.
 
 2. **Designed around the kinds of data economists actually use.** Stata’s core data model is built for rectangular microdata: individuals, firms, households, experiments, panel data, and large administrative files. Tasks like creating variables, reshaping panels, collapsing to aggregates, or merging complex survey files are all first-class, well-documented operations.
 
