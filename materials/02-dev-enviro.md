@@ -22,7 +22,7 @@ language: Stata
 * Looks like it still works
 * Only works because of something you did earlier in the same session
 
-### Clearing environments and restarting R
+### Clearing environments
 
 * Clear Stata using `clear`.
   * Removes data from memory
@@ -94,24 +94,7 @@ language: Stata
 
 > Do [Exercise 5.3 & 5.4 - Create Project Do]({{ site.baseurl }}/exercises/02-create-project/)
 
-
 ### Make sure code works on other computers
 
-* Don't use `setwd()`
-    * Use projects and relative paths
-    * `data/mydata.csv` not `C:\Users\Batman\DataCarp\data\mydata.csv`
-* Write code that works on all operating systems
-    * Filenames in code should match actual names exactly, including capitalization
-    * Use `/` instead of `\` or `\\` in paths
-
-### Clean up extra code
-
-* Remove experiments from your code
-* Or at least comment them out
-* Remove `install.packages()` lines from your code
-* Avoid reinstalling packages repeatedly
-
-### Checklist
-
-* There is an Assignment Turn In Checklist to help
-* Show link on main page
+* There is an [Assignment Turn In Checklist]({{ site.baseurl }}/materials/turn-in-checklist/) to help
+* To reinforce this important step in coding the last required exercise each week is the check that your code runs

@@ -17,7 +17,7 @@ no_solution:
 # Setup
 title:            Coding for Applied Economists
 description:      'Making applied economics less dismal'
-url:              https://github.com/jdavidm/learn-stata
+url:              https://github.io/jdavidm/learn-stata
 baseurl:          /learn-stata
 email:            jdmichler@arizona.edu
 feedbackurl:      https://docs.google.com/forms/d/1hST-wT3WkGsp0XY0gyRUEREEE4MxsenmKjn10IgjSPU/

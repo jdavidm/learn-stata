@@ -153,7 +153,7 @@ language: Stata
     * Displays both the relative path
     * And the absolute path
 
-### Keep data and dode segregated
+### Keep data and code segregated
 
 * In most coding classes, the next step would be to put the data in the same directory as the project file
 * This is simple, because then data and code all live in the same location on your computer

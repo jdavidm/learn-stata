@@ -42,7 +42,7 @@ language: Stata
 ### Check every assignment
 
 * To reinforce this important step in coding the last required exercise each week is the check that your code runs
-* *Show last exercise of first assignment*
+> *Show last exercise of first assignment*
 * This will remind you to check that everything is running and fix any issues
 * It will also make grading much easier because when I run your code it will run
 * At the start of the semester if the code doesn't run when I go grade I'll DM you on Slack and give you a chance to fix it before grading

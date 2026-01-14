@@ -7,10 +7,10 @@ language: Stata
 
 For this exercise we are going to create a `project.do` file that we will use on this and all subsequent assignments.
 
-1. Open your Stata Project and in the blank `.do` file editor start by typing in our standard preamble
+1\. Open your Stata Project and in the blank `.do` file editor start by typing in our standard preamble (using either 497 or 597 for course).
 
 ```stata
-* course: 597A
+* course: AAE 597A
 * created on: dec 25
 * created by: jdm
 * edited on: 16 dec 25
@@ -18,7 +18,7 @@ For this exercise we are going to create a `project.do` file that we will use on
 * Stata v.19.5
 ```
 
-2. Then type in a a bulletted list of what this file does and what it assumes that a user has on their computer. This part of the preamble isn't required for assignments, since what an assignment `.do` file does and assumes is pretty self explanatory. But when you start doing research, having a list of what a file does, assumes, and if the file is complete (`TO DO`) is very useful. It allows you (or your advisor) to quickly see what a file contains without reading through the code.
+2\. Then type in a a bulletted list of what this file does and what it assumes that a user has on their computer. This part of the preamble isn't required for assignments, since what an assignment `.do` file does and assumes is pretty self explanatory. But when you start doing research, having a list of what a file does, assumes, and if the file is complete (`TO DO`) is very useful. It allows you (or your advisor) to quickly see what a file contains without reading through the code.
 
 ```stata
 * does
@@ -34,7 +34,7 @@ For this exercise we are going to create a `project.do` file that we will use on
 	* done
 ```
 
-3. Next, create the `0 - setup` section that comes after the preamble in every file that you write. Typically this is where we set our relative paths. But for the `project.do` file we are going to start by creating a `global` called `pack` (short for package) and we will set the value of `pack` to `0`. We will call this `global` later in the `project.do` file. After we create `pack` we want to specify which version of Stata the code runs on.
+3\. Next, create the `0 - setup` section that comes after the preamble in every file that you write. Typically this is where we set our relative paths. But for the `project.do` file we are going to start by creating a `global` called `pack` (short for package) and we will set the value of `pack` to `0`. We will call this `global` later in the `project.do` file. After we create `pack` we want to specify which version of Stata the code runs on.
 
 ```stata
 ******************************************************************
@@ -49,7 +49,7 @@ For this exercise we are going to create a `project.do` file that we will use on
     version         $stataVersion
 ```
 
-4. Now we will use a combination of `local` and `global` macros, along with a conditional `if` statement, to dynamically set the working directory.
+4\. Now we will use a combination of `local` and `global` macros, along with a conditional `if` statement, to dynamically set the working directory.
     * The `if` statement will define the global `code` and `data` as absolute paths, depending on which computer the code runs on
     * The `c(username)` local checks to see what the computer's username is (`c(username)`)
     * The global `code` is assigned a value that equals the absolute path on the machine `jdmichler` to the git repo where the code lives
@@ -76,5 +76,5 @@ For this exercise we are going to create a `project.do` file that we will use on
 	}
 ```
 
-5. Add an additional section (call it `**# 1 - run assignment files`) to the `project.do` file that runs or executes assignment 2 so that when I check your work I only have to run the `project.do` file and it sets the development environment and runs all the code you wrote for assignment 2. This is what is known as "push button replicability." To do this, you need to use the `do` command and write out the relative path for the location of assignment 2. The path will be "relative" to the absolute path defined in `code` so it should start with the global `$code`.
+5\. Add an additional section (call it `**# 1 - run assignment files`) to the `project.do` file that runs or executes assignment 2 so that when I check your work I only have to run the `project.do` file and it sets the development environment and runs all the code you wrote for assignment 2. This is what is known as "push button replicability." To do this, you need to use the `do` command and write out the relative path for the location of assignment 2. The path will be "relative" to the absolute path defined in `code` so it should start with the global `$code`.
 

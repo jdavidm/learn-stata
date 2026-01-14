@@ -1,0 +1,52 @@
+[1]
+* course: 597A
+* created on: dec 25
+* created by: jdm
+* edited on: 16 dec 25
+* edited by: jdm
+* Stata v.19.5
+[2]
+* does
+	* establishes identical development environment for users
+	* sets globals that define absolute paths
+	* loads any user written packages needed for analysis
+	* runs all assignment do-files
+
+* assumes
+	* access to all data and code
+
+* TO DO:
+	* done
+[3]
+******************************************************************
+**# 0 - setup
+******************************************************************
+
+* set $pack to 0 to skip package installation
+	global 			pack 	0
+		
+* Specify Stata version in use
+    global          stataVersion 19.5
+    version         $stataVersion
+[4]
+******************************************************************
+**## 0.1 - Create user specific paths
+******************************************************************
+
+* Define root folder globals
+	if `"`c(username)'"' == "jdmichler" {
+		global	code	"C:/Users/jdmichler/git/semester26"
+		global	data	"C:/Users/jdmichler/dropbox/semester26/data"
+	}
+
+	if `"`c(username)'"' == "jdmic" {
+		global	code	"C:/Users/jdmic/git/semester26"
+		global	data	"C:/Users/jdmic/dropbox/semester26/data"
+	}
+[5]
+************************************************************************
+**# 1 - run assignment files
+************************************************************************
+
+	do				"$code/code/01-intro.do"	
+	do				"$code/code/02-using-stata.do"

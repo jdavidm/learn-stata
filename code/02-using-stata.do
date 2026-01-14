@@ -150,3 +150,16 @@
 	
 * create line graph of mean rainfall across years
 	twoway		(line mean_rain year)
+				
+********************************************************************************
+**# exercise 5
+********************************************************************************
+
+* create project.do - see actual project.do file in code/ folder
+
+
+********************************************************************************
+**# challenge 1
+********************************************************************************
+
+* add package loop to project.do - see actual project.do file in code/ folder
