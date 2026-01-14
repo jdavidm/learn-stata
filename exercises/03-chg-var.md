@@ -7,4 +7,4 @@ language: Stata
 
 Using the World Bank's LSMS data, 
 
-1. Change...
+1. `collapse`
