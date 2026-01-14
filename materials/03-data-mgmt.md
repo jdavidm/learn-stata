@@ -6,67 +6,27 @@ language: Stata
 ---
 
 
-  * A lot of applied economics work is about **reshaping and combining data** so that you can run the analysis you care about.
-  * In this lecture we’ll focus on four key tasks:
-    1. Creating variables with `gen` and `egen`
-    2. Aggregating data with `collapse`
-    3. Stacking datasets with `append`
-    4. Joining datasets with `merge`
-  * These operations are the building blocks for:
-    * going from raw survey data to analysis-ready panels,
-    * combining different data sources,
-    * and creating the summary datasets used in tables and figures.
+A lot of applied economics work is about **reshaping and combining data** so that you can run the analysis you care about. This can involve:
+  * Replacing the value of existing variables (`replace`)
+  * Creating new variables (`gen` and `egen`)
+  * Aggregating data (`collapse`)
+  * Stacking datasets (`append`)
+  * Joining datasets (`merge`)
+  
+  These operations are the building blocks for going from raw survey data to analysis-ready panels, combining different data sources, and creating the summary datasets used in tables and figures.
 
----
+### Creating variables
 
-### 1. Creating variables: `gen` and `egen`
-
-You already know how to use `generate` (`gen`) to make new variables from existing ones. Here we:
-
-  * briefly recap `gen`, and
-  * introduce `egen` (**extended generate**), which adds a lot of power.
-
-#### 1.1 Recap: `gen` for simple transformations
-
-`gen` creates a new variable observation-by-observation using an expression.
-
-```stata
-* Simple arithmetic transformation
-gen ln_wage = ln(wage)
-label variable ln_wage "Log of hourly wage"
-
-* Indicator variable (dummy)
-gen female = (sex == 2)
-label variable female "Respondent is female"
-
-* Conditional creation with missing-value check
-gen high_educ = (years_schooling >= 12) if !missing(years_schooling)
-label variable high_educ "Completed at least 12 years of schooling"
-```
-
-Notes:
-
-  * `gen` can only see **the current observation** and the variables in that row.
-  * If you need to update an existing variable, use `replace` instead of `gen`.
-
-```stata
-replace ln_wage = . if wage <= 0
-```
-
-#### 1.2 `egen`: extended generate
-
-`egen` is like `gen`, but with extra functions that:
-
-  * work across **multiple variables in the same row** (e.g., row means),
+You already know how to use `generate` (`gen`) to make new variables from existing ones. Stata has an "extended generate" (`egen`) command that comes with a number of built in functions that allow you to create variables using calculations that otherwise would be very tedious and verbose to code up. The big advantage of `egen` is that it:
+  * works across **multiple variables in the same row** (e.g., row means),
   * or across **multiple observations** (e.g., group means, counts, ranks).
-
-General syntax:
+The general syntax is:
 
 ```stata
 egen newvar = function(arguments) [if] [in] [, options]
 ```
 
-Some of the most useful `egen` functions:
+Some of the most useful `egen` functions are:
 
   * `rowmean()` – mean across variables in the same row
   * `rowtotal()` – sum across variables in the same row
@@ -75,103 +35,90 @@ Some of the most useful `egen` functions:
   * `count()` – number of nonmissing values
   * `tag()` – mark one observation per group
 
-##### Example: row operations
+#### Example: row operations
 
 Suppose you have three exam scores:
 
 ```stata
-describe test1 test2 test3
+  describe      test1 test2 test3
 ```
 
-To compute each student’s average test score:
+Suppose we wanted to calculate the average (or total) score across all three tests. One way to do this is:
+
 
 ```stata
-egen test_mean = rowmean(test1 test2 test3)
-label variable test_mean "Average test score (3 exams)"
+* create mean test score
+  gen           test_mean = (test1 + test2 + test3) / 3
+
+* create total test score
+  gen           test_tot = (test1 + test2 + test3)
 ```
 
-Why use `egen rowmean()` instead of:
+We can do this same operation using `egen`:
 
 ```stata
-gen test_mean = (test1 + test2 + test3) / 3
+* create mean test score
+  egen           test_mean = rowmean(test1 test2 test3)
+
+* create total test score
+  egen           test_tot = rowtotal(test1 test2 test3)
 ```
 
-  * `rowmean()` **ignores missing values** by default (averages over the nonmissing exams).
+In this case, the two commands are not that much different. So why use `egen rowmean()` instead of `gen`?
+  * `egen` commands like `rowmean()` **ignores missing values** by default (averages over the nonmissing exams).
   * The simple arithmetic version treats missing as missing for the entire expression.
 
-##### Example: group-level statistics with `egen` and `bysort`
+#### Example: group-level statistics with `egen` and `bysort` (`bys`)
 
 Often we want statistics **by group**, but still keep the individual-level data.
 
-Example: mean wage by industry:
+Let's say we wanted to calculate the mean wage by industry:
 
 ```stata
-bysort industry: egen ind_mean_wage = mean(wage)
-label variable ind_mean_wage "Industry mean wage"
+  bys industry:   egen ind_mean_wage = mean(wage)
 ```
-
-After this:
-
-  * each worker’s row now includes the mean wage for their industry,
-  * you can compute deviations from the mean, etc.
+Now each worker’s row now includes the mean wage for their industry. We could then calculate each worker's wage deviation from the mean for their industry:
 
 ```stata
-gen wage_rel_to_ind = wage - ind_mean_wage
-label variable wage_rel_to_ind "Wage minus industry mean"
+  gen             wage_rel_to_ind = wage - ind_mean_wage
 ```
 
-Another useful example: number of observations per group:
+Another useful example is calculating the number of observations per group:
 
 ```stata
-bysort industry: egen n_industry = count(wage)
-label variable n_industry "Number of workers in industry"
+bys industry:     egen n_industry = count(wage)
 ```
 
-Now each row knows how many workers are in that industry.
+Now each row contains how many workers are in that industry.
 
-##### Example: tagging one observation per group
+> Do [Exercise 4.1 - Create Variables]({{ site.baseurl }}/exercises/03-gen-var/)
 
-Sometimes you only want to **see each group once**, e.g., when checking group sizes:
 
-```stata
-egen tag_ind = tag(industry)
-list industry n_industry if tag_ind
-```
-
-  * `tag_ind` is 1 for the **first** observation in each industry and 0 otherwise.
-  * This is handy when you want to look at group information without repeating rows.
-
-#### 1.3 When to use `gen` vs `egen`
-
-  * Use **`gen`** when:
-    * you are doing simple transformations on a single variable,
-    * or combining variables with straightforward arithmetic.
-  * Use **`egen`** when:
-    * you need row-wise operations across multiple variables,
-    * or you need group-level statistics while staying at the individual level.
-
----
-
-### 2. Aggregating data with `collapse`
+### Aggregating data with `collapse`
 
 `collapse` is used when you want to **replace your dataset with summary statistics**.
-
   * It takes your current dataset,
   * calculates summary statistics (means, sums, etc.),
   * and **replaces** the data in memory with the aggregated dataset.
 
 This is useful for:
-
   * going from individual-level data to **household**, **village**, or **region** level,
   * creating datasets of summary statistics for tables or graphs.
 
-#### 2.1 Basic syntax
+Collapse (which simply aggregates data in different ways) is our trickiest concept and syntax that we've dealt with so far, but don't worry, you will have lots of opportunities to practice. The concept is trickiest because the `collapse` function changes not just the content of a variable or multiple variables but changes the structure of the data. It is very easy to get wrong and then end up with data that looks nothing like what you wanted it to be. Examples of what you might use `collapse` for are:
+  * Take crop-level data and collapse it to the plot-level
+  * Take plot-level data and collapse it to the household-level
+  * Take individual-level data and collapse it to the houeshold-level
+  * Take household-level data and collapse it to the state-level
+
+In terms of tricky syntax, well just look at the following:
 
 ```stata
 collapse (stat1) varlist1 (stat2) varlist2 ..., by(groupvars)
 ```
 
-  * `stat1`, `stat2`, … might be `mean`, `sum`, `count`, `median`, etc.
+Here:
+  * `stat1`, `stat2`, ... might be `mean`, `sum`, `count`, `median`, etc. So 
   * `by(groupvars)` tells Stata what the new observations will represent.
 
 #### 2.2 Example: going from individuals to regions
