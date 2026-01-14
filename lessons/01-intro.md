@@ -15,10 +15,6 @@ language: Stata
 
 4\. Watch the Introduction to Stata Video:
 
-<iframe title="Introduction Posit Cloud Video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/5eJ5sdKKi9c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 5\. Watch the two videos on formatting and submitting assignments:
 
-<iframe title="Formatting assignments video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/Inuvup-g090" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-<iframe title="Submitting assignments video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/sv5J1FKMVLE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
