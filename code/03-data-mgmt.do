@@ -131,10 +131,30 @@
 **# exercise 5
 ********************************************************************************
 
+**## 5.1
+	egen			tot_plots = rowtotal(nb_plots nb_fallow_plots)
+	lab var			tot_plots "Total number of plots under household management"
+	sum				tot_plots
+
+**## 5.2
+	egen			meancons_LCU = mean(totcons_LCU), by(cons_quint)
+	lab var			meancons_LCU "Mean consumption per quntile (LCU)"
+	tab				meancons_LCU
+
+**## 5.3
+	egen			max_hdds = max(hdds), by(hh_electricity_access)
+	lab var			max_hdds "Max HDDS by electricity access"
+	bys hh_electricity_access: ///
+						sum				max_hdds
+	
+
+********************************************************************************
+**# exercise 6
+********************************************************************************
 
 
 ********************************************************************************
-**# challenge 1
+**# challenge 3
 ********************************************************************************
 
 * add package loop to project.do - see actual project.do file in code/ folder
