@@ -1,4 +1,4 @@
-* course: 597A
+* course: AAE 497A/597A
 * assignment: 1
 * created on: dec 25
 * created by: jdm
@@ -79,7 +79,7 @@
 	drop if			safewater == .
 	
 **## 3.10
-	save			"lifeexp_no-sw.dta", replace
+	save			"$answ/lifeexp_no-sw.dta", replace
 	
 	
 ********************************************************************************
@@ -158,7 +158,7 @@
 	
 * 7.1
 	twoway			(scatter wage tenure)
-	save			"01-basic-graphs-1.png"
+	save			"$answ/01-basic-graphs-1.png", replace
 	
 * set plotplain as default scheme
 	ssc 			install blindschemes
@@ -166,11 +166,11 @@
 	
 * 7.2
 	twoway			(scatter wage tenure)
-	save			"01-basic-graphs-2.png"
+	save			"$answ/01-basic-graphs-2.png", replace
 	
 * 7.3
 	twoway			(scatter wage tenure) (lfit wage tenure)
-	save			"01-basic-graphs-3.png"
+	save			"$answ/01-basic-graphs-3.png", replace
 	
 
 ********************************************************************************
@@ -183,6 +183,6 @@
 						xtitle("Wages (hourly)") ytitle("Tenure (years)") ///
 						legend( col(2) pos(6))
 						
-	save			"challenge-01.png"
+	save			"$answ/challenge-01.png", replace
 	
 	

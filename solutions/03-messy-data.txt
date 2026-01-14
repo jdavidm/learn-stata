@@ -1,0 +1,11 @@
+There are many right answers. Here are some:
+
+[1] Data is long, not wide
+
+[2] Empty headspace at top of sheet
+
+[3] Not all GDP values are numerica
+
+[4] Variable (column) names are numbers
+
+[5] Information on multiple sheets

@@ -8,7 +8,7 @@ language: Stata
 A lot of real data isn't very tidy, mostly because most scientists aren't taught
 about how to structure their data in a way that is easy to analyze.
 
-Download an untidy version of the [World Bank data on GDP]({{ site.baseurl }}/materials/datasets/), which includes countries, years, and meta data.
+Download an untidy version of the [World Bank data on GDP](https://jdavidm.github.io/learn-stata/materials/datasets/), which includes countries, years, and meta data.
 
 Think about what could be improved about this data and write down answers to the following questions:
 

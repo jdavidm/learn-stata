@@ -22,6 +22,8 @@
 **# 0 - setup
 ******************************************************************
 
+	clear			all
+
 * set $pack to 0 to skip package installation
 	global 			pack 	0
 		
@@ -36,13 +38,15 @@
 
 * Define root folder globals
 	if `"`c(username)'"' == "jdmichler" {
-		global	code	"C:/Users/jdmichler/git/learn-stata"
+		global	code	"C:/Users/jdmichler/git/learn-stata/code"
 		global	data	"C:/Users/jdmichler/dropbox/semester26/data"
+		global	answ	"C:/Users/jdmichler/git/learn-stata/solutions"
 	}
 
 	if `"`c(username)'"' == "jdmic" {
-		global	code	"C:/Users/jdmic/git/learn-stata"
+		global	code	"C:/Users/jdmic/git/learn-stata/code"
 		global	data	"C:/Users/jdmic/dropbox/semester26/data"
+		global	answ	"C:/Users/jdmic/git/learn-stata/solutions"
 	}
 
 
@@ -96,5 +100,5 @@ if $pack == 1 {
 **# 1 - run assignment files
 ************************************************************************
 
-	do				"$code/code/01-intro.do"	
-	do				"$code/code/02-using-stata.do"
+	do				"$code/01-intro.do"	
+	do				"$code/02-using-stata.do"
