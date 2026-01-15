@@ -18,7 +18,7 @@ These operations are the building blocks for going from raw survey data to analy
 
 ### Creating variables
 
-You already know how to use `generate` (`gen`) to make new variables from existing ones. Stata has an "extended generate" (`egen`) command that comes with a number of built in functions that allow you to create variables using calculations that otherwise would be very tedious and verbose to code up. The big advantage of `egen` is that it:
+You already know how to use `gen` to make new variables from existing ones. Stata has an "extended generate" (`egen`) command that comes with a number of built in functions that allow you to create variables using calculations that otherwise would be very tedious and verbose to code up. The big advantage of `egen` is that it:
   * works across **multiple variables in the same row** (e.g., row means),
   * or across **multiple observations** (e.g., group means, counts, ranks).
 The general syntax is:
@@ -34,17 +34,10 @@ Some of the most useful `egen` functions are:
   * `mean()` – group-level mean
   * `sum()` – group-level sum
   * `count()` – number of nonmissing values
-  * `tag()` – mark one observation per group
 
 #### Example: row operations
 
-Suppose you have three exam scores:
-
-```stata
-  describe      test1 test2 test3
-```
-
-Suppose we wanted to calculate the average (or total) score across all three tests. One way to do this is:
+Suppose you have three exam scores (`test1 test2 test3`) and we wanted to calculate the average (or total) score across all three tests. One way to do this is:
 
 
 ```stata
@@ -66,7 +59,7 @@ We can do this same operation using `egen`:
 ```
 
 In this case, the two commands are not that much different. So why use `egen rowmean()` instead of `gen`?
-  * `egen` commands like `rowmean()` **ignores missing values** by default (averages over the nonmissing exams).
+  * `egen` commands like `rowmean()` **ignore missing values** by default (averages over the nonmissing exams).
   * The simple arithmetic version treats missing as missing for the entire expression.
 
 #### Example: group-level statistics with `egen` and `bysort` (`bys`)
@@ -81,7 +74,7 @@ Let's say we wanted to calculate the mean wage by industry:
 Now each worker’s row now includes the mean wage for their industry. We could then calculate each worker's wage deviation from the mean for their industry:
 
 ```stata
-  gen             wage_rel_to_ind = wage - ind_mean_wage
+  gen             wage_diff = wage - ind_mean_wage
 ```
 
 Another useful example is calculating the number of observations per group:
@@ -95,43 +88,27 @@ Now each row contains how many workers are in that industry.
 > Do [Exercise 4.1 - Create Variables]({{ site.baseurl }}/exercises/03-gen-var/)
 
 
-### Aggregating data with `collapse`
+### Aggregating data
 
-`collapse` is used when you want to **replace your dataset with summary statistics**.
-  * It takes your current dataset,
-  * calculates summary statistics (means, sums, etc.),
-  * and **replaces** the data in memory with the aggregated dataset.
+`collapse` is used when you want to **replace** your dataset with summary statistics. It takes your current dataset, calculates summary statistics (means, sums, etc.), and **replaces** the data in memory with the aggregated dataset.
 
 This is useful for:
-  * going from individual-level data to **household**, **village**, or **region** level,
-  * creating datasets of summary statistics for tables or graphs.
+  * Adding up crop-level area data to a plot-level value for the size of the plot
+  * Averaging plot-level yield data to a household-level value for average yield
+  * Counting household members in individual-level data to a houeshold-level value for the number of people in a household
+  * Determining the maximum income of a household in household-level data aat the state-level
 
-Collapse (which simply aggregates data in different ways) is our trickiest concept and syntax that we've dealt with so far, but don't worry, you will have lots of opportunities to practice. The concept is trickiest because the `collapse` function changes not just the content of a variable or multiple variables but changes the structure of the data. It is very easy to get wrong and then end up with data that looks nothing like what you wanted it to be. Examples of what you might use `collapse` for are:
-  * Take crop-level data and collapse it to the plot-level
-  * Take plot-level data and collapse it to the household-level
-  * Take individual-level data and collapse it to the houeshold-level
-  * Take household-level data and collapse it to the state-level
-
-In terms of tricky syntax, well just look at the following:
+Collapse (which simply aggregates/summarizes data in different ways) is our trickiest concept and syntax that we've dealt with so far. The concept is trickiest because the `collapse` function changes not just the content of a variable or multiple variables but changes the structure of the data. It is very easy to get wrong and then end up with data that looks nothing like what you wanted it to be. In terms of tricky syntax, well just look at the following:
 
 ```stata
 collapse (stat1) varlist1 (stat2) varlist2 ..., by(groupvars)
 ```
 
 Here:
-  * `stat1`, `stat2`, ... might be `mean`, `sum`, `count`, `median`, etc. So 
+  * `stat1`, `stat2`, ... might be `mean`, `sum`, `count`, `median`, etc. 
   * `by(groupvars)` tells Stata what the new observations will represent.
 
-#### 2.2 Example: going from individuals to regions
-
-Suppose you start with individual-level data:
-
-```stata
-  list           id region wage in 1/6, sepby(region)
-```
-
-You want one row per region, with:
-
+Suppose you start with individual-level data (each row represents data on an individual). You want one row per region, with:
   * mean wage in the region,
   * number of individuals in the region.
 
@@ -142,120 +119,86 @@ You want one row per region, with:
   rename        id N
   lab var       wage "Mean wage in region"
   lab var       N "Number of individuals in region"
-
-list
 ```
 
 After `collapse`:
+  * each row is now one region,
+  * `wage` is the mean wage in that region,
+  * `N` is the number of individuals you started with in that region.
 
-  * each row is now **one region**,
-  * `wage` is the **mean wage** in that region,
-  * `N` is the **number of individuals** you started with in that region.
+It is important to remember that `collapse` **overwrites your data!!** After `collapse`, your original individual-level data are **gone from memory**. But, as long as you are not overwriting the raw data, and you are writing reproducible code, you can always get back to what the data looked like before you collapsed it.
 
-It is important to remember that **`collapse` overwrites your data!!** After `collapse`, your original individual-level data are **gone from memory**. But, as long as you are not overwrighting the raw data, and you are writing reproducible code, you can always get back to what the data looked like before you collapsed it.
+> Do [Exercise 6 - Change Variables]({{ site.baseurl }}/exercises/03-chg-var/)
 
----
 
-### 3. Appending datasets with `append`
+### Appending datasets
 
-`append` is used to **stack datasets on top of each other** (add more rows).
+We frequently want to combine one data set with another. The `append` command is used to **stack datasets on top of each other** (add more rows).
 
-Think:
+Think of:
+  * survey rounds in different years
+  * data from different regions with the same variables
+  * files that have been split because they were too large
 
-  * survey rounds in different years,
-  * data from different regions with the same variables,
-  * files that have been split because they were too large.
+When combining any two data sets in any way, it is important to understand how Stata views each data set, because that will tell you how Stata will resolve conflicts. Whatever data set is currently loaded into Stata (referred to as being "in memory") is the **master** data set. The dataset you add is the **using** dataset (referred to as being "on disk"). After `append`, you have all rows from master plus all rows from using.
 
-#### 3.1 Concept
-
-  * The dataset in memory is the **master** dataset.
-  * The dataset(s) you add are the **using** dataset(s).
-  * After `append`, you have all rows from master **plus** all rows from using.
-
-#### 3.2 Basic syntax
+The basic syntax of append is
 
 ```stata
-use "survey_2020.dta", clear   // master data in memory
-append using "survey_2021.dta" // add rows from using data
+  use           "survey_2020.dta", clear   // master data in memory
+  append        using "survey_2021.dta" // add rows from using data on disk
 ```
 
-After this:
+After this all observations from 2020 and 2021 are in a single dataset. If both files had all the same variables and types, everything will line up nicely. But what if the two datasets don’t have exactly the same variables?
+  * If a variable exists **only in master**, then observations from `using` will have that variable as **missing**
+  * If a variable exists **only in using**, then observations from `master` will have that variable as **missing**.
+  * If a variable has the **same name but different type** (numeric vs string), then Stata will **error**. You must fix the types before appending.
 
-  * all observations from 2020 and 2021 are in a single dataset.
-  * If both files had the same variables and types, they will line up nicely.
+> Do [Exercise 7 - Append Data]({{ site.baseurl }}/exercises/03-append/)
 
-#### 3.3 Variables that don’t match
 
-What if the two datasets don’t have exactly the same variables?
+###  Merging datasets
 
-  * If a variable exists **only in master**:
-    * observations from `using` will have that variable as **missing**.
-  * If a variable exists **only in using**:
-    * observations from `master` will have that variable as **missing**.
-  * If a variable has the **same name but different type** (numeric vs string):
-    * Stata will **error**. You must fix the types before appending.
+While append adds observations (rows), the `merge` command adds variables (columns) by joining two datasets on one or more **key variables**. Understand what this key variable is and how it structures the data is incredibly important because otherwise you might not be able to merge or you might merge in such a way that fundamentally changes the structure of your data. As with `append`, the dataset currently loaded into Stata is the one in memory (master) while the other data set is the using (on disk) data.
 
-#### 3.4 Tracking where observations came from
+There are three types of merges:
+  * one-to-one (`1:1`): each key appears at most once in the master and once in the using
+  * one-to-many (`1:m`): one row per key in the master but many rows per key in the using
+    * merging household data (using) into state-level data (master) - many households in a given state
+  * many-to-one (`m:1`): many rows in the master per key but only one row per key in the using
+    * merging household data (using) into plot-level data (master) - one household manages many plots
 
-It is often useful to know which dataset each observation came from.
+#### Example: one-to-one (`1:1`) merge
+
+Goal: link baseline and endline survey for the same households.
+  * `baseline.dta` – one row per `hhid` at baseline.
+  * `endline.dta` – one row per `hhid` at endline.
+
+The key here is the `hhid` variable. This variable must uniquely identify each row in both data sets. So, each row in the data represents information on a household. And each household is assigned a unique `hhid`. That way, we can perfectly identify which row of data corresponds to which household. We can find the unique id in a data set by using the `isid` command (but more on that later).
 
 ```stata
-use "survey_2020.dta", clear
-append using "survey_2021.dta", generate(source)
+  use           "baseline.dta", clear
+  merge 1:1     hhid using "endline.dta"
 ```
 
-  * Stata creates a new variable `source`:
-    * `source == 0` for observations from the master (2020),
-    * `source == 1` for observations from the using dataset (2021).
+When you merge, Stata creates a new variable (`_merge`) that identifies which rows merged and which didn't and the source (master or using) of those rows. It also automatically outputs a results table:
 
-You can label it:
+Result                           # of obs.
+    -----------------------------------------
+    Not matched                          125
+        from master     (_merge==1)       40  
+        from using      (_merge==2)       85  
 
-```stata
-label define source_lbl 0 "2020 survey" 1 "2021 survey"
-label values source source_lbl
-label variable source "Source survey year"
-```
+    Matched                             1,875
+        from both       (_merge==3)    1,875
+    -----------------------------------------
+    
+Again:
 
-You can also append multiple datasets in one go:
+  * Check `_merge` to see which households are only in baseline, only in endline, or in both.
+  * Decide which ones to keep.
 
-```stata
-use "survey_2019.dta", clear
-append using "survey_2020.dta" "survey_2021.dta", generate(source)
-```
-
----
-
-### 4. Merging datasets with `merge`
-
-`merge` is used to **add variables (columns)** to your data by joining two datasets on one or more **key variables**.
-
-Compare:
-
-  * `append` → more **rows** (stack datasets).
-  * `merge` → more **columns** (combine information about the same units).
-
-#### 4.1 Master vs using
-
-As with `append`:
-
-  * Dataset in memory = **master**.
-  * Dataset on disk = **using**.
-
-We merge them based on one or more key variables (e.g., `id`, `hhid`, `region`).
-
-#### 4.2 Types of merges
-
-Most common in applied work:
-
-  * **one-to-one (`1:1`)**  
-    * each key appears at most once in master and once in using.
-  * **many-to-one (`m:1`)**  
-    * many rows in master per key, one row per key in using.
-    * Example: household data (many households per region) merged with region data (one row per region).
-
-Stata also supports `1:m` and `m:m`, but `m:m` is almost never what you want and is dangerous. In this class we’ll mostly use `1:1` and `m:1`.
-
-#### 4.3 Example: many-to-one (`m:1`) merge
+#### Example: many-to-one (`m:1`) merge
 
 Goal: add region-level data to household-level data.
 
@@ -295,24 +238,7 @@ keep if _merge == 3
 drop _merge
 ```
 
-#### 4.4 Example: one-to-one (`1:1`) merge
-
-Goal: link baseline and endline survey for the same households.
-
-  * `baseline.dta` – one row per `hhid` at baseline.
-  * `endline.dta` – one row per `hhid` at endline.
-
-```stata
-use "baseline.dta", clear
-merge 1:1 hhid using "endline.dta"
-```
-
-Again:
-
-  * Check `_merge` to see which households are only in baseline, only in endline, or in both.
-  * Decide which ones to keep.
-
-#### 4.5 What happens to variables with the same name?
+#### What happens to variables with the same name?
 
 If a variable with the **same name** exists in both master and using:
 
@@ -357,3 +283,6 @@ isid region
 ```
 
 If `isid` fails, your merge assumptions are wrong and you should fix the keys or data.
+
+
+> Do [Exercise 8 - Merge Data]({{ site.baseurl }}/exercises/03-merge/)
