@@ -16,5 +16,6 @@ language: Stata
 4\. Watch the Introduction to Stata Video:
 
 
-5\. Watch the two videos on formatting and submitting assignments:
+5\. Watch the two videos on submitting assignments:
 
+<iframe title="Submitting Assignments with Github Desktop" width="560" height="315" src="https://www.youtube.com/embed/DsGj8gpF1ng?si=3_0P26_Hhyl7Xep9" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
