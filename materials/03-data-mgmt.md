@@ -85,7 +85,7 @@ bys industry:     egen n_industry = count(wage)
 
 Now each row contains how many workers are in that industry.
 
-> Do [Exercise 4.1 - Create Variables]({{ site.baseurl }}/exercises/03-gen-var/)
+> Do [Exercise 5.1 - Create Variables]({{ site.baseurl }}/exercises/03-gen-var/)
 
 
 ### Aggregating data
@@ -183,6 +183,7 @@ The key here is the `hhid` variable. This variable must uniquely identify each r
 
 When you merge, Stata creates a new variable (`_merge`) that identifies which rows merged and which didn't and the source (master or using) of those rows. It also automatically outputs a results table:
 
+```stata
 Result                           # of obs.
     -----------------------------------------
     Not matched                          125
@@ -192,16 +193,13 @@ Result                           # of obs.
     Matched                             1,875
         from both       (_merge==3)    1,875
     -----------------------------------------
-    
-Again:
+```
 
-  * Check `_merge` to see which households are only in baseline, only in endline, or in both.
-  * Decide which ones to keep.
+With this information you can see how successful your merge was. You can check `_merge` to see which households are only in baseline, only in endline, or in both. Then you can decide which ones to keep. In most cases you will end up dropping anything that didn't match for both (`drop if _merge != 3`) but there are cases where you will want to keep some or all of the unmatched observations.
 
 #### Example: many-to-one (`m:1`) merge
 
 Goal: add region-level data to household-level data.
-
   * `households.dta` – household-level data, one row per household, includes `region`.
   * `region_data.dta` – region-level data, one row per region, includes `region`.
 
