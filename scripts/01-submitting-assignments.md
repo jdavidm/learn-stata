@@ -8,7 +8,7 @@ First, once you think you’re done with an assignment, **do not** jump straight
 
 Instead, go to:
 
-👉 `jdavidm.github.io/learn-stata/materials/turn-in-checklist/`
+`jdavidm.github.io/learn-stata/materials/turn-in-checklist/`
 
 [On screen: open this page in a browser.]
 

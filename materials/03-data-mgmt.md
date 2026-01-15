@@ -5,6 +5,7 @@ title: Manipulating Data
 language: Stata
 ---
 
+### Manipulating Data
 
 A lot of applied economics work is about **reshaping and combining data** so that you can run the analysis you care about. This can involve:
   * Replacing the value of existing variables (`replace`)
@@ -13,7 +14,7 @@ A lot of applied economics work is about **reshaping and combining data** so tha
   * Stacking datasets (`append`)
   * Joining datasets (`merge`)
   
-  These operations are the building blocks for going from raw survey data to analysis-ready panels, combining different data sources, and creating the summary datasets used in tables and figures.
+These operations are the building blocks for going from raw survey data to analysis-ready panels, combining different data sources, and creating the summary datasets used in tables and figures.
 
 ### Creating variables
 
@@ -126,7 +127,7 @@ Here:
 Suppose you start with individual-level data:
 
 ```stata
-list id region wage in 1/6, sepby(region)
+  list           id region wage in 1/6, sepby(region)
 ```
 
 You want one row per region, with:
@@ -135,10 +136,12 @@ You want one row per region, with:
   * number of individuals in the region.
 
 ```stata
-collapse (mean) wage (count) id, by(region)
-rename id N
-label variable wage "Mean wage in region"
-label variable N "Number of individuals in region"
+  collapse      (mean) wage ///
+                (count) id, by(region)
+
+  rename        id N
+  lab var       wage "Mean wage in region"
+  lab var       N "Number of individuals in region"
 
 list
 ```
@@ -149,39 +152,7 @@ After `collapse`:
   * `wage` is the **mean wage** in that region,
   * `N` is the **number of individuals** you started with in that region.
 
-#### 2.3 Multiple statistics at once
-
-You can compute several statistics at the same time:
-
-```stata
-collapse (mean) wage hours (sd) wage, by(region)
-```
-
-Now you have:
-
-  * `wage` = mean wage
-  * `hours` = mean hours
-  * `wage_sd` (Stata will name it `wage_sd`) = standard deviation of wage
-
-#### 2.4 Important: `collapse` overwrites your data
-
-After `collapse`, your original individual-level data are **gone from memory**.
-
-Good habits:
-
-  * Either:
-    * run `collapse` in a do-file that starts by reloading the raw data, **or**
-    * use `preserve` and `restore`:
-
-```stata
-preserve
-collapse (mean) wage, by(region)
-* Use the collapsed data (e.g., export it, make graphs)
-restore
-```
-
-  * `preserve` stores the current dataset in memory;
-  * `restore` brings it back after you’re done with the aggregated version.
+It is important to remember that **`collapse` overwrites your data!!** After `collapse`, your original individual-level data are **gone from memory**. But, as long as you are not overwrighting the raw data, and you are writing reproducible code, you can always get back to what the data looked like before you collapsed it.
 
 ---
 
@@ -386,20 +357,3 @@ isid region
 ```
 
 If `isid` fails, your merge assumptions are wrong and you should fix the keys or data.
-
----
-
-### 5. Summary: what each command does
-
-  * **`gen`** – create a new variable from an expression, one row at a time.
-  * **`egen`** – extended generate; row-wise operations and group-level statistics.
-  * **`collapse`** – replace the dataset with summary statistics, often by group.
-  * **`append`** – stack datasets vertically (add more rows).
-  * **`merge`** – join datasets horizontally (add more columns) based on key variables.
-
-These are the core tools for turning raw data into something you can use for applied economic analysis. In the assignments, you’ll practice:
-
-  * creating new variables with `gen` and `egen`,
-  * aggregating with `collapse`,
-  * combining multiple files with `append` and `merge`,
-  * and checking that the resulting datasets make sense.
