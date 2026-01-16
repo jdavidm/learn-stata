@@ -105,13 +105,13 @@ All code submitted for grading **must** follow this course's [house style]({{ si
 Graduate students are expected to complete a replication project in which they replicate the results in a published paper. Students will log their work on the [Social Science Reproduction Platform](https://www.socialsciencereproduction.org/).
 
 ### Final Exam Policy
-Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
+Final exam in which you will be given buggy and inefficient code that you will need to debug and improve upon. Policies and scheduling of final exam can be found at [https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination](https://registrar.arizona.edu/faculty-staff-resources/room-course-scheduling/schedule-classes/final-exams/final-examination).
 
 ### Attendance Policy
 Attendance will not be taken or factor into the grades for this class. However, experience suggests that students who regularly miss class often struggle to learn the material.
 
 ## Grading Policies
-The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal, grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester.
+The goal of grading in this class is to encourage practice, which is crucial to learning computing skills. Given that goal, grading is based on weekly (equally weighted) assignments, with the focus of each assignment on practicing new material learned each week and reinforcing information learned earlier in the semester. Assignments due 11:59 the day before class (Thursday night)
 
 Because the goal is practice, exercises in assignments will be graded as follows:
 
