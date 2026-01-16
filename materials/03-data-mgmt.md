@@ -177,7 +177,10 @@ Goal: link baseline and endline survey for the same households.
 The key here is the `hhid` variable. This variable must uniquely identify each row in both data sets. So, each row in the data represents information on a household. And each household is assigned a unique `hhid`. That way, we can perfectly identify which row of data corresponds to which household. We can find the unique id in a data set by using the `isid` command (but more on that later).
 
 ```stata
+* master: baseline household data
   use           "baseline.dta", clear
+
+* merge in endline household data
   merge 1:1     hhid using "endline.dta"
 ```
 
@@ -186,7 +189,7 @@ When you merge, Stata creates a new variable (`_merge`) that identifies which ro
 ```stata
 Result                           # of obs.
     -----------------------------------------
-    Not matched                          125
+    Not matched                           125
         from master     (_merge==1)       40  
         from using      (_merge==2)       85  
 
@@ -203,81 +206,32 @@ Goal: add region-level data to household-level data.
   * `households.dta` – household-level data, one row per household, includes `region`.
   * `region_data.dta` – region-level data, one row per region, includes `region`.
 
-```stata
-* Master: household data
-use "households.dta", clear
-
-* Merge in region characteristics
-merge m:1 region using "region_data.dta"
-```
-
-Stata will:
-
-  * match observations where `region` is the same in both datasets,
-  * add the region variables to each household in that region,
-  * create a variable called `_merge` that records **how** each observation matched.
-
-Check the merge results:
+Again, the key here is what variable you use as the key. Assume each household lives in a region and there is a unique identifier for each region. So, in the household data, the value that `region` takes uniquely tells us what region a household lives in. But there will be many instances of the single value, since multiple households live in each unique region. But in the region data, there is only one row per region, and therefore the value of `region` uniquely identifies the region and the unit record (row). To merge these, you would tell Stata:
 
 ```stata
-tabulate _merge
+* naster: household data
+  use           "households.dta", clear
+
+* merge in region characteristics
+  merge m:1     region using "region_data.dta"
 ```
 
-Common `_merge` values:
+Stata will match observations where `region` is the same in both datasets by adding the region variables to each household in that region. It will also create a variable called `_merge` that records **how** each observation matched, just like before.
 
-  * `1` – observation only in master (no match in using)
-  * `2` – observation only in using (no match in master)
-  * `3` – observation in both (matched)
+In understanding how `merge` can change your data, it is important to remember (or note down in a Stata comment `*`) the number of observations in the master data and the using data pre-merge and then again post-merge. In our many-to-one example, assuming we have data on each region, the number of observations post-merge should not exceed the number of observations pre-merge. But, if we merged one-to-many (we merged household data **into** the region data) we sould suddenly have a much larger data set then the pre-merge region data set, because we've duplicated each of the region observations for every household in that region.
 
-Often we keep only matched observations:
+#### Other considerations
 
-```stata
-keep if _merge == 3
-drop _merge
-```
+What happens to variables with the same name? If a variable with the same name exists in both master and using Stata keeps the master version, and renames the using version `varname_using`. If both datasets have `wage`, then after merge you will see `wage` (from master) and `wage_using` (from using). You need to decide which one to keep and whether to check that they agree.
 
-#### What happens to variables with the same name?
-
-If a variable with the **same name** exists in both master and using:
-
-  * Stata keeps the master version,
-  * and renames the using version `varname_using`.
-
-Example:
-
-  * Both datasets have `wage`.
-  * After merge you will see `wage` (from master) and `wage_using` (from using).
-
-You need to decide:
-
-  * which one to keep,
-  * whether to check that they agree.
-
-Example:
-
-```stata
-summarize wage wage_using
-drop wage_using   // if you decide to keep the master version
-```
-
-#### 4.6 Keys and data quality
-
-Merges are only as good as your key variables.  
-Good habits:
-
-  * Make sure your key uniquely identifies observations when it’s supposed to.
-  * For `1:1` merges, check uniqueness:
-
-```stata
-use "baseline.dta", clear
-isid hhid   // checks whether hhid uniquely identifies observations
-```
-
+Merges are only as good as your key variables. So it is a very good habit to:
+  * Make sure your key uniquely identifies observations when it’s supposed to
+  * For `1:1` merges, check uniqueness in both data sets using `isid`
   * For `m:1` merges, check uniqueness in the **using** dataset:
 
 ```stata
-use "region_data.dta", clear
-isid region
+  use         "baseline.dta", clear
+  isid        hhid   // checks whether hhid uniquely identifies observations
 ```
 
 If `isid` fails, your merge assumptions are wrong and you should fix the keys or data.
