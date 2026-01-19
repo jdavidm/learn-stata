@@ -5,7 +5,39 @@ title: Label Variables
 language: Stata
 ---
 
-Download the World Bank's Living Standards Measurement Survey (LSMS) [household data set](https://jdavidm.github.io/learn-stata/materials/datasets/).
+Download the World Bank's Living Standards Measurement Survey (LSMS) [household data set](https://jdavidm.github.io/learn-stata/materials/datasets/). The data includes the following variables (among others):
+
+- **Identifiers & structure**
+  - `country` – country code  
+  - `wave` – survey wave (e.g., 1, 2)  
+  - `hhid` – household ID  
+  - `eaid` – enumeration area ID (cluster)  
+  - `season` – season of interview (e.g., lean, harvest)  
+
+- **Location**
+  - `urban` – urban (=1) or rural (=0)  
+  - `admin_1`, `admin_2`, `admin_3` – administrative units  
+  - `lat_modified`, `lon_modified` – household GPS coordinates  
+  - `geocoords_id` – identifier for GPS cluster  
+
+- **Household characteristics**
+  - `hh_size` – household size (number of members)  
+  - `hh_shock` – indicator that hh experienced a shock  
+  - `hh_primary_education` – indicator: head has at least primary schooling  
+  - `hh_electricity_access` – indicator: hh has electricity  
+  - `hh_dependency_ratio` – dependents / working-age members  
+  - `hh_formal_education` – years of formal education of the head  
+  - `nonfarm_enterprise` – indicator: household runs a nonfarm enterprise  
+  - `nb_fallow_plots` – number of fallow plots  
+  - `nb_plots` – total number of plots  
+  - `share_kg_sold` – share of agricultural production sold  
+
+- **Welfare**
+  - `totcons_LCU` – total consumption (local currency)  
+  - `totcons_USD` – total consumption (USD)  
+  - `cons_quint` – consumption quintile (1 = poorest, 5 = richest)  
+  - `hh_asset_index` – asset index  
+  - `hdds` – household dietary diversity score  
 
 Apply the following labels to the corresponding variable
 

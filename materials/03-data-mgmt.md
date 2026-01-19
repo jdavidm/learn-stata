@@ -145,8 +145,11 @@ When combining any two data sets in any way, it is important to understand how S
 The basic syntax of append is
 
 ```stata
-  use           "survey_2020.dta", clear   // master data in memory
-  append        using "survey_2021.dta" // add rows from using data on disk
+* master data in memory
+  use           "survey_2020.dta", clear
+
+* add rows from using data on disk
+  append        using "survey_2021.dta"
 ```
 
 After this all observations from 2020 and 2021 are in a single dataset. If both files had all the same variables and types, everything will line up nicely. But what if the two datasets don’t have exactly the same variables?
@@ -177,10 +180,10 @@ Goal: link baseline and endline survey for the same households.
 The key here is the `hhid` variable. This variable must uniquely identify each row in both data sets. So, each row in the data represents information on a household. And each household is assigned a unique `hhid`. That way, we can perfectly identify which row of data corresponds to which household. We can find the unique id in a data set by using the `isid` command (but more on that later).
 
 ```stata
-* master: baseline household data
+* master data in memory
   use           "baseline.dta", clear
 
-* merge in endline household data
+* add columns from using data on disk
   merge 1:1     hhid using "endline.dta"
 ```
 
@@ -225,13 +228,18 @@ In understanding how `merge` can change your data, it is important to remember (
 What happens to variables with the same name? If a variable with the same name exists in both master and using Stata keeps the master version, and renames the using version `varname_using`. If both datasets have `wage`, then after merge you will see `wage` (from master) and `wage_using` (from using). You need to decide which one to keep and whether to check that they agree.
 
 Merges are only as good as your key variables. So it is a very good habit to:
-  * Make sure your key uniquely identifies observations when it’s supposed to
-  * For `1:1` merges, check uniqueness in both data sets using `isid`
-  * For `m:1` merges, check uniqueness in the **using** dataset:
+  * Check for a variable(s) that uniquely identify the data **every time you load data**
+  * Verify which variable(s) uniquely identify the data **every time you save data**
+This helps make sure your key uniquely identifies observations when it’s supposed to, which is import any time you change the structure of the data by
+  * Collapsing
+  * Appending
+  * Merging
 
 ```stata
   use         "baseline.dta", clear
-  isid        hhid   // checks whether hhid uniquely identifies observations
+
+* check whether hhid uniquely identifies observations
+  isid        hhid
 ```
 
 If `isid` fails, your merge assumptions are wrong and you should fix the keys or data.
