@@ -152,24 +152,83 @@
 **# exercise 6
 ********************************************************************************
 
+* save household data
+	save			"$data/household_all.dta", replace
+
 * collapse data to EA level
 	collapse		(mean) hh_size totcons_USD ///
 						(percent) hh_electricity_access nonfarm_enterprise, ///
 						by(eaid sector)
-					
+		
+* rename variables
+	rename			hh_size ea_hh_size
+	rename			totcons_USD ea_totcons_USD
+	rename			hh_electricity_access ea_electricity_access 
+	rename			nonfarm_enterprise ea_nonfarm_enterprise
+		
 **## 6.1
-	bys sector:		sum hh_size
+	bys sector:		sum ea_hh_size
 					
 **## 6.2
-	bys sector:		sum hh_electricity_access
+	bys sector:		sum ea_electricity_access
 					
 **## 6.3
-	bys sector:		sum nonfarm_enterprise
+	bys sector:		sum ea_nonfarm_enterprise
 					
 **## 6.4
-	bys sector:		sum totcons_USD
+	bys sector:		sum ea_totcons_USD
+
+* save file
+	save			"$data/ea_summary.dta", replace
 
 
+********************************************************************************
+**# exercise 7
+********************************************************************************
+
+**## 7.1
+	
+* load data
+	use				"$data/household_all.dta", clear
+
+* keep only wave 1
+	keep if			wave == 1
+	
+* save new file
+	save			"$data/hh_wave1.dta", replace
+
+**## 7.2
+
+* load data
+	use				"$data/household_all.dta", clear
+
+* keep only wave 2
+	keep if			wave == 2
+	
+* save new file
+	save			"$data/hh_wave2.dta", replace
+	
+**## 7.3
+	append			using "$data/hh_wave1.dta"
+
+	
+********************************************************************************
+**# exercise 8
+********************************************************************************
+
+* load data
+	use				"$data/ea_summary.dta", clear
+
+**## 8.1
+	isid			eaid sector
+	
+**## 8.2
+	merge 1:m		eaid sector using "$data/household_all.dta"
+	
+	
+**## 8.3
+	gen				cons_gap = totcons_USD - EA_totcons_USD
+	
 ********************************************************************************
 **# challenge 3
 ********************************************************************************

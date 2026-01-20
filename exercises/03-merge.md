@@ -5,81 +5,17 @@ title: Merge Data
 language: Stata
 ---
 
-Using the World Bank's LSMS data, 
+Using the World Bank's LSMS data, we are going to practice merging datasets that represent different levels of aggregation (EA-level and household-level). Start by loading the `ea_summary.dta` file that you created in exercise 6. This will be the **master** file in memory.
 
+1\. Use `isid` to determine what variable(s) uniquely identify the data. What are these variable(s)?
 
-
-## Part 3 – `merge` Household Data with EA-Level Summaries
-
-**Goal:** Practice merging datasets that represent different levels of aggregation (EA-level and household-level).
-
-You will:
-
-1. Start from the appended household-level data `hh_allwaves.dta`.  
-2. Merge it with the EA-level summary dataset `ea_summary.dta` you created in Part 1.
-
----
-
-### Step 1 – Ensure EA summary dataset is available
-
-If `ea_summary.dta` already exists from Part 1 and has the correct variables, you can skip re-creating it. Otherwise:
-
-1. Re-open `hh_survey.dta` (or `hh_allwaves.dta` if appropriate).  
-2. Run the `collapse` command from Part 1 again to generate `ea_summary.dta` with at least:
-
-   - `eaid`  
-   - `urban`  
-   - `mean_hh_size`  
-   - `mean_dep_ratio`  
-   - `share_electricity`  
-   - `share_nonfarm`  
-   - `mean_totcons_usd`  
-
----
-
-### Step 2 – Open the household-level data
-
-1. Open the appended data:
-
-   ```stata
-   use "hh_allwaves.dta", clear
-   ```
-
-2. Inspect the variables `eaid` and `urban`; you will use these as **merge keys**.
-
----
-
-### Step 3 – Merge EA-level summaries into the household data
-
-Think through the structure:
-
+Think through the structure of the EA and household data:
+- In the **EA summary** dataset, each `eaid`–`sector` combination should appear **once**.
 - In the **household** dataset, each `eaid` appears many times (one row per household).  
-- In the **EA summary** dataset, each `eaid`–`urban` combination should appear **once**.
 
-This suggests a **many-to-one** merge: many households per EA, one EA-level summary per EA.
+This suggests a **one-to-many** merge: many households per EA, one EA-level summary per EA. Now merge the household data into the EA data.
 
-1. Run the merge:
-
-   ```stata
-   merge m:1 eaid urban using "ea_summary.dta"
-   ```
-
-2. Inspect the merge results using the `_merge` variable created by Stata:
-
-   ```stata
-   tab _merge
-   ```
-
-3. Confirm that:
-
-   - Most observations are `"matched"` (usually coded as 3).  
-   - There are no unexpected `master only` or `using only` observations (or explain any that appear).
-
-4. After verification, drop `_merge`:
-
-   ```stata
-   drop _merge
-   ```
+2\. How many matched and unmatched observations are there?
 
 ---
 
