@@ -6,6 +6,7 @@
 * edited by: jdm
 * Stata v.19.5
 
+	clear			all
 
 ********************************************************************************
 **# exercise 1
@@ -158,7 +159,7 @@
 	
 **## 7.1
 	twoway			(scatter wage tenure)
-	save			"$answ/01-basic-graphs-1.png", replace
+	graph export 	"$answ/01-basic-graphs-1.png", replace
 	
 * set plotplain as default scheme
 	ssc 			install blindschemes
@@ -166,11 +167,11 @@
 	
 **## 7.2
 	twoway			(scatter wage tenure)
-	save			"$answ/01-basic-graphs-2.png", replace
+	graph export 	"$answ/01-basic-graphs-2.png", replace
 	
 **## 7.3
 	twoway			(scatter wage tenure) (lfit wage tenure)
-	save			"$answ/01-basic-graphs-3.png", replace
+	graph export 	"$answ/01-basic-graphs-3.png", replace
 	
 
 ********************************************************************************

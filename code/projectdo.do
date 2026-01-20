@@ -39,13 +39,13 @@
 * Define root folder globals
 	if `"`c(username)'"' == "jdmichler" {
 		global	code	"C:/Users/jdmichler/git/learn-stata/code"
-		global	data	"C:/Users/jdmichler/dropbox/semester26/data"
+		global	data	"C:/Users/jdmichler/dropbox/teaching/AAE 597/data"
 		global	answ	"C:/Users/jdmichler/git/learn-stata/solutions"
 	}
 
 	if `"`c(username)'"' == "jdmic" {
 		global	code	"C:/Users/jdmic/git/learn-stata/code"
-		global	data	"C:/Users/jdmic/dropbox/semester26/data"
+		global	data	"C:/Users/jdmic/dropbox/teaching/AAE 597/data"
 		global	answ	"C:/Users/jdmic/git/learn-stata/solutions"
 	}
 
@@ -102,3 +102,4 @@ if $pack == 1 {
 
 	do				"$code/01-intro.do"	
 	do				"$code/02-using-stata.do"
+	do				"$code/03-data-mgmt.do"

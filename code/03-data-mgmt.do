@@ -2,7 +2,7 @@
 * assignment: 2
 * created on: dec 25
 * created by: jdm
-* edited on: 23 dec 25
+* edited on: 20 jan 26
 * edited by: jdm
 * Stata v.19.5
 
@@ -137,9 +137,9 @@
 	sum				tot_plots
 
 **## 5.2
-	egen			meancons_LCU = mean(totcons_LCU), by(cons_quint)
-	lab var			meancons_LCU "Mean consumption per quntile (LCU)"
-	tab				meancons_LCU
+	egen			meancons_USD = mean(totcons_USD), by(cons_quint)
+	lab var			meancons_USD "Mean consumption per quntile (USD)"
+	tab				meancons_USD
 
 **## 5.3
 	egen			max_hdds = max(hdds), by(hh_electricity_access)
@@ -151,6 +151,23 @@
 ********************************************************************************
 **# exercise 6
 ********************************************************************************
+
+* collapse data to EA level
+	collapse		(mean) hh_size totcons_USD ///
+						(percent) hh_electricity_access nonfarm_enterprise, ///
+						by(eaid sector)
+					
+**## 6.1
+	bys sector:		sum hh_size
+					
+**## 6.2
+	bys sector:		sum hh_electricity_access
+					
+**## 6.3
+	bys sector:		sum nonfarm_enterprise
+					
+**## 6.4
+	bys sector:		sum totcons_USD
 
 
 ********************************************************************************
