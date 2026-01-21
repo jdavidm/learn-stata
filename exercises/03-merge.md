@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Data Management
-title: Merge Data
+title: Challenge 3
 language: Stata
 ---
 
@@ -17,47 +17,10 @@ This suggests a **one-to-many** merge: many households per EA, one EA-level summ
 
 2\. How many matched and unmatched observations are there?
 
----
-
-### Step 4 – Use the merged data for a simple analysis
-
 Now each household observation contains both:
-
 - Household-level variables (e.g., `totcons_USD`, `hh_dependency_ratio`), and  
 - EA-level averages (`mean_totcons_usd`, `mean_dep_ratio`, etc.).
 
-1. **Create a consumption gap variable**
+3\. Create a consumption gap variable called `cons_gap` that is total household consumption (USD) minus mean consumption at the EA. This measures how much a household’s consumption differs from the average consumption in its EA. Is the consumption gap larger for rural households or urban households?
 
-   ```stata
-   gen cons_gap = totcons_USD - mean_totcons_usd
-   ```
-
-   This measures how much a household’s consumption differs from the **average consumption in its EA**.
-
-2. **Compare urban vs rural patterns**
-
-   For **urban** and **rural** households separately:
-
-   - Compute the mean of `cons_gap`.  
-   - Compute the mean of `hh_dependency_ratio` and `mean_dep_ratio`.
-
-   You may find commands like this useful:
-
-   ```stata
-   by urban: summarize cons_gap hh_dependency_ratio mean_dep_ratio
-   ```
-
-   or
-
-   ```stata
-   tabstat cons_gap hh_dependency_ratio mean_dep_ratio, by(urban) statistics(mean)
-   ```
-
-3. **Short interpretation**
-
-   In comments in your `.do` file or a separate markdown file, briefly answer:
-
-   - Do households in richer EAs (higher `mean_totcons_usd`) tend to have higher or lower own consumption relative to their EA mean (`cons_gap`)?  
-   - Is there any visible difference in this pattern between urban and rural households?
-
----
+**Save this merged data set as `household_ea.dta`.

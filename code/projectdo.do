@@ -41,12 +41,14 @@
 		global	code	"C:/Users/jdmichler/git/learn-stata/code"
 		global	data	"C:/Users/jdmichler/dropbox/teaching/AAE 597/data"
 		global	answ	"C:/Users/jdmichler/git/learn-stata/solutions"
+		global	logout	"C:/Users/jdmichler/dropbox/teaching/AAE 597/logs"
 	}
 
 	if `"`c(username)'"' == "jdmic" {
 		global	code	"C:/Users/jdmic/git/learn-stata/code"
 		global	data	"C:/Users/jdmic/dropbox/teaching/AAE 597/data"
 		global	answ	"C:/Users/jdmic/git/learn-stata/solutions"
+		global	logout	"C:/Users/jdmichler/dropbox/teaching/AAE 597/logs"
 	}
 
 

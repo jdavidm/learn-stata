@@ -6,6 +6,9 @@
 * edited by: jdm
 * Stata v.19.5
 
+* open log
+	cap log 		close
+	log using		"$logout/02-using-stata", append
 	
 ********************************************************************************
 **# exercise 1
@@ -149,7 +152,7 @@
 
 
 ********************************************************************************
-**# challenge 1
+**# challenge 2
 ********************************************************************************
 
 * add package loop to project.do - see actual project.do file in code/ folder

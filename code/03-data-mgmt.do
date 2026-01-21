@@ -5,7 +5,10 @@
 * edited on: 20 jan 26
 * edited by: jdm
 * Stata v.19.5
-
+	
+* open log
+	cap log 		close
+	log using		"$logout/03-data-mgmt", append
 	
 ********************************************************************************
 **# exercise 1
@@ -227,10 +230,47 @@
 	
 	
 **## 8.3
-	gen				cons_gap = totcons_USD - EA_totcons_USD
+	gen				cons_gap = totcons_USD - ea_totcons_USD
+	
+	sum				cons_gap
+	
 	
 ********************************************************************************
 **# challenge 3
 ********************************************************************************
 
-* add package loop to project.do - see actual project.do file in code/ folder
+* create indicator for sign of poverty gap	
+	gen				gap = 1 if cons_gap < 0
+	replace			gap = 0 if cons_gap >= 0 & cons_gap != .
+	
+* label variable and values
+	lab var			gap "Indicator for sign of consumption gap"
+	lab def			gap_lbl 0 "Positive Gap" 1 "Negative Gap"
+	lab val			gap gap_lbl
+	
+* count number of households above and below and label
+	egen			below = total(gap), by(eaid sector)
+	lab var			below "Number of households below mean consumption"
+	
+	egen			above = total(gap == 0), by(eaid sector)
+	lab var			below "Number of households above mean consumption"
+	
+* count number of households in an EA
+	egen 			tot_hh = count(gap), by(eaid sector)
+	lab var			tot_hh "Total number of households in EA"
+	
+* create variable for share of households above/below
+	gen				share_below = below / tot_hh
+	lab var			share_below "Percentage of households in EA below mean consumption"
+	
+* summerize share below by sector and country
+	bys sector: 	sum share_below
+	bys country: 	sum share_below
+	
+
+* close the log
+	log	close
+
+/* END */
+
+	
