@@ -9,11 +9,11 @@ Using the World Bank's LSMS data, we are going to simulate the common case where
 
 Start by re-loading the household data (`household_all.dta`). Create a data set that contains only observations from wave 1 using the `keep if` command. Save this file as `hh_wave1.dta`.
 
-1\. How many observations came from a wave that is **NOT** wave 1?
+1\. How many observations came from the waves that are **NOT** wave 1?
 
 Now, re-open the full dataset and keep only wave 2 observations and save this as `hh_wave2.dta`.
 
-2\. How many observations came from a wave that is **NOT** wave 2?
+2\. How many observations came from the waves that are **NOT** wave 2?
 
  Finally, append the data set that contains just wave 1 to the data set that contains just wave 2 using `append`.
 
