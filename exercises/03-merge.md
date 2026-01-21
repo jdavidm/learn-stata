@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Data Management
-title: Challenge 3
+title: Merge Data
 language: Stata
 ---
 
