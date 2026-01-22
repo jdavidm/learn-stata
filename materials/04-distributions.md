@@ -5,13 +5,20 @@ title: Distributions of Variables
 language: Stata
 ---
 
-### Distributions of data
-
 When we collect data, we don’t just care about *individual* observations. We care about what values are common, what’s rare, and what’s extreme.
 
 That’s what a **distribution** is:
 
 > A description of the probability that each possible value of a variable will occur.
+
+In this lecture we will:
+- Define what we mean by the distribution of a variable  
+- See how to describe distributions with **tables** in Stata  
+- Learn how to **summarize** a distribution with a few key numbers (center and spread)
+
+Throughout this lecture we will use the system data set `nlsw88.dta`. So start by loading it using the `sysuse` command. Remember, as we walk through these lectures, you should be taking notes and coding in a `.do` file.
+
+### Distributions of data
 
 Suppose we have a tiny dataset with four observations of exam scores:
 
@@ -30,40 +37,39 @@ This table *is* the distribution:
 - It tells us which values occur (2, 5, 6)  
 - And how often (counts and percentages)
 
-#### Tabular distributions for categorical / discrete variables
 
-For **categorical** variables (e.g., major, region) and many **discrete** numerics (e.g., number of children), we can usually show the whole distribution in a frequency table.
+### Tabular distributions for categorical / discrete variables
+
+For **categorical** variables (e.g., major, race) and many **discrete** numerics (e.g., number of children, grade), we can usually show the whole distribution in a frequency table.
 
 In Stata, the workhorse is `tabulate` or simply `tab`. Typical output looks like:
 
 ```stata
-. tab major
+. tab race
 
-     major |      Freq.     Percent        Cum.
------------+-----------------------------------
-   Econ    |         40       20.00       20.00
-   Finance |         60       30.00       50.00
-   Other   |        100       50.00      100.00
------------+-----------------------------------
-     Total |        200      100.00
+       Race |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      White |      1,637       72.89       72.89
+      Black |        583       25.96       98.84
+      Other |         26        1.16      100.00
+------------+-----------------------------------
+      Total |      2,246      100.00
 ```
 
-How this describes the **distribution of `major`**:
-
-- **Freq.** – How many students in each major (counts)  
+How this describes the **distribution of `race`**:
+- **Freq.** – How many individuals in each race (counts)  
 - **Percent** – What fraction of all students (relative frequency)  
 - **Cum.** – Cumulative percentage (useful for ordered categories)
 
 These tables are especially helpful for:
-
 - Finding the **mode** (most common category)  
 - Spotting categories with very few observations  
 - Checking whether categories look plausible (e.g., 90% “Other” might signal a coding problem)
 
-
 > Do [Exercise 1 - Tabulating Data]({{ site.baseurl }}/exercises/04-tab/)
 
-#### Tabular summaries for continuous variables
+
+### Tabular summaries for continuous variables
 
 For a continuous variable (like income), there are too many possible values to list one-by-one, so we either:
 - Group values into bins (e.g., \$0–10k, 10–20k, …), or  
@@ -75,39 +81,66 @@ For a continuous variable (like income), there are too many possible values to l
 In Stata, we use `summarize` or simply `sum`:
 
 ```stata
-. sum income
+. sum wage
 
-    Variable |      Obs        Mean    Std. dev.       Min        Max
--------------+-------------------------------------------------------
-      income |      500    24500.32    10250.11    1500.00   78500.00
+   Variable |      Obs        Mean    Std. dev.       Min        Max
+------------+-------------------------------------------------------
+       wage |    2,246    7.766949    5.755523   1.004952   40.74659
 ```
 
-What this tells us about the distribution of `income`:
-
+What this tells us about the distribution of `wage`:
 - **Obs** – sample size (N)  
-- **Mean** – average income (center)  
+- **Mean** – average wage (center)  
 - **Std. dev.** – typical distance from the mean (spread)  
 - **Min / Max** – extremes (range)
 
 If you want more detail (like the median and percentiles), you can use:
 
 ```stata
-   sum         income, detail
+   sum         wage, detail
 ```
 
 This adds:
-
 - **Median** (50th percentile)  
 - **Other percentiles** (e.g., 25th, 75th)  
 - Measures of skewness and kurtosis (we won’t dwell on those now)
 
-> Do [Exercise 2 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
+> Do [Exercise 2.1 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
+
+
+### Stored results
+
+When Stata runs `sum` (and many other commands), it doesn’t just print these numbers and forget them. It also stores them as returned results in something called `r()`. You can find what results Stata stores from a command at the very end of the help file for that command. You can also type `return list` right after a command and Stata will display the stored results and their spefici values.
+
+When you run `sum`, Stata stores the results that it printed:
+- `r(N)` – number of observations
+- `r(mean)` – mean
+- `r(sd)` – standard deviation
+- `r(min)` – minimum
+- `r(max)` – maximum
+But also other results that it didn't print:
+- `r(var)` - variance
+- `r(sum)` - sum of variable
+
+The awesome thing about these stored results is that you can use these directly in calculations or for other things. For example:
+
+```stata
+* summarize wage and print the mean
+   sum            wage
+   display        r(mean)
+
+* print text for easier interpretation by humans
+   sum            wage
+   local          mean_wage = r(mean)
+   display        "The mean wage is " `mean_wage'
+```
+
 
 ### Summarizing the **center** of a distribution
 
-Once you know the distribution, you can choose a few key **summaries** that capture the “middle” of the variable.
+Once you know the distribution, you can choose a few key summaries that capture the “middle” of the variable.
 
-### 5.1 Mean
+####  Mean
 
 The **mean** is the familiar average:
 
@@ -121,40 +154,24 @@ $$
 \text{mean} = \frac{2 + 5 + 5 + 6}{4} = \frac{18}{4} = 4.5
 $$
 
-In Stata, the mean is in the `summarize` output:
+In Stata, the mean is in the `sum` output.
 
-```stata
-sum score
-```
+#### Median
 
-Interpretation:
-
-- The mean is a **representative value** of the distribution.  
-- If “income” is how many dollars a slot machine pays out and the mean is \$4.50, then if the game costs \$4.50, you’d break even *on average* by playing many times.
-
-### 5.2 Median
-
-The **median** is the **50th percentile**:
-
-- Half the observations are **below** it,  
-- Half are **above** it.
+The **median** is the 50th percentile: half the observations are below it and half are above it.
 
 In our example `2, 5, 5, 6`, the median is 5 (the middle value when sorted).
 
-In Stata, you can see the median using:
+In Stata, you can see the median using the `detail` option to `sum`.
 
-```stata
-sum score, detail
-```
-
-The median is more **robust to outliers** than the mean. For example, if incomes are:
+The median is more robust to outliers than the mean. For example, if incomes are:
 
 `20000, 22000, 25000, 26000, 1000000`
 
 - The mean will be pulled way up by 1,000,000  
 - The median (middle value) will still be around the typical salary (here, 25,000)
 
-### 5.3 Mode
+#### Mode
 
 For categorical variables, a useful “center” is the **mode** – the most common category.
 
@@ -162,85 +179,72 @@ In our toy example `2, 5, 5, 6`, the mode is 5 (it shows up most often).
 
 In Stata, the mode of a categorical variable shows up in the `tab` output as the row with the highest frequency.
 
----
+> Do [Exercise 2.2 - 2.4 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
 
-## 6. Summarizing the **spread** of a distribution
 
-Center alone isn’t enough. Two variables can have the same mean but very different variability.
+### Summarizing the **spread** of a distribution
 
-### 6.1 Range
+Describing the center alone isn’t enough. Two variables can have the same mean but very different variability.
+
+#### Range
 
 The **range** is:
 
-\[
+$$
 \text{range} = \text{max} - \text{min}
-\]
+$$
 
-From `sum`, you can see `Min` and `Max` and calculate the range yourself.
+From `sum`, you can see `Min` and `Max` and calculate the range yourself. Or you can let Stata compute the range for you using the stored results from `sum`:
+
+```stata
+* calculate range of wage
+   sum            wage
+   display        r(max) - r(min)
+```
 
 - Easy to understand  
-- Very sensitive to **outliers**
+- Very sensitive to outliers
 
-### 6.2 Variance and standard deviation
+#### Variance and standard deviation
 
-Variance and standard deviation summarize **how far values tend to be from the mean**, on average.
-
+There are a number of ways to summarize how far values tend to be from the mean, on average.
 - **Variance** – average squared distance from the mean  
 - **Standard deviation** – square root of variance; back on the original scale
 
-You don’t need the full formula here; the key idea is:
+You don’t need the full formula here; the key idea is: the standard deviation tells you how tightly clustered or spread out the data are around the mean.
 
-> The standard deviation tells you how tightly clustered or spread out the data are around the mean.
+Stata’s `sum` gives you the standard deviation directly.
 
-Stata’s `summarize` gives you the standard deviation directly.
-
-### 6.3 Interquartile range (IQR)
+#### Interquartile range (IQR)
 
 The **interquartile range** (IQR) is:
 
-\[
+$$
 \text{IQR} = \text{75th percentile} - \text{25th percentile}
-\]
+$$
 
-It measures the spread of the “middle 50%” of the data and is **robust to outliers**.
+It measures the spread of the “middle 50%” of the data and is robust to outliers.
 
-You can see the 25th and 75th percentiles with:
-
-```stata
-sum income, detail
-```
-
-or build a table with percentiles using:
+You can see the 25th and 75th percentiles using the `detail` option to `sum` and then calculate the IQR. 
 
 ```stata
-tabstat income, statistics(mean median sd p25 p75)
+* calculate iqr of wage
+   sum            wage, detail
+   display        r(p75) - r(p25)
 ```
 
----
-
-## 7. Percentiles as a way to describe the distribution
-
-Percentiles are a very direct way of describing a distribution:
-
-> The X-th percentile is the value such that X% of observations are **below** it.
-
-Examples:
-
-- 5th percentile of income: 5% of people make *less* than this  
-- 95th percentile: 95% make less, 5% make more
-
-In Stata, you can work with percentiles via:
+Or you can use the `tabstat` command to build a table with percentiles, including the IQR, using:
 
 ```stata
-sum income, detail          // shows key percentiles
-tabstat income, stat(p10 p25 p50 p75 p90)
+   tabstat        wage, stat(mean median sd p25 p75 iqr)
 ```
 
-Percentiles and IQR are especially helpful when distributions are **skewed** (like income). The mean gets pulled around by extreme values, but percentiles still tell you where most people are.
+The `tabstat` command displays summary statistics for a series of numeric variables in one table.  It allows you to specify the list of statistics to be displayed. Statistics can be calculated (conditioned on) another variable. It allows substantial flexibility in terms of the statistics presented and the format of the table.
 
----
+> Do [Exercise 3.1 - Use Stored Values]({{ site.baseurl }}/exercises/04-stored-vals/)
 
-## 8. Putting it together: a basic workflow
+
+### Putting it together: a basic workflow
 
 When you get a new variable, a good “distribution and summary” workflow in Stata is:
 
@@ -251,7 +255,7 @@ When you get a new variable, a good “distribution and summary” workflow in S
 2. **For categorical / discrete variables**
 
    ```stata
-   tab varname
+      tab         varname
    ```
 
    - Look at frequencies and percentages  
@@ -261,19 +265,10 @@ When you get a new variable, a good “distribution and summary” workflow in S
 3. **For continuous variables**
 
    ```stata
-   sum varname
-   sum varname, detail
-   tabstat varname, stat(mean median sd p25 p75)
+      sum         varname
+      sum         varname, detail
    ```
 
    - Note center (mean, median)  
    - Note spread (standard deviation, range, IQR)  
    - Check min/max for impossible values or outliers  
-
-4. **Describe in words**
-
-   - “Median income is \$25,000, with an IQR from \$18,000 to \$32,000; the distribution is right-skewed, with a few very high incomes raising the mean to \$30,000.”
-
-All of this follows the idea from *The Effect*: once you know the distribution, you can pick a few numbers that describe it well enough for the task at hand.
-
-(Next time: we’ll switch from tables to **graphs**—histograms and kernel density plots—to visualize these distributions.)
