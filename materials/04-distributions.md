@@ -1,37 +1,23 @@
 ---
 layout: page
 element: notes
-title: Distributions of variables
+title: Distributions of Variables
 language: Stata
 ---
 
-# Distributions and Summaries
+### Distributions of data
 
-## 1. Why distributions matter
-
-When we collect data, we don’t just care about *individual* observations. We care about **what values are common, what’s rare, and what’s extreme**.
+When we collect data, we don’t just care about *individual* observations. We care about what values are common, what’s rare, and what’s extreme.
 
 That’s what a **distribution** is:
 
-> For a variable, the distribution tells you how often each value (or range of values) shows up in your data.
-
-In this lecture we will:
-
-- Define what we mean by the distribution of a variable  
-- See how to describe distributions with **tables** in Stata  
-- Learn how to **summarize** a distribution with a few key numbers (center and spread)
-
-We’ll *mention* graphs (histograms, density plots), but save Stata graphing commands for the next lecture.
-
----
-
-## 2. What is a distribution? (small example)
+> A description of the probability that each possible value of a variable will occur.
 
 Suppose we have a tiny dataset with four observations of exam scores:
 
 - `score = 2, 5, 5, 6`
 
-We can write down the **distribution** as a table:
+We can write down the distribution as a table:
 
 | score | count | percent |
 |-------|-------|---------|
@@ -41,30 +27,14 @@ We can write down the **distribution** as a table:
 | **Total** | **4** | **100%** |
 
 This table *is* the distribution:  
+- It tells us which values occur (2, 5, 6)  
+- And how often (counts and percentages)
 
-- It tells us **which values occur** (2, 5, 6)  
-- And **how often** (counts and percentages)
+#### Tabular distributions for categorical / discrete variables
 
-For a continuous variable (like income), there are too many possible values to list one-by-one, so we either:
+For **categorical** variables (e.g., major, region) and many **discrete** numerics (e.g., number of children), we can usually show the whole distribution in a frequency table.
 
-- Group values into **bins** (e.g., \$0–10k, 10–20k, …), or  
-- Describe the distribution with **summary statistics** (mean, median, percentiles, etc.)
-
----
-
-## 3. Tabular distributions for categorical / discrete variables
-
-For **categorical** variables (e.g., major, region) and many **discrete** numerics (e.g., number of children), we can usually show the *whole* distribution in a frequency table.
-
-In Stata, the workhorse is:
-
-```stata
-tabulate major
-* or simply:
-tab major
-```
-
-Typical output looks like:
+In Stata, the workhorse is `tabulate` or simply `tab`. Typical output looks like:
 
 ```stata
 . tab major
@@ -90,32 +60,26 @@ These tables are especially helpful for:
 - Spotting categories with very few observations  
 - Checking whether categories look plausible (e.g., 90% “Other” might signal a coding problem)
 
----
 
-## 4. Tabular summaries for continuous variables
+> Do [Exercise 1 - Tabulating Data]({{ site.baseurl }}/exercises/04-tab/)
 
-For continuous variables like income, test scores, or yield, we often can’t list every value. Instead, we describe the distribution with **summary statistics** that capture key features:
+#### Tabular summaries for continuous variables
 
-- **Center** – where values tend to be (mean, median)  
-- **Spread** – how variable they are (standard deviation, range, IQR)  
-- **Extremes / outliers** – unusually small or large values
+For a continuous variable (like income), there are too many possible values to list one-by-one, so we either:
+- Group values into bins (e.g., \$0–10k, 10–20k, …), or  
+- Describe the distribution with **summary statistics** (mean, median, percentiles, etc.)
+   - **Center** – where values tend to be (mean, median)  
+   - **Spread** – how variable they are (standard deviation, range, IQR)  
+   - **Extremes / outliers** – unusually small or large values
 
-In Stata, a first pass is:
-
-```stata
-summarize income
-* or:
-sum income
-```
-
-Example output:
+In Stata, we use `summarize` or simply `sum`:
 
 ```stata
 . sum income
 
-    Variable |        Obs        Mean    Std. dev.       Min        Max
--------------+---------------------------------------------------------
-      income |        500    24500.32    10250.11    1500.00   78500.00
+    Variable |      Obs        Mean    Std. dev.       Min        Max
+-------------+-------------------------------------------------------
+      income |      500    24500.32    10250.11    1500.00   78500.00
 ```
 
 What this tells us about the distribution of `income`:
@@ -125,23 +89,21 @@ What this tells us about the distribution of `income`:
 - **Std. dev.** – typical distance from the mean (spread)  
 - **Min / Max** – extremes (range)
 
-We’ll dig into what these summary stats *mean* in the next sections.
-
 If you want more detail (like the median and percentiles), you can use:
 
 ```stata
-summarize income, detail
+   sum         income, detail
 ```
 
-which adds:
+This adds:
 
 - **Median** (50th percentile)  
 - **Other percentiles** (e.g., 25th, 75th)  
 - Measures of skewness and kurtosis (we won’t dwell on those now)
 
----
+> Do [Exercise 2 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
 
-## 5. Summarizing the **center** of a distribution
+### Summarizing the **center** of a distribution
 
 Once you know the distribution, you can choose a few key **summaries** that capture the “middle” of the variable.
 
@@ -149,15 +111,15 @@ Once you know the distribution, you can choose a few key **summaries** that capt
 
 The **mean** is the familiar average:
 
-\[
+$$
 \text{mean} = \frac{\text{sum of all values}}{\text{number of observations}}
-\]
+$$
 
 For our toy example `2, 5, 5, 6`:
 
-\[
+$$
 \text{mean} = \frac{2 + 5 + 5 + 6}{4} = \frac{18}{4} = 4.5
-\]
+$$
 
 In Stata, the mean is in the `summarize` output:
 

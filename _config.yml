@@ -4,6 +4,7 @@ highlighter:      rouge
 
 kramdown:
   input:          GFM
+  math_engine: mathjax
 
 # Permalinks
 permalink:        pretty

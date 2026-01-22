@@ -183,6 +183,6 @@
 						xtitle("Wages (hourly)") ytitle("Tenure (years)") ///
 						legend( col(2) pos(6))
 						
-	save			"$answ/challenge-01.png", replace
+	graph export	"$answ/challenge-01.png", replace
 	
 	
