@@ -48,7 +48,7 @@
 		global	code	"C:/Users/jdmic/git/learn-stata/code"
 		global	data	"C:/Users/jdmic/dropbox/teaching/AAE 597/data"
 		global	answ	"C:/Users/jdmic/git/learn-stata/solutions"
-		global	logout	"C:/Users/jdmichler/dropbox/teaching/AAE 597/logs"
+		global	logout	"C:/Users/jdmic/dropbox/teaching/AAE 597/logs"
 	}
 
 
@@ -102,6 +102,6 @@ if $pack == 1 {
 **# 1 - run assignment files
 ************************************************************************
 
-	do				"$code/01-intro.do"	
+*	do				"$code/01-intro.do"	
 	do				"$code/02-using-stata.do"
-	do				"$code/03-data-mgmt.do"
+*	do				"$code/03-data-mgmt.do"
