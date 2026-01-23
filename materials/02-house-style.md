@@ -42,7 +42,8 @@ After the preamble, if the assignment uses data, define the paths using relative
 	global	logout 	"$data/assignments/logs"
 
 * open log
-	log 	using 	"$logout/assignment_1", append
+	cap		log		close
+	log 	using 	"$logs/assignment_1", append
 ```
 
 Exercises and sub-exercises should be labelled with bookmarks in the following style, with stars above and below that extend to the right-hand-side page break in the `.do` file.
@@ -84,7 +85,7 @@ Finally, the code should be documented and aligned using tabs. Long lines of cod
                         chown chmgmt mgmt* collat cert*
 ```
 
-Finally, each `.do` file should close with the same end matter.
+Finally, each `.do` file should close with the same end matter. The code about saving the file is only required when the assignment tells you to save the data file. For most assignments, you can skip to the `*close log` line.
 
 ```stata
 **********************************************************************
