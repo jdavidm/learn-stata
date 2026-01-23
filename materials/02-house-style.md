@@ -111,8 +111,8 @@ In addition to the house style, students will need to use `.log` files to track 
 
 ```stata
 * open log
-	cap log 		close
-	log using		"$logout/assignment_1", append
+	cap	log			close
+	log	using		"$logout/assignment_1", append
 ```
 
 Here, `cap log close` ensures any open `.log` files are closed before openning a new one. The `$logout` is a global referring to the relative path where you saving your `.log` files. And `append` ensures you keep adding to the `.log` file instead of overwriting the file.
