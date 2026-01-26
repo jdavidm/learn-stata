@@ -66,7 +66,7 @@ These tables are especially helpful for:
 - Spotting categories with very few observations  
 - Checking whether categories look plausible (e.g., 90% “Other” might signal a coding problem)
 
-> Do [Exercise 1 - Tabulating Data]({{ site.baseurl }}/exercises/04-tab/)
+> Do [Exercise 1 - Tabulate Data]({{ site.baseurl }}/exercises/04-tab/)
 
 
 ### Tabular summaries for continuous variables
@@ -105,7 +105,7 @@ This adds:
 - **Other percentiles** (e.g., 25th, 75th)  
 - Measures of skewness and kurtosis (we won’t dwell on those now)
 
-> Do [Exercise 2.1 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
+> Do [Exercise 2.1 - Summarize Data]({{ site.baseurl }}/exercises/04-sum/)
 
 
 ### Stored results
@@ -179,7 +179,7 @@ In our toy example `2, 5, 5, 6`, the mode is 5 (it shows up most often).
 
 In Stata, the mode of a categorical variable shows up in the `tab` output as the row with the highest frequency.
 
-> Do [Exercise 2.2 - 2.4 - Summarizing Data]({{ site.baseurl }}/exercises/04-sum/)
+> Do [Exercise 2.2 - 2.3 - Summarize Data]({{ site.baseurl }}/exercises/04-sum/)
 
 
 ### Summarizing the **spread** of a distribution
@@ -241,7 +241,7 @@ Or you can use the `tabstat` command to build a table with percentiles, includin
 
 The `tabstat` command displays summary statistics for a series of numeric variables in one table.  It allows you to specify the list of statistics to be displayed. Statistics can be calculated (conditioned on) another variable. It allows substantial flexibility in terms of the statistics presented and the format of the table.
 
-> Do [Exercise 3.1 - Use Stored Values]({{ site.baseurl }}/exercises/04-stored-vals/)
+> Do [Exercise 3.1 - 3.2 - Use Stored Values]({{ site.baseurl }}/exercises/04-stored-vals/)
 
 
 ### Putting it together: a basic workflow

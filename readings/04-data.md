@@ -11,6 +11,7 @@ language: Stata
 * Summarizing the distribution
 * Plotting the distribution
 * Creating theoretical distributions
+* Testing hypotheses
 
 ### Readings
 

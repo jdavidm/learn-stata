@@ -1,20 +1,28 @@
 * course: AAE 497A/597A
-* assignment: 3
-* created on: dec 25
+* assignment: 4
+* created on: jan 25
 * created by: jdm
-* edited on: 20 jan 26
+* edited on: 26 jan 26
 * edited by: jdm
 * Stata v.19.5
 	
 * open log
 	cap log 		close
-	log using		"$logout/03-data-mgmt", append
+	log using		"$logout/04-data", append
+	
 	
 ********************************************************************************
 **# exercise 1
 ********************************************************************************
 
-* describe why data is messy - see solutions
+* load national longitudinal survey of young women
+    sysuse			nlsw88, clear
+	
+**## 1.1.1 & 1.1.2 & 1.1.3
+	tab				race
+	
+**## 1.2.1 & 1.2.2
+	tab				union, missing
 	
 	
 ********************************************************************************

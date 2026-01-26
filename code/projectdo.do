@@ -103,5 +103,6 @@ if $pack == 1 {
 ************************************************************************
 
 *	do				"$code/01-intro.do"	
-	do				"$code/02-using-stata.do"
+*	do				"$code/02-using-stata.do"
 *	do				"$code/03-data-mgmt.do"
+*	do				"$code/04-data.do"

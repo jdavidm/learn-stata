@@ -1,0 +1,9 @@
+[1.1] 1,637 white; 583 black, 26 other
+
+[1.2] white
+
+[1.3] 72.89% white; 25.96% black, 1.16% other
+
+[2.1] 461 union; 1,417 nonunion; 368 missing
+
+[2.2] 16.38%
