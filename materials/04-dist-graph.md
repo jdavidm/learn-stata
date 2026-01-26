@@ -5,164 +5,111 @@ title: Graphing Distributions
 language: Stata
 ---
 
-In the last lecture you saw how to **describe a distribution** using tables (`tab`) and summary statistics (`sum`). In this lecture we’ll stay with the same dataset, `nlsw88.dta`, and focus on **graphs** for a *single* numeric variable:
+In the last lecture you saw how to describe a distribution using tables (`tab`) and summary statistics (`sum`). In this lecture we’ll focus on graphs for a *single* numeric variable:
 
 - How to make and interpret **histograms**
 - How to make and interpret **kernel density plots**
 - How to use key options to control these graphs
 
-Throughout, we’ll use **hourly wage** (`wage`) as our main example.
-
+Throughout this lecture we will continue to use the system data set `nlsw88.dta`. Remember, as we walk through these lectures, you should be taking notes and coding in a .do file.
 ---
 
-## 1. Setup
+### Why graphs?
 
-Start the do-file and load the data (same as last time):
-
-```stata
-* Load example data
-sysuse nlsw88, clear
-
-* Quick check of wage
-sum wage
-```
-
-Those summary statistics give numerical summaries of the same distribution we’re about to draw.
-
----
-
-## 2. Why graphs?
-
-A **distribution** tells us how often different values occur. Graphs let us *see* the shape of that distribution — where values are common, where they’re rare, how spread out they are, and whether there’s skew or different “lumps” in the data.
+When we use `sum` Stata calculates statistics that give numerical summaries of the distribution of a variable. Last lecture we focused on the **center** and **spread** of a distribution. Both of those words have a clear visual component - in your mind you picture center and spread as positions in space. So, it makes sense that we would like to actually visualize these concepts, not just have numbers to summarize them. Graphs let us see the entire shape of that distribution — where values are common, where they’re rare, how spread out they are, and whether there’s skew or different “lumps” in the data.
 
 Two big ideas for today:
-
 - A **histogram** cuts the x-axis into bins and counts how many observations fall in each bin.
 - A **kernel density plot** is like a smoothed histogram — instead of bars, you get a smooth curve that shows where observations are concentrated.
 
-Both plots are different ways of visualizing **the same thing**: the distribution of a variable.
+Both plots are different ways of visualizing the same thing: the distribution of a variable.
 
----
+### Histograms in Stata
 
-## 3. Histograms in Stata
-
-### 3.1 Basic histogram
-
-Basic command:
+A `histogram` (`hist`) is the most basic of Stata graphing commands:
 
 ```stata
-* Basic histogram of hourly wage
-histogram wage
+* basic histogram of hourly wage
+    hist            wage
 ```
 
-- By default, Stata puts **wage on the x-axis** and **density on the y-axis**.
-- “Density” is just a rescaling so that the *area* under the bars adds up to 1; the shape is what we care about.
+By default, Stata puts wage on the x-axis and density on the y-axis. “Density” is just a rescaling so that the *area* under the bars adds up to 1; the shape is what we care about.
 
-Ask students to read the plot:
+> Ask students to read the plot:
+> - Where do most wages fall (center)?
+> - Does it look **right-skewed** (a long tail to the right)?
+> - Are there any very high wages (possible outliers)?
 
-- Where do most wages fall (center)?
-- Does it look **right-skewed** (a long tail to the right)?
-- Are there any very high wages (possible outliers)?
-
----
-
-### 3.2 Changing the y-axis scale: density, fraction, percent, frequency
-
-Stata lets you choose what the y-axis displays:
+Histograms are best for continuous-ish variables like income or height, but they can also be used for integer-valued counts, like age. 
 
 ```stata
-* Default: density
-histogram wage, density      // or just: histogram wage
-
-* Proportion of observations (0–1)
-histogram wage, fraction
-
-* Percent of observations (0–100)
-histogram wage, percent
-
-* Raw counts (number of workers in each bin)
-histogram wage, frequency
-```
-
-Important teaching point:
-
-> The **shape** of the histogram does **not** change when you switch between `density`, `fraction`, `percent`, or `frequency`. Only the y-axis scale changes.
-
-Ask them:
-
-- When might you want **frequencies**? (e.g., “about 200 workers earn between $5 and $7”)
-- When might you want **percentages**? (e.g., “about 10% of workers earn between $5 and $7”)
-
----
-
-### 3.3 Controlling the bins
-
-The choice of **bins** matters: too few bins → overly chunky; too many → noisy. Stata chooses a default for you, but you can override it.
-
-Number of bins:
-
-```stata
-* Fewer, wider bins
-histogram wage, bin(10) frequency
-
-* More, narrower bins
-histogram wage, bin(40) frequency
-```
-
-Alternatively, you can control **bin width** and starting point:
-
-```stata
-* Bin width of $1, starting at $0
-histogram wage, width(1) start(0) frequency
-```
-
-Discussion:
-
-- Compare `bin(10)` vs `bin(40)`.
-- With more bins, small bumps appear and the picture is less smooth.
-- With fewer bins, you see the big-picture pattern but lose smaller details.
-
----
-
-### 3.4 Histograms for discrete / integer variables
-
-Histograms are best for **continuous-ish** variables like income or height, but they can also be used for integer-valued counts.
-
-Example: `age` in `nlsw88` is recorded in years.
-
-```stata
-* Check age variable
-sum age
-
-* Treat age as discrete: one bar per age
-histogram age, discrete frequency
+* treat age as discrete: one bar per age
+    hist            age, discrete frequency
 ```
 
 The `discrete` option tells Stata to make one bin for each unique value of `age`, which is usually what you want for integer-valued variables.
 
-You can ask students: “For a variable like `age`, would you rather use a `tab age` table or a histogram? Why?”
+#### Changing what `hist` shows you
 
----
-
-### 3.5 Adding titles and labels
-
-You don’t need to go wild with formatting, but basic labeling makes graphs much easier to read.
+Stata lets you choose what the y-axis displays. As we saw above, the default is density. Other options include:
 
 ```stata
-histogram wage, ///
-    bin(25) percent ///
-    title("Distribution of hourly wages") ///
-    xtitle("Hourly wage (1988 dollars)") ///
-    ytitle("Percent of workers")
+* proportion of observations (0–1)
+    hist            wage, fraction
+
+* percent of observations (0–100)
+    hist            wage, percent
+
+* raw counts (number of workers in each bin)
+    hist            wage, frequency
 ```
 
-Encourage students to adopt this habit *now* so their graphs in assignments and papers are readable.
+Notice that the shape of the histogram does **not** change when you switch between `density`, `fraction`, `percent`, or `frequency`. Only the label and scale of the y-axis changes.
 
----
+> Ask them:
+> - When might you want frequencies? (e.g., “about 200 workers earn between $5 and $7”)
+> - When might you want percentages? (e.g., “about 10% of workers earn between $5 and $7”)
 
-## 4. Kernel density plots
+The choice of **bins** matters: too few bins → overly chunky; too many → noisy. Stata chooses a default for you, but you can override it.
 
-### 4.1 What is a kernel density plot?
+```stata
+* fewer, wider bins
+    hist            wage, bin(10) frequency
+
+* more, narrower bins
+    hist            wage, bin(40) frequency
+```
+
+Alternatively, you can control bin width and starting point:
+
+```stata
+* bin width of $1, starting at $0
+    hist            wage, width(1) start(0) frequency
+```
+
+Compare `bin(10)` vs `bin(40)`.
+- With more bins, small bumps appear and the picture is less smooth.
+- With fewer bins, you see the big-picture pattern but lose smaller details.
+
+> Do [Exercise 4.1 - 4.2 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
+
+#### Chaning the the look of `hist`
+
+Because `hist` is so basic a command, you don’t need to go wild with formatting. But some clear labeling makes graphs much easier to read.
+
+```stata
+* label histogram of wages
+    hist            wage, ///
+                        bin(25) percent ///
+                        title("Distribution of hourly wages") ///
+                        xtitle("Hourly wage (1988 dollars)") ///
+                        ytitle("Percent of workers")
+```
+
+> Do [Exercise 4.3 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
+
+
+### Kernel density plots
 
 A **kernel density plot** shows the same idea as a histogram — where values are common or rare — but instead of bars, we get a smooth curve.
 
@@ -186,7 +133,7 @@ As with histograms, look for center, spread, and skew (long tail to the right fo
 
 ---
 
-### 4.2 Bandwidth / smoothing (`bwidth()`)
+#### Bandwidth / smoothing (`bwidth()`)
 
 The main option you’ll care about in `kdensity` is the **bandwidth**, set by `bwidth()`. Stata chooses a default bandwidth based on the data, but you can change it.
 
@@ -210,7 +157,7 @@ Tie back to the bin choice in histograms: both are about trading off detail vs s
 
 ---
 
-### 4.3 Different kernels (`kernel()`)
+#### Different kernels (`kernel()`)
 
 Stata supports several kernel shapes (Epanechnikov, Gaussian, etc.):
 
@@ -229,7 +176,7 @@ Teaching message:
 
 ---
 
-### 4.4 Overlaying histogram and kernel density
+### Overlaying histogram and kernel density
 
 A nice visualization is to put a **histogram and kernel density on the same plot** so students can see how they relate.
 
