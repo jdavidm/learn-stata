@@ -29,80 +29,27 @@
 **# exercise 2
 ********************************************************************************
 
-* clean up the data - see solutions
-
+**## 1.1.1 & 1.1.2 & 1.1.3
+	sum				wage
+	
+**## 1.2.1 & 1.2.2
+	sum				wage, detail
+	
+**## 1.3.1 & 1.3.2
+	sum				wage if collgrad == 1
+						
 						
 ********************************************************************************
 **# exercise 3
 ********************************************************************************
 
-* load world bank lsms data
-	use				"https://jdavidm.github.io/learn-stata/data/lsms_household.dta", clear
-		
-* label unlabelled variables
+**## 3.1
+	sum				hours
+	display			r(max) - r(min)
 
-**## 3.1 
-	lab var 		country "Country"
-	
-**## 3.2
-	lab var 		wave "Wave number"
-	
-**## 3.3
-	lab var 		season "Agricultural season"
-	
-**## 3.4
-	lab var 		admin_1 "Administrative level 1"
-	
-**## 3.5
-	lab var 		admin_2 "Administrative level 2"
-	
-**## 3.6
-	lab var 		admin_3 "Administrative level 3"
-	
-**## 3.7
-	lab var 		hh_size "Household size"
-	
-**## 3.8
-	lab var 		hh_shock "Was the household negatively impacted by a shock over the past 12 months?"
-	
-**## 3.9
-	lab var 		hh_primary_education "Did anyone in the household complete primary school?"
-	
-**## 3.10
-	lab var 		hh_electricity_access "Does the household have access to electricity?"
-	
-**## 3.11
-	lab var 		hh_dependency_ratio "Household dependency ratio"
-	
-**## 3.12
-	lab var 		hh_formal_education "Does anyone in the household posses any formal education?"
-	
-**## 3.13
-	lab var 		nonfarm_enterprise "Does anyone in household own a non-farm enterprise?"
-	
-**## 3.14
-	lab var 		nb_fallow_plots "Number of fallow plots under household management"
-	
-**## 3.15
-	lab var 		nb_plots "Number of plots under household management"
-	
-**## 3.16
-	lab var 		share_kg_sold "Share of harvest output (in kg) sold"
-	
-**## 3.17
-	lab var 		totcons_LCU "Consumption aggregate per capita, in LCU"
-	
-**## 3.18
-	lab var 		totcons_USD "Consumption aggregate per capita, in USD" 
-	
-**## 3.19
-	lab var 		cons_quint "Household consumption quintile"
-	
-**## 3.20
-	lab var 		hh_asset_index "Household asset index"
-	
-**## 3.21
-	lab var 		hdds "Household dietary diversity index"
+**##3.2
+	sum				hours, detail
+	display			r(p75) - r(p25)
 	
 		
 ********************************************************************************
@@ -244,7 +191,7 @@
 	
 	
 ********************************************************************************
-**# challenge 3
+**# challenge 4
 ********************************************************************************
 
 * create indicator for sign of poverty gap	
