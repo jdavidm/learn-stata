@@ -30,7 +30,7 @@ A `histogram` (`hist`) is the most basic of Stata graphing commands:
 
 ```stata
 * basic histogram of hourly wage
-    hist            wage
+    histogram            wage
 ```
 
 By default, Stata puts wage on the x-axis and density on the y-axis. “Density” is just a rescaling so that the *area* under the bars adds up to 1; the shape is what we care about.
