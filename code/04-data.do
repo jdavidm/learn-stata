@@ -58,21 +58,21 @@
 
 **## 4.1
 	hist			hours, percent
-	graph export	"$answ/04-hist-1.png"
+	graph export	"$answ/04-hist-1.png", replace
 	
 **## 4.2
 	hist			hours, bin(10) percent
-	graph export	"$answ/04-hist-2.png"
+	graph export	"$answ/04-hist-2.png", replace
 				
 **## 4.3
 	hist			hours, start(0) width(5) percent
-	graph export	"$answ/04-hist-3.png"
+	graph export	"$answ/04-hist-3.png", replace
 	
 **## 4.4
 	hist			grade, frequency
 	
 	hist			grade, discrete frequency
-	graph export	"$answ/04-hist-4.png"
+	graph export	"$answ/04-hist-4.png", replace
 
 
 ********************************************************************************
@@ -81,19 +81,19 @@
 
 **## 5.1
     kdensity 		ttl_exp
-	graph export	"$answ/05-dens-1.png"
+	graph export	"$answ/04-dens-1.png", replace
 	
 **## 5.2
     kdensity 		ttl_exp, bwidth(1)
-	graph export	"$answ/05-dens-2.png"
+	graph export	"$answ/04-dens-2.png", replace
 
 **## 5.3
     kdensity 		ttl_exp, bwidth(3)
-	graph export	"$answ/05-dens-3.png"
+	graph export	"$answ/04-dens-3.png", replace
 
 **## 5.4
     kdensity 		ttl_exp, normal
-	graph export	"$answ/05-dens-4.png"
+	graph export	"$answ/04-dens-4.png", replace
 
 **## 5.5	
 	twoway 			(histogram ttl_exp, bin(20) percent color(%60)) || ///
@@ -102,7 +102,7 @@
 						xtitle("Total work experience (years)") ///
 						ytitle("Percent of workers")  ///
 						legend(order(1 "Histogram" 2 "Kernel density") pos(6) col(2))
-	graph export	"$answ/05-dens-5.png"
+	graph export	"$answ/04-dens-5.png", replace
 	
 		
 ********************************************************************************

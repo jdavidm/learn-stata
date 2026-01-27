@@ -5,6 +5,8 @@ title: Basic If Statements
 language: Stata
 ---
 
+Load `auto.dta` using the `sysuse` command.
+
 1\. Create a variable `y` that equals "1" if `price` is less than or equal to "4195". How many cars have a price less than "4195"?
 
 2\. Replace the value of `y` with a "3" if `price` is greater than or equal to "6342". How many cars have a price greater than "6342"?
