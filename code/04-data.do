@@ -98,7 +98,7 @@
 **## 5.5	
 	twoway 			(histogram ttl_exp, bin(20) percent color(%60)) || ///
 						(kdensity ttl_exp), ///
-						title("Distribution of total work experience") ///
+						title("Distribution of total work experience") ///exp()`'
 						xtitle("Total work experience (years)") ///
 						ytitle("Percent of workers")  ///
 						legend(order(1 "Histogram" 2 "Kernel density") pos(6) col(2))
@@ -109,35 +109,32 @@
 **# exercise 6
 ********************************************************************************
 
-* save household data
-	save			"$data/household_all.dta", replace
+* create scalars of mean and sd of wage
+	summ			wage
+	scalar 			m_wage = r(mean)
+	scalar 			v_wage = r(Var)
 
-* collapse data to EA level
-	collapse		(mean) hh_size totcons_USD ///
-						(percent) hh_electricity_access nonfarm_enterprise, ///
-						by(eaid sector)
-		
-* rename variables
-	rename			hh_size ea_hh_size
-	rename			totcons_USD ea_totcons_USD
-	rename			hh_electricity_access ea_electricity_access 
-	rename			nonfarm_enterprise ea_nonfarm_enterprise
-		
-**## 6.1
-	bys sector:		sum ea_hh_size
-					
-**## 6.2
-	bys sector:		sum ea_electricity_access
-					
-**## 6.3
-	bys sector:		sum ea_nonfarm_enterprise
-					
-**## 6.4
-	bys sector:		sum ea_totcons_USD
+	di 				m_wage
+	di 				v_wage
 
-* save file
-	save			"$data/ea_summary.dta", replace
+* create scalars for mean and sd for new distribution
+	scalar 			sig2 = ln(1 + v_wage/(m_wage^2))
+	scalar 			sig  = sqrt(sig2)
+	scalar 			mu   = ln(m_wage) - 0.5*sig2
 
+	di 				"mu = " mu
+	di 				"sigma = " sig
+
+* simulate from the matched log-normal
+	set 			seed 8675309
+	gen 			wage_logn = exp(rnormal(mu, sig))
+
+* graph theoretical log-normal distribution and wages
+	twoway 			(kdensity wage_logn) || ///
+						(kdensity wage), ///
+						legend(order(1 "Simulated log-normal" 2 "Observed wage") ///
+						col(2) pos(6))
+	
 
 ********************************************************************************
 **# exercise 7
