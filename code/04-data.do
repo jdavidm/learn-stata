@@ -2,7 +2,7 @@
 * assignment: 4
 * created on: jan 25
 * created by: jdm
-* edited on: 26 jan 26
+* edited on: 27 jan 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -57,32 +57,22 @@
 ********************************************************************************
 
 **## 4.1
-	lab def			yesno 0 "No" 1 "Yes"
+	hist			hours, percent
+	graph export	"$answ/04-hist-1.png"
 	
 **## 4.2
-	lab val			hh_shock hh_primary_education hh_electricity_access ///
-						hh_formal_education nonfarm_enterprise yesno
+	hist			hours, bin(10) percent
+	graph export	"$answ/04-hist-2.png"
 				
 **## 4.3
-	gen				sector = 0 if urban == "Rural"
-	replace			sector = 1 if sector == .
-	lab var			sector "EA is rural or urban"
-	lab def			sec_lbl 0 "Rural" 1 "Urban"
-	lab val			sector sec_lbl
-	drop			urban
-	order			sector, after(eaid)
-
-**## 4.4
-	encode			country, gen(Country)
-	drop			country
-	rename			Country country
-	order			country
+	hist			hours, start(0) width(5) percent
+	graph export	"$answ/04-hist-3.png"
 	
 **## 4.4
-	encode			admin_1, gen(Admin_1)
-	drop			admin_1
-	rename			Admin_1 admin_1
-	order			admin_1, before(admin_2)
+	hist			grade, frequency
+	
+	hist			grade, discrete frequency
+	graph export	"$answ/04-hist-4.png"
 
 
 ********************************************************************************
@@ -90,22 +80,31 @@
 ********************************************************************************
 
 **## 5.1
-	egen			tot_plots = rowtotal(nb_plots nb_fallow_plots)
-	lab var			tot_plots "Total number of plots under household management"
-	sum				tot_plots
-
+    kdensity 		ttl_exp
+	graph export	"$answ/05-dens-1.png"
+	
 **## 5.2
-	egen			meancons_USD = mean(totcons_USD), by(cons_quint)
-	lab var			meancons_USD "Mean consumption per quntile (USD)"
-	tab				meancons_USD
+    kdensity 		ttl_exp, bwidth(1)
+	graph export	"$answ/05-dens-2.png"
 
 **## 5.3
-	egen			max_hdds = max(hdds), by(hh_electricity_access)
-	lab var			max_hdds "Max HDDS by electricity access"
-	bys hh_electricity_access: ///
-						sum				max_hdds
-	
+    kdensity 		ttl_exp, bwidth(3)
+	graph export	"$answ/05-dens-3.png"
 
+**## 5.4
+    kdensity 		ttl_exp, normal
+	graph export	"$answ/05-dens-4.png"
+
+**## 5.5	
+	twoway 			(histogram ttl_exp, bin(20) percent color(%60)) || ///
+						(kdensity ttl_exp), ///
+						title("Distribution of total work experience") ///
+						xtitle("Total work experience (years)") ///
+						ytitle("Percent of workers")  ///
+						legend(order(1 "Histogram" 2 "Kernel density") pos(6) col(2))
+	graph export	"$answ/05-dens-5.png"
+	
+		
 ********************************************************************************
 **# exercise 6
 ********************************************************************************

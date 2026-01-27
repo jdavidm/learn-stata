@@ -89,7 +89,7 @@ Compare `bin(10)` vs `bin(40)`.
 - With more bins, small bumps appear and the picture is less smooth.
 - With fewer bins, you see the big-picture pattern but lose smaller details.
 
-> Do [Exercise 4.1 - 4.2 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
+> Do [Exercise 4.1 - 4.3 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
 
 #### Chaning the the look of `hist`
 
@@ -104,7 +104,7 @@ Because `hist` is so basic a command, you don’t need to go wild with formattin
                             ytitle("Percent of workers")
 ```
 
-> Do [Exercise 4.3 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
+> Do [Exercise 4.4 - Histograms]({{ site.baseurl }}/exercises/04-hist/)
 
 
 ### Kernel density plots
@@ -139,7 +139,7 @@ Bandwidth in kernel density plots are like bin choice in histograms: for both th
 - With **small bandwidth**, the curve wiggles more — it follows the data closely (less bias, more noise).
 - With **large bandwidth**, the curve is smoother — easier to read big patterns, but small bumps disappear (more bias, less noise).
 
-> Do [Exercise 5.1 - 5.2 - Density Functions]({{ site.baseurl }}/exercises/04-dens/)
+> Do [Exercise 5.1 - 5.3 - Density Functions]({{ site.baseurl }}/exercises/04-dens/)
 
 #### Different kernels (`kernel()`)
 
@@ -155,7 +155,7 @@ Stata supports several kernel shapes. The default is Epanechnikov but there are 
 
 For most applied work, the bandwidth matters much more than kernel choice.
 
-> Do [Exercise 5.3 - Density Functions]({{ site.baseurl }}/exercises/04-dens/)
+> Do [Exercise 5.4 - Density Functions]({{ site.baseurl }}/exercises/04-dens/)
 
 
 ### Overlaying histogram and kernel density
@@ -174,12 +174,12 @@ Alternatively, with the one-command approach:
     histogram           wage, bin(25) kdensity
 ```
 
-> Talk through the figure:
-> - The histogram bars show **counts (or proportions) in bins**.
-> - The kernel density curve is a **smoothed version** of that same pattern.
-> - Where the bars are high, the curve is high; where bars are low, the curve is low.
+Examining the graphs
+- The histogram bars show **counts (or proportions) in bins**.
+- The kernel density curve is a **smoothed version** of that same pattern.
+- Where the bars are high, the curve is high; where bars are low, the curve is low.
 
----
+> Do [Exercise 5.5 - Density Functions]({{ site.baseurl }}/exercises/04-dens/)
 
 ### Reading and describing distributions from graphs
 
