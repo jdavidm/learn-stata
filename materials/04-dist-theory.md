@@ -11,6 +11,7 @@ The plan:
 - Observed vs theoretical distributions
 - Simulating data from a theoretical distribution with `rnormal`
 - Comparing a real variable to a normal distribution using `nlsw88`
+- Using percentiles and tail areas
 - Walking through the 5-step hypothesis testing procedure in Stata
 
 ### Observed vs theoretical distributions
@@ -139,16 +140,56 @@ Now draw kernel density plots of both variables on the same graph:
 * graph observed and theoretical distributions
     twoway          (kdensity ttl_exp_norm, lpattern(solid)) || ///
                         (kdensity ttl_exp, lpattern(dash)), ///
-                        title("Comparing normal and observed distributions") ///
+                        title("Normal & observed distributions") ///
                         xtitle("Total work experience (years)") ///
                         ytitle("Density") ///
-                        legend(order(1 "Simulated normal (ttl_exp_norm)" 2 "Observed ttl_exp"))
+                        legend(order(1 "Simulated" 2 "Observed"))
 ```
 
 - The **simulated normal** curve is symmetric and bell-shaped.
 - The **observed `ttl_exp`** curve is likely right-skewed (more mass on the left, long tail to the right).
 
-> Do [Exercise 5.1 - 5.2 - Random Numbers]({{ site.baseurl }}/exercises/04-rando/)
+> Do [Exercise 6.1 - 6.2 - Random Numbers]({{ site.baseurl }}/exercises/04-rando/)
+
+### Percentiles and tail areas
+
+In the earlier *Distributions of Variables* lecture, you saw how to use `sum, detail` to get **percentiles** of a variable, including the 5th and 95th percentiles. Those numbers tell us where the **extreme tails** of the distribution begin.
+- The **5th percentile** is a value such that 5% of observations are **below** it.
+- The **95th percentile** is a value such that 95% of observations are **below** it (so 5% are above it).
+
+Percentiles give us a way to describe the “middle 90%” of the data (between the 5th and 95th percentiles) and the extreme 5% tails on either side. Those tails are exactly the kinds of “rare events” we’ll care about when we do hypothesis testing.
+
+We'll illustrate this using the `wage` variable.
+- First we will summarize wage and save the stored values for the 5th and 95th percentile
+- Second, we will graph the distribution of wages
+- To this graph we will add two vertical lines (`xline`), one at `p5` and the other at `p95`
+- We will also set the pattern of the line (`lpattern`) and the color (`lcolor`)
+
+```stata
+* get detailed summary of wage
+    sum             wage, detail
+
+* save the 5th and 95th percentiles as locals
+    local           p5  = r(p5)
+    local           p95 = r(p95)
+
+* graph the distribution with percentile cutoffs
+    kdensity        wage, ///
+                        title("5th and 95th percentiles of wage") ///
+                        xtitle("Hourly wage (1988 dollars)") ///
+                        ytitle("Density") ///
+                        xline(`p5' `p95', lpattern(dash) ///
+                        lcolor(maroon))
+```
+
+What does this graph show?
+- Most of the **area under the curve** lies between the dashed vertical lines at the 5th and 95th percentiles.
+- The left-most tail (to the left of the 5th percentile) contains only about **5% of the workers**.
+- The center region (between the 5th and 95th percentiles) contains about **90% of the workers**.
+
+The tails are small “rare” regions, and the middle is where most observations lie. When we move to hypothesis testing, we’ll treat events that fall in those small tail regions (like 5% in each tail) as **unlikely under the null**.
+
+> Do [Exercise 7 - Percentiles]({{ site.baseurl }}/exercises/04-percent/)
 
 
 ### Hypothesis testing in five steps (one-sample mean test)

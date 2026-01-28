@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Graphing
-title: Density Functions
+title: Random Numbers
 language: Stata
 ---
 

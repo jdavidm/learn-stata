@@ -98,10 +98,11 @@
 **## 5.5	
 	twoway 			(histogram ttl_exp, bin(20) percent color(%60)) || ///
 						(kdensity ttl_exp), ///
-						title("Distribution of total work experience") ///exp()`'
+						title("Distribution of total work experience") ///
 						xtitle("Total work experience (years)") ///
 						ytitle("Percent of workers")  ///
-						legend(order(1 "Histogram" 2 "Kernel density") pos(6) col(2))
+						legend(order(1 "Histogram" 2 "Kernel density") ///
+						pos(6) col(2))
 	graph export	"$answ/04-dens-5.png", replace
 	
 		
@@ -129,11 +130,18 @@
 	set 			seed 8675309
 	gen 			wage_logn = exp(rnormal(mu, sig))
 
-* graph theoretical log-normal distribution and wages
+**## 6.1	
+	twoway 			(kdensity wage_logn) 
+	graph export	"$answ/04-rando-1.png", replace
+	
+	
+**## 6.2
 	twoway 			(kdensity wage_logn) || ///
 						(kdensity wage), ///
-						legend(order(1 "Simulated log-normal" 2 "Observed wage") ///
+						legend(order(1 "Simulated log-normal" ///
+						2 "Observed wage") ///
 						col(2) pos(6))
+	graph export	"$answ/04-rando-2.png", replace
 	
 
 ********************************************************************************
