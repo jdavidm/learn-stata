@@ -276,7 +276,7 @@ The key message is:
   - “Our model is true,” or
   - “The result is important in the real world.”
 
-> Do [Exercise 8 - Hypothesis Testing]({{ site.baseurl }}/exercises/04-ttest/)
+> Do [Exercise 8.1 - 8.2 - Hypothesis Testing]({{ site.baseurl }}/exercises/04-ttest/)
 
 ### Summary
 
