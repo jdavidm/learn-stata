@@ -150,82 +150,126 @@
 
 **## 7.1
 	
-* load data
-	use				"$data/household_all.dta", clear
+* summarize data
+	sum             wage, detail
 
-* keep only wave 1
-	keep if			wave == 1
+* store values as locals
+	local           p5  = r(p5)
+	local           p95 = r(p95)
 	
-* save new file
-	save			"$data/hh_wave1.dta", replace
+* display output
+	display        "5th percentile of wage:  " `p5'
+    display        "95th percentile of wage: " `p95'
 
 **## 7.2
 
-* load data
-	use				"$data/household_all.dta", clear
+* create cumulative distribution
+	cumul           wage, gen(F_wage)
 
-* keep only wave 2
-	keep if			wave == 2
-	
-* save new file
-	save			"$data/hh_wave2.dta", replace
+* graph the CDF
+	twoway          (line F_wage wage, sort), ///
+                        title("Cumulative distribution of wage") ///
+                        xtitle("Hourly wage (1988 dollars)") ///
+                        ytitle("Cumulative probability")
+	graph export	"$answ/04-percentile-2.png", replace
 	
 **## 7.3
-	append			using "$data/hh_wave1.dta"
+	twoway              (line F_wage wage, sort), ///
+							yline(0.05, lpattern(dash) lcolor(maroon)) ///
+							title("CDF of wage with 5% cutoff") ///
+							xtitle("Hourly wage (1988 dollars)") ///
+							ytitle("Cumulative probability")
+	graph export	"$answ/04-percentile-3.png", replace
 
-	
+						
 ********************************************************************************
 **# exercise 8
 ********************************************************************************
 
-* load data
-	use				"$data/ea_summary.dta", clear
-
 **## 8.1
-	isid			eaid sector
-	
+	sum				hours
+
+* hypothesis test
+* $H_0: \mu = 40$
+* $H_1: \mu \neq 40$
+
+	ttest			hours == 40
+
 **## 8.2
-	merge 1:m		eaid sector using "$data/household_all.dta"
-	
-	
-**## 8.3
-	gen				cons_gap = totcons_USD - ea_totcons_USD
-	
-	sum				cons_gap
+	sum				wage if collgrad == 1
+
+* hypothesis test
+* $H_0: \mu = 10$
+* $H_1: \mu \neq 10$
+
+	ttest			wage == 10 if collgrad == 1
 	
 	
 ********************************************************************************
 **# challenge 4
 ********************************************************************************
 
-* create indicator for sign of poverty gap	
-	gen				gap = 1 if cons_gap < 0
-	replace			gap = 0 if cons_gap >= 0 & cons_gap != .
+* load data
+    sysuse      	nlsw88, clear
 	
-* label variable and values
-	lab var			gap "Indicator for sign of consumption gap"
-	lab def			gap_lbl 0 "Positive Gap" 1 "Negative Gap"
-	lab val			gap gap_lbl
+* get summary stats from wage
+	qui sum			ttl_exp, detail
 	
-* count number of households above and below and label
-	egen			below = total(gap), by(eaid sector)
-	lab var			below "Number of households below mean consumption"
+* store values as locals
+	local			mu  = r(mean)
+	local           p5  = r(p5)
+	local           p95 = r(p95)
 	
-	egen			above = total(gap == 0), by(eaid sector)
-	lab var			below "Number of households above mean consumption"
+* compute kernel density and save the grid + density
+    kdensity    	ttl_exp, gen(x_ttl d_ttl) nograph
+
+* create left and right tail densities for shading
+    gen        		d_left  = d_ttl if x_ttl <= `p5'
+    gen         	d_right = d_ttl if x_ttl >= `p95'
+
+* create locals for right and left cutoff
+	qui sum			x_ttl if !missing(d_left), meanonly
+	local			lcut = r(max)
 	
-* count number of households in an EA
-	egen 			tot_hh = count(gap), by(eaid sector)
-	lab var			tot_hh "Total number of households in EA"
+	qui sum			x_ttl if !missing(d_right), meanonly
+	local			rcut = r(min)
 	
-* create variable for share of households above/below
-	gen				share_below = below / tot_hh
-	lab var			share_below "Percentage of households in EA below mean consumption"
+* a zero line for rarea (needed for shading)
+    gen         	zero = 0
 	
-* summerize share below by sector and country
-	bys sector: 	sum share_below
-	bys country: 	sum share_below
-	
+*create nicely formatted labels for tick marks
+    local       	p5lbl  : display %5.2f `p5'
+    local       	mulbl  : display %5.2f `mu'
+    local       	p95lbl : display %5.2f `p95'
+
+* left tail center & height
+    qui sum         x_ttl if !missing(d_left), meanonly
+    local           lx = (r(min) + r(max))/2
+
+    qui sum         d_ttl if !missing(d_left), meanonly
+    local           ly = 0.6*r(max)
+
+* right tail center & height
+    qui sum         x_ttl if !missing(d_right), meanonly
+    local           rx = (r(min) + r(max))/2
+
+    qui sum         d_ttl if !missing(d_right), meanonly
+    local           ry = 0.6*r(max)
+
+* final graph
+	twoway 				(kdensity ttl_exp) ///
+							(rarea d_left  zero x_ttl, sort color(navy%60)) ///
+							(rarea d_right zero x_ttl, sort color(navy%60)), ///
+							xline(`lcut' `mu' `rcut', lpattern(dash) lcolor(maroon)) ///
+							xlabel(`mu' "`mulbl'", add) ///
+							text(`ly' `lx' "5%",  place(c)) ///
+							text(`ry' `rx' "95%", place(c)) ///
+							title("PDF of total work experience with tails") ///
+							xtitle("Total work experience (years)") ///
+							ytitle("Density") ///
+							legend(off)
+	graph export	"$answ/04-challenge.png", replace
+		
 
 * close the log
 	log	close

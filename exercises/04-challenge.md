@@ -5,93 +5,159 @@ title: Challenge 4
 language: Stata
 ---
 
-**graphf PDF, draw lines, shade, label regions**
 
-Using the `nlsw88` data,
+In this challenge exercise you will recreate the **“PDF of total work experience with tails”** graph from lecture.
 
-1\. Use `sum, detail` to get detailed summary statistics for `wage`. Store the value of the 5th and 95th percentile as `locals` called `p5` and `p95`. Finally, tell stata to `display` two lines of text, followed by the actual value of the 5th and 95th using the values stored in `p5` and `p95`:
-   1. 5th percentile of wage:
-   2. 95th percentile of wage:
+You will:
 
+- Compute the kernel density of `ttl_exp`,
+- Shade the **bottom 5%** and **top 5%** of the distribution,
+- Mark the **5th percentile**, **mean**, and **95th percentile** with vertical lines,
+- Label the tails with “5%” and “95%”, and
+- Print the mean value below the x-axis.
 
-When we use `kdensity` we are drawing the **probability density function** (PDF). Sometimes it’s convenient to work with the **cumulative distribution function** (CDF) rather than the density. The CDF shows, for each wage value, the **fraction of workers with wage less than or equal to that value**.
-
-2\. Use the `cumul` command to create the empirical CDF of wage: `cumul wage, gen(F_wage)`. Then draw the CDF using the command `twoway line`. Note that this is our first time graphing more than one variable. You will need to include `F_wage` and then `wage`. You will also need to use the option `sort` to get the smooth CDF that we are looking for.
-   - Title the graph "Cumulative distribution of wage"
-   - Title the x-axis "Hourly wage (1988 dollars)"
-   - Title the y-axis "Cumulative probability"
-
-3\. Now we will add a line to the graph at 5% (0.05 on the y-axis) to mark the 5th percentile using `yline`. Recall in the lecture we added vertical lines using `xline`.
-   - Give the line a `dash` pattern
-   - Color the line `maroon`
-   - Title this new graph "CDF of wage with 5% cutoff"
-
-4\. Shade the lowest 5% of the distribution
-
-To mimic Figure 3.5 more closely, we want to **shade the bottom 5%** of the distribution (the left tail) and label it.
-
-1. Create a variable for the bottom 5% of the CDF and a zero line for shading:
-
-    ```stata
-* create a zero line for shading
-    gen             zero = 0
-
-* keep only the part of the CDF up to the 5th percentile
-    gen             F_wage_shade = F_wage if wage <= `p5'
-    ```
-
-2. Draw a graph that shades the area under the CDF up to the 5th percentile, and overlays the full CDF:
-
-    ```stata
-twoway              (rarea F_wage_shade zero wage, sort) ///
-                    (line  F_wage       wage, sort), ///
-                        yline(0.05, lpattern(dash)) ///
-                        title("CDF of wage with shaded bottom 5%") ///
-                        xtitle("Hourly wage (1988 dollars)") ///
-                        ytitle("Cumulative probability")
-    ```
-
-- The shaded area shows the **lowest 5%** of the distribution (the “5% section”).  
-- The unshaded part of the curve above that corresponds to the **remaining 95%** of workers.
+Work in a **do-file**, and include comments so you can remember what you did when you come back later.
 
 ---
 
-## 5. Label the 5% and 95% regions
+## 1. Load the data and get key summary stats
 
-Finally, add text labels to clearly mark the “5%” and “95%” regions on your graph.
+1. Load the data:
 
-Add `text()` options to the previous `twoway` command. For example:
+    ```stata
+    * load data
+        sysuse          nlsw88, clear
+    ```
 
-```stata
-twoway              (rarea F_wage_shade zero wage, sort) ///
-                    (line  F_wage       wage, sort), ///
-                        yline(0.05, lpattern(dash)) ///
-                        title("CDF of wage with shaded bottom 5%") ///
-                        xtitle("Hourly wage (1988 dollars)") ///
-                        ytitle("Cumulative probability") ///
-                        text(0.02 2  "5% of workers") ///
-                        text(0.6 15 "95% of workers")
-```
+2. Get detailed summary statistics for `ttl_exp`:
 
-- The first number in each `text()` is the **y-coordinate** (cumulative probability).
-- The second number is the **x-coordinate** (wage).
-- The quoted part is the label that will appear on the graph.
+    ```stata
+    * get summary stats from ttl_exp
+        quietly sum     ttl_exp, detail
+    ```
 
-You may need to adjust the x-coordinates (`2`, `15`, etc.) to place the labels somewhere that looks good for your graph.
+3. Store the **mean**, **5th percentile**, and **95th percentile** in locals:
+
+    ```stata
+    * store values as locals
+        local           mu  = r(mean)
+        local           p5  = r(p5)
+        local           p95 = r(p95)
+    ```
+
+Check in the Results window that these values look reasonable for total work experience.
 
 ---
 
-## 6. Export your finished figure
+## 2. Compute the kernel density and define tail regions
 
-Once you’re happy with your graph, export it to a file (e.g., PNG) in your working directory:
+1. Ask Stata to compute the kernel density of `ttl_exp` and save the grid and density in new variables:
+
+    ```stata
+    * compute kernel density and save the grid + density
+        kdensity        ttl_exp, gen(x_ttl d_ttl) nograph
+    ```
+
+   - `x_ttl` contains the x-values for the density grid.  
+   - `d_ttl` contains the estimated density at each x-value.
+
+2. Create variables for the **left** and **right** tails:
+
+    ```stata
+    * create left and right tail densities for shading
+        gen             d_left  = d_ttl if x_ttl <= `p5'
+        gen             d_right = d_ttl if x_ttl >= `p95'
+    ```
+
+   - `d_left` will be nonmissing only in the **bottom 5%** region.  
+   - `d_right` will be nonmissing only in the **top 5%** region.
+
+---
+
+## 3. Find the cutoffs for shading and add a zero line
+
+1. Find the **maximum** x-value in the left tail and the **minimum** x-value in the right tail. These will be used for vertical lines:
+
+    ```stata
+    * create locals for right and left cutoff
+        quietly sum     x_ttl if !missing(d_left), meanonly
+        local           lcut = r(max)
+
+        quietly sum     x_ttl if !missing(d_right), meanonly
+        local           rcut = r(min)
+    ```
+
+2. Create a variable of zeros for use with `rarea` (which shades between two curves):
+
+    ```stata
+    * a zero line for rarea (needed for shading)
+        gen             zero = 0
+    ```
+
+3. Create nicely formatted labels for the 5th percentile, mean, and 95th percentile if you want to use them later:
+
+    ```stata
+    * create nicely formatted labels for tick marks
+        local           p5lbl  : display %5.2f `p5'
+        local           mulbl  : display %5.2f `mu'
+        local           p95lbl : display %5.2f `p95'
+    ```
+
+---
+
+## 4. Choose positions for the “5%” and “95%” labels
+
+You want the text “5%” and “95%” to appear **inside** the shaded tail regions.
+
+1. Compute the **x-position** for the center of the left tail and a y-position that is 60% of the maximum density in the left tail:
+
+    ```stata
+    * left tail center & height
+        quietly sum     x_ttl if !missing(d_left), meanonly
+        local           lx = (r(min) + r(max))/2
+
+        quietly sum     d_ttl if !missing(d_left), meanonly
+        local           ly = 0.6*r(max)
+    ```
+
+2. Do the same for the right tail:
+
+    ```stata
+    * right tail center & height
+        quietly sum     x_ttl if !missing(d_right), meanonly
+        local           rx = (r(min) + r(max))/2
+
+        quietly sum     d_ttl if !missing(d_right), meanonly
+        local           ry = 0.6*r(max)
+    ```
+
+These locals (`lx`, `ly`, `rx`, `ry`) will give Stata the coordinates for the text labels.
+
+---
+
+## 5. Draw the final graph
+
+Now put everything together in a single `twoway` command. Type (or paste) the following into your do-file:
 
 ```stata
-graph export wage_cdf_percentiles.png, replace
+* final graph
+    twoway          (kdensity ttl_exp) ///
+                    (rarea d_left  zero x_ttl, sort color(navy%60)) ///
+                    (rarea d_right zero x_ttl, sort color(navy%60)), ///
+                    xline(`lcut' `mu' `rcut', lpattern(dash) lcolor(maroon)) ///
+                    xlabel(`mu' "`mulbl'", add) ///
+                    text(`ly' `lx' "5%",  place(c)) ///
+                    text(`ry' `rx' "95%", place(c)) ///
+                    title("PDF of total work experience with tails") ///
+                    xtitle("Total work experience (years)") ///
+                    ytitle("Density") ///
+                    legend(off)
 ```
 
-Make sure your final figure:
+This should produce a graph with:
 
-- Shows the **CDF of wage**,
-- Has a **horizontal line at 5%**,
-- Clearly **shades the lowest 5%** of the distribution,
-- Labels the **“5%”** and **“95%”** regions in a way that a reader can immediately understand.
+- The **kernel density** of `ttl_exp` in black,
+- The **bottom 5%** and **top 5%** shaded in navy,
+- Vertical dashed lines at the **5th percentile**, **mean**, and **95th percentile**,
+- The labels **“5%”** and **“95%”** inside the shaded regions, and
+- The numeric value of the **mean** printed below the x-axis at its location.
