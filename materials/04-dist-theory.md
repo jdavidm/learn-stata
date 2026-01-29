@@ -189,66 +189,49 @@ What does this graph show?
 
 The tails are small “rare” regions, and the middle is where most observations lie. When we move to hypothesis testing, we’ll treat events that fall in those small tail regions (like 5% in each tail) as **unlikely under the null**.
 
-> Do [Exercise 7 - Percentiles]({{ site.baseurl }}/exercises/04-percent/)
+> Do [Exercise 7.1 - 7.3 - Percentiles]({{ site.baseurl }}/exercises/04-percent/)
 
 
 ### Hypothesis testing in five steps (one-sample mean test)
 
-Now use the same five steps the book lays out, but in a simplified form and **implemented in Stata**.
-
-Goal: test a hypothesis about the **mean** of a variable using a one-sample t-test.
-
-We’ll use `ttl_exp` again and test:
+This last section of the lecture draws directly from Chapter 3 of [The Effect](https://theeffectbook.net/ch-DescribingVariables.html#theoretical-distributions) that was part of your readings this week. Our **Goal**: test a hypothesis about the mean of a variable using a one-sample t-test. We’ll use `ttl_exp` and test:
 
 > Null hypothesis: the mean total work experience is 10 years.
 
-You can change “10” later if you prefer a different number.
-
 #### Step 1: State the hypotheses
 
-Explain to students:
-
-- We want to test whether the **true average** work experience in the population (\(\mu\)) could reasonably be 10 years.
-
-Write this on the board and in code comments:
-
-- \(H_0\): \(\mu = 10\) (the mean total work experience is 10 years)  
-- \(H_1\): \(\mu \neq 10\) (the mean total work experience is not 10 years)
-
-```stata
-* Step 1: State hypotheses
-* H0: mean(ttl_exp) = 10
-* H1: mean(ttl_exp) != 10
-```
+We want to test whether the **true average** work experience in the population $(\mu)$ could reasonably be 10 years. We can state this in terms of a null and alternative hypothesis:
+- $H_0$: $\mu = 12.3$ (the mean total work experience is 12.3 years)  
+- $H_1$: $\mu \neq 12.3$ (the mean total work experience is not 12.3 years)
 
 #### Step 2: Choose a test statistic with a known theoretical distribution
 
-Explain in words:
+We need a statistic whose **theoretical distribution** we know under the null. For testing a difference in means, the usual choice is a **t-statistic**:
+$$
+\frac{(\text{sample mean} - \text{hypothesized mean})}{\text{standard error}}
+$$
 
-- We need a statistic whose **theoretical distribution** we know under the null.
-- For a mean, the usual choice is a **t-statistic**:
-  - (sample mean – hypothesized mean) / standard error
-- For large samples, this t distribution is very close to a normal distribution.
+For large samples, this t-distribution is very close to a normal distribution.
 
 In Stata, we’ll use the `ttest` command, which computes this test statistic and knows its theoretical distribution.
 
-```stata
-* Step 2: We will use a one-sample t-test
-* Test statistic: t = (mean(ttl_exp) - 10) / SE(mean)
-```
-
-You don’t need to write formulas in code; just say that `ttest` is doing this for us.
-
 #### Step 3: Compute the test statistic in the data
 
-Run the test in Stata:
+Run the test in Stata: `ttest ttl_exp == 12.3`
 
 ```stata
-* Step 3: Compute the test statistic using the data
-ttest ttl_exp == 10
-```
+One-sample t test
+------------------------------------------------------------------------------
+Variable |     Obs        Mean    Std. err.   Std. dev.   [95% conf. interval]
+---------+--------------------------------------------------------------------
+ ttl_exp |   2,246    12.53498    .0972782    4.610208    12.34421    12.72574
+------------------------------------------------------------------------------
+    mean = mean(ttl_exp)                                          t =   2.4155
+H0: mean = 12.3                                  Degrees of freedom =     2245
 
-Show them the output:
+   Ha: mean < 12.3             Ha: mean != 12.3               Ha: mean > 12.3
+ Pr(T < t) = 0.9921         Pr(|T| > |t|) = 0.0158          Pr(T > t) = 0.0079 
+```
 
 - Stata reports:
   - The **sample mean** of `ttl_exp`
@@ -257,50 +240,35 @@ Show them the output:
   - The **degrees of freedom**
   - The **p-value** (for different alternatives)
 
-Highlight: the t-statistic here is our **test statistic**, and its **theoretical distribution** under \(H_0\) is a t distribution with \(N-1\) degrees of freedom.
-
 #### Step 4: Use the theoretical distribution to get a p-value
 
-Connect back to the book:
-
-- Under \(H_0: \mu = 10\), the t-statistic follows a **t-distribution**.
-- We ask: *How likely is it to get a t-statistic this extreme (or more extreme) if \(H_0\) were true?*
+Under $H_0: \mu = 12.3$, the t-statistic follows a **t-distribution**.
+- We ask: *How likely is it to get a t-statistic this extreme (or more extreme) if $H_0$ were true?*
 - That probability is the **p-value**.
 
-In Stata’s output:
-
-- Look at the line labeled something like `Pr(|T| > |t|)` for the two-sided p-value.
-
-Explain:
-
-- Small p-value → our observed mean is **unlikely** if the true mean were 10.
-- Large p-value → our observed mean is **plausible** under \(H_0\).
-
-You can point at the specific p-value in the output and read it out.
+In Stata’s output, look at the line labeled something like `Pr(|T| > |t|)`
+- Small p-value → our observed mean is **unlikely** if the true mean were 12.3.
+- Large p-value → our observed mean is **plausible** under $H_0$.
 
 #### Step 5: Decide whether to reject the null hypothesis
 
-Explain the decision rule:
+We need a decision rule to tell us *how small is small enough* for us to be confident that the mean of `ttl_exp` is not equal to 12.3.
+- We pick a threshold $\alpha$ (often 0.05).
+- If p-value < $\alpha$, we **reject $H_0$**.
+- If p-value ≥ $\alpha$, we **do not reject $H_0$**.
 
-- We pick a threshold \(\alpha\) (often 0.05).
-- If p-value < \(\alpha\), we **reject \(H_0\)**.
-- If p-value ≥ \(\alpha\), we **do not reject \(H_0\)**.
+Looking at the Stata output
+- For `Ha: mean > 12.3` (meaning our $H_0: \mu < 12.3$), we reject the hypothesis at the 1% level.
+    - In the theoretical distribution, only 1% of observations are smaller and 99% of observations are larger
+    - So it is highly likely, given the data we have, that the true mean is greater than 12.3
+- For `Ha: mean != 12.3` (meaning our $H_0: \mu != 12.3$), we reject the hypothesis at the 5% level.
+    - In the theoretical distribution, 5% of observations are smaller and 95% of observations are larger
+    - So it is highly likely, given the data we have, that the true mean is not equal to 12.3
+- For `Ha: mean < 12.3` (meaning our $H_0: \mu > 12.3$), we fail to reject the hypothesis at conventional levels.
+    - In the theoretical distribution, 99% of observations are smaller and only 1% of observations are larger
+    - So it is highly unlikely, given the data we have, that the true mean is less than 12.3
 
-Write this in the do-file as comments:
-
-```stata
-* Step 5: Decision
-* If p-value < 0.05, reject H0 that mean(ttl_exp) = 10.
-* If p-value >= 0.05, do not reject H0.
-```
-
-Then interpret in words (you’ll fill in based on the actual output in class):
-
-> At the 5% significance level, we (do / do not) reject the hypothesis that the mean total work experience is 10 years.  
-> This means that our sample provides (evidence / no strong evidence) that the true mean differs from 10.
-
-Emphasize the book’s key message:
-
+The key message is:
 - Hypothesis testing is about whether our **observed data** are plausible under a given **theoretical distribution**.
 - A statistically significant result means:
   - “This set of data would be unlikely if that theoretical distribution were true.”
@@ -308,11 +276,9 @@ Emphasize the book’s key message:
   - “Our model is true,” or
   - “The result is important in the real world.”
 
----
+> Do [Exercise 8 - Hypothesis Testing]({{ site.baseurl }}/exercises/04-ttest/)
 
-### Summary to tell students
-
-Wrap up the lecture by connecting all three pieces:
+### Summary
 
 1. **Observed vs theoretical distributions**  
    - Our histograms and kernel densities show **observed distributions** from finite samples.
@@ -330,6 +296,3 @@ Wrap up the lecture by connecting all three pieces:
    - We formalized this idea with a 5-step procedure.
    - We used `ttest` to see if our data are consistent with a particular **theoretical mean** \(\mu\).
    - A small p-value means “this data would be rare if that theoretical distribution were true,” so we rule that theoretical distribution out.
-
-Tell them that in upcoming weeks, you’ll use these tools (distributions and hypothesis tests) as building blocks for more complicated models and causal questions.
-
