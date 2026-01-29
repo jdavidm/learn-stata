@@ -14,11 +14,11 @@ Test whether women work 40 hours per week on average. The variable `hours` recor
       - $H_1: \mu \neq 40$
 
 1\. Use `ttest` to perform a one-sample t-test of this hypothesis.  
-    1\. What is the sample mean of `hours`?
-    2\. What is the t-statistic? 
-    3\. How many degrees of freedom are there?
-    4\. What is the two-sided p-value?
-    5\. At the 5% significance level, do you **reject** or **fail to reject** the null hypothesis that women work 40 hours per week on average?
+   1. What is the sample mean of `hours`?
+   2. What is the t-statistic? 
+   3. How many degrees of freedom are there?
+   4. What is the two-sided p-value?
+   5. At the 5% significance level, do you **reject** or **fail to reject** the null hypothesis that women work 40 hours per week on average?
 
 Now we will test a hypothesis about the mean hourly `wage` for college graduates only.
    - Use `tab` with and without the `nolab` option to determine which numerical value college grade takes.
@@ -26,10 +26,10 @@ Now we will test a hypothesis about the mean hourly `wage` for college graduates
    - Suppose someone claims that college graduates in this sample earn $10 per hour on average. Set up the hypotheses:
       - $H_0: \mu = 10$
       - $H_1: \mu \neq 10$
-      
+
 2\.  Use a one-sample t-test restricted to college graduates to test this claim. 
-    1\. What is the sample mean of `hours`?
-    2\. What is the t-statistic? 
-    3\. How many degrees of freedom are there?
-    4\. What is the two-sided p-value?
-    5\. At the 5% significance level, what is your decision about $H_0$?
+   1. What is the sample mean of `hours`?
+   2. What is the t-statistic? 
+   3. How many degrees of freedom are there?
+   4. What is the two-sided p-value?
+   5. At the 5% significance level, what is your decision about $H_0$?
