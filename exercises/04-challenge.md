@@ -142,13 +142,13 @@ Now put everything together in a single `twoway` command. Type (or paste) the fo
 ```stata
 * final graph
 twoway      (kdensity ttl_exp) ///
-                (rarea d_left  zero x_ttl, sort color(navy%60)) ///
-                (rarea d_right zero x_ttl, sort color(navy%60)), ///
-                xline(`lcut' `mu' `rcut', lpattern(dash) lcolor(maroon)) ///
+                (rarea d_left  zero x_ttl, sort c(navy%60)) ///
+                (rarea d_right zero x_ttl, sort c(navy%60)), ///
+                xline(`lcut' `mu' `rcut', lp(dash) lc(maroon)) ///
                 xlabel(`mu' "`mulbl'", add) ///
                 text(`ly' `lx' "5%",  place(c)) ///
                 text(`ry' `rx' "95%", place(c)) ///
-                title("PDF of total work experience with tails") ///
+                title("PDF of total work experience") ///
                 xtitle("Total work experience (years)") ///
                 ytitle("Density") ///
                 legend(off)
