@@ -1,0 +1,194 @@
+---
+layout: page
+element: notes
+title: Making and Beautifying Scatter Plots
+language: Stata
+---
+
+In Week 5 we move from describing **single variables** to describing **relationships between variables**. The main tool for seeing relationships between two numeric variables is the **scatter plot**.
+
+For this lecture we’ll use a plot-level panel dataset from Ethiopia, `eth_allrounds_final`, based on the World Bank LSMS-ISA survey. Each row is (roughly) a plot-year observation with variables on production, inputs, and household characteristics.
+
+As always, you should be taking notes and coding in a `.do` file as we go.
+
+### Why scatter plots?
+
+When we suspect that one variable might be related to another (for example, yield and fertilizer), a scatter plot lets us:
+
+- Put one variable on the x-axis and one on the y-axis  
+- See whether values tend to **move together** (positive or negative association)  
+- Spot **nonlinear patterns**, **clusters**, and **outliers**
+
+Today we’ll focus on:
+
+- Making basic scatter plots in Stata  
+- Tweaking labels and appearance so the plots are readable and useful
+
+We’ll leave conditional distributions and line fitting for the next two lectures.
+
+### Basic scatter plots
+
+Start by loading the data (you’ll adjust the path as needed on your machine):
+
+```stata
+* load Ethiopia LSMS-ISA plot-level data
+    use             eth_allrounds_final, clear
+```
+
+As an example, look at the relationship between **yield** and **plot area**:
+
+- `yield_kg` = kilograms of output on the plot  
+- `plot_area_GPS` = plot size from GPS (e.g., hectares)
+
+```stata
+* basic scatter plot: yield vs plot area
+    scatter         yield_kg plot_area_GPS
+```
+
+Stata syntax is:
+
+```stata
+scatter yvar xvar
+```
+
+Here:
+- `yield_kg` is on the **y-axis**  
+- `plot_area_GPS` is on the **x-axis**
+
+Questions to ask looking at this plot:
+
+- Do larger plots tend to have higher total yield?  
+- Is there a lot of spread for a given plot size?  
+- Are there any extreme outliers in yield or area?
+
+Try a few other pairs:
+
+```stata
+* value of yield vs nitrogen applied
+    scatter         yield_value_USD nitrogen_kg
+
+* yield per hectare vs total labor
+    scatter         yield_kg total_labor_days
+```
+
+### Adding titles and axis labels
+
+Always label graphs so someone else (or you in two weeks) can understand them.
+
+```stata
+* labeled scatter plot: yield vs plot area
+    scatter         yield_kg plot_area_GPS, ///
+                        title("Plot-level yield vs plot size") ///
+                        xtitle("Plot area (GPS)") ///
+                        ytitle("Yield (kg)")
+```
+
+- `title()` adds a main title  
+- `xtitle()` and `ytitle()` label the axes  
+
+Get in the habit of doing this for any figure you care about.
+
+### Controlling marker look
+
+Scatter plots with many observations can get cluttered. You can change marker style to improve readability.
+
+```stata
+* smaller hollow circles
+    scatter         yield_kg plot_area_GPS, ///
+                        msymbol(Oh) msize(small)
+
+* tiny points
+    scatter         yield_kg plot_area_GPS, ///
+                        msymbol(point) msize(vsmall)
+```
+
+- `msymbol()` controls marker shape  
+- `msize()` controls marker size  
+
+When you have many plot observations, small or hollow symbols usually look better.
+
+If the x-variable is discrete or takes on only a few values, points can stack on top of each other. You can add a bit of **jitter**:
+
+```stata
+* add horizontal jitter to household size vs yield value
+    scatter         yield_value_USD hh_size, jitter(2)
+```
+
+This spreads points slightly along the x-axis to reveal overlapping observations.
+
+### Coloring by group
+
+We often want to see how a relationship looks for different groups, such as irrigated vs non-irrigated plots. We can overlay separate scatter plots for each group using `twoway`.
+
+Example: yield per hectare vs nitrogen use, by irrigation:
+
+- `yield_kg` (or a yield-per-area measure you construct)  
+- `nitrogen_kg` = kilograms of nitrogen applied  
+- `irrigated` = 1 if the plot is irrigated, 0 otherwise
+
+```stata
+* yield vs nitrogen, colored by irrigation status
+    twoway          (scatter yield_kg nitrogen_kg if irrigated == 1, mcolor(blue)) ///
+                    (scatter yield_kg nitrogen_kg if irrigated == 0, mcolor(red)), ///
+                        title("Yield vs nitrogen by irrigation") ///
+                        xtitle("Nitrogen applied (kg)") ///
+                        ytitle("Yield (kg)") ///
+                        legend(order(1 "Irrigated" 2 "Rainfed"))
+```
+
+Questions:
+
+- Do irrigated plots tend to apply more nitrogen?  
+- At similar nitrogen levels, do irrigated plots appear to have higher yields?
+
+You can also facet the scatter plot into separate panels using `by()` with a household or manager characteristic, such as `female_manager`:
+
+```stata
+* same relationship, separate panels by manager sex
+    scatter         yield_kg nitrogen_kg, ///
+                        by(female_manager, legend(off) ///
+                            title("Yield vs nitrogen by manager sex"))
+```
+
+### Focusing on a subset
+
+Sometimes extreme values make the main pattern hard to see. You can **restrict** the data to a more typical range:
+
+```stata
+* focus on plots with moderate area and yield
+    scatter         yield_kg plot_area_GPS ///
+                        if plot_area_GPS <= 5 & yield_kg <= 5000, ///
+                        title("Yield vs plot size (trimmed range)") ///
+                        xtitle("Plot area (<= 5)") ///
+                        ytitle("Yield (<= 5000 kg)")
+```
+
+When you trim the range, make that clear in the title or in your notes.
+
+### A basic workflow for scatter plots
+
+When you want to explore the relationship between two numeric variables in this dataset:
+
+```stata
+* 1. Basic scatter
+    scatter         yvar xvar
+
+* 2. Add titles and axis labels
+    scatter         yvar xvar, ///
+                        title("Y vs X") ///
+                        xtitle("X label") ///
+                        ytitle("Y label")
+
+* 3. Adjust marker look (optional)
+    scatter         yvar xvar, ///
+                        msymbol(Oh) msize(small)
+
+* 4. Color or panel by group (optional)
+    twoway          (scatter yvar xvar if irrigated == 0) ///
+                    (scatter yvar xvar if irrigated == 1)
+```
+
+In the next lectures this week, we’ll build on scatter plots to:
+
+- Look at **conditional distributions** (what yield or input use looks like for given levels of another variable or across groups), and  
+- Fit and interpret **lines** through scatter plots to summarize relationships.
