@@ -24,42 +24,27 @@ Today we’ll focus on:
 - Making basic scatter plots in Stata  
 - Tweaking labels and appearance so the plots are readable and useful
 
-We’ll leave conditional distributions and line fitting for the next two lectures.
-
-### Basic scatter plots
-
-Start by loading the data (you’ll adjust the path as needed on your machine):
+The basic Stata syntax is:
 
 ```stata
-* load Ethiopia LSMS-ISA plot-level data
-    use             eth_allrounds_final, clear
+scatter yvar xvar
 ```
 
 As an example, look at the relationship between **yield** and **plot area**:
-
-- `yield_kg` = kilograms of output on the plot  
-- `plot_area_GPS` = plot size from GPS (e.g., hectares)
 
 ```stata
 * basic scatter plot: yield vs plot area
     scatter         yield_kg plot_area_GPS
 ```
 
-Stata syntax is:
-
-```stata
-scatter yvar xvar
-```
-
 Here:
-- `yield_kg` is on the **y-axis**  
-- `plot_area_GPS` is on the **x-axis**
+- `yield_kg` = kilograms of output on the plot is on the **y-axis** 
+- `plot_area_GPS` = plot size from GPS (e.g., hectares) is on the **x-axis**
 
-Questions to ask looking at this plot:
-
-- Do larger plots tend to have higher total yield?  
-- Is there a lot of spread for a given plot size?  
-- Are there any extreme outliers in yield or area?
+> Questions to ask looking at this plot:
+> - Do larger plots tend to have higher total yield?  
+> - Is there a lot of spread for a given plot size?  
+> - Are there any extreme outliers in yield or area?
 
 Try a few other pairs:
 
@@ -87,6 +72,40 @@ Always label graphs so someone else (or you in two weeks) can understand them.
 - `xtitle()` and `ytitle()` label the axes  
 
 Get in the habit of doing this for any figure you care about.
+
+### Labelling tick marks on the axes
+
+By default Stata chooses where to place tick marks and what numbers to show. Often that’s fine, but sometimes you want more control.
+
+You can use `xlabel()` and `ylabel()` to set tick locations and labels:
+
+```stata
+* choose specific tick marks on both axes
+    scatter         yield_kg plot_area_GPS, ///
+                        title("Yield vs plot size") ///
+                        xtitle("Plot area (hectares)") ///
+                        ytitle("Yield (kg)") ///
+                        xlabel(0(1)5) ///
+                        ylabel(0(1000)5000)
+```
+
+- `xlabel(0(1)5)` puts x-axis ticks at 0, 1, 2, 3, 4, 5  
+- `ylabel(0(1000)5000)` puts y-axis ticks at 0, 1000, 2000, …, 5000  
+
+You can also give **custom text labels**:
+
+```stata
+* custom text labels on the x-axis
+    scatter         yield_kg plot_area_GPS, ///
+                        xtitle("Plot size") ///
+                        xlabel(0 "0" 1 "1 ha" 2 "2 ha" 3 "3 ha+", ///
+                                labsize(small))
+```
+
+Simple rules of thumb:
+
+- Don’t add too many labeled ticks — it gets cluttered fast.  
+- Make sure the tick labels match the scale and units in your axis titles.
 
 ### Controlling marker look
 
@@ -128,8 +147,10 @@ Example: yield per hectare vs nitrogen use, by irrigation:
 
 ```stata
 * yield vs nitrogen, colored by irrigation status
-    twoway          (scatter yield_kg nitrogen_kg if irrigated == 1, mcolor(blue)) ///
-                    (scatter yield_kg nitrogen_kg if irrigated == 0, mcolor(red)), ///
+    twoway          (scatter yield_kg nitrogen_kg ///
+                        if irrigated == 1, mcolor(blue)) ///
+                    (scatter yield_kg nitrogen_kg ///
+                        if irrigated == 0, mcolor(red)), ///
                         title("Yield vs nitrogen by irrigation") ///
                         xtitle("Nitrogen applied (kg)") ///
                         ytitle("Yield (kg)") ///
@@ -165,28 +186,7 @@ Sometimes extreme values make the main pattern hard to see. You can **restrict**
 
 When you trim the range, make that clear in the title or in your notes.
 
-### A basic workflow for scatter plots
-
-When you want to explore the relationship between two numeric variables in this dataset:
-
-```stata
-* 1. Basic scatter
-    scatter         yvar xvar
-
-* 2. Add titles and axis labels
-    scatter         yvar xvar, ///
-                        title("Y vs X") ///
-                        xtitle("X label") ///
-                        ytitle("Y label")
-
-* 3. Adjust marker look (optional)
-    scatter         yvar xvar, ///
-                        msymbol(Oh) msize(small)
-
-* 4. Color or panel by group (optional)
-    twoway          (scatter yvar xvar if irrigated == 0) ///
-                    (scatter yvar xvar if irrigated == 1)
-```
+---
 
 In the next lectures this week, we’ll build on scatter plots to:
 
