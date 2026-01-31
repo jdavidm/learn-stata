@@ -16,7 +16,7 @@ We’ll keep using the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`,
 We’ll use:
 - `yield_kg` – plot-level yield (kg)  
 - `nitrogen_kg` – kilograms of nitrogen applied  
-- `irrigated` – 1 if plot is irrigated, 0 otherwise  
+- `irr` – 1 if plot is irr, 0 otherwise  
 
 A basic scatter plot:
 
@@ -34,7 +34,7 @@ We can add a straight line summarizing the average relationship between yield an
 * scatter with fitted line
     twoway          (scatter yield_kg nitrogen_kg) ///
                     (lfit    yield_kg nitrogen_kg), ///
-                        title("Yield vs nitrogen with fitted line") ///
+                        title("Yield v nitrogen w/ fit line") ///
                         xtitle("Nitrogen (kg)") ///
                         ytitle("Yield (kg)")
 ```
@@ -64,7 +64,7 @@ You can also add confidence bands using `lfitci` (`ci` for confidence intervals)
                         title("Yield vs nitrogen with CI band")
 ```
 
-> Do [Exercise 6 - Fitted Line)]({{ site.baseurl }}/exercises/05-lfit/)
+> Do [Exercise 6 - Fitted Line]({{ site.baseurl }}/exercises/05-lfit/)
 
 ### Connecting to conditional means
 
@@ -92,23 +92,23 @@ We can plot these conditional means:
 
 Interpretation:
 
-- Each bar is an estimate of \(E[\text{yield} \,|\, \text{nitrogen in bin}]\).  
+- Each bar is an estimate of $E[\text{yield} \,|\, \text{nitrogen in bin}]$.  
 - The regression **line** is a smooth summary of how those conditional means change with nitrogen.
 
 ### Different lines for different groups
 
-Sometimes the relationship between X and Y **differs by group**. For example, the yield–nitrogen relationship may differ between **irrigated** and **rainfed** plots.
+Sometimes the relationship between `X` and `Y` **differs by group**. For example, the yield–nitrogen relationship may differ between irr and rainfed plots.
 
 We can draw separate fitted lines by group:
 
 ```stata
 * scatter with separate fitted lines by irrigation status
     twoway          ///
-        (scatter yield_kg nitrogen_kg if irrigated == 1, mcolor(blue)) ///
-        (lfit    yield_kg nitrogen_kg if irrigated == 1, lcolor(blue)) ///
-        (scatter yield_kg nitrogen_kg if irrigated == 0, mcolor(red)) ///
-        (lfit    yield_kg nitrogen_kg if irrigated == 0, lcolor(red)), ///
-            legend(order(1 "Irrigated plots" 3 "Rainfed plots")) ///
+        (scatter yield_kg nitrogen_kg if irr == 1, mcolor(blue)) ///
+        (lfit    yield_kg nitrogen_kg if irr == 1, lcolor(blue)) ///
+        (scatter yield_kg nitrogen_kg if irr == 0, mcolor(red)) ///
+        (lfit    yield_kg nitrogen_kg if irr == 0, lcolor(red)), ///
+            legend(order(1 "irr plots" 3 "Rainfed plots")) ///
             title("Yield vs nitrogen by irrigation status") ///
             xtitle("Nitrogen (kg)") ///
             ytitle("Yield (kg)")
@@ -116,9 +116,9 @@ We can draw separate fitted lines by group:
 
 Questions to ask:
 
-- Are the slopes similar for irrigated and rainfed plots?  
+- Are the slopes similar for irr and rainfed plots?  
 - At low nitrogen levels, do the fitted lines give similar yields?  
-- At higher nitrogen levels, do irrigated plots gain more?
+- At higher nitrogen levels, do irr plots gain more?
 
 This is a **visual way** of controlling for a variable: we let the line differ by group.
 
@@ -128,15 +128,17 @@ We can also **control for irrigation** by including it in a regression:
 
 ```stata
 * regression controlling for irrigation status
-    regress         yield_kg nitrogen_kg i.irrigated
+    regress         yield_kg nitrogen_kg i.irr
 ```
 
 - The coefficient on `nitrogen_kg` is the **slope**, holding irrigation status fixed.  
-- The coefficient on `1.irrigated` is the **difference in intercept** between irrigated and rainfed plots.
+- The coefficient on `1.irr` is the **difference in intercept** between irr and rainfed plots.
 
 We can use these results to draw adjusted lines (optional for now), but the main idea is:
 
-> Adding a group indicator lets the model adjust for level differences between groups while using a common slope.
+Adding a group indicator lets the model adjust for level differences between groups while using a common slope.
+
+> Do [Exercise 7 - Fitted Line)]({{ site.baseurl }}/exercises/05-lfit/)
 
 ### A simple workflow for line fitting
 
@@ -152,7 +154,7 @@ When you explore a relationship between two variables:
 * 3. Optionally add a CI band
     twoway          (scatter yvar xvar) (lfitci yvar xvar)
 
-* 4. If you suspect differences by group (e.g., irrigated)
+* 4. If you suspect differences by group (e.g., irr)
     twoway          (scatter yvar xvar if group == 0) ///
                     (lfit    yvar xvar if group == 0) ///
                     (scatter yvar xvar if group == 1) ///

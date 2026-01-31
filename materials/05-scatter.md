@@ -132,7 +132,7 @@ If the x-variable is discrete or takes on only a few values, points can stack on
 
 This spreads points slightly along the x-axis to reveal overlapping observations.
 
-> Do [Exercise 1 - Basic Scatter Plot]({{ site.baseurl }}/exercises/05-bscatter/)
+> Do [Exercise 1 - Basic Scatter Plots]({{ site.baseurl }}/exercises/05-bscatter/)
 
 ### Coloring by group
 
@@ -142,14 +142,14 @@ Example: yield per hectare vs nitrogen use, by irrigation:
 
 - `yield_kg` (or a yield-per-area measure you construct)  
 - `nitrogen_kg` = kilograms of nitrogen applied  
-- `irrigated` = 1 if the plot is irrigated, 0 otherwise
+- `irr` = 1 if the plot is irrigated, 0 otherwise
 
 ```stata
 * yield vs nitrogen, colored by irrigation status
     twoway          (scatter yield_kg nitrogen_kg ///
-                        if irrigated == 1, mcolor(blue)) ///
+                        if irr == 1, mcolor(blue)) ///
                     (scatter yield_kg nitrogen_kg ///
-                        if irrigated == 0, mcolor(red)), ///
+                        if irr == 0, mcolor(red)), ///
                         title("Yield vs nitrogen by irrigation") ///
                         xtitle("Nitrogen applied (kg)") ///
                         ytitle("Yield (kg)") ///
@@ -184,7 +184,7 @@ Sometimes extreme values make the main pattern hard to see. You can **restrict**
 
 When you trim the range, make that clear in the title or in your notes.
 
-> Do [Exercise 1 - Grouped Scatter Plot]({{ site.baseurl }}/exercises/05-gscatter/)
+> Do [Exercise 1 - Grouped Scatter Plots]({{ site.baseurl }}/exercises/05-gscatter/)
 
 ---
 
