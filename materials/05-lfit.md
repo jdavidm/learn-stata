@@ -5,25 +5,15 @@ title: Line Fitting
 language: Stata
 ---
 
-In this third Week 5 lecture, we build on scatter plots and conditional means to **summarize relationships with lines**.
+In this lecture, we build on scatter plots and conditional means to **summarize relationships with lines**.
 
 We’ll keep using the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`, and focus on:
-
 - Adding fitted lines to scatter plots  
-- Interpreting slopes as **changes in Y per unit of X**  
+- Interpreting slopes as changes in `Y` per unit of `X`  
 - Letting the relationship differ across groups (controlling for a variable)
 
-As always, work in a `.do` file as you follow along.
-
-### Getting started
-
-```stata
-* load Ethiopia LSMS-ISA plot-level data
-    use             eth_allrounds_final, clear
-```
-
+### Adding a fitted line
 We’ll use:
-
 - `yield_kg` – plot-level yield (kg)  
 - `nitrogen_kg` – kilograms of nitrogen applied  
 - `irrigated` – 1 if plot is irrigated, 0 otherwise  
@@ -38,9 +28,7 @@ A basic scatter plot:
                         ytitle("Yield (kg)")
 ```
 
-### Adding a fitted line
-
-We can add a **straight line** summarizing the average relationship between yield and nitrogen using `lfit` in a `twoway` graph:
+We can add a straight line summarizing the average relationship between yield and nitrogen using `lfit` in a `twoway` graph:
 
 ```stata
 * scatter with fitted line
@@ -62,15 +50,12 @@ Under the hood this line comes from:
 ```
 
 From the output:
-
 - Intercept: predicted yield when `nitrogen_kg = 0`  
 - Slope: change in predicted yield for a one-unit increase in nitrogen (kg)
 
-You don’t need the full regression course yet; just connect:
+You don’t need the full regression course yet; just connect: Fitted line on scatter plot ⇔ simple regression of `Y` on `X`.
 
-> **Fitted line on scatter plot ⇔ simple regression of Y on X.**
-
-You can also add confidence bands:
+You can also add confidence bands using `lfitci` (`ci` for confidence intervals):
 
 ```stata
 * fitted line with confidence interval
@@ -79,9 +64,11 @@ You can also add confidence bands:
                         title("Yield vs nitrogen with CI band")
 ```
 
+> Do [Exercise 6 - Fitted Line)]({{ site.baseurl }}/exercises/05-lfit/)
+
 ### Connecting to conditional means
 
-Another way to summarize the relationship is **conditional means**: average yield for different levels of nitrogen. With lots of distinct nitrogen values, we often **bin** X.
+Another way to summarize the relationship is **conditional means**: average yield for different levels of nitrogen. With lots of distinct nitrogen values, we often **bin** `X`.
 
 Example: create quartiles of nitrogen use and look at mean yield in each bin.
 
