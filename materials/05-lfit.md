@@ -92,7 +92,7 @@ We can plot these conditional means:
 
 Interpretation:
 
-- Each bar is an estimate of $E[\text{yield} \,|\, \text{nitrogen in bin}]$.  
+- Each bar is an estimate of $E[ \text{yield} | \text{nitrogen in bin} ]$.  
 - The regression **line** is a smooth summary of how those conditional means change with nitrogen.
 
 ### Different lines for different groups
