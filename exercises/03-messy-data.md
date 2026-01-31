@@ -19,3 +19,5 @@ Think about what could be improved about this data and write down answers to the
 3.   Do you think it's a good idea to enter the data like this and clean it up
      later, or to have a good data structure for analysis by the time data is
      being entered? Why?
+
+---

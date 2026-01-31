@@ -20,3 +20,5 @@ Using the `eth_allrounds_final` data, now consider how an outcome varies with a 
    - Add informative titles and axis labels.
 
 4. Briefly describe how mean harvest value changes across asset quartiles. Does higher asset index appear to be associated with higher harvest value?
+
+---

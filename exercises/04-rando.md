@@ -17,3 +17,5 @@ Using the `nlsw88` data,
    - Give the graph a descriptive title as well as labelling the x-axis and y-axis.
    - Create a legend and place it below the graph (`pos`) and in two columns (`col`).
    - Label the two lines as "Simulated log-normal" and "Observed wage".
+   
+---

@@ -18,3 +18,5 @@ set scheme plotplain, perm
 2\. Create a scatterplot in which `tenure` is on the x-axis and `wage` is on the y-axis. Save the graph as a `.png` file.
 
 3\. Add a line of best fit to the scatterplot using `lfit`. Use the command `help twoway` to open the help file. Scroll down to Definition and look for an example of putting two different types of graphs in the same region. Save the graph as a `.png`.
+
+---

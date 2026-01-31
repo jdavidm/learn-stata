@@ -21,3 +21,5 @@ Get familiar with the data by importing it using `use` then complete the followi
 8. Filter the data to calculate median population growth for North America (using the `if [exp]` conditional on `sum`). What is median population growth in the region?
 9. Remove rows with null values of safewater (using `drop if`). How many observations were dropped?
 10. Create a new data file called `lifeexp_no-sw` for no safewater (using `save`). What is the size in KB of this new file (look under data in the Properties Window)?
+
+---

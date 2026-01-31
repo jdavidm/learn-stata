@@ -24,3 +24,5 @@ Now each household observation contains both:
 3\. Create a consumption gap variable called `cons_gap` that is total household consumption (USD) minus mean consumption at the EA. This measures how much a household’s consumption differs from the average consumption in its EA. Is the consumption gap larger for rural households or urban households?
 
 **Save this merged data set as `household_ea.dta`.
+
+---

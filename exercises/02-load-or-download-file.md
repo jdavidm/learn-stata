@@ -21,3 +21,4 @@ Knowing the answer to these questions will tell you which of the many ways you w
 
 4. Stata can also input almost any type of data file and convert it to a `.dta` format. To do this, you use a compound command that starts with `import` and is followed by the format of the file. Type in `help import` to get a list of all the different types of files Stata can import. Download the file [`district_size.csv`]({{ site.baseurl }}/data/district_size.csv). Again, take care to note where you saved the file. Then use `help` to find the Stata command to import a comma-separated (the `cs` in `.csv`) file. Describe the data.
 
+---

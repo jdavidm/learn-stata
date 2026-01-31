@@ -24,3 +24,5 @@ It's OK if you don't know exactly how the details of the program work at this po
 	gen			year = _n
     import		delimited "https://datacarpentry.org/semester-biology/data/gainesville-precip.csv", clear
 ```
+
+---

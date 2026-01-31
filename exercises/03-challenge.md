@@ -21,3 +21,5 @@ Now that we have all these variables created and labeled, we can ask questions a
 1. Is the share of households with a negative consumption gap greater in urban or rural EAs?
 2. Which country has the largest share of households with a negative consumption gap?
 3. Which country has the smallest share of households with a negative consumption gap?
+
+---

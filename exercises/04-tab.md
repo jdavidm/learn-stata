@@ -20,3 +20,5 @@ Load the Stata system dataset `nlsw88.dta`:
 2\. Use `tab` again, this time on the variable `union`, but include missing values in the table using the `missing` option:
    1. How many women are in a union, how many are not, and how many are missing?
    2. What percent of the sample has missing values for `union`?
+
+---

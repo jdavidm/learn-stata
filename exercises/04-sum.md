@@ -19,3 +19,5 @@ Using the `nlsw88` data,
 3. Restrict the summary to women who are college graduates using `if`.
     1. Is the mean wage for college graduates higher or lower than the overall mean?
     2. Is the standard deviation for college graduates larger or smaller than in the full sample?
+
+---

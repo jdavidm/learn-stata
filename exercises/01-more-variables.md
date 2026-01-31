@@ -14,3 +14,5 @@ Calculate GDP per capita for the US and then convert it to Euros. The GDP for th
 * Create a variable `gdp_pc` and assign it a value by dividing GDP by population.
 * Convert the value of `gdp_pc` into Euros and assign this value to a new variable.
 * Display the final answer to the screen.
+
+---

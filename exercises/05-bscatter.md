@@ -29,3 +29,5 @@ Using the `eth_allrounds_final` data,
    2. Try tiny solid points.
 
    For each version, briefly note which is easier to read and why.
+
+---

@@ -161,3 +161,5 @@ This should produce a graph with:
 - Vertical dashed lines at the **5th percentile**, **mean**, and **95th percentile**,
 - The labels **“5%”** and **“95%”** inside the shaded regions, and
 - The numeric value of the **mean** printed below the x-axis at its location.
+
+---

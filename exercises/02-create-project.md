@@ -78,3 +78,4 @@ For this exercise we are going to create a `project.do` file that we will use on
 
 5\. Add an additional section (call it `**# 1 - run assignment files`) to the `project.do` file that runs or executes assignment 2 so that when I check your work I only have to run the `project.do` file and it sets the development environment and runs all the code you wrote for assignment 2. This is what is known as "push button replicability." To do this, you need to use the `do` command and write out the relative path for the location of assignment 2. The path will be "relative" to the absolute path defined in `code` so it should start with the global `$code`.
 
+---

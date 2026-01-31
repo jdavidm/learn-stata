@@ -18,3 +18,5 @@ The variable `grade` records completed years of education and takes on **integer
 Start by graphing `grade` using just the `hist` command.
 
 4\. Draw a histogram of `grade` using the `discrete` option along with frequency.
+
+---

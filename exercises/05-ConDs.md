@@ -16,3 +16,5 @@ Using the `eth_allrounds_final` data, explore how the distribution of an input v
 3. Draw **two histograms** (or kernel densities), one for each group, on the same graph or in separate graphs using `if` conditions.
 
 4. Based on the summaries and graphs, write 2–3 sentences describing how the distribution of labor days differs between plots with improved seed and those without.
+
+---

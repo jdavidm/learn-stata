@@ -18,3 +18,5 @@ Now, re-open the full dataset and keep only wave 2 observations and save this as
  Finally, append the data set that contains just wave 1 to the data set that contains just wave 2 using `append`.
 
  3\. How many observations are in the combined wave 1 and wave 2 data set?
+ 
+---

@@ -43,3 +43,5 @@ In this case, we can use `encode` to change the strings to numerical values and 
    * Use the command `order` to place `country` as the first variable in the data set
 
 5\. Encode the variable `admin_1` so that it is a numerical variable and uses the string values as labels. Follow the same steps as in 4.4 and use `order` to place the new `admin_1` immediately in front of `admin_2`.
+
+---

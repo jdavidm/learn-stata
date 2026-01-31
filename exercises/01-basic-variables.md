@@ -17,3 +17,5 @@ Create similar code to calculate the exchange rate between Euros and British Pou
 * Create a variable to store a price in Euros. Assign this variable a value of 5.87 [(the price of a BigMac](https://www.visualcapitalist.com/mapped-the-price-of-a-big-mac-across-the-world/)).
 * Create a variable to store a price in Pounds. Assign this variable a value of 5.09.
 * Calculate and print the exchange rate (the value of 1 Euro in GBP).
+
+---

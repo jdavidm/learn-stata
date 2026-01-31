@@ -30,3 +30,5 @@ Using the `eth_allrounds_final` data, connect the fitted line on a scatter plot 
         ```
 
    3. Compare the intercepts from the regression output with the two fitted lines. What does the coefficient on `1.irrigated` tell you about differences in harvest value between irrigated and rainfed plots, holding farm size fixed?
+
+---

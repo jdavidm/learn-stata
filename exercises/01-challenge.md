@@ -11,3 +11,5 @@ Sticking with the National Longitudinal Surveys, Women sample, 1988, we are goin
 
 
 1. Create a scatterplot in which `tenure` is on the x-axis and `wage` is on the y-axis. Add a line of best fit to the scatterplot using `lfit`. Change the color of that line to `maroon`. Label the x-axis as `Tenure (years)` and the y-axis as `Wages (hourly)`. Then create a legend that is two columns and place the legend below the graph (in the 6 o'clock position). Save the graph as a `.png`.
+
+---

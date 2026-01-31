@@ -23,3 +23,5 @@ When we use `kdensity` we are drawing the **probability density function** (PDF)
    - Give the line a `dash` pattern
    - Color the line `maroon`
    - Title this new graph "CDF of wage with 5% cutoff"
+
+---

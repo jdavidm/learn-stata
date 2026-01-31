@@ -33,3 +33,5 @@ Now we will test a hypothesis about the mean hourly `wage` for college graduates
    3. How many degrees of freedom are there?
    4. What is the two-sided p-value?
    5. At the 5% significance level, what is your decision about $H_0$?
+
+---

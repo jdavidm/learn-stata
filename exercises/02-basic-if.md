@@ -27,3 +27,5 @@ Load `auto.dta` using the `sysuse` command.
 ```
 
 5\. Update your code above by adding an `else if` statement that prints "Update mode: updating ado files..." if `$pack == 2`
+
+---

@@ -13,3 +13,5 @@ Programming computers to do cool science is a major advantage for modern scienti
 - Download [the data]({{ site.baseurl }}/data/dietary_cleaned.dta)
 - Take a minute to try understand what is going on (you won't perfectly because you are unfamiliar with many of the commands)
 - Modify the code so that it still does the same thing, but is easier to read because it has better style
+
+---

@@ -16,3 +16,5 @@ Using the `eth_allrounds_final` data, look at **mean outcomes by group** for a d
 3. Repeat step 2 for a different grouping variable, such as **soil fertility** (`soil_fertility_index`) or **urban vs rural** (`urban`).
 
 4. In a few sentences, compare the conditional means across groups. Which groups appear to have higher or lower outcomes?
+
+---

@@ -28,3 +28,5 @@ After the collapse, rename these variables as
 4. Is average EA-level consumption (`mean_totcons_usd`) higher in urban or rural areas?
 
 **Save this EA-level file as `ea_summary.dta`.**
+
+---

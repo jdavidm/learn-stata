@@ -17,3 +17,5 @@ Using the `eth_allrounds_final` data, add a fitted line and confidence interval 
    - Make the confidence band lighter or partially transparent so the points and line remain visible.
 
 4. Based on the final graph, describe whether consumption appears to increase with the asset index, and whether the relationship looks roughly linear.
+
+---

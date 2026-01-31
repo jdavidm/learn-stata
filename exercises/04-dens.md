@@ -24,3 +24,5 @@ Stata can overlay a **normal density curve** with the same mean and variance as 
    - Change the `title()` of the graph to be "Distribution of total work experience"
    - Change the x-axis title to "Total work experience (years)" and the y-axis title to "Percent of workers"
    - Finally, create a legend and place it below the graph (`pos`) and in two columns (`col`). Label the shaded area using `1 "Histogram"` and the line using `2 "Kernel density"`.
+
+---

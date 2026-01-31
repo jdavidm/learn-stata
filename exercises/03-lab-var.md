@@ -62,3 +62,5 @@ Apply the following labels to the corresponding variable
 19. Household consumption quintile -> `cons_quint`
 20. Household asset index -> `hh_asset_index`
 21. Household dietary diversity index -> `hdds`
+
+---
