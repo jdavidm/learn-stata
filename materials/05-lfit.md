@@ -64,7 +64,7 @@ You can also add confidence bands using `lfitci` (`ci` for confidence intervals)
                         title("Yield vs nitrogen with CI band")
 ```
 
-> Do [Exercise 6 - Fitted Line]({{ site.baseurl }}/exercises/05-lfit/)
+> Do [Exercise 6 - Fitted Lines]({{ site.baseurl }}/exercises/05-lfit/)
 
 ### Connecting to conditional means
 
@@ -92,7 +92,7 @@ We can plot these conditional means:
 
 Interpretation:
 
-- Each bar is an estimate of $E[ \text{yield} | \text{nitrogen in bin} ]$.  
+- Each bar is an estimate of $E[\text{yield\_kg} \mid \text{nitrogen in bin}]$.  
 - The regression **line** is a smooth summary of how those conditional means change with nitrogen.
 
 ### Different lines for different groups
@@ -114,11 +114,10 @@ We can draw separate fitted lines by group:
             ytitle("Yield (kg)")
 ```
 
-Questions to ask:
-
-- Are the slopes similar for irr and rainfed plots?  
-- At low nitrogen levels, do the fitted lines give similar yields?  
-- At higher nitrogen levels, do irr plots gain more?
+> Questions to ask:
+> - Are the slopes similar for irr and rainfed plots?  
+> - At low nitrogen levels, do the fitted lines give similar yields?  
+> - At higher nitrogen levels, do irr plots gain more?
 
 This is a **visual way** of controlling for a variable: we let the line differ by group.
 
@@ -131,14 +130,13 @@ We can also **control for irrigation** by including it in a regression:
     regress         yield_kg nitrogen_kg i.irr
 ```
 
+Here the `i.` before `irr` tells Stata that `irr` is an `i`ndicator variable
 - The coefficient on `nitrogen_kg` is the **slope**, holding irrigation status fixed.  
-- The coefficient on `1.irr` is the **difference in intercept** between irr and rainfed plots.
+- The coefficient on `1.irr` is the **difference in intercept** between `irr` and rainfed plots.
 
-We can use these results to draw adjusted lines (optional for now), but the main idea is:
+We can use these results to draw adjusted lines (optional for now), but the main idea is: Adding a group indicator lets the model adjust for level differences between groups while using a common slope.
 
-Adding a group indicator lets the model adjust for level differences between groups while using a common slope.
-
-> Do [Exercise 7 - Fitted Line)]({{ site.baseurl }}/exercises/05-lfit/)
+> Do [Exercise 7 - Fitted Line by Group]({{ site.baseurl }}/exercises/05-lfit-group/)
 
 ### A simple workflow for line fitting
 

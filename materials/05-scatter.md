@@ -184,7 +184,7 @@ Sometimes extreme values make the main pattern hard to see. You can **restrict**
 
 When you trim the range, make that clear in the title or in your notes.
 
-> Do [Exercise 1 - Grouped Scatter Plots]({{ site.baseurl }}/exercises/05-gscatter/)
+> Do [Exercise 2 - Grouped Scatter Plots]({{ site.baseurl }}/exercises/05-gscatter/)
 
 ---
 
