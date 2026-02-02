@@ -7,27 +7,8 @@ language: Stata
 
 Using the `eth_allrounds_final` data,
 
-1. Make a scatter plot of **harvest value** versus **farm size**:
+1. Make a scatter plot of harvest value (`harvest_value_USD`) versus farm size (`farm_size`), with harvest value on the y-axis. Include informative labels and a title.
 
-    ```stata
-    scatter harvest_value_USD farm_size
-    ```
-
-   - Which variable is on the x-axis? Which is on the y-axis?
-
-2. Redraw the same scatter plot with informative labels and a title:
-
-    ```stata
-    scatter harvest_value_USD farm_size, ///
-        title("Harvest value vs farm size") ///
-        xtitle("Farm size") ///
-        ytitle("Harvest value (USD)")
-    ```
-
-3. Change the appearance of the markers:
-   1. Use hollow circles and smaller points.  
-   2. Try tiny solid points.
-
-   For each version, briefly note which is easier to read and why.
+2. Change the appearance of the markers in the graph to be `tiny` `blue` `diamonds`.
 
 ---
