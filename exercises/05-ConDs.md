@@ -11,9 +11,9 @@ Start by using `sum, detail` to summarize `total_hired_labor_days` **separately*
    - Plots with improved seed (`improved == 1`), and  
    - Plots without improved seed (`improved == 0`).
 
-1. Is the average number of hired labors days greater when a plot is planted with improved seed or without improved seed?
+1. Is the average number of hired labor days greater when a plot is planted with improved seed or without improved seed?
 
-2. Draw two kernel density plots, one for each group, on the same graph or in separate graphs using `if` conditions. Is this graph informative? Why or why not?
+2. Draw two kernel density plots, one for each group, on the same graph using `if` conditions. Is this graph informative? Why or why not?
 
 
 ---
