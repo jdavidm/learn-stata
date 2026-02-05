@@ -47,7 +47,7 @@ language: Stata
 * Let's start by looking at some messy data and thinking about what makes it
 messy and what we could do to improve it.
 
-> Do the [Exercise 1 - Improving Messy Data]({{ site.baseurl }}/exercises/03-tidy-data-improving-messy-data).
+> Do the [Exercise 1 - Improving Messy Data]({{ site.baseurl }}/exercises/03-messy-data).
 >
 > * Put the data up on the screen
 > * Ask the class for things they would improve and how to fix them
