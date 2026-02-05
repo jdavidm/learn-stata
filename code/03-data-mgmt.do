@@ -76,7 +76,7 @@
 	lab var 		nb_fallow_plots "Number of fallow plots under household management"
 	
 **## 3.15
-	lab var 		nb_plots "Number of plots under household management"
+	lab var 		nb_plots "Number of cultivated plots under household management"
 	
 **## 3.16
 	lab var 		share_kg_sold "Share of harvest output (in kg) sold"

@@ -29,7 +29,7 @@ Download the World Bank's Living Standards Measurement Survey (LSMS) [household 
   - `hh_formal_education` – years of formal education of the head  
   - `nonfarm_enterprise` – indicator: household runs a nonfarm enterprise  
   - `nb_fallow_plots` – number of fallow plots  
-  - `nb_plots` – total number of plots  
+  - `nb_plots` – number of cultivated plots  
   - `share_kg_sold` – share of agricultural production sold  
 
 - **Welfare**
@@ -55,7 +55,7 @@ Apply the following labels to the corresponding variable
 12. Does anyone in the household posses any formal education? -> `hh_formal_education`
 13. Does anyone in household own a non-farm enterprise? -> `nonfarm_enterprise`
 14. Number of fallow plots under household management -> `nb_fallow_plots`
-15. Number of plots under household management -> `nb_plots`
+15. Number of cultivated plots under household management -> `nb_plots`
 16. Share of harvest output (in kg) sold -> `share_kg_sold`
 17. Consumption aggregate per capita, in LCU -> `totcons_LCU`
 18. Consumption aggregate per capita, in USD -> `totcons_USD` 
