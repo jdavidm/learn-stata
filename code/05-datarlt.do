@@ -110,7 +110,7 @@
 **# exercise 6
 ********************************************************************************
 
-**## 6.1
+**## 6.1 & 6.2
 	twoway			(scatter yield_kg inorganic_fertilizer_value_USD if crop == 3, ///
 						msymbol(Oh) msize(vsmall) ) || ///
 					(lfitci yield_kg inorganic_fertilizer_value_USD if crop == 3, ///
@@ -119,14 +119,37 @@
 						legend( pos(6) col(3))		
 	graph export	"$answ/05-lfit-1.png", replace
 
-	
+
 
 ********************************************************************************
 **# exercise 7
 ********************************************************************************
 
 **## 7.1
+	twoway			(scatter harvest_value_USD farm_size, ///
+						msymbol(Oh) msize(vsmall) ) || ///
+					(lfitci harvest_value_USD farm_size if improved == 0, ///
+						lcolor(maroon) lpattern(solid) fcolor(gray%25) ///
+						alcolor(maroon%25) xtitle("Farm Size (ha)") ytitle("Harvest Value (USD)")), ///
+						legend( pos(6) col(3)  )
+	graph export	"$answ/05-lfit-group-1.png", replace
 
+**## 7.2
+	reg				harvest_value_USD farm_size
+	
+**## 7.3
+	twoway			(scatter harvest_value_USD farm_size if improved == 0, ///
+						msymbol(Oh) msize(vsmall) mcolor(maroon%50) ) || ///
+					(scatter harvest_value_USD farm_size if improved == 1, ///
+						msymbol(Oh) msize(vsmall) mcolor(navy%50) ) || ///
+					(lfitci harvest_value_USD farm_size if improved == 0, ///
+						lcolor(maroon) lpattern(solid) fcolor(gray%25) ///
+						alcolor(maroon%25) ) || ///
+					(lfitci harvest_value_USD farm_size if improved == 1, ///
+						lcolor(navy) lpattern(solid) fcolor(gray%25) ///
+						alcolor(navy%25) xtitle("Farm Size (ha)") ytitle("Harvest Value (USD)")), ///
+						legend( pos(6) col(2) order(3 "Traditional Seeds" 5 "Improved Seeds") )
+	graph export	"$answ/05-lfit-group-3.png", replace
 
 						
 ********************************************************************************
