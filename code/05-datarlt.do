@@ -2,7 +2,7 @@
 * assignment: 5
 * created on: feb 26
 * created by: jdm
-* edited on: 2 feb 26
+* edited on: 6 feb 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -110,7 +110,14 @@
 **# exercise 6
 ********************************************************************************
 
-* create scalars of mean and sd of wage
+**## 6.1
+	twoway			(scatter yield_kg inorganic_fertilizer_value_USD if crop == 3, ///
+						msymbol(Oh) msize(vsmall) ) || ///
+					(lfitci yield_kg inorganic_fertilizer_value_USD if crop == 3, ///
+						lcolor(maroon) lpattern(solid) fcolor(gray%50) ///
+						xtitle("Inorganic Fertilizer (USD)") ytitle("Maize YIeld (kg)")), ///
+						legend( pos(6) col(3))		
+	graph export	"$answ/05-lfit-1.png", replace
 
 	
 
