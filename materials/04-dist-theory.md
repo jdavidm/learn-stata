@@ -23,9 +23,9 @@ Our **data** are a finite sample. What we *really* care about is the **theoretic
 
 When describing and distinguishing observed and theoretical distributions, we typically use the following notation:
 - **English letters** (like `x`) = observed data  
-- **English letters with bars** (like \(\bar{x}\)) = statistics you compute from data (e.g., the sample mean)  
-- **Greek letters** (like \(\mu\)) = the truth in the theoretical distribution (e.g., the true population mean)  
-- **Greek letter with a hat** (\(\hat{\mu}\)) = your estimate of the truth  
+- **English letters with bars** (like $\bar{x}$) = statistics you compute from data (e.g., the sample mean)  
+- **Greek letters** (like $\mu$) = the truth in the theoretical distribution (e.g., the true population mean)  
+- **Greek letter with a hat** ($\hat{\mu}$) = your estimate of the truth  
 
 The key point is:
 - The **theoretical distribution** is the distribution of *everyone*, including people we didn’t sample.  

@@ -11,4 +11,5 @@ title: List of datasets
 | Ethiopia plot production | dta | <https://jdavidm.github.io/learn-stata/data/eth_allrounds_final.dta>
 | Land tenure | dta | <https://jdavidm.github.io/learn-stata/data/tenuredata.dta> |
 | Life expectancy | dta | <https://jdavidm.github.io/learn-stata/data/lifeexp.dta> |
-| LSMS household | dta | <https://jdavidm.github.io/learn-stata/data/lsms_household.dta>
+| LSMS household | dta | <https://jdavidm.github.io/learn-stata/data/lsms_household.dta> |
+| Mroz earns | dta | <https://jdavidm.github.io/learn-stata/data/Mroz.dta>

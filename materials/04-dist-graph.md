@@ -35,8 +35,8 @@ By default, Stata puts wage on the x-axis and density on the y-axis. “Density�
 
 > Ask students to read the plot:
 > - Where do most wages fall (center)?
-> - Does it look skewed* (a long tail)?
-> - Are there any possible outliers (very large or small values))?
+> - Does it look skewed (a long tail)?
+> - Are there any possible outliers (very large or small values)?
 
 Histograms are best for continuous-ish variables like income or height, but they can also be used for integer-valued counts, like age. 
 
@@ -65,8 +65,8 @@ Stata lets you choose what the y-axis displays. As we saw above, the default is 
 Notice that the shape of the histogram does **not** change when you switch between `density`, `fraction`, `percent`, or `frequency`. Only the label and scale of the y-axis changes.
 
 > Ask them:
-> - When might you want frequencies? (e.g., “about 200 workers earn between $5 and $7”)
-> - When might you want percentages? (e.g., “about 10% of workers earn between $5 and $7”)
+> - When might you want frequencies? (e.g., “about 200 workers earn between 5 and 7”)
+> - When might you want percentages? (e.g., “about 10% of workers earn between 5 and 7”)
 
 The choice of **bins** matters: too few bins → overly chunky; too many → noisy. Stata chooses a default for you, but you can override it.
 
@@ -205,7 +205,7 @@ Using `wage`:
 
 Should be able to write short verbal descriptions like:
 
-> “The distribution of hourly wages is right-skewed, with most workers earning between $3 and $10, a median of about $7, and a long tail of higher wages up to about $40. The standard deviation is fairly large, reflecting the wide spread in wages.”
+> “The distribution of hourly wages is right-skewed, with most workers earning between $3 and $10, a median of about $\$7$, and a long tail of higher wages up to about $\$40$. The standard deviation is fairly large, reflecting the wide spread in wages.”
 
 ### Putting it together: a basic workflow
 
