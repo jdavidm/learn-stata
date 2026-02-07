@@ -28,4 +28,5 @@ In the data set, women's earnings have been logged (`lwg`). We want the unlogged
    - Change the color of this line to `maroon`, change the pattern to `solid` and change the width of the line to `thick`.
 
 5\. Run two regressions (`regress`). For the first one, regress the log of women's earnings on the log of family income. For the second one add college attendance (`wc`) as a control. Is the unconditional relationship between family income and women's earnings stronger then that relationship when we condition on college attendance (which regression has the larger co-efficient)?
+
 ---
