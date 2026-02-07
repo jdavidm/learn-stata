@@ -19,11 +19,12 @@ In the data set, women's earnings have been logged (`lwg`). We want the unlogged
 
 3\. Now, use `egen` with `cut` to create 10 groups (deciles) based on family income `inc`. Use `tabstat` to get mean (`stat(mean)`) earnings conditional on (`by`) being in one of the 10 deciles (`inc_cut`). Do women in households that are in the highest decile (group 10) by family income earn the most money?
 
-4\. Create a new variable called `loginc` that is the logged value (`log()`) of family income (`inc`). Make a scatter plot with log family income (`log_inc`) on the y-axis and log women's earnings (`lwg`) on the x-axis.
+4\. Create a new variable called `loginc` that is the logged value (`log()`) of family income (`inc`).
+   - Make a scatter plot with log family income (`log_inc`) on the y-axis and log women's earnings (`lwg`) on the x-axis.
    - Change the marker color to gray and make it 50% transparent (`gray%50`).
-To this scatter plot at a fitted line using `lfit`.
+   - To this scatter plot at a fitted line using `lfit`.
    - Change the color of this line to `navy`, change the pattern to `solid` and change the width of the line to `thick`.
-Also add a fitted line using `lowess`. This fits a locally weighted non-linear regression line to the data. 
+   - Also add a fitted line using `lowess`. This fits a locally weighted non-linear regression line to the data. 
    - Change the color of this line to `maroon`, change the pattern to `solid` and change the width of the line to `thick`.
 
 5\. Run two regressions (`regress`). For the first one, regress the log of women's earnings on the log of family income. For the second one add college attendance (`wc`) as a control. Is the unconditional relationship between family income and women's earnings stronger then that relationship when we condition on college attendance (which regression has the larger co-efficient)?
