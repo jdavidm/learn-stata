@@ -18,9 +18,9 @@ Using the `eth_allrounds_final` data, connect the fitted line on a scatter plot 
 
 2\. Run the corresponding regression:
 
-    ```stata
-    regress harvest_value_USD farm_size
-    ```
+```stata
+   regress        harvest_value_USD farm_size
+```
 
    1\. What does a one-unit increase in farm size represent?  
    2\. How much does harvest value change, on average, for a one-unit increase in farm size ?
@@ -37,12 +37,12 @@ Using the `eth_allrounds_final` data, connect the fitted line on a scatter plot 
 
    4\. Run a regression that allows interacts farm size with improved see:
 
-        ```stata
-        regress harvest_value_USD c.farm_size#i.improved
-        ```
+```stata
+   regress        harvest_value_USD c.farm_size#i.improved
+```
 
-      1\. How much does harvest value change, on average, for a one-unit increase in farm size when traditional seed is used?
-      2\. How much does harvest value change, on average, for a one-unit increase in farm size when improved seed is used?
-      3\. Are these relationships between harvest value and farm size-seed type statistically significant?
+   1\. How much does harvest value change, on average, for a one-unit increase in farm size when traditional seed is used?
+   2\. How much does harvest value change, on average, for a one-unit increase in farm size when improved seed is used?
+   3\. Are these relationships between harvest value and farm size-seed type statistically significant?
 
 ---

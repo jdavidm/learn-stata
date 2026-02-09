@@ -151,6 +151,8 @@
 						legend( pos(6) col(2) order(3 "Traditional Seeds" 5 "Improved Seeds") )
 	graph export	"$answ/05-lfit-group-3.png", replace
 
+**## 7.4
+	reg				harvest_value_USD c.farm_size#i.improved
 						
 ********************************************************************************
 **# exercise 8
@@ -160,46 +162,6 @@
 ********************************************************************************
 **# challenge 5
 ********************************************************************************
-
-* load data
-	use					"$data/Mroz.dta", clear
-
-* keep just working women
-	keep if 			lfp == 1
-	
-* get unlogged earnings
-	gen 				earn = exp(lwg)
-	
-* drop negative other earnings
-	drop if 			inc < 0
-
-**## 9.1
-	twoway 				(scatter inc earn, yscale(log) xscale(log))
-	graph export		"$answ/05-lchallenge-1.png", replace
-	
-**## 9.2
-	tabstat				earn, by(wc) stat(mean)
-
-**## 9.3
-
-* create the cut variable with ten groupings
-	egen 				inc_cut = cut(inc), group(10) label
-	
-	tabstat				earn, by(inc_cut) stat(mean)
-
-**## 9.4
- 
-* create the logs manually for the fitted lines
-	gen 				loginc = log(inc)
-	
-	twoway 				(scatter loginc lwg, mcolor(gray%50)) || ///
-						(lowess loginc lwg, lcolor(maroon) lwidth(thick) lpattern(solid)) || ///
-						(lfit loginc lwg, lcolor(navy) lwidth(thick) lpattern(solid))
-	graph export		"$answ/05-lchallenge-3.png", replace
-
-**## 9.5.
-	reg 				lwg loginc
-	reg 				lwg loginc wc
 
 
 * close the log
