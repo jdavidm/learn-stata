@@ -1,7 +1,7 @@
 ---
 layout: page
 element: notes
-title: Programming Fundamentals I – Macros and Storing Results
+title: Macros and Storing Results
 language: Stata
 ---
 
@@ -16,9 +16,7 @@ This first lecture focuses on:
 
 We’ll mostly use small toy examples (often with `sysuse auto`) so you can clearly see what Stata is doing.
 
----
-
-## 1. Why macros?
+### Why macros?
 
 So far you’ve mostly typed **literal text** into your commands:
 
@@ -38,15 +36,9 @@ Macros let you:
 - Reuse that name instead of re-typing the text  
 - Change the macro *once* and have all the code that uses it update automatically  
 
-Conceptually:
+Conceptually: A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
 
-> A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
-
----
-
-## 2. Local macros: your default
-
-### 2.1 Defining and using simple locals
+### Local macros: your default
 
 Local macros live only in a limited scope (command window, current do-file, or current program) and then disappear. They’re the safest kind of macro and should be your **default choice**.
 
@@ -76,7 +68,7 @@ Example – list of control variables:
     regress length `controls'
 ```
 
-When Stata executes `regress price \`controls'`, it first substitutes the macro contents, so it *really* runs:
+When Stata executes ```regress price \`controls'```, it first substitutes the macro contents, so it *really* runs:
 
 ```stata
 regress price mpg weight foreign
@@ -88,9 +80,7 @@ This saves typing and keeps your code consistent. If you decide later that you a
 local controls mpg weight foreign turn
 ```
 
-and **all** the regressions that use `\`controls'` now include `turn` automatically.
-
-### 2.2 Locals with spaces and special characters
+and **all** the regressions that use ```\`controls'``` now include `turn` automatically.
 
 Macro contents are just text. If the contents include spaces or special characters, put them in quotes:
 
@@ -101,9 +91,9 @@ display "`note'"
 
 Stata will substitute the whole string into the command before running it.
 
----
+> Do [Exercise 1 - Using Locals in Regressions]({{ site.baseurl }}/exercises/06-locals-r/)
 
-## 3. Storing results in local macros
+### Storing results in local macros
 
 A second extremely important use of locals is to **capture results** from commands and reuse them.
 
@@ -142,10 +132,9 @@ You can then reuse the result later in a calculation:
 
     gen mpg_std = (mpg - `mean_mpg') / `sd_mpg'
 ```
+> Do [Exercise 2 - Using Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
 
----
-
-## 4. Global macros: powerful and dangerous
+### Global macros: powerful and dangerous
 
 Global macros are like locals, but:
 
@@ -180,45 +169,9 @@ Globals can be convenient for things like paths or version numbers, but they’r
 - Use **local macros almost always**  
 - Use **globals only** for a small set of carefully chosen things (e.g., paths in `project.do`) and document them clearly. fileciteturn0file2
 
----
+> Do [Exercise 3 - Using Globals]({{ site.baseurl }}/exercises/06-globals/)
 
-## 5. Extended macro functions
-
-Stata can do small manipulations *inside* macro definitions using **extended macro functions**, written with a colon:
-
-```stata
-local newname : subinstr local oldname " " "_", all
-```
-
-Common use cases (we’ll just preview):
-
-- Get lists of variables without typing them  
-- Extract or manipulate variable labels or value labels  
-- Do string substitutions inside macro contents  
-
-Example – store all numeric variables in a macro:
-
-```stata
-* store list of numeric variables
-    unab allvars : _all
-    ds, has(type numeric)
-    local numvars `r(varlist)'
-
-    display "`numvars'"
-```
-
-Example – grab the variable label of `mpg`:
-
-```stata
-local lbl : variable label mpg
-display "`lbl'"
-```
-
-We won’t go deep into extended macro functions today, but it’s important to know that macros can be more than just static text.
-
----
-
-## 6. Storing results as scalars
+### Storing results as scalars
 
 Macros store numbers as *text*, which is sometimes not ideal (rounding, comparisons). Stata also has **scalars**, which store numeric or string values in a separate namespace with full precision. citeturn1view0
 
@@ -267,9 +220,9 @@ Rule of thumb:
 - If you just need to plug a stored number into another command in the *same* do-file, a **local** is usually enough.  
 - If you need high precision or want to reuse the result across multiple do-files/programs, a **scalar** may be better (or write the value to disk).
 
----
+> Do [Exercise 4 - Storing Results as Numbers]({{ site.baseurl }}/exercises/06-store/)
 
-## 7. Using macros to store file paths and filenames
+### Using macros to store file paths and filenames
 
 A very common pattern is to store **paths** and **filenames** in macros, so that moving your project (or renaming a folder) takes changing a couple of lines rather than hundreds.
 
@@ -295,13 +248,11 @@ Inside your `project.do`:
 
 This keeps paths **centralized** and makes your code portable (change directory structure in one place).
 
-For this course, we combine this idea with our standard **house style** and `project.do` structure. fileciteturn0file4
+For this course, we combine this idea with our standard **house style** and `project.do` structure.
 
----
+### Common macro pitfalls (and how to avoid them)
 
-## 8. Common macro pitfalls (and how to avoid them)
-
-### 8.1 Forgetting the quotes or backticks
+#### Forgetting the quotes or backticks
 
 ```stata
 local x 5
@@ -312,9 +263,9 @@ display "`x'"    // RIGHT: Stata sees display "5"
 ```
 
 Rule:  
-- When you *display* text or a number stored in a macro, wrap the macro in quotes: `display "`macroname'"`.
+- When you *display* text or a number stored in a macro, wrap the macro in quotes: ```display "`macroname'"```.
 
-### 8.2 Typos don’t error – they silently disappear
+#### Typos don’t error – they silently disappear
 
 If you use a macro name that doesn’t exist:
 
@@ -335,7 +286,7 @@ which is probably **not** what you intended. Get in the habit of:
 - Using meaningful macro names  
 - Being careful with spelling and copy-paste
 
-### 8.3 Overusing globals
+#### Overusing globals
 
 Globals seem convenient, but:
 
@@ -345,7 +296,7 @@ Globals seem convenient, but:
 
 So again: **locals by default**, globals rarely.
 
-### 8.4 Macro scope in do-files and programs
+#### Macro scope in do-files and programs
 
 Locals exist only in the current context:
 
@@ -354,9 +305,7 @@ Locals exist only in the current context:
 
 We’ll revisit this when we write our own programs later in the course.
 
----
-
-## 9. Short workflow: using macros to make code cleaner
+### Short workflow: using macros to make code cleaner
 
 When you catch yourself repeating text, try this pattern:
 

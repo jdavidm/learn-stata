@@ -1,7 +1,7 @@
 ---
 layout: page
 element: notes
-title: Programming Fundamentals II – Loops and Programming Commands
+title: Loops and Programming Commands
 language: Stata
 ---
 
@@ -15,9 +15,7 @@ In this second lecture on programming fundamentals we’ll build on macros and f
 
 We’ll again mostly use `sysuse auto` and small examples so that the focus stays on the **logic**.
 
----
-
-## 1. Implicit vs explicit looping
+### Implicit vs explicit looping
 
 Stata already loops over observations for you:
 
@@ -33,11 +31,7 @@ You only need **explicit** loops when you’re repeating a pattern over:
 - A **list of variables**  
 - A **list of arbitrary words or tokens**  
 
----
-
-## 2. Looping over numbers with `forvalues`
-
-### 2.1 Basic structure
+### Looping over numbers with `forvalues`
 
 Syntax:
 
@@ -63,8 +57,6 @@ display "3"
 display "4"
 display "5"
 ```
-
-### 2.2 Different sequences
 
 You can specify sequences in two main ways:
 
@@ -94,13 +86,11 @@ You can use these macros inside expressions and variable names:
 
 Stata will execute commands like `gen x1 = runiform()`, `gen x2 = runiform()`, …, `gen x5 = runiform()`.
 
----
+> Do [Exercise 5 - For Values]({{ site.baseurl }}/exercises/06-val/)
 
-## 3. Looping over lists with `foreach`
+### Looping over lists with `foreach`
 
 `foreach` is the other main loop workhorse in Stata. It loops over **lists** of things: words, variables, numbers, or macro contents. citeturn1view0
-
-### 3.1 Generic list – `foreach item in ...`
 
 Syntax:
 
@@ -129,8 +119,6 @@ foreach year in 2000 2005 2010 2020 {
 }
 ```
 
-### 3.2 Looping over variables – `foreach var of varlist`
-
 Most often in data work you want to loop over **variables**:
 
 ```stata
@@ -151,7 +139,9 @@ You can use all of Stata’s varlist shorthand inside `foreach`:
     }
 ```
 
-### 3.3 Looping over a list stored in a local macro
+> Do [Exercise 6 - For Each]({{ site.baseurl }}/exercises/06-each/)
+
+### Putting loops and macros together: cleaning variables
 
 This is where loops and macros really shine together:
 
@@ -171,9 +161,6 @@ Here `foreach x of local controls` means:
 - Split its contents into words  
 - Loop over those words as `x`
 
----
-
-## 4. Putting loops and macros together: cleaning variables
 
 Example: Suppose we have several variables that should be logged:
 
@@ -192,9 +179,9 @@ sysuse auto, clear
 
 This generates `ln_price`, `ln_weight`, and `ln_length` with consistent labels, using **3 lines** instead of copy-pasting (and possibly messing up) 9 lines.
 
----
+> Do [Exercise 7 - Combining Macros and Loops]({{ site.baseurl }}/exercises/06-macro-loop/)
 
-## 5. Specialized `foreach` for number lists
+### Specialized `foreach` for number lists
 
 If you want to loop over an irregular sequence of numbers and want Stata to **check** that they’re valid numbers, you can use `numlist`:
 
@@ -211,10 +198,7 @@ foreach year of numlist 1980 1985 1990(5)2010 {
     display "`year'"
 }
 ```
-
----
-
-## 6. Looping with conditions: `while`
+### Looping with Conditions
 
 Stata also has a `while` loop:
 
@@ -241,9 +225,7 @@ This prints `i = 1`, `i = 2`, …, `i = 5` and then stops.
 
 `while` loops are most useful when the number of iterations isn’t known in advance, e.g., iterative estimation until convergence. For most data tasks in this course, `forvalues` and `foreach` are clearer and safer.
 
----
-
-## 7. Programming `if` vs the `if` *qualifier*
+Putting loops and macros together: cleaning variables
 
 Very important distinction:
 
@@ -281,43 +263,9 @@ Example – guard code based on sample size:
 
 The programming `if` does **not** loop over observations; it uses whatever scalar result you give it (here `N`).
 
----
+> Do [Exercise 8 - Conditional Loops]({{ site.baseurl }}/exercises/06-con-loop/)
 
-## 8. Breaking out of loops with `continue` and `continue, break`
-
-Sometimes you want to **skip** certain iterations or **stop** a loop early. Stata’s `continue` command handles both:
-
-- `continue` – stop the current iteration and go to the next  
-- `continue, break` – exit the loop entirely  
-
-Example – loop over years but skip one and stop early:
-
-```stata
-foreach year of numlist 2000/2010 {
-
-    * skip 2005
-    if `year' == 2005 {
-        continue
-    }
-
-    display "Working on year `year'"
-
-    * stop the loop after 2008
-    if `year' == 2008 {
-        continue, break
-    }
-}
-```
-
-This prints:
-
-- 2000, 2001, 2002, 2003, 2004, 2006, 2007, 2008  
-- Skips 2005  
-- Stops completely after 2008  
-
----
-
-## 9. Example: automated summaries and graphs
+### Example: automated summaries and graphs
 
 Let’s put everything together in something closer to real work.
 
@@ -369,10 +317,9 @@ Things to notice:
 - We reuse the macro `\`v'` in graph titles and filenames, avoiding copy-paste errors.
 
 This is the kind of pattern that will be extremely helpful later in the course and in your own research.
+Putting loops and macros together: cleaning variables
 
----
-
-## 10. A simple debugging workflow for loops
+### A simple debugging workflow for loops
 
 Loops can be harder to debug because one or two bad iterations are buried in many repetitions. Some tips:
 
@@ -397,21 +344,3 @@ Loops can be harder to debug because one or two bad iterations are buried in man
 4. **Check that the loop boundaries are what you think**  
    - Off-by-one errors (`1/10` vs `0/9`) are common.  
    - Use small ranges while you’re testing.
-
----
-
-## 11. Summary and what’s next
-
-You now have:
-
-- **Macros** to store text, lists of variables, and results  
-- **`forvalues`** for looping over number sequences  
-- **`foreach`** for looping over lists (including varlists and macro contents)  
-- **`while`** for condition-driven loops (less common in this course)  
-- **Programming `if`**, `continue`, and `continue, break` to control flow
-
-In upcoming weeks we’ll use these tools to:
-
-- Write more complex, reusable code for data cleaning and analysis  
-- Wrap code in **programs** (your own Stata commands)  
-- Make your assignments and research scripts shorter, safer, and easier to adapt.
