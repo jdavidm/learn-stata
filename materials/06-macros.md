@@ -11,21 +11,25 @@ This first lecture focuses on:
 
 - What macros are and why they’re useful  
 - Different types of macros (local vs global) and when to use each  
-- How to store **results** from commands in macros and scalars  
+- How to store results from commands in macros and scalars  
 - Good habits and common pitfalls when using macros
 
-We’ll mostly use small toy examples (often with `sysuse auto`) so you can clearly see what Stata is doing.
+We’ll mostly use the `auto` data set that comes with Stata so load it now using `sysuse`.
 
+<<<<<<< Updated upstream
+=======
+---
+
+>>>>>>> Stashed changes
 ### Why macros?
 
-So far you’ve mostly typed **literal text** into your commands:
+So far you’ve mostly typed literal text into your commands:
 
 ```stata
-regress price mpg weight foreign
+    regress             price mpg weight foreign
 ```
 
 But as your code grows, you’ll find yourself repeating:
-
 - Long lists of variables  
 - File paths  
 - Numbers or options you keep using (e.g., a significance level, a bin width)  
@@ -38,60 +42,90 @@ Macros let you:
 
 Conceptually: A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
 
+<<<<<<< Updated upstream
+### Local macros: your default
+=======
+> A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
+
+We've already had experience with this when we set up our development environment and used `global` macros to define directory paths.
+
+---
+
 ### Local macros: your default
 
-Local macros live only in a limited scope (command window, current do-file, or current program) and then disappear. They’re the safest kind of macro and should be your **default choice**.
+#### Defining and using simple locals
+>>>>>>> Stashed changes
+
+Local macros live only in a limited scope (command window, current do-file, or current program) and then disappear. They’re the safest kind of macro and should be your default choice.
 
 Basic syntax:
 
 ```stata
-local macroname contents
+    local           macroname contents
 ```
 
-To *use* a local macro you wrap its name in a **left backtick** and a **right straight quote**:
+To *use* a local macro you wrap its name in a **left backtick** (`` ` ``) and a **right straight quote** (` ' `):
 
 ```stata
-`macroname'
+    `macroname'
 ```
+
+The two most common ways we use a local macro are:
+1. To define a list of objects that we will loop over (more on loops next lecture)
+2. To work as a shorthand for a list of variables, often ones we use in a regression
 
 Example – list of control variables:
 
 ```stata
 * load example data
-    sysuse auto, clear
+    sysuse          auto, clear
 
 * define a macro with controls
-    local controls mpg weight foreign
+    local           controls mpg weight foreign
 
 * use the macro in regressions
-    regress price `controls'
-    regress length `controls'
+    regress         price `controls'
+    regress         length `controls'
 ```
 
+<<<<<<< Updated upstream
 When Stata executes ```regress price \`controls'```, it first substitutes the macro contents, so it *really* runs:
+=======
+When Stata executes ``regress price `controls'``, it first substitutes the macro contents, so it *really* runs:
+>>>>>>> Stashed changes
 
 ```stata
-regress price mpg weight foreign
+    regress         price mpg weight foreign
 ```
 
 This saves typing and keeps your code consistent. If you decide later that you also need `turn` as a control:
 
 ```stata
-local controls mpg weight foreign turn
+    local           controls mpg weight foreign turn
 ```
 
+<<<<<<< Updated upstream
 and **all** the regressions that use ```\`controls'``` now include `turn` automatically.
+=======
+and **all** the regressions that use ```controls'`` now include `turn` automatically. You don't have to go and add it to every regression.
+
+#### Locals with spaces and special characters
+>>>>>>> Stashed changes
 
 Macro contents are just text. If the contents include spaces or special characters, put them in quotes:
 
 ```stata
-local note "This is an example of a longer note."
-display "`note'"
+local               note "This is an example of a longer note."
+display             "`note'"
 ```
 
 Stata will substitute the whole string into the command before running it.
 
+<<<<<<< Updated upstream
 > Do [Exercise 1 - Using Locals in Regressions]({{ site.baseurl }}/exercises/06-locals-r/)
+=======
+> Do [Exercise 1 - Locals in Regressions]({{ site.baseurl }}/exercises/06-locals-r/)
+>>>>>>> Stashed changes
 
 ### Storing results in local macros
 
@@ -102,42 +136,46 @@ Many Stata commands store their results in `r()`, `e()`, or `s()` (you’ve seen
 Recall:
 
 ```stata
-summarize mpg
-return list      // shows r(mean), r(sd), etc.
+sum                 mpg
+return              list
 ```
 
 We can store the mean of `mpg` in a local:
 
 ```stata
 * store mean in a local
-    summarize mpg
-    local mean_mpg = r(mean)
+    sum             mpg
+    local           mean_mpg = r(mean)
 
 * use it in a display
-    display "The mean of mpg is `mean_mpg'"
+    display         "The mean of mpg is `mean_mpg'"
 ```
 
 Key points:
 
-- The `=` after the macro name tells Stata to **evaluate** the right-hand side as an expression and store the *result* (not the literal text). 
+- The `=` after the macro name tells Stata to **evaluate** the right-hand side as an expression and store the *result* (not the literal text).
 - The macro stores the result as text (a string representation of the number). Good enough for most purposes, but not infinite precision.
 
 You can then reuse the result later in a calculation:
 
 ```stata
 * define a standardized mpg using stored mean and sd
-    summarize mpg
-    local mean_mpg = r(mean)
-    local sd_mpg   = r(sd)
+    sum             mpg
+    local           mean_mpg = r(mean)
+    local           sd_mpg   = r(sd)
 
-    gen mpg_std = (mpg - `mean_mpg') / `sd_mpg'
+    gen             mpg_std = (mpg - `mean_mpg') / `sd_mpg'
 ```
 > Do [Exercise 2 - Using Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
 
+<<<<<<< Updated upstream
+=======
+> Do [Exercise 2 - Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
+
+>>>>>>> Stashed changes
 ### Global macros: powerful and dangerous
 
 Global macros are like locals, but:
-
 - They are visible **everywhere** (all do-files, all programs) in your current Stata session  
 - They persist until you close Stata or change them  
 
