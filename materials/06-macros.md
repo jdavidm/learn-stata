@@ -16,16 +16,7 @@ This first lecture focuses on:
 
 We’ll mostly use the `auto` data set that comes with Stata so load it now using `sysuse`.
 
-<<<<<<< Updated upstream
-=======
----
-
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 ### Why macros?
-
 So far you’ve mostly typed literal text into your commands:
 
 ```stata
@@ -38,30 +29,17 @@ But as your code grows, you’ll find yourself repeating:
 - Numbers or options you keep using (e.g., a significance level, a bin width)  
 
 Macros let you:
-
 - Define a **name** that stands for some **text**  
 - Reuse that name instead of re-typing the text  
 - Change the macro *once* and have all the code that uses it update automatically  
 
 Conceptually: A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
 
-<<<<<<< Updated upstream
-### Local macros: your default
-=======
-> A macro is just a *name* that Stata will replace with some *text* **before** it runs a command.
-
 We've already had experience with this when we set up our development environment and used `global` macros to define directory paths.
-
----
 
 ### Local macros: your default
 
 #### Defining and using simple locals
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
 Local macros live only in a limited scope (command window, current do-file, or current program) and then disappear. They’re the safest kind of macro and should be your default choice.
 
 Basic syntax:
@@ -94,15 +72,7 @@ Example – list of control variables:
     regress         length `controls'
 ```
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 When Stata executes ```regress price \`controls'```, it first substitutes the macro contents, so it *really* runs:
-=======
-When Stata executes ``regress price `controls'``, it first substitutes the macro contents, so it *really* runs:
->>>>>>> Stashed changes
-=======
-When Stata executes ``regress price `controls'``, it first substitutes the macro contents, so it *really* runs:
->>>>>>> Stashed changes
 
 ```stata
     regress         price mpg weight foreign
@@ -167,18 +137,9 @@ You can then reuse the result later in a calculation:
 
     gen             mpg_std = (mpg - `mean_mpg') / `sd_mpg'
 ```
+
 > Do [Exercise 2 - Using Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-> Do [Exercise 2 - Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
-
->>>>>>> Stashed changes
-=======
-> Do [Exercise 2 - Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
-
->>>>>>> Stashed changes
 ### Global macros: powerful and dangerous
 
 Global macros are like locals, but:
