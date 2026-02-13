@@ -20,6 +20,9 @@ We’ll mostly use the `auto` data set that comes with Stata so load it now usin
 =======
 ---
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 ### Why macros?
 
@@ -54,6 +57,9 @@ We've already had experience with this when we set up our development environmen
 ### Local macros: your default
 
 #### Defining and using simple locals
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 Local macros live only in a limited scope (command window, current do-file, or current program) and then disappear. They’re the safest kind of macro and should be your default choice.
@@ -89,7 +95,11 @@ Example – list of control variables:
 ```
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 When Stata executes ```regress price \`controls'```, it first substitutes the macro contents, so it *really* runs:
+=======
+When Stata executes ``regress price `controls'``, it first substitutes the macro contents, so it *really* runs:
+>>>>>>> Stashed changes
 =======
 When Stata executes ``regress price `controls'``, it first substitutes the macro contents, so it *really* runs:
 >>>>>>> Stashed changes
@@ -104,14 +114,9 @@ This saves typing and keeps your code consistent. If you decide later that you a
     local           controls mpg weight foreign turn
 ```
 
-<<<<<<< Updated upstream
-and **all** the regressions that use ```\`controls'``` now include `turn` automatically.
-=======
-and **all** the regressions that use ```controls'`` now include `turn` automatically. You don't have to go and add it to every regression.
+And **all** the regressions that use ```controls'`` now include `turn` automatically. You don't have to go and add it to every regression.
 
 #### Locals with spaces and special characters
->>>>>>> Stashed changes
-
 Macro contents are just text. If the contents include spaces or special characters, put them in quotes:
 
 ```stata
@@ -121,11 +126,7 @@ display             "`note'"
 
 Stata will substitute the whole string into the command before running it.
 
-<<<<<<< Updated upstream
 > Do [Exercise 1 - Using Locals in Regressions]({{ site.baseurl }}/exercises/06-locals-r/)
-=======
-> Do [Exercise 1 - Locals in Regressions]({{ site.baseurl }}/exercises/06-locals-r/)
->>>>>>> Stashed changes
 
 ### Storing results in local macros
 
@@ -169,6 +170,11 @@ You can then reuse the result later in a calculation:
 > Do [Exercise 2 - Using Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+> Do [Exercise 2 - Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
+
+>>>>>>> Stashed changes
 =======
 > Do [Exercise 2 - Locals to Store Results]({{ site.baseurl }}/exercises/06-locals-s/)
 
