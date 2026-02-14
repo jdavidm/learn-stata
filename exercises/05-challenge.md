@@ -9,7 +9,7 @@ For this challenge we are going to switch up the data and use a data set of wome
 
 Download the `Mroz.dta` file from the [list of data sets](https://jdavidm.github.io/learn-stata/materials/datasets/) on the course website. Load the data using `use`.
 
-We are going to analysis women's income conditional a a number of different variables. Since we want to understand how women's earnings varies based on these other variables, start by using `kkep if` to drop from the data set any woman who does not participate in the labor force.
+We are going to analysis women's income conditional a number of different variables. Since we want to understand how women's earnings varies based on these other variables, start by using `keep if` to drop from the data set any woman who does not participate in the labor force.
 
 In the data set, women's earnings have been logged (`lwg`). We want the unlogged version so create a new variable called `earn` that is the unlogged `lwg`. Recall to undo a log we exponentiate the value (`exp()`) using *e*. Also, use `drop if` to drop any values of income (`inc`) that are less than 0.
 

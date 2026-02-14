@@ -163,6 +163,52 @@
 **# challenge 5
 ********************************************************************************
 
+* load mroz data
+	use				"$data/mroz.dta", clear
+
+* keep working women
+	keep if			lfp == 1
+	
+* get unlogged earnings
+	gen				earn = exp(lwg)
+	
+* drop negative other earnings
+	drop if 		inc < 0
+
+**## 9.1
+
+* draw a scatterplot
+	twoway 			(scatter inc earn, yscale(log) xscale(log))
+	graph export	"$answ/05-challenge-1.png", replace
+
+**## 9.2
+
+* get the conditional mean college attendance
+	tabstat			earn, stat(mean) by(wc)
+
+**## 9.3
+
+* get the conditional mean by bins
+	egen 			inc_cut = cut(inc), group(10) label
+	tabstat 		earn, stat(mean) by(inc_cut)
+
+**## 9.4
+
+ 
+* create the logs manually for the fitted lines
+	gen 				loginc = log(inc)
+	
+	twoway 				(scatter loginc lwg, mcolor(gray%50)) || ///
+						(lowess loginc lwg, lcolor(maroon) lwidth(thick) lpattern(solid)) || ///
+						(lfit loginc lwg, lcolor(navy) lwidth(thick) lpattern(solid))
+	graph export		"$answ/05-lchallenge-3.png", replace
+
+**## 9.5
+
+* run a linear regression, by itself and including controls
+	reg 		lwg loginc
+	reg 		lwg loginc wc
+	
 
 * close the log
 	log	close

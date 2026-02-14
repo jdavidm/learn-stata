@@ -5,7 +5,7 @@ title: Macros and Storing Results
 language: Stata
 ---
 
-In Week 6 we start digging into **Stata as a programming language** rather than just a calculator.
+In Week 6 we start digging into Stata as a programming language rather than just a calculator.
 
 This first lecture focuses on:
 
@@ -23,9 +23,9 @@ So far you’ve mostly typed literal text into your commands:
     regress             price mpg weight foreign
 ```
 
-But as your code grows, you’ll find yourself repeating:
-- Long lists of variables  
+But as your code grows, you’ll find yourself repeating:v
 - File paths  
+- Long lists of variables  
 - Numbers or options you keep using (e.g., a significance level, a bin width)  
 
 Macros let you:
@@ -48,22 +48,20 @@ Basic syntax:
     local           macroname contents
 ```
 
-To *use* a local macro you wrap its name in a **left backtick** (`` ` ``) and a **right straight quote** (` ' `):
+To *use* a local macro you wrap its name in a left backtick (`` ` ``) and a right straight quote (` ' `):
 
 ```stata
     `macroname'
 ```
 
-The two most common ways we use a local macro are:
-1. To define a list of objects that we will loop over (more on loops next lecture)
-2. To work as a shorthand for a list of variables, often ones we use in a regression
+The three most common ways we use a local macro are:
+1. To work as a shorthand for a list of variables, often ones we use in a regression
+2. To store results for use later
+3. To define a list of objects that we will loop over (more on loops next lecture)
 
 Example – list of control variables:
 
 ```stata
-* load example data
-    sysuse          auto, clear
-
 * define a macro with controls
     local           controls mpg weight foreign
 
@@ -72,7 +70,7 @@ Example – list of control variables:
     regress         length `controls'
 ```
 
-When Stata executes ```regress price \`controls'```, it first substitutes the macro contents, so it *really* runs:
+When Stata executes ```regress price `controls'```, it first substitutes the macro contents, so it *really* runs:
 
 ```stata
     regress         price mpg weight foreign
@@ -84,7 +82,7 @@ This saves typing and keeps your code consistent. If you decide later that you a
     local           controls mpg weight foreign turn
 ```
 
-And **all** the regressions that use ```controls'`` now include `turn` automatically. You don't have to go and add it to every regression.
+And **all** the regressions that use `` `controls' `` now include `turn` automatically. You don't have to go and add it to every regression.
 
 #### Locals with spaces and special characters
 Macro contents are just text. If the contents include spaces or special characters, put them in quotes:
@@ -100,18 +98,8 @@ Stata will substitute the whole string into the command before running it.
 
 ### Storing results in local macros
 
-A second extremely important use of locals is to **capture results** from commands and reuse them.
+A second extremely important use of locals is to capture results from commands and reuse them. We've already done this directly when we had Stata `display` the value of some `r()` object. Stata commands store their results in either `r()`, `e()`, or `s()` (you’ve seen `r()` with `sum`). You can copy those results into a local macro so you can use them later.
 
-Many Stata commands store their results in `r()`, `e()`, or `s()` (you’ve seen this with `summarize`). You can copy those results into a local macro so you can use them later.
-
-Recall:
-
-```stata
-sum                 mpg
-return              list
-```
-
-We can store the mean of `mpg` in a local:
 
 ```stata
 * store mean in a local
@@ -123,9 +111,9 @@ We can store the mean of `mpg` in a local:
 ```
 
 Key points:
-
-- The `=` after the macro name tells Stata to **evaluate** the right-hand side as an expression and store the *result* (not the literal text).
-- The macro stores the result as text (a string representation of the number). Good enough for most purposes, but not infinite precision.
+- When we don't use `=` after the macro name it tells Stata to store the content as literal text.
+- The `=` after the macro name tells Stata to **evaluate** the right-hand side as an expression and store the *result*
+- The macro stores the result *as text* (a string representation of the number). Good enough for most purposes, but not infinite precision.
 
 You can then reuse the result later in a calculation:
 

@@ -5,25 +5,10 @@ title: Using Locals to Store Results
 language: Stata
 ---
 
+Using `eth_allrounds_final.dta`,
 
-In this exercise you will **capture results** from `summarize` into local
-macros and reuse them.
-
-1. Using `eth_allrounds_final.dta`, summarize `yield_kg`:
-
-   ```stata
-   summarize yield_kg
-   ```
-
-2. Store the mean and standard deviation from this command in locals named
-   `mean_yield` and `sd_yield` using `r(mean)` and `r(sd)`:
-
-   ```stata
-   local mean_yield = r(mean)
-   local sd_yield   = r(sd)
-   ```
-
-3. Use these locals to create a **standardized yield** variable:
+1. Summarize `yield_kg` and store the mean and standard deviation from this command in locals named
+   `mean_yield` and `sd_yield` using `r(mean)` and `r(sd)`. Use these locals to create a standardized yield variable called `yield_kg_std`. Recall from your stats classes, to standardize a variable you subtract the mean value from the variable and then divide the results by the standard deviation. What is
 
    ```stata
    gen yield_kg_std = (yield_kg - `mean_yield') / `sd_yield'
