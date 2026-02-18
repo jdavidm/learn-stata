@@ -98,7 +98,7 @@ Stata will substitute the whole string into the command before running it.
 
 ### Storing results in local macros
 
-A second extremely important use of locals is to capture results from commands and reuse them. We've already done this directly when we had Stata `display` the value of some `r()` object. Stata commands store their results in either `r()`, `e()`, or `s()` (you’ve seen `r()` with `sum`). You can copy those results into a local macro so you can use them later.
+A second extremely important use of locals is to capture results from commands and reuse them. We've already done this directly when we had Stata `display` the value of some `r()` object. Stata commands store their results in either `r()`, `e()`, or `s()` (you’ve seen `r()` with `sum`). You can save those results into a local macro so you can use them later.
 
 
 ```stata
@@ -111,7 +111,7 @@ A second extremely important use of locals is to capture results from commands a
 ```
 
 Key points:
-- When we don't use `=` after the macro name it tells Stata to store the content as literal text.
+- When we don't use `=` after the macro name it tells Stata to store the content as literal text. So if we just wrote `local mean_mpg r(mean)` when we asked to display like we do above, Stata would print out `The mean of mpg is r(mean)`.
 - The `=` after the macro name tells Stata to **evaluate** the right-hand side as an expression and store the *result*
 - The macro stores the result *as text* (a string representation of the number). Good enough for most purposes, but not infinite precision.
 
@@ -132,18 +132,19 @@ You can then reuse the result later in a calculation:
 
 Global macros are like locals, but:
 - They are visible **everywhere** (all do-files, all programs) in your current Stata session  
-- They persist until you close Stata or change them  
+- They persist until you close Stata or change them
+- Or until you tell Stata to `clear all`
 
-Syntax:
+The syntax for defining a `global` is just like the `local` macro:
 
 ```stata
-global macroname contents
-display "$macroname"
+    global          macroname contents
+    display         "$macroname"
 ```
 
-The `$` prefix tells Stata to substitute a **global** macro.
+What is different is how we call a `global`. To do this we use the `$` prefix to tell Stata to substitute the macroname with the contents of the macro.
 
-Example – a path (for illustration; in this course we’ll usually prefer locals in `project.do`):
+Example – a path:
 
 ```stata
 * define a global path to raw data
@@ -153,47 +154,52 @@ Example – a path (for illustration; in this course we’ll usually prefer loca
     use "$rawdata/eth_allrounds_final.dta", clear
 ```
 
-Globals can be convenient for things like paths or version numbers, but they’re **easy to abuse**:
+This is what we did in "Effectively Using Stata" to define absolute paths in our `projectdo`. We used globals so that all we had to do was run the `projectdo` file once at the start of a Stata session and then those path names would persist until we closed Stata or typed `clear all`. If we had used locals to define those paths than we would have to re-run `projectdo` every time we tried to run code, because Stata forgets the value of a `local` as soon as it stops running htat code block.
 
-- They can be accidentally overwritten by other code  
-- They make your code harder to reason about (hidden dependencies)  
+Globals can be convenient for project configuration (especially paths), but they come with two practical costs:
+- Name collisions: in multi-file projects, a global like $cutoff or $path is easy to reuse for a different purpose, silently changing behavior elsewhere.
+- Implicit interfaces: if a do-file relies on globals, its “inputs” aren’t visible where you call it; you have to inspect global state to know what it will do.
 
-**House rule for this class:**  
+This is because global macros are session-wide. Once defined, they’re visible anywhere in Stata (all do-files and programs) until you close Stata or change them.
+
+In this class, the main reason to avoid globals is not that you’ll “forget” their value. It’s that globals create a shared namespace across your whole project. In multi-file workflows, that makes your code less modular: one file can unintentionally change the meaning of another file by reusing the same global name.
+
+House Style rules for this class:
 - Use **local macros almost always**  
-- Use **globals only** for a small set of carefully chosen things (e.g., paths in `project.do`) and document them clearly. fileciteturn0file2
+- Use **globals only** for a small set of carefully chosen things (e.g., paths in `project.do`) and document them clearly.
 
 > Do [Exercise 3 - Using Globals]({{ site.baseurl }}/exercises/06-globals/)
 
 ### Storing results as scalars
 
-Macros store numbers as *text*, which is sometimes not ideal (rounding, comparisons). Stata also has **scalars**, which store numeric or string values in a separate namespace with full precision. citeturn1view0
+Macros store numbers as *text*, which is sometimes not ideal (rounding, comparisons). Stata also has **scalars**, which store numeric or string values in a separate namespace with full precision.
 
 Syntax:
 
 ```stata
-scalar scalname = expression
-display scalname
+    scalar          scalname = expression
+    display         scalname
 ```
 
 Example – store and reuse R-squared from a regression:
 
 ```stata
 * run a regression
-    quietly regress price mpg weight
+    reg             price mpg weight
 
 * store the R-squared in a scalar
-    scalar rsq_price = e(r2)
+    scalar          rsq_price = e(r2)
 
 * use it later
-    display "R-squared from price model: " rsq_price
+    display         "R-squared from price model: " rsq_price
 ```
 
 Compare to storing in a local:
 
 ```stata
 * store in a local instead
-    local rsq_local = e(r2)
-    display "R-squared (local macro): `rsq_local'"
+    local           rsq_local = e(r2)
+    display         "R-squared (local macro): `rsq_local'"
 ```
 
 Differences:
@@ -209,13 +215,14 @@ Differences:
   - Safer for modular code
 
 Rule of thumb:
-
 - If you just need to plug a stored number into another command in the *same* do-file, a **local** is usually enough.  
-- If you need high precision or want to reuse the result across multiple do-files/programs, a **scalar** may be better (or write the value to disk).
+- If you need high precision or want to reuse the result across multiple do-files/programs, a **scalar** may be better.
 
 > Do [Exercise 4 - Storing Results as Numbers]({{ site.baseurl }}/exercises/06-store/)
 
 ### Using macros to store file paths and filenames
+
+**The following reviews and/or recaps how we have already used macros. There is nothing new here but it may be useful to review to make sure you understand what macros do, how to use them, and how they can bug.**
 
 A very common pattern is to store **paths** and **filenames** in macros, so that moving your project (or renaming a folder) takes changing a couple of lines rather than hundreds.
 
