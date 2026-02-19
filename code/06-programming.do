@@ -161,9 +161,44 @@
 	foreach y of varlist `yvars' {
 		reg					`y' `controls'
 	}
+	
+	
+********************************************************************************
+**# exercise 8
+********************************************************************************
 
+**## 8.1
+	local				vars yield_kg harvest_value_USD nitrogen_kg totcons_USD
+	
+	foreach v of varlist `vars' {
+		qui sum 			`v', detail
+		local				N = r(N)
+		display				`N'
+	}
+
+		
+********************************************************************************
+**# challenge 6
+********************************************************************************
+
+	local				vars yield_kg harvest_value_USD nitrogen_kg totcons_USD
+	
+	foreach v of varlist `vars' {
+		qui sum 			`v', detail
+		local				N = r(N)
+		display				`N'
    
-   
+	if 					`N' < 63450 {
+		display as txt 		"Skipping `v' (only `N' obs)"
+	continue
+       }
+	   
+       histogram 			`v', ///
+								title("Distribution of `v'") ///
+								xtitle("`v'")
+
+       graph export 		"$answ/hist_`v'.png", replace
+   }
    
    
    

@@ -4,73 +4,30 @@ topic: Loops
 title: Challenge 6
 language: Stata
 ---
-### Example: automated summaries and graphs
 
-Let’s put everything together in something closer to real work.
-
-Goal: For a list of variables, produce:
-
+This challenge builds immediately on the loop you wrote in exercise 8. The goal is to put everything together in something closer to real work. For a list of variables, we will write loops to produce:
 - A table of summary statistics  
 - A histogram saved to disk for each variable  
 
+The loop you wrote for exercise 8 should look something like:
+
 ```stata
-sysuse auto, clear
+* create a local of continuous variables
+    local				vars yield_kg harvest_value_USD nitrogen_kg totcons_USD
 
-* 1. variables to summarize
-    local vars price mpg weight length
+* loop over each variable and print out the number of observations	
+	foreach v of varlist `vars' {
+		qui sum 			`v', detail
+		local				N = r(N)
+		display				`N'
+	}
 
-* 2. loop over them
-    foreach v of local vars {
-
-        * summarize with detail and save N
-            quietly summarize `v', detail
-            local N = r(N)
-
-        * only graph if we have at least 50 observations
-            if `N' < 50 {
-                display as txt "Skipping `v' (only `N' obs)"
-                continue
-            }
-
-        * print a header and key stats
-            display "-------------------------"
-            display "Variable: `v'"
-            display "Mean: "      %9.3f r(mean)
-            display "Median: "    %9.3f r(p50)
-            display "Std. dev.: " %9.3f r(sd)
-
-        * histogram and save graph
-            histogram `v', ///
-                title("Distribution of `v'") ///
-                name(hist_`v', replace)
-
-            graph export "hist_`v'.png", replace
-    }
 ```
 
-Things to notice:
+**Within** this loop, add a **programming** `if` statement that for variables stricly less than (`<`) 63,450 `displays as text` the following: "Skipping `` `v' `` (only `` `N' `` non-missing obs)". Recall that after a programming `if ...` statement you need `{}` and it is inside these brackets where you put the text you want displayes *if* the statement is true.
 
-- We use a **local macro** `vars` as the source list for a `foreach` loop.  
-- Inside the loop we rely on **stored results** from `summarize`.  
-- We use a programming `if` to **skip** variables with too few observations (`continue`).  
-- We reuse the macro `\`v'` in graph titles and filenames, avoiding copy-paste errors.
+Within this `if` loop, us `continue` to to tell Stata to move on to the next variable (this will have the effect of Stata moving onto the next variable without graphing variables with observations `< 63450`).
 
-This is the kind of pattern that will be extremely helpful later in the course and in your own research.
-Putting loops and macros together: cleaning variables
+Outside of the `if` loop, tell Stata what to do when the `if` statement is **not** true. That is, draw a `hist` of the variable `` `v' ``. Label the title `` "Distribution of `v'" `` and x-axis label `` "`v'" ``.  Save the graph with a name that depends on the variable, e.g. `hist_yield_kg.png`.
 
-4. (Optional challenge) Use a `forvalues` loop over planting months:
-
-   - Use `tab planting_month` to see which months are present.
-   - Loop over months 1 to 12.
-   - For each month, count how many plots have that planting month and display
-     a line like:
-
-     ```text
-     Month 3: 452 plots
-     ```
-
-   using `count if planting_month == ...` and `r(N)`.
-
-   (Optional) Modify the loop so that for each regression you also store the
-   R-squared in a scalar named `rsq_`y'` (e.g., `rsq_yield_kg`,
-   `rsq_harvest_kg`).
+In the end, you should have one loop inside another. The outside loop is the `foreach` loop above. The inside loop is the one that follows `if ...`. The code for the `hist` goes inside the first loop but **not** inside the second. That second loop tells Stata what to do when the `if` statement is true. If the statement is **not** true, than Stata will automatically draw the `hist`
