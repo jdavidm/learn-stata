@@ -2,4 +2,8 @@
 
 [2] 308.7; 3,228
 
-[3] 
+[3] 0.01; 1
+
+[4] No; there is a namespace collision between the two globals
+
+[5] 1

@@ -20,6 +20,18 @@ Define a global macro named `lg_cut` that stores the size (in hectares) above wh
 - [02_revise](https://jdavidm.github.io/learn-stata/code/02_revise.do)
 - [03_tables](https://jdavidm.github.io/learn-stata/code/03_tables.do)
 
-Add 
+Add the line `do	"$code/00_main.do"` to your code under `**## 3.3`. Run `00_main.do`. What cutoff does the output claim was used (in the printed header and in the variable label)? What cutoff was actually used to generate large_plot?
+
+4. Diagnose the inconsistency by adding these lines to the end of `03_tables.do` and re-running `00_master.do`
+
+```stata
+   gen         large_plot_using_current_global = plot_area_GPS > $plot_cutoff_ha
+   tab         large_plot large_plot_using_current_global
+```
+
+Do large_plot and large_plot_using_current_global match? Why or why not?
+
+5. Fix the problem by changing the name of the `global` in `02_revise`. Re-run `00_main`. What cutoff does the output claim was used?
+
 
 ---

@@ -148,16 +148,16 @@ Example – a path:
 
 ```stata
 * define a global path to raw data
-    global rawdata "/Users/jdm/data/raw"
+    global data "/Users/jdm/data/raw"
 
 * use it in a use command
-    use "$rawdata/eth_allrounds_final.dta", clear
+    use "$data/eth_allrounds_final.dta", clear
 ```
 
 This is what we did in "Effectively Using Stata" to define absolute paths in our `projectdo`. We used globals so that all we had to do was run the `projectdo` file once at the start of a Stata session and then those path names would persist until we closed Stata or typed `clear all`. If we had used locals to define those paths than we would have to re-run `projectdo` every time we tried to run code, because Stata forgets the value of a `local` as soon as it stops running htat code block.
 
 Globals can be convenient for project configuration (especially paths), but they come with two practical costs:
-- Name collisions: in multi-file projects, a global like $cutoff or $path is easy to reuse for a different purpose, silently changing behavior elsewhere.
+- Name collisions: in multi-file projects, a global like `$cutoff` or `$path` is easy to reuse for a different purpose, silently changing behavior elsewhere.
 - Implicit interfaces: if a do-file relies on globals, its “inputs” aren’t visible where you call it; you have to inspect global state to know what it will do.
 
 This is because global macros are session-wide. Once defined, they’re visible anywhere in Stata (all do-files and programs) until you close Stata or change them.

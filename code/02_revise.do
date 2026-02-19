@@ -10,4 +10,5 @@
 * Someone reuses the same global name for a different meaning by accident.
 
 * set global to winsorize data
-	global 			plot_cutoff_ha 0.01
+*	global 			plot_cutoff_ha 0.01
+	global			winsor 0.01
