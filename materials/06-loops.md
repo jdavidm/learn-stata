@@ -20,24 +20,23 @@ We’ll again mostly use `sysuse auto` and small examples so that the focus stay
 Stata already loops over observations for you:
 
 ```stata
-gen logincome = log(income)
+    gen             logincome = log(income)
 ```
 
-This line computes the log of `income` for **all** observations — there is no explicit loop, but Stata is looping behind the scenes. citeturn1view0
+This line computes the log of `income` for **all** observations — there is no explicit loop, but Stata is looping behind the scenes. It takes the log of the first observation, then the second, then the third, and continues until the last observation in the data set.
 
 You only need **explicit** loops when you’re repeating a pattern over:
-
-- A **sequence of numbers** (e.g., years 2000 to 2025)  
-- A **list of variables**  
-- A **list of arbitrary words or tokens**  
+- A sequence of numbers (e.g., years 2000 to 2025)  
+- A list of variables  
+- A list of arbitrary words or tokens  
 
 ### Looping over numbers with `forvalues`
 
 Syntax:
 
 ```stata
-forvalues i = 1/5 {
-    display "`i'"
+    forvalues i = 1/5 {
+        display             "`i'"
 }
 ```
 
@@ -62,13 +61,13 @@ You can specify sequences in two main ways:
 
 ```stata
 * from min to max in steps of 1
-forvalues i = 1/3 {
-    display "`i'"       // 1, 2, 3
+    forvalues i = 1/3 {
+        display             "`i'"       // 1, 2, 3
 }
 
-* from first to last in steps of step
-forvalues j = 10(5)30 {
-    display "`j'"       // 10, 15, 20, 25, 30
+* from first to last in steps of five
+    forvalues j = 10(5)30 {
+        display             "`j'"       // 10, 15, 20, 25, 30
 }
 ```
 
@@ -77,10 +76,10 @@ You can use these macros inside expressions and variable names:
 ```stata
 * create 5 dummy variables x1, x2, ..., x5
     clear
-    set obs 10
+    set             obs 10
 
     forvalues k = 1/5 {
-        gen x`k' = runiform()
+        gen             x`k' = runiform()
     }
 ```
 
@@ -90,13 +89,13 @@ Stata will execute commands like `gen x1 = runiform()`, `gen x2 = runiform()`, �
 
 ### Looping over lists with `foreach`
 
-`foreach` is the other main loop workhorse in Stata. It loops over **lists** of things: words, variables, numbers, or macro contents. citeturn1view0
+`foreach` is the other main loop workhorse in Stata. It loops over **lists** of things: words, variables, numbers, or macro contents.
 
 Syntax:
 
 ```stata
-foreach animal in cats dogs cows {
-    display "`animal'"
+    foreach animal in cats dogs cows {
+        display             "`animal'"
 }
 ```
 
@@ -113,20 +112,19 @@ Stata sets the local macro `animal` to each word in the list in turn.
 More useful example – irregular year list:
 
 ```stata
-foreach year in 2000 2005 2010 2020 {
-    display "Processing year `year'"
-    * you could add: use data for `year', do stuff, save results
+    foreach year in 2000 2005 2010 2020 {
+        display             "Processing year `year'"
 }
 ```
 
 Most often in data work you want to loop over **variables**:
 
 ```stata
-sysuse auto, clear
+    sysuse          auto, clear
 
 * summary stats for multiple variables
     foreach v of varlist price mpg weight {
-        summarize `v'
+        sum                 `v'
     }
 ```
 
@@ -135,7 +133,7 @@ You can use all of Stata’s varlist shorthand inside `foreach`:
 ```stata
 * any variable whose name starts with "turn" or "gear"
     foreach v of varlist turn* gear* {
-        summarize `v'
+        sum                 `v'
     }
 ```
 

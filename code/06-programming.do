@@ -71,22 +71,76 @@
 **## 3.3
 	do				"$code/00_main.do"
 
+	
 ********************************************************************************
 **# exercise 4
 ********************************************************************************
-	/*
-	sysuse			auto, clear
+
+**## 4.1
+	reg				yield_kg nitrogen_kg plot_area_GPS irrigated
+	scalar 			rsq_yield = e(r2)
+	scalar 			N_yield   = e(N)
 	
-* run a regression
-    reg             price mpg weight
-
-* store the R-squared in a scalar
-    scalar          rsq_price = e(r2)
-
-* use it later
-    display         "R-squared from price model: " rsq_price
+	display 		"R-squared from yield regression: " rsq_yield
+	display 		"N from yield regression: " N_yield
 	
-* store in a local instead
-    local           rsq_local = e(r2)
-    display         "R-squared (local macro): `rsq_local'"
+**## 4.2
+	reg				harvest_value_USD nitrogen_kg plot_area_GPS irrigated
+	local 			rsq_harv = e(r2)
+	
+	display 		"R-squared from harvest regression (local): `rsq_harv'"
 
+	
+********************************************************************************
+**# exercise 5
+********************************************************************************
+
+**## 5.1
+	tab				wave
+	
+
+**## 5.2
+	forvalues 		w = 1/5 {
+		display 		"------------------------"
+		display 		"Summary for wave `w'"
+		sum				yield_kg if wave == `w'
+}
+
+**## 5.3
+	forvalues 		w = 1/5 {
+		display 		"------------------------"
+		display 		"Summary for wave `w'"
+		sum				yield_kg if wave == `w'
+		sum				nitrogen_kg if wave == `w'
+}
+
+	
+********************************************************************************
+**# exercise 6
+********************************************************************************
+
+**## 6.1
+	foreach shock in crop_shock pests_shock rain_shock drought_shock flood_shock {
+		display			"------------------------"
+		display			"Shock variable: `shock'"
+		tab 			`shock'
+}
+
+**## 6.2
+	foreach shock in crop_shock pests_shock rain_shock drought_shock flood_shock {
+		display			"------------------------"
+		display			"Shock variable: `shock'"
+		tab 			`shock'
+
+    * Mean of 0/1 variable = share with value 1 (assuming coded 0/1)
+		qui sum			`shock' if !missing(`shock')
+		local 			share_`shock' = r(mean)
+
+    * Print as percent with one decimal place
+		display			"About " %4.1f (100*`share_`shock'') "% of plots experienced a `shock'."
+}
+
+	
+********************************************************************************
+**# exercise 7
+********************************************************************************
