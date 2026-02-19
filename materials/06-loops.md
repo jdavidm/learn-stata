@@ -145,11 +145,11 @@ This is where loops and macros really shine together:
 
 ```stata
 * define macro with list of controls
-    local controls price mpg weight
+    local           controls price mpg weight
 
 * loop over the words in that macro
     foreach x of local controls {
-        summarize `x'
+        sum             `x'
     }
 ```
 
@@ -166,12 +166,12 @@ Example: Suppose we have several variables that should be logged:
 sysuse auto, clear
 
 * vars to take logs of
-    local logvars price weight length
+    local           logvars price weight length
 
 * loop over them
     foreach v of local logvars {
-        gen ln_`v' = ln(`v')
-        label var ln_`v' "log of `v'"
+        gen             ln_`v' = ln(`v')
+        lab var         ln_`v' "log of `v'"
     }
 ```
 
@@ -179,13 +179,15 @@ This generates `ln_price`, `ln_weight`, and `ln_length` with consistent labels, 
 
 > Do [Exercise 7 - Combining Macros and Loops]({{ site.baseurl }}/exercises/06-macro-loop/)
 
-### Specialized `foreach` for number lists
+### Specialized loops
+
+#### `foreach` for number lists
 
 If you want to loop over an irregular sequence of numbers and want Stata to **check** that they’re valid numbers, you can use `numlist`:
 
 ```stata
 foreach year of numlist 1980 1985 1995 {
-    display "`year'"
+    display             "`year'"
 }
 ```
 
@@ -193,10 +195,10 @@ You can mix explicit numbers with ranges:
 
 ```stata
 foreach year of numlist 1980 1985 1990(5)2010 {
-    display "`year'"
+    display             "`year'"
 }
 ```
-### Looping with Conditions
+#### Looping with Conditions
 
 Stata also has a `while` loop:
 
@@ -223,14 +225,14 @@ This prints `i = 1`, `i = 2`, …, `i = 5` and then stops.
 
 `while` loops are most useful when the number of iterations isn’t known in advance, e.g., iterative estimation until convergence. For most data tasks in this course, `forvalues` and `foreach` are clearer and safer.
 
-Putting loops and macros together: cleaning variables
+#### The `if` qualifier
 
 Very important distinction:
 
 - **`if` qualifier** (what you’ve used so far) restricts **which observations** a command runs on:
 
   ```stata
-  summarize wage if female == 1
+  sum                   wage if female == 1
   ```
 
 - **Programming `if`** in Stata is a **command** that decides **whether to run some code at all**, based on a logical expression:
@@ -248,74 +250,20 @@ Example – guard code based on sample size:
 
 ```stata
 * check if we have enough observations before running a regression
-    count if !missing(price, mpg, weight)
-    local N = r(N)
+    count if            !missing(price, mpg, weight)
+    local               N = r(N)
 
     if `N' < 50 {
         display as error "Not enough complete observations (`N') – skipping regression."
     }
     else {
-        regress price mpg weight
+        reg             price mpg weight
     }
 ```
 
 The programming `if` does **not** loop over observations; it uses whatever scalar result you give it (here `N`).
 
 > Do [Exercise 8 - Conditional Loops]({{ site.baseurl }}/exercises/06-con-loop/)
-
-### Example: automated summaries and graphs
-
-Let’s put everything together in something closer to real work.
-
-Goal: For a list of variables, produce:
-
-- A table of summary statistics  
-- A histogram saved to disk for each variable  
-
-```stata
-sysuse auto, clear
-
-* 1. variables to summarize
-    local vars price mpg weight length
-
-* 2. loop over them
-    foreach v of local vars {
-
-        * summarize with detail and save N
-            quietly summarize `v', detail
-            local N = r(N)
-
-        * only graph if we have at least 50 observations
-            if `N' < 50 {
-                display as txt "Skipping `v' (only `N' obs)"
-                continue
-            }
-
-        * print a header and key stats
-            display "-------------------------"
-            display "Variable: `v'"
-            display "Mean: "      %9.3f r(mean)
-            display "Median: "    %9.3f r(p50)
-            display "Std. dev.: " %9.3f r(sd)
-
-        * histogram and save graph
-            histogram `v', ///
-                title("Distribution of `v'") ///
-                name(hist_`v', replace)
-
-            graph export "hist_`v'.png", replace
-    }
-```
-
-Things to notice:
-
-- We use a **local macro** `vars` as the source list for a `foreach` loop.  
-- Inside the loop we rely on **stored results** from `summarize`.  
-- We use a programming `if` to **skip** variables with too few observations (`continue`).  
-- We reuse the macro `\`v'` in graph titles and filenames, avoiding copy-paste errors.
-
-This is the kind of pattern that will be extremely helpful later in the course and in your own research.
-Putting loops and macros together: cleaning variables
 
 ### A simple debugging workflow for loops
 
@@ -330,8 +278,8 @@ Loops can be harder to debug because one or two bad iterations are buried in man
 
    ```stata
    foreach v of varlist price mpg weight {
-       display "Working on `v'"
-       summarize `v'
+       display          "Working on `v'"
+       sum              `v'
    }
    ```
 

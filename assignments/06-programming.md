@@ -4,7 +4,7 @@ element: assignment
 title: Programming Fundamentals
 language: Stata
 exercises: ['Using Locals in Regressions', 'Using Locals to Store Results', 'Using Globals', 'Storing Results as Numbers', 'For Values', 'For Each', 'Combining Macros and Loops', 'Conditional Loops', 'Check That Your Code Runs', 'Challenge 6']
-points: [10, 10, 10, 10, 10, 10, 20, 10, 20, 10, Challenge - 20]
+points: [10, 10, 10, 10, 10, 10, 10, 20, 10, 10, Challenge - 20]
 ---
 
 ### Learning Objectives

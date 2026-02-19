@@ -144,3 +144,26 @@
 ********************************************************************************
 **# exercise 7
 ********************************************************************************
+
+**## 7.1
+	local				logvars yield_kg harvest_value_USD totcons_USD
+	
+	foreach v of varlist `logvars' {
+		gen					ln_`v' = ln(`v')
+		lab var				ln_`v' "log of `v'"
+		sum					ln_`v'
+	}
+	
+**## 7.2
+	local 				yvars ln_*
+	local 				controls plot_area_GPS irrigated nitrogen_kg female_manager
+
+	foreach y of varlist `yvars' {
+		reg					`y' `controls'
+	}
+
+   
+   
+   
+   
+   
