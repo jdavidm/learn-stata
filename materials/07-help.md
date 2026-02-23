@@ -180,6 +180,7 @@ LLMs (ChatGPT, Copilot, etc.) are like a very fast, sometimes-wrong search engin
     * Pointing out obvious bugs in short code snippets
 * They are **not always**:
     * Correct about Stata syntax
+    * Efficient in their approach to coding
     * Aligned with our house style
     * Using the same workflow (projects, `project.do`, etc.)
 
@@ -201,6 +202,8 @@ Then:
 * Rewrite any accepted code into your own `.do` file with house style
 
 Remember the **forklift at the gym** analogy: don’t have the LLM do all your “lifting” for you.
+
+> Do [Exercise 7 - LLM Help]({{ site.baseurl }}/exercises/07-llm-help/)
 
 ### When and how to ask humans
 

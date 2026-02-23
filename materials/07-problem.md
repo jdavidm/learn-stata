@@ -191,7 +191,7 @@ Once you have the basic pieces:
     * Beautify the graph
     * Wrap in a loop, etc.
 
-> Do [Exercise 3 - One Piece at a Time]({{ site.baseurl }}/exercises/07-one-problem/)
+> Do [Exercise 3 - One Piece at a Time]({{ site.baseurl }}/exercises/07-one-piece/)
 
 ### Using house style as decomposition scaffolding
 
