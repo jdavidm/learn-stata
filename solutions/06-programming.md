@@ -14,4 +14,4 @@ language: Stata
 7. [Combining Macros and Loops]({{ site.baseurl }}/solutions/06-macro-loop.txt)
 8. [Combining Macros and Loops]({{ site.baseurl }}/solutions/06-con-loop.txt)
 9. [Check That Your Code Runs]({{ site.baseurl }}/solutions/check-that-your-code-runs.gif)
-10. Challenge 5 [1]({{ site.baseurl }}/solutions/06-challenge-1.png), [2]({{ site.baseurl }}/solutions/06-challenge-2.png)
+10. Challenge 6 [1]({{ site.baseurl }}/solutions/06-challenge-1.png), [2]({{ site.baseurl }}/solutions/06-challenge-2.png)

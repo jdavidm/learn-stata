@@ -1,0 +1,30 @@
+[1] 
+* load plot-level data
+    use             "$data/plot_dataset.dta", clear
+
+* basic structure check
+    describe
+    sum             harvest_kg nitrogen_kg plot_area_GPS hh_id_merge season
+	
+[2]
+
+* create yield per hectare
+    gen             yield = harvest_kg / plot_area_GPS
+
+* quick check
+    sum             yield
+    *** mean 22431, min -519.8, max 7.51e+08
+
+* check for missing or zero `plot_area_GPS`
+    count           if plot_area_GPS == 0 | plot_area_GPS == .
+    *** 15,442 missing area
+
+[3] 
+
+* create combined id
+    egen            hh_season_id = group(hh_id_merge season)
+    lab var         hh_season_id "household-season identifier"
+
+* spot check
+    list            hh_id_merge season hh_season_id in 1/10
+    *** confirm that hh_season_id is constant within each hh_id_merge-season combination

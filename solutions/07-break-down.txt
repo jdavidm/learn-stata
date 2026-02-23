@@ -1,0 +1,40 @@
+[1] Create high-level headings (these are examples of what you might have written)
+
+**********************************************************************
+**# 1 - prepare plot-level data
+**********************************************************************
+
+**## 1.1 - load and inspect data
+
+**## 1.2 - check keys and ids
+
+**********************************************************************
+**# 2 - construct household-season variables
+**********************************************************************
+
+**## 2.1 - create household-season id
+
+**## 2.2 - create per-plot variables (e.g., yield per hectare)
+
+**********************************************************************
+**# 3 - collapse to household-season level
+**********************************************************************
+
+**## 3.1 - aggregate yield and nitrogen
+
+**## 3.2 - count plots and irrigated indicator
+
+**********************************************************************
+**# 4 - label and save output
+**********************************************************************
+
+
+[2] Add “mini-steps” under one heading (these are examples of what you might have written)
+
+**## 3.1 - aggregate yield and nitrogen
+
+* steps:
+* 1. check that hh_id_merge and season uniquely identify households within a season
+* 2. collapse mean yield_kg and sum nitrogen_kg to hh_id_merge-season level
+* 3. create a count of plots per household-season
+* 4. label the new variables

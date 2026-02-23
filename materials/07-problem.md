@@ -20,9 +20,9 @@ language: Stata
     * **Thinking before you code**
     * Breaking a big problem into small, testable steps
 
-### Three-step problem decomposition workflow
-
 ![Your problem: Image of an angry hippopotamus. Your problem broken down into pieces: 4 cute pictures of Moo Deng an adorable baby pygmy hippo. Angry hippo image from: https://www.fotocommunity.de/photo/angry-hippo-again-huber-tom/43184827](../moo-deng-problem-decomposition.png)
+
+### Three-step problem decomposition workflow
 
 We’ll use a simple three-step workflow adapted from the Data Carpentry R materials but implemented in Stata:
 
