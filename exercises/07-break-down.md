@@ -12,3 +12,5 @@ Using the same goal problem, your job in this exercise is to build a **structure
     - Follow house style (`**#` for headings, `**##` for subheadings)
 
 2\. *Add “mini-steps” under one heading*. Pick one of your big sections (for example, “collapse to household-season level”) and break it down into smaller steps using comments.
+
+---

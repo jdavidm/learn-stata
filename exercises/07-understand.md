@@ -7,8 +7,7 @@ language: Stata
 
 For the first three exercises this week we will use a common goal problem:
 
-> **Goal problem:**  
-> Starting from `plot_dataset.dta` (one row per plot), create a **household–season** dataset with:
+> **Goal problem:**  Starting from `plot_dataset.dta` (one row per plot), create a **household–season** dataset with:
 > - one observation per `hh_id_merge` and `season`
 > - mean plot yield (kg) per household–season
 > - total nitrogen (kg) per household–season
@@ -34,3 +33,5 @@ Your job in this exercise is *not* to solve this problem. Your job is to **under
     - location (e.g., in `$export`).
 
 4\. *Ask clarification questions*. Finally, imagine you are about to start writing code but your collaborator is online. What questions would you ask before you start? Add at least three clarifying questions as comments.
+
+---

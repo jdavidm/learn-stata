@@ -13,3 +13,4 @@ In this exercise, you will implement only the early steps of the plan you made i
 
 3\. *Create a household–season identifier*. Create a combined identifier for `hh_id_merge` and `season` using the `group` function of `egen`.
 
+---

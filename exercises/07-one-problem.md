@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Debugging
-title: One Piece at a Time
+title: One Problem
 language: Stata
 ---
 
