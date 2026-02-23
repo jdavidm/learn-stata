@@ -1,11 +1,9 @@
 ---
-layout: page
-element: exercise
-title: Debugging Exercise
+layout: exercise
+topic: Problem Solving
+title: Debugging
 language: Stata
 ---
-
-### Overview
 
 In this exercise you will practice **systematic debugging** using a deliberately broken `.do` file that works with `plot_dataset.dta`.
 
@@ -15,20 +13,6 @@ Your goals are to:
 2. Fix **one bug at a time**, always reading the error message.
 3. Use Stata’s tools (`describe`, `sum`, `list`, `help r(###)`, etc.) to understand what’s going on.
 4. End with a **clean, working script** and a short reflection.
-
-### Instructions
-
-In your assignment `.do` file, create a new section:
-
-```stata
-**********************************************************************
-**# exercise 4 - debugging
-**********************************************************************
-```
-
-Then follow the steps below.
-
----
 
 ### Step 1 – Set up a reproducible error
 
@@ -162,13 +146,3 @@ After you have fixed all the bugs and the code runs cleanly:
 * - which debugging tool or habit was most helpful (reading error messages,
 *   describe/sum/list, help r(###), or something else)?
 ```
-
-### Deliverables
-
-By the end of this exercise, your `.do` file should contain:
-
-- A reproducible debugging setup (`clear all` + project run).
-- The original broken code, annotated with `*** ERROR HERE:` comments for each bug.
-- A cleaned version of the code that runs without errors and creates season-specific files.
-- At least three documented uses of debugging tools.
-- A brief reflection on what you learned.
