@@ -1,6 +1,6 @@
 ---
-layout: page
-element: exercise
+layout: exercise
+topic: Problem Solving
 title: One Piece at a Time
 language: Stata
 ---

@@ -1,6 +1,6 @@
 ---
-layout: page
-element: exercise
+layout: exercise
+topic: Problem Solving
 title: Understand the Problem
 language: Stata
 ---
