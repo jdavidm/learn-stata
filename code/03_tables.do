@@ -15,6 +15,3 @@
 
 	describe 		large_plot
 	
-* diagnose mismatch
-	gen 			large_plot_using_current_global = plot_area_GPS > $plot_cutoff_ha
-	tab 			large_plot large_plot_using_current_global
