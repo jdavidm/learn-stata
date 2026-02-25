@@ -62,10 +62,10 @@ There are multiple bugs in this code (file names, variable names, `=` vs `==`, l
 
 For each bug you encounter:
 - Run your `.do` file from the top until Stata stops with an error.
-- Copy the error message and code in a comment below the offending line using the pattern:
+- Copy the error message and code in a comment below the offending line using the pattern (tabbed in twice):
 
 ```stata
-        *** ERROR HERE: r(111) type mismatch; harvestkg does not exist
+*** ERROR HERE: r(111) type mismatch; harvestkg does not exist
 ```
 
 Comment out the broken code and immediately below that `***` comment decribing the error **fix the bug**. Then run the file from the top again to see the **next** error. Repeat this process until the entire script runs without errors. You should end up with a series of `*** ERROR HERE:` comments documenting each bug you found followed by your debugged code.
