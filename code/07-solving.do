@@ -325,8 +325,6 @@
 						rows(1) position(3) ring(0) ///
 						region(lstyle(none)) ///
 						) ///
-					plotregion(margin(l=18 r=2 t=2 b=2)) ///
-					graphregion(margin(zero)) ///
 					name(`gname', replace)
 
 			* add graph to the appropriate combine list
@@ -365,9 +363,124 @@
 
 	graph           export "$answ/07-llm-help-3.pdf", replace
 	
+
 ********************************************************************************
 **# challenge 7
 ********************************************************************************
+
+**## 9.1
+
+* restate problem (comments only)
+	* goal: create a household-level dataset (one row per hh_id_merge) from plot_dataset
+	* input: $data/plot_dataset.dta (plot-level data)
+	* output: household dataset + regression + three graphs (scatter, density, bar)
+
+* steps (comments only)
+	* 1) load plot data and keep maize plots only
+	* 2) compute hh-level stats with egen (no collapse)
+	* 3) tag one obs per hh and keep tagged rows
+	* 4) check uniqueness + summarize + tabulate
+	* 5) run regression and record results
+	* 6) create graphs and export pdfs
+
+
+**## 9.2
+
+* load data and keep maize plots only
+	use             "$data/plot_dataset.dta", clear
+
+* keep maize only (main_crop is string)
+	keep            if main_crop == "MAIZE"
+
+* mean yield (plot-level yield_USD averaged within household)
+	egen            mean_yield = mean(yield_kg), by(hh_id_merge)
+	lab var         mean_yield "mean plot yield (kg) within household"
+
+* total labor days within household
+	egen            tot_labor = total(total_labor_days), by(hh_id_merge)
+	lab var         tot_labor "total labor days within household"
+
+* total nitrogen fertilizer (kg) within household
+	egen            tot_fert = total(nitrogen_kg), by(hh_id_merge)
+	lab var         tot_fert "total nitrogen (kg) within household"
+
+* number of plots within household
+	egen            n_plots = count(plot_id_merge), by(hh_id_merge)
+	lab var         n_plots "number of plots within household (maize sample)"
+
+* any irrigated plot within household (max of 0/1)
+	egen            any_irrig = max(irrigated), by(hh_id_merge)
+	replace         any_irrig = 0 if any_irrig == .
+	lab var         any_irrig "any irrigated maize plot in household (0/1)"
+
+* value labels for graphs/tables
+	lab def         irrig_lbl 0 "rainfed" 1 "irrigated", replace
+	lab val         any_irrig irrig_lbl
+
+* tag and keep one row per household
+	egen            tag_hh = tag(hh_id_merge)
+	lab var         tag_hh "tag: 1 obs per household"
+
+	keep            if tag_hh == 1
+	keep            hh_id_merge mean_yield tot_labor tot_fert n_plots any_irrig
+
+* count the number of observations
+	count
+	
+**## 9.3
+
+* confirm one row per household
+	isid            hh_id_merge
+	*** if this fails, you do not have one row per household
+
+* summarize key variables
+	sum             mean_yield tot_labor tot_fert n_plots
+	*** yield: mean 3227
+	*** labor: mean 197.2
+	*** fert: mean 103.1
+	*** plots: mean 1.792
+
+* tabulate irrigation status
+	tab             any_irrig
+	*** 292 irrigated, 13,885 rainfed
+
+**## 9.4
+
+* regress mean yield on labor, fertilizer, irrigation
+	reg             mean_yield tot_labor tot_fert any_irrig
+
+* optional: display coefficient signs in the log (for your write-up)
+	matrix          b = e(b)
+
+	local           s_labor = cond(b[1,"tot_labor"] > 0, "+", cond(b[1,"tot_labor"] < 0, "-", "0"))
+	local           s_fert  = cond(b[1,"tot_fert"]  > 0, "+", cond(b[1,"tot_fert"]  < 0, "-", "0"))
+	local           s_irr   = cond(b[1,"any_irrig"] > 0, "+", cond(b[1,"any_irrig"] < 0, "-", "0"))
+
+	di              "sign(tot_labor) = `s_labor'"
+	di              "sign(tot_fert)  = `s_fert'"
+	di              "sign(any_irrig) = `s_irr'"
+
+**## 9.5
+
+* scatter: mean_yield vs tot_fert with lfit
+	twoway          (scatter mean_yield tot_fert, ///
+						msize(small) ) ///
+					(lfit mean_yield tot_fert, ///
+						lwidth(medthick) ), ///
+						title("maize households: mean yield vs fertilizer") ///
+						xtitle("total nitrogen (kg), household") ///
+						ytitle("mean plot yield (usd), household") ///
+						legend(order(1 "households" 2 "linear fit") rows(1) pos(6)) 
+
+	graph           export "$answ/07-challenge-2.pdf", replace
+
+* bar chart: mean(mean_yield) by irrigation status
+	graph           bar (mean) mean_yield, ///
+						over(any_irrig) ///
+						title("maize households: mean yield by irrigation") ///
+						ytitle("mean plot yield (usd), household") 
+
+	graph           export "$answ/07-challenge-3.pdf", replace
 
 
 * close the log

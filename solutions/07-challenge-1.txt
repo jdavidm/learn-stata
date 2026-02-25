@@ -1,0 +1,27 @@
+[1] 
+* restate problem (comments only)
+	* goal: create a household-level dataset (one row per hh_id_merge) from plot_dataset
+	* input: $data/plot_dataset.dta (plot-level data)
+	* output: household dataset + regression + three graphs (scatter, density, bar)
+
+* steps (comments only)
+	* 1) load plot data and keep maize plots only
+	* 2) compute hh-level stats with egen (no collapse)
+	* 3) tag one obs per hh and keep tagged rows
+	* 4) check uniqueness + summarize + tabulate
+	* 5) run regression and record results
+	* 6) create graphs and export pdfs
+
+[2] 14,177
+
+[3] yield: mean 3227
+	labor: mean 197.2
+	fert: mean 103.1
+	plots: mean 1.792
+    irr: 292 irrigated, 13,885 rainfed
+
+[4] sign(tot_labor) = +
+    sign(tot_fert)  = +
+    sign(any_irrig) = +
+
+    Households with any irrigated plots yield, on average, 258.8 more kg than households with only rainfed plots.
