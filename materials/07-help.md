@@ -226,6 +226,8 @@ A good question includes:
 * The file name and exact lines of code that are a problem
 * **Before you ask for help, push your commits so the person can actually help you!**
 
+> Do [Exercise 7 - LLM Help]({{ site.baseurl }}/exercises/07-llm-help/)
+
 ### Summary: a help-searching workflow
 
 When you’re stuck:

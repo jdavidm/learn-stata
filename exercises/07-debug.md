@@ -11,7 +11,14 @@ In this exercise you will practice **systematic debugging** using a deliberately
 - Use Stata’s tools (`describe`, `sum`, `list`, `help r(###)`, etc.) to understand what’s going on.
 - End with a clean, working script and a short reflection.
 
-At the top of this exercise make sure you can reproduce errors from a clean session. To do this, use `clear all` and then `do` to run the `projectdo` file from this script. Then copy the following **broken** code block directly after the line where you run the `projectdo` file.
+At the top of this exercise make sure you can reproduce errors from a clean session. To do this type
+
+```stata
+    clear              all
+    do                 "$code/projectdo.do"
+```
+
+Run this script. Then copy the following **broken** code block directly after the line where you run the `projectdo` file.
 
 ```stata
 ******************************************************************
@@ -51,7 +58,7 @@ At the top of this exercise make sure you can reproduce errors from a clean sess
     log             close
 ```
 
-There are multiple bugs in this code (file names, variable names, `=` vs `==`, loop logic, options, and more). Do **not** fix anything yet. Run your `.do` file from the top and let Stata stop at the first error. 
+There are multiple bugs in this code (file names, variable names, `=` vs `==`, loop logic, options, and more). Do **not** fix anything yet. Run your `assignment_7.do` file from the top and let Stata stop at the first error. 
 
 For each bug you encounter:
 - Run your `.do` file from the top until Stata stops with an error.
@@ -63,13 +70,13 @@ For each bug you encounter:
 
 Comment out the broken code and immediately below that `***` comment decribing the error **fix the bug**. Then run the file from the top again to see the **next** error. Repeat this process until the entire script runs without errors. You should end up with a series of `*** ERROR HERE:` comments documenting each bug you found followed by your debugged code.
 
-As you debug, remember to use Stata's tools at appropriate points (do not use online help or an LLM).
+As you debug, remember to use Stata's tools at appropriate points (**do not use online help or an LLM**).
 - `describe`
 - `sum` or `sum, detail`
 - `list` or `browse`
 - `tab`
-- `help r(###)` for one of the error codes you encounter
-- `display` of a macro (e.g., `display "`s'"`) or returned result (e.g., `display r(mean)`)
+- `help r(###)` for the error codes you encounter
+- `display` of a macro (e.g., `` display "`s'" ``) or returned result (e.g., `display r(mean)`)
 
 Each time you use one of these tools, add a short `***` comment summarizing what you learned.
 
