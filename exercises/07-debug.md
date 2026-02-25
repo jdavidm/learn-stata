@@ -35,27 +35,24 @@ Run this script. Then copy the following **broken** code block directly after th
     bys             main_crop: sum yield_ha if irrigated = 1, details
 
 ******************************************************************
-**# 2 - save irrigated-only data by season
+**# 2 - save irrigated-only data by agro-ecological zone (aez)
 ******************************************************************
 
-* get list of seasons
-    levelsof        season, local(seasons)
+* get list of aezs
+    levelsof        aez, local(agro_ecological_zone)
 
-* loop over seasons and save a file for each
-    foreach s of local seasons {
+* loop over aezs and save a file for each
+    foreach s of local agro_ecological_zone {
 
-    * keep only irrigated plots for this season
-        keep        if season == s & irrigated == 1
+    * keep only irrigated plots for this aez
+        keep        if agro_ecological_zone == s & irrigated == 1
 
-    * save season-specific file
+    * save aez-specific file
         save        "$export/plot_yield_irr_s.dta"
 
     * reload data for next loop iteration
         use         "$root/plot_dataset.dta", clear
     }
-
-* close log
-    log             close
 ```
 
 There are multiple bugs in this code (file names, variable names, `=` vs `==`, loop logic, options, and more). Do **not** fix anything yet. Run your `assignment_7.do` file from the top and let Stata stop at the first error. 

@@ -1,0 +1,54 @@
+
+******************************************************************
+**# 1 - plot-level yield summaries
+******************************************************************
+
+* load data
+*   use             "$root/plot_dataset", clear
+	use				"$data/plot_dataset", clear
+
+* create yield per hectare
+ *  gen             yield_ha = harvestkg / plot_area_GPS
+    gen             yield_ha = harvest_kg / plot_area_GPS
+
+* summarize average yield for irrigated plots only, by main crop
+*   bys             main_crop: sum yield_ha if irrigated = 1, details
+	bys             main_crop: sum yield_ha if irrigated == 1, detail
+
+	
+******************************************************************
+**# 2 - save irrigated-only data by agro-ecological zone (aez)
+******************************************************************
+/*
+
+* get list of aezs
+    levelsof        aez, local(agro_ecological_zone)
+
+* loop over aezs and save a file for each
+    foreach s of local agro_ecological_zone {
+
+    * keep only irrigated plots for this aez
+        keep        if agro_ecological_zone == s & irrigated == 1
+
+    * save aez-specific file
+        save        "$export/plot_yield_irr_s.dta"
+
+    * reload data for next loop iteration
+        use         "$root/plot_dataset.dta", clear
+    }
+*/
+* get list of aezs
+    levelsof        agro_ecological_zone, local(aez)
+
+* loop over aezs and save a file for each
+    foreach s of local aez {
+
+    * keep only irrigated plots for this aez
+        keep        if agro_ecological_zone == `s' & irrigated == 1
+
+    * save aez-specific file
+        save        "$data/plot_yield_irr_`s'.dta", replace
+
+    * reload data for next loop iteration
+        use         "$data/plot_dataset.dta", clear
+    }
