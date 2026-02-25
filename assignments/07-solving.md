@@ -4,7 +4,7 @@ element: assignment
 title: Solving Problems
 language: Stata
 exercises: ['Understand the Problem', 'Break the Problem Down', 'One Piece at a Time', 'Debugging', 'Stata Help', 'Online Help', 'LLM Help', 'Check That Your Code Runs', 'Challenge 7']
-points: [10, 10, 10, 40, 10, 10, 10, 10, Challenge - 20]
+points: [10, 10, 10, 20, 10, 10, 20, 10, Challenge - 20]
 ---
 
 ### Learning Objectives
