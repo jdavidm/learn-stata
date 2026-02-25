@@ -66,7 +66,7 @@ if $pack == 1 {
 					mrtab distinct winsor2 catplot colrspace ivreg2 ranktest
 					carryforward missings xtivreg2 fre coefplot colrspace
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
-					eventstudyinteract avar" ;
+					eventstudyinteract avar grc1leg2" ;
     #delimit cr
 	
 	* install packages that are on ssc	
