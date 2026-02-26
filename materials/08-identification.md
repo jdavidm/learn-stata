@@ -5,18 +5,13 @@ title: Identification, DGPs, and Research Design
 language: Stata
 ---
 
-In Week 8 we pivot from describing data to using Stata as a tool for thinking about causal questions and research design.
+This week we pivot from describing data to using Stata as a tool for thinking about causal questions and research design. This forms the bridge between representing correlational relationships with tables and figures to estimating causal relationships with regression analysis.
 
 This lecture focuses on:
 
 - What a data generating process (DGP) is  
 - What identification means (and why it’s different from association)  
 - How simulations and conditional means help you reason about research design before we learn regression  
-
-Primary reading:
-
-- https://theeffectbook.net/ch-TheDesignofResearch.html  
-- https://theeffectbook.net/ch-Identification.html  
 
 ### The data generating process (DGP)
 
@@ -28,7 +23,7 @@ Examples:
 - Supply and demand are part of the DGP that generates price/quantity data  
 - In economics, preferences, technologies, policies, and constraints are pieces of a DGP  
 
-We never see the DGP directly. We only see the data it produces. Identification is about figuring out what parts of the DGP we can learn from the variation in our data.
+The DGP is the causal story that created the dataset. We don’t observe that story directly—we only observe the variables it leaves behind. Identification is the problem of deciding when the variation we do observe is enough to pin down the causal effect we care about.
 
 Stata gives us a superpower here: we can simulate data from a DGP we choose, so that we actually know the truth. Then we can see when simple comparisons get the right answer and when they’re biased.
 
@@ -48,7 +43,7 @@ A simple causal diagram (we’ll formalize these next lecture):
 ```text
 soil_quality  →  fert
 soil_quality  →  yield
-fert         →  yield
+fert          →  yield
 ```
 
 #### Simulating the DGP
