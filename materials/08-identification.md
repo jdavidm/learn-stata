@@ -66,7 +66,9 @@ fert          →  yield
 * true causal effect of fertilizer on yield is 0.5 tons/ha
 * soil quality also matters
     gen             eps = rnormal(0, 1)
-    gen             yield = 0.5*fert + 1*soil_q + eps
+    gen             yield_lat = 2 + 0.5*fert + 1*soil_q + eps
+    gen             yield = max(yield_lat, 0)
+    drop            yield_lat
     label           var yield "yield (tons/ha)"
 
 * peek at the data
@@ -84,7 +86,7 @@ If you ignore soil quality and just compare mean yield with and without fertiliz
 - The causal effect of fertilizer  
 - Selection: good soil increases fertilizer use and yield  
 
-### Identification vs raw associations
+#### Identification vs raw associations
 
 What happens if we just compare average yield across fertilizer status?
 
@@ -93,11 +95,13 @@ What happens if we just compare average yield across fertilizer status?
     tabstat         yield, by(fert) stat(mean n)
 
 * compute difference in means manually using stored results
-    quietly         tabstat yield, by(fert) stat(mean)
-    matrix          M = r(StatTotal)
-    scalar          y0 = M[1,1]
-    scalar          y1 = M[1,2]
-    display         "Naive diff-in-means (fert - no fert): " (y1 - y0)
+	qui sum         yield if fert == 0, meanonly
+    scalar          y0 = r(mean)
+
+    qui sum         yield if fert == 1, meanonly
+    scalar          y1 = r(mean)
+
+    display         "Naive diff-in-means (fert - no fert): " %9.3f (y1 - y0)
 ```
 
 This gives you the association between fertilizer and yield. But it does not have to equal the causal effect (0.5). The gap is bias from confounding by soil quality.
@@ -106,7 +110,7 @@ This gives you the association between fertilizer and yield. But it does not hav
 
 ### Conditioning to reduce confounding
 
-In this DGP, soil quality is the confounder. If we could hold soil quality fixed, we’d block the backdoor path `fert ← soil_q → yield`.
+In this DGP, soil quality is the confounder. There is what is known as a backdoor path `fert ← soil_q → yield`. If we could hold soil quality fixed, we’d block that path ()`fert ← [soil_q] → yield`) and be able to identify the causal effect of fertilizer on yield.
 
 We can approximate this by comparing treated and untreated plots within soil quality groups (quartiles):
 
@@ -117,7 +121,8 @@ We can approximate this by comparing treated and untreated plots within soil qua
     label           values soil_q4 soilq4
 
 * mean yield by fert within each soil quartile
-    tabstat         yield, by(fert soil_q4) stat(mean n)
+	bysort 			soil_q4 fert: ///
+						summarize yield
 ```
 
 #### A simple visual check
@@ -127,8 +132,7 @@ We can approximate this by comparing treated and untreated plots within soil qua
     tabstat         yield if soil_q4 == 2, by(fert) stat(mean n)
 
 * graph
-    graph bar       (mean) yield, over(fert) ///
-                        if soil_q4 == 2 ///
+    graph bar       (mean) yield if soil_q4 == 2, over(fert) ///
                         ytitle("Mean yield") ///
                         title("Fertilizer vs no fertilizer within soil group 2")
 ```
@@ -148,12 +152,12 @@ In our simulation:
 - Some variation in fertilizer is driven by soil quality and is not identifying  
 - Conditioning on soil quality gets closer to identifying variation  
 
-### Randomized experiments in Stata (as a benchmark)
+### Randomized experiments in Stata
 
-The cleanest research design is randomized treatment assignment:
+Most economists believe that the cleanest research design is randomized treatment assignment:
 
-- Treatment is assigned by the researcher (or a lottery)  
-- Treatment is independent of pre-treatment characteristics  
+- Treatment is randomly assigned by the researcher (say via a lottery)  
+- By construction, treatment is independent of pre-treatment characteristics  
 
 Here is the same yield model with randomized fertilizer:
 
@@ -171,9 +175,11 @@ Here is the same yield model with randomized fertilizer:
     label           define fertlbl 0 "control" 1 "treatment"
     label           values fert fertlbl
 
-* same causal effect and same soil effect
+* same causal effect and same soil effect (truncate at 0)
     gen             eps = rnormal(0, 1)
-    gen             yield = 0.5*fert + 1*soil_q + eps
+    gen             yield_lat = 2 + 0.5*fert + 1*soil_q + eps
+    gen             yield = max(yield_lat, 0)
+    drop            yield_lat
 
 * naive diff-in-means is now a valid causal estimate
     tabstat         yield, by(fert) stat(mean n)
@@ -185,8 +191,7 @@ In this world, the true causal effect is still 0.5, and the naive difference in 
 
 ### Connecting to real data and upcoming topics
 
-This week you practiced:
-
+In this lecture we practiced:
 - Using simulations to make DGPs concrete  
 - Seeing how identification depends on research design  
 - Using difference-in-means and conditional means to reason about confounding  
