@@ -5,37 +5,12 @@ title: Simulating a Confounded DGP
 language: Stata
 ---
 
-**Goal:** Practice simulating a confounded DGP and diagnosing bias, but in a new setting (not fertilizer/soil/yield).
-
-In the lecture notes, the example uses soil quality as a confounder of fertilizer and yield. This exercise asks you to build a similar *structure* in a different story so you have to translate ideas into new variable names and a new treatment assignment rule. fileciteturn6file0
-
-### Setup
-
-1. Create a new `.do` file with a proper preamble and a setup section (`**# 0 - setup`), following the house style.
-
-### Tasks
-
-#### 1) Simulate a confounded training DGP
-
-In a new section `**# 1 - confounded training DGP`:
-
-1. Set the random seed to `24601` and simulate **3,000** observations.
-
-2. Generate an unobserved confounder:
-
-- `ability` ~ Normal(0, 1)
-
-3. Generate treatment (training) using a *probability rule* (not a threshold rule):
-
-- Create a training probability that increases with ability:  
-
-  `p_train = invlogit(-0.2 + 1.0*ability)`
-
-- Then assign training as a Bernoulli draw:
-
-  `train = (runiform() < p_train)`
-
-4. Generate wages so they are never negative:
+In this exercise we are going to practice simulating a confounded DGP and diagnosing bia. In your `.do` file:
+- Set the random seed to `24601` and simulate 30,000 observations.
+- Generate an unobserved confounder called `ability` that is distributed Normal(0, 1)
+- Generate a variable called `p_train` using a probability rule (`invlogit`) that increases with ability: `-0.2 + 1.0*ability`
+- Then assign training as a Bernoulli draw `train = (runiform() < p_train)`
+- Generate wages so they are never negative:
 
 - Let the true causal effect of training be **+2** (by construction).  
 - Let ability also raise wages.  
