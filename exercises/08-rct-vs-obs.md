@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: RCT vs Observational Study
 language: Stata
 ---
