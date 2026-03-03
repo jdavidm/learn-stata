@@ -95,7 +95,7 @@ What happens if we just compare average yield across fertilizer status?
     tabstat         yield, by(fert) stat(mean n)
 
 * compute difference in means manually using stored results
-	qui sum         yield if fert == 0, meanonly
+    qui sum         yield if fert == 0, meanonly
     scalar          y0 = r(mean)
 
     qui sum         yield if fert == 1, meanonly

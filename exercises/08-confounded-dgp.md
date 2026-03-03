@@ -5,28 +5,18 @@ title: Simulating a Confounded DGP
 language: Stata
 ---
 
-In this exercise we are going to practice simulating a confounded DGP and diagnosing bia. In your `.do` file:
+In this exercise we are going to practice simulating a confounded DGP and diagnosing bias.
 - Set the random seed to `24601` and simulate 30,000 observations.
 - Generate an unobserved confounder called `ability` that is distributed Normal(0, 1)
-- Generate a variable called `p_train` using a probability rule (`invlogit`) that increases with ability: `-0.2 + 1.0*ability`
+- Generate a variable called `p_train` using a probability rule (`invlogit`) that increases with ability: `invlogit(-0.2 + 1.0*ability)`
 - Then assign training as a Bernoulli draw `train = (runiform() < p_train)`
-- Generate wages so they are never negative:
+- Create a variable `eps ~ Normal(0, 3)` so there is meaningful noise
+- Generate wages so that the true causal effect of training be **+2** and ability raises wages by **+4** while wages without training (`train = 0`) or ability (`ability = 0`) is **10**.  
+- Add noise to the wage equation so that `wage_lat = 10 + 2*train + 4*ability + eps`
+- Enforce `wage >= 0` by truncating at 0 using `max(wage_lat, 0)`.
+- Add variable labels to all variables and value labels for `train` (0 = no, 1 = yes)
 
-- Let the true causal effect of training be **+2** (by construction).  
-- Let ability also raise wages.  
-- Add noise.  
-- Enforce `wage >= 0` by truncating at 0.
-
-One acceptable structure is:
-
-- `wage_lat = 10 + 2*train + 4*ability + eps`  
-- `wage = max(wage_lat, 0)`  
-
-Use `eps ~ Normal(0, 3)` so there is meaningful noise.
-
-5. Add variable labels and value labels for `train` (0/1).
-
-#### 2) Compute the naive difference in means
+1\. Compute the naive difference in means
 
 In a new section `**# 2 - naive diff-in-means`:
 
@@ -38,7 +28,7 @@ In a new section `**# 2 - naive diff-in-means`:
 - store mean wage for `train==1` in scalar `w1`  
 - display `w1 - w0` with a formatted display statement
 
-#### 3) Show that selection is happening
+2\. Show that selection is happening
 
 In a new section `**# 3 - evidence of selection (confounding)`:
 
@@ -51,7 +41,7 @@ In a new section `**# 3 - evidence of selection (confounding)`:
 - the causal effect of training  
 - selection due to ability
 
-#### 4) Conditional comparison within ability groups
+3\. Conditional comparison within ability groups
 
 In a new section `**# 4 - conditional means within ability bins`:
 
@@ -62,11 +52,3 @@ In a new section `**# 4 - conditional means within ability bins`:
 2. Compute mean wage by training status within each ability quartile using `tabstat` with `by(train ability_q4)`.
 
 3. Optional (recommended): pick one quartile (e.g., `ability_q4==2`) and make a bar chart of mean wage by training status in that quartile.
-
-### Deliverables
-
-At the end of your `.do` file (in a comment-only block), write short answers:
-
-1. What is the true causal effect of training on wage in your DGP?  
-2. Is the naive difference in mean wage close to that true effect? Why or why not?  
-3. Do the within-ability comparisons move you closer to the true effect? Explain in words.
