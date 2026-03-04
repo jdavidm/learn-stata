@@ -23,8 +23,4 @@ In this exercise we are going to practice simulating a confounded DGP and diagno
 - display `w1 - w0` with a formatted display statement
 
 2\. Show that selection is happening by showing that `ability` differs by training status.
-- report mean `ability` by `train` (use `tabstat` or `summarize` with `if`)  
-
-3\. Conduct conditional comparison within ability groups.
-- Create ability quartiles by using `xtile ability_q4 = ability, nq(4)`
-- Compute mean wage by training status within each ability quartile using `tabstat` with `by(train ability_q4)`
+- report mean `ability` by `train` (use `tabstat` or `summarize` with `if`)

@@ -5,80 +5,54 @@ title: Conditioning on a Confounder
 language: Stata
 ---
 
-These exercises are meant to be done alongside the Identification and DAGs lectures.
+Continuing with the DGP that you created in exercise 1, we will explore different ways of conditioning to reduce bias. 
 
-This exercise focuses on conditioning to reduce confounding, but using a different story and variables than the lecture’s fertilizer example.
+### 1) Make ability quartiles with clear labels
 
-### Tasks
+1. Create quartiles:
 
-#### 1) Simulate a confounded DGP (do not copy the lecture code)
+```stata
+    xtile           ability_q4 = ability, nq(4)
+```
 
-1. Set `seed` to `314159` and create **4,000** observations.
+2. Add value labels so output is easy to read:
 
-2. Generate:
+```stata
+    label           define abilityq4 1 "lowest ability" 2 "low" 3 "high" 4 "highest ability"
+    label           values ability_q4 abilityq4
+    label           var ability_q4 "ability quartile"
+```
 
-- `ability` ~ Normal(0, 1)
+### 2) Compare wages within quartiles (conditioning)
 
-3. Treatment assignment (different from the lecture):
+Use a grouped summary so you can see mean `wage` by training status *within* each ability quartile:
 
-- Create a probability of training that depends on ability and a second factor `motivation`:
+```stata
+    bysort          ability_q4 train: ///
+        summarize   wage
+```
 
-  - `motivation` ~ Normal(0, 1)  
-  - `p_train = invlogit(-0.5 + 0.9*ability + 0.6*motivation)`  
-  - `train = (runiform() < p_train)`
+### 3) A “single-quartile” check (like in the lecture)
 
-4. Outcome (ensure nonnegative):
+Pick one quartile (use quartile 2) and do two quick checks.
 
-- Let the true causal effect of training be **+1.5**.  
-- Let both `ability` and `motivation` affect wages.  
-- Add noise and truncate at 0:
+1. Conditional means in that quartile:
 
-  - `wage_lat = 8 + 1.5*train + 3*ability + 2*motivation + eps`  
-  - `eps` ~ Normal(0, 2)  
-  - `wage = max(wage_lat, 0)`
+```stata
+    tabstat         wage if ability_q4 == 2, by(train) stat(mean n)
+```
 
-Label `train` with values `0 "no training"` and `1 "training"`.
+2. A simple bar chart of conditional means in that quartile:
 
-#### 2) Start with the naive comparison
+```stata
+    graph bar       (mean) wage if ability_q4 == 2, over(train) ///
+        ytitle("Mean wage") ///
+        title("Training vs no training within ability quartile 2")
+```
 
-1. Report mean wage by training status with:
+### 4) Short interpretation (write as comments in your .do file)
 
-- `tabstat wage, by(train) stat(mean n)`
+In 2–4 sentences, answer:
 
-2. Compute the naive difference in means manually using `summarize, meanonly`:
-
-- store mean wage for `train==0` in scalar `w0`  
-- store mean wage for `train==1` in scalar `w1`  
-- display `w1 - w0` with a formatted display statement
-
-#### 3) Condition using two different strategies
-
-You will compare two ways of “holding ability fixed.”
-
-**Strategy A: quartiles of ability**
-
-1. Create `ability_q4` using:
-
-- `xtile ability_q4 = ability, nq(4)`
-
-2. Use `tabstat` to report mean wage by `train` within `ability_q4`.
-
-3. In a loop over quartiles, compute and display the within-quartile difference in mean wage (train − no train). Your output should have one line per quartile.
-
-**Strategy B: strata by training propensity**
-
-1. Create a binary indicator for “high propensity to train”:
-
-- `high_p = (p_train > 0.5)`
-
-2. Compute mean wage by `train` within `high_p` (two strata: high propensity vs low propensity).
-
-3. Compare how much the train/no-train wage gap changes between low and high propensity strata.
-
-#### 4) Interpretation (write as comments in your .do file)
-
-Answer in 3–6 sentences:
-
-1. Why is the naive wage gap biased in this DGP?  
-2. Which conditioning strategy seems to reduce the bias more: conditioning on `ability_q4`, or conditioning on `high_p`?  
-3. In this DGP, what variables are acting like confounders?
+1. Compared to the naive training vs no-training gap from Exercise 1, does the within-quartile gap look **smaller** (less confounded)? fileciteturn2file0  
+2. Why does comparing within an ability quartile reduce confounding in this DGP?

@@ -110,7 +110,7 @@ This gives you the association between fertilizer and yield. But it does not hav
 
 ### Conditioning to reduce confounding
 
-In this DGP, soil quality is the confounder. There is what is known as a backdoor path `fert ← soil_q → yield`. If we could hold soil quality fixed, we’d block that path ()`fert ← [soil_q] → yield`) and be able to identify the causal effect of fertilizer on yield.
+In this DGP, soil quality is the confounder. There is what is known as a backdoor path `fert ← soil_q → yield`. If we could hold soil quality fixed, we’d block that path (`fert ← [soil_q] → yield`) and be able to identify the causal effect of fertilizer on yield.
 
 We can approximate this by comparing treated and untreated plots within soil quality groups (quartiles):
 
@@ -121,8 +121,8 @@ We can approximate this by comparing treated and untreated plots within soil qua
     label           values soil_q4 soilq4
 
 * mean yield by fert within each soil quartile
-	bysort 			soil_q4 fert: ///
-						summarize yield
+    bysort 			soil_q4 fert: ///
+						sum yield
 ```
 
 #### A simple visual check
