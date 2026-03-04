@@ -5,78 +5,37 @@ title: RCT vs Observational Study
 language: Stata
 ---
 
-These exercises are meant to be done alongside the Identification and DAGs lectures.
+This exercise builds directly on Exercise 1 and 2. You already created an *observational* training variable `train` that is **confounded by unobserved ability**, and you saw how conditioning on ability reduces bias. Now you will create a **randomized version of the training assignment** inside the same dataset, generate the corresponding RCT outcome, and compare the naive estimates from the *observational* data.
 
-This exercise compares an observational DGP to a randomized design in a different context than the lecture notes, and uses repetition to show sampling variation.
+Before starting this exercise, you should have the dataset in memory from Exercises 1 and 2 that includes: `ability`, `p_train`, `train`, `eps`, `wage_lat`, `wage`, and `ability_q4`. If you don’t, re-run your `.do` file so that it runs Exercises 1 and 2 first.
 
-### Tasks
+Start by adding an RCT treatment assignment to your existing data. To make the comparison clean, we will set the RCT treatment probability to match the *observed* training rate in your observational data. To do this:
+- Use `egen` to compute the share trained individuals in the observational data: `p_rct = mean(train)`
+- Create a variable (`u_rct`) and is a random variable with a uniform distribution (`runiform()`)
+- Create `train_rct` so that it takes a value of 1 if the value of `u_rct` is below the value of `p_rct` (the mean training value in the observational data) and 0 if `u_rct` is greater than `p_rct`
+- Add variable and value labels
 
-#### 1) Write a single .do file with clear sections
+Now, generate the RCT outcome using the same outcome model. Keep the *same structural outcome equation* you used in Exercise 1, but swap in `train_rct`:
+- `wage_rct_lat = 10 + 2*train_rct + 4*ability + eps`
+- `wage_rct     = max(wage_rct_lat, 0)`
+- Add variable labels so your output is easy to read.
 
-Create a `.do` file with these sections:
+1\. Compare naive differences in means: observational vs RCT
+- Observational estimate (you did this in Exercise 1):  
+  \[
+  E[wage \mid train=1] - E[wage \mid train=0]
+  \]
+- RCT estimate:  
+  \[
+  E[wage\_rct \mid train\_rct=1] - E[wage\_rct \mid train\_rct=0]
+  \]
 
-- `**# 0 - setup`  
-- `**# 1 - functions and settings`  
-- `**# 2 - observational vs randomized: repeated simulation`  
-- `**# 3 - summary and interpretation`  
+Use `sum, meanonly`, use `r()` to store group means as `scalar`, and display the differences with a formatted `display` statement. What is the naive mean in the observational data, in the rct data, and what is the true causal effect size (again, some of these you have already calculated or know)?
 
-#### 2) Fix the outcome model (same in both designs)
+2\. Show why the observational estimate is biased by demonstrating selection in the observational data (i.e., `ability` differs by training status). If there is no selection, mean values should be close to 0 adn the differences in ability by training should also be close to zero. Use `tabstat` (recommended) or `summarize` with `if`.
+    1\. What is mean `ability` by `train`?
+    2\. What is the difference in mean `ability` by `train`?
+    3\. What is mean `ability` by `train_rct`? 
+    4\. What is the difference in mean `ability` by `train_rct`?
 
-Use these constants (you can store them as locals):
-
-- `N = 1000` observations per replication  
-- `R = 200` replications  
-- True causal effect of training on wage: **1.0**  
-
-Outcome model (ensure nonnegative):
-
-- `ability ~ Normal(0,1)`  
-- `eps ~ Normal(0,2)`  
-- `wage_lat = 5 + 1.0*train + 2*ability + eps`  
-- `wage = max(wage_lat, 0)`
-
-#### 3) Observational design (confounded assignment)
-
-In each replication:
-
-1. Generate `ability` and noise.  
-2. Assign training using a probability that depends on ability:
-
-- `p_train = invlogit(-0.2 + 1.0*ability)`  
-- `train = (runiform() < p_train)`
-
-3. Compute the naive difference in mean wage between trained and not trained. Store it in `diff_obs[r]`.
-
-#### 4) Randomized design (RCT assignment)
-
-In each replication:
-
-1. Generate a fresh sample (new `ability`, new noise).  
-2. Randomize training:
-
-- `train = (runiform() < 0.5)`
-
-3. Compute the naive difference in mean wage. Store it in `diff_rct[r]`.
-
-#### 5) Summarize the two distributions of estimates
-
-After all replications, report for each design:
-
-- mean of the naive estimates  
-- standard deviation of the naive estimates  
-- min and max of the naive estimates
-
-You can store results in a dataset with two variables:
-
-- `diff_obs` (length R)  
-- `diff_rct` (length R)
-
-Then use `summarize` on each.
-
-#### 6) Interpretation (write as comments in your .do file)
-
-Answer:
-
-1. Which design produces an average estimate closer to the true effect (1.0), and why?  
-2. Which design shows more variation across replications? Why might that be?  
-3. In the observational design, what is the source of bias?
+---

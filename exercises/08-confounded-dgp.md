@@ -16,7 +16,7 @@ In this exercise we are going to practice simulating a confounded DGP and diagno
 - Enforce `wage >= 0` by truncating at 0 using `max(wage_lat, 0)`
 - Add variable labels to all variables and value labels for `train` (0 = no, 1 = yes)
 
-1\. What is the naive difference in means by training status.
+1\. What is the naive difference in means by training status and is it larger or smaller than the true causal effect?
 - Compute the naive difference in means using `sum, meanonly`
 - store mean wage for `train==0` in scalar `w0`  
 - store mean wage for `train==1` in scalar `w1`  
@@ -24,3 +24,5 @@ In this exercise we are going to practice simulating a confounded DGP and diagno
 
 2\. Show that selection is happening by showing that `ability` differs by training status.
 - report mean `ability` by `train` (use `tabstat` or `summarize` with `if`)
+
+---

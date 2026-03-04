@@ -1,0 +1,3 @@
+[1] 5.273; larger (true effect = 2)
+
+[2] -0.389 (without training); 0.454 (with training)
