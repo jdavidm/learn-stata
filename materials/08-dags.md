@@ -69,75 +69,58 @@ Rule-of-thumb: you typically **avoid** adjusting for colliders.
 
 > Do [Exercise 4 - Drawing DAGs for Simple DGPs]({{ site.baseurl }}/exercises/08-draw-dags/)
 
-### Confounding revisited (code)
-
-```stata
-* simulate confounded DGP
-    clear all
-    set             seed 12345
-    set             obs 2000
-
-    gen             soil_q = rnormal(0, 1)
-    gen             fert_latent = 0.5*soil_q + rnormal(0, 1)
-    gen             fert = (fert_latent > 0)
-
-    gen             eps = rnormal(0, 1)
-    gen             yield_lat = 2 + 0.5*fert + 1*soil_q + eps
-    gen             yield = max(yield_lat, 0)
-    drop            yield_lat
-```
-
-DAG reasoning:
-
-- Backdoor path: `fert ← soil_q → yield`  
-- Conditioning on `soil_q` blocks that path
-
-
-### Collider bias simulation
+### Confounding simulation: revisited
 
 DAG:
 
 ```text
-T → S ← Y
+T ← U → Y
 ```
 
-Simulate:
-
 ```stata
-* simulate collider DGP
+* simulate confounding dgp
     clear all
-    set             seed 2468
-    set             obs 5000
+    set             seed 12345
+    set             obs 3000
 
-* T and Y independent in the population
-    gen             T = (runiform() < 0.5)
-    gen             Y = rnormal(0, 1)
+* confounder
+    gen             U = rnormal(0, 1)
 
-* selection depends on both T and Y
-    gen             s_latent = -0.3 + 0.7*T + 0.7*Y + rnormal(0, 1)
-    gen             S = (s_latent > 0)
+* treatment assignment depends on confounder
+    gen             p_T = invlogit(-0.2 + 1.0*U)
+    gen             T = (runiform() < p_T)
 
-* check independence in full population
-    corr            T Y
+* outcome depends on treatment and confounder
+    gen             eps = rnormal(0, 1)
+    gen             Y = 2 + 1.0*T + 1.5*U + eps
 
-* conditioning on collider (selection)
-    corr            T Y if S == 1
+* naive association (confounded)
+    tabstat         Y, by(T) stat(mean n)
+
+* show selection: confounder differs by treatment status
+    tabstat         U, by(T) stat(mean sd n)
+
+* block backdoor path by conditioning on confounder bins
+    xtile           U_q4 = U, nq(4)
+    forvalues       q = 1/4 {
+        di as text "U_q4 == `q'"
+        tabstat         Y if U_q4 == `q', by(T) stat(mean n)
+    }
 ```
 
 Interpretation:
+- Difference in mean `Y` by `T` is biased because `U` shifts both `T` and `Y`
+- `U` differs by treatment status, confirming selection into `T`
+- Comparing mean `Y` by `T` **within** `U` bins (e.g., quartiles) reduces bias by blocking the backdoor path `T ← U → Y`
 
-- In the full sample, `T` and `Y` are (approximately) uncorrelated  
-- After restricting to `S==1`, you often see a strong correlation: collider bias
-
-> Do [Exercise 5 - Collider Bias Simulation]({{ site.baseurl }}/exercises/08-collider/)
+> Do [Exercise 5 - Confounding and Conditional Means]({{ site.baseurl }}/exercises/08-confound/)
 
 ### Mediation simulation: total vs direct effects
 
 DAG:
 
 ```text
-train → skills → wage
-train → wage
+T → M → Y
 ```
 
 Simulate:
@@ -173,16 +156,51 @@ Simulate:
 ```
 
 Interpretation:
-
 - Difference in mean wage by training is the **total effect**  
 - Within-skills comparisons approximate the **direct effect** (holding mediator fixed)
 
 > Do [Exercise 6 - Mediation and Conditional Means]({{ site.baseurl }}/exercises/08-mediation/)
 
+### Collider bias simulation
+
+DAG:
+
+```text
+T → C ← Y
+```
+
+Simulate:
+
+```stata
+* simulate collider DGP
+    clear all
+    set             seed 2468
+    set             obs 5000
+
+* T and Y independent in the population
+    gen             T = (runiform() < 0.5)
+    gen             Y = rnormal(0, 1)
+
+* selection depends on both T and Y
+    gen             s_latent = -0.3 + 0.7*T + 0.7*Y + rnormal(0, 1)
+    gen             S = (s_latent > 0)
+
+* check independence in full population
+    corr            T Y
+
+* conditioning on collider (selection)
+    corr            T Y if S == 1
+```
+
+Interpretation:
+- In the full sample, `T` and `Y` are (approximately) uncorrelated  
+- After restricting to `S==1`, you often see a strong correlation: collider bias
+
+> Do [Exercise 7 - Collider Bias Simulation]({{ site.baseurl }}/exercises/08-collider/)
+
 ## Using DAGs to choose adjustment sets
 
 Practical workflow:
-
 1. Draw a DAG for your question  
 2. Identify confounders, mediators, colliders  
 3. Decide what effect you want (total vs direct)  

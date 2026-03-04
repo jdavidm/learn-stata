@@ -5,8 +5,6 @@ title: Applying DAG Reasoning
 language: Stata
 ---
 
-**Goal:** Practice DAG thinking on real data (no regressions yet).
-
 ### Tasks
 
 1. Load `eth_allrounds_final.dta` (using your project paths).

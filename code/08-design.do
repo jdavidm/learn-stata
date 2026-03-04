@@ -219,3 +219,253 @@
 ********************************************************************************
 **# exercise 4
 ********************************************************************************
+
+**## 4.1
+/*
+* confounding story: ability confounds training -> wages
+
+* 4.1.1 dag: training <- ability -> wages
+
+* 4.1.2 confounders: ability; colliders: none; mediators: none
+
+* 4.1.3 condition on ability to block its confounding effect
+*/
+**## 4.2
+/*
+* mediator story: productivity mediates training -> wages
+
+* 4.2.1 dag: training -> productivity -> wages
+
+* 4.2.2 confounders: none; colliders: none; mediators: productivity
+
+* 4.2.3 for total effect: do not condition on productivity; for direct effect: condition on productivity
+*/
+**## 4.3
+/*
+collider story: conditioning on sample inclusion biases training -> wages
+
+* 4.3.1 dag: training -> included <- wages
+
+* 4.3.2 confounders: none; colliders: included; mediators: none
+
+* 4.3.3 do not condition on included (and do not restrict to included==1)
+*/
+
+
+********************************************************************************
+**# exercise 5
+********************************************************************************
+
+* simulate confounding dgp
+	clear			all
+	set				seed 314159
+	set				obs 25000
+
+* confounder
+	gen				ability = rnormal(0, 1)
+
+* training selection depends on ability (different rule than earlier exercise)
+	gen				p_train = invlogit(-0.5 + 0.8*ability)
+	gen				train = (runiform() < p_train)
+
+* wage equation with noise (different levels and effect sizes than earlier exercise)
+	gen				eps = rnormal(0, 4)
+	gen				wage_lat = 20 + 3.5*train + 6*ability + eps
+	gen				wage = max(wage_lat, 0)
+	drop			wage_lat
+
+* labels
+	lab var			ability	"ability (confounder)"
+	lab var			p_train	"p(train=1)"
+	lab var			train	"training (selected, not randomized)"
+	lab var			eps		"wage shock"
+	lab var			wage	"wage"
+
+	lab def			yesno 0 "no" 1 "yes", replace
+	lab val			train yesno
+
+**## 5.1
+* true effect is 3.5
+	
+**## 5.2
+* naive diff in means
+	sum				wage if train == 0, meanonly
+	scalar			w0 = r(mean)
+
+	sum				wage if train == 1, meanonly
+	scalar			w1 = r(mean)
+
+	display as text "naive diff in mean wage (train=1 - train=0): " ///
+		as result %9.3f (w1 - w0)
+
+**## 5.3
+* show selection: ability differs by train
+	tabstat			ability, by(train) stat(mean sd n)
+
+**## 5.4
+* reduce bias by conditioning on ability bins
+	xtile			ability_q4 = ability, nq(4)
+	lab var			ability_q4 "ability quartile"
+
+* optional: readable value labels
+	lab def			abilityq4 1 "lowest" 2 "low" 3 "high" 4 "highest", replace
+	lab val			ability_q4 abilityq4
+
+* loop over quartiles and compute diff in means within each quartile
+	forvalues		q = 1/4 {
+
+		sum				wage if ability_q4 == `q' & train == 0, meanonly
+		scalar			w0_q`q' = r(mean)
+
+		sum				wage if ability_q4 == `q' & train == 1, meanonly
+		scalar			w1_q`q' = r(mean)
+
+		scalar			diff_q`q' = w1_q`q' - w0_q`q'
+
+		display as text "ability_q4 == `q' (" ///
+			"`: label (abilityq4) `q''" ///
+			")  diff (train=1 - train=0): " ///
+			as result %9.3f diff_q`q'
+	}
+	
+	
+********************************************************************************
+**# exercise 6
+********************************************************************************
+
+* simulate collider dgp
+	clear			all
+	set				seed 24684
+	set				obs 50000
+
+* train and wage are independent in the population
+	gen				train = (runiform() < 0.5)
+	gen				wage  = rnormal(0, 1)
+
+* collider: inclusion depends on both train and wage
+	gen				emp_lat = -0.3 + 0.7*train + 0.7*wage + rnormal(0, 1)
+	gen				employed     = (emp_lat > 0)
+
+* labels
+	lab var			train		"training (randomized)"
+	lab var			wage		"wage (independent of training in population)"
+	lab var			employed	"observed in sample (collider)"
+
+	lab def			yesno 0 "no" 1 "yes", replace
+	lab val			train yesno
+	lab val			employed yesno
+
+**## 6.1
+* true effect is 0
+	
+**## 6.2
+* naive diff in means
+	sum				wage if employed == 1 & train == 0, meanonly
+	scalar			w0_emp = r(mean)
+
+	sum				wage if employed == 1 & train == 1, meanonly
+	scalar			w1_emp = r(mean)
+
+	scalar			diff_emp = w1_emp - w0_emp
+
+	display as text "diff in mean wage among employed (train=1 - train=0): " ///
+		as result %9.3f diff_emp
+		
+**## 6.3
+* show selection: employed differs by train
+	tabstat			employed, by(train) stat(mean sd n)
+		
+**## 6.4
+* unconditional difference in means
+	sum				wage if train == 0, meanonly
+	scalar			w0_all = r(mean)
+
+	sum				wage if train == 1, meanonly
+	scalar			w1_all = r(mean)
+
+	scalar			diff_all = w1_all - w0_all
+
+	display as text "diff in mean wage in full sample (train=1 - train=0): " ///
+		as result %9.3f diff_all
+		
+	
+********************************************************************************
+**# exercise 7
+********************************************************************************
+
+* simulate mediation dgp
+	clear			all
+	set				seed 13579
+	set				obs 50000
+
+* randomized training
+	gen				train = (runiform() < 0.5)
+
+* mediator: productivity increases with training
+	gen				u_p = rnormal(0, 2)
+	gen				productivity = 5 + 1.2*train + u_p
+
+* outcome: wage depends on training directly and indirectly via productivity
+	gen				u_w = rnormal(0, 5)
+	gen				wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
+	gen				wage = max(wage_lat, 0)
+	drop			wage_lat
+
+* labels
+	lab var			train			"training (randomized)"
+	lab var			productivity	"productivity (mediator)"
+	lab var			wage			"wage"
+
+	lab def			yesno 0 "no" 1 "yes", replace
+	lab val			train yesno
+	
+
+**## 7.1
+	scalar			direct_true = 1.0
+
+	display as text "q1: true direct effect of training on wages: " ///
+		as result %9.3f direct_true
+	
+**## 7.2
+* naive diff in means (total effect)
+	sum				wage if train == 0, meanonly
+	scalar			w0 = r(mean)
+
+	sum				wage if train == 1, meanonly
+	scalar			w1 = r(mean)
+
+	scalar			total_hat = w1 - w0
+
+	display as text "total effect (diff in mean wage, train=1 - train=0): " ///
+		as result %9.3f total_hat
+		
+**## 7.3
+* indirect effect via productivity
+
+* step 1: effect of training on productivity (diff in means)
+	sum				productivity if train == 0, meanonly
+	scalar			p0 = r(mean)
+
+	sum				productivity if train == 1, meanonly
+	scalar			p1 = r(mean)
+
+	scalar			delta_p = p1 - p0
+
+* step 2: multiply by effect of productivity on wage (2.5)
+	scalar			beta_p = 2.5
+	scalar			indirect_hat = beta_p * delta_p
+
+	display as text "q3: indirect effect (2.5 * diff in mean productivity): " ///
+		as result %9.3f indirect_hat
+		
+**## 7.4
+* direct and indirect effect
+	scalar			direct_hat = total_hat - indirect_hat
+
+	display as text "q4: implied direct effect (total - indirect): " ///
+		as result %9.3f direct_hat
+
+
+********************************************************************************
+**# challenge 8
+********************************************************************************

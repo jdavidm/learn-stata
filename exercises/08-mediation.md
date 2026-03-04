@@ -5,26 +5,52 @@ title: Mediation and Conditional Means
 language: Stata
 ---
 
-**Goal:** Distinguish total vs direct effects using conditional means.
+**Story:** You want the causal effect of training on wages. Training increases productivity, and productivity increases wages. So training can raise wages directly and also indirectly by raising productivity. What is the causal effect of training on wages?
 
-### Tasks
+Copy the following code into your `.do` file:
 
-1. Simulate 3,000 obs with:
+```stata
+* simulate mediation dgp
+	clear			all
+	set				seed 13579
+	set				obs 50000
 
-   - `train` randomized (50%)  
-   - `skills = 1.0*train + noise`  
-   - `wage = 0.2*train + 0.8*skills + noise`
+* randomized training
+	gen				train = (runiform() < 0.5)
 
-2. Compute:
+* mediator: productivity increases with training
+	gen				u_p = rnormal(0, 2)
+	gen				productivity = 5 + 1.2*train + u_p
 
-   - Total effect: diff in mean wage by train  
-   - Effect on mediator: diff in mean skills by train
+* outcome: wage depends on training directly and indirectly via productivity
+	gen				u_w = rnormal(0, 5)
+	gen				wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
+	gen				wage = max(wage_lat, 0)
+	drop			wage_lat
 
-3. Create `skills_q4` and compute mean wage by training within each quartile.
+* labels
+	lab var			train			"training (randomized)"
+	lab var			productivity	"productivity (mediator)"
+	lab var			wage			"wage"
 
-4. In comments, compare:
+	lab def			yesno 0 "no" 1 "yes", replace
+	lab val			train yesno
+```
 
-   - Total effect vs within-skills effect  
-   - Which corresponds to direct effect (~0.2) and why conditioning on mediator blocks the indirect path.
+1\. What is the true direct causal effect of training on wages?
+
+2\. What is the naive difference in mean wages by training status (total effect)?
+   - Compute the difference in mean `wage` by `train`
+   - Save this value (the difference) as a scalar called `total_hat`
+
+3\.  What is the indirect effect of training on wages through productivity?
+   - Compute the difference in mean `productivity` by `train`
+   - Save this value (the difference) as a scalar called `delta_p`
+   - Calculate the indirect effect as `2.5*delta_p` (from the DGP)
+   - Save this value as a scalar called `indirect_hat`
+
+4\. What is the implied true direct effect once you subtract off the indirect effect from the total effect?
+   - Report the direct effect as direct = total − indirect
 
 ---
+

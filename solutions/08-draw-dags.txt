@@ -1,0 +1,17 @@
+[1.1] dag: training <- ability -> wages
+
+[1.2] confounders: ability; colliders: none; mediators: none
+
+[1.3] condition on ability to block its confounding effect
+
+[2.1] dag: training -> productivity -> wages
+
+[2.2] confounders: none; colliders: none; mediators: productivity
+
+[2.3] for total effect: do not condition on productivity; for direct effect: condition on productivity
+
+[3.1] dag: training -> included <- wages
+
+[3.2] confounders: none; colliders: included; mediators: none
+
+[3.3] do not condition on included (and do not restrict to included==1)
