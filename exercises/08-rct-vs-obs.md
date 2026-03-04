@@ -21,14 +21,8 @@ Now, generate the RCT outcome using the same outcome model. Keep the *same struc
 - Add variable labels so your output is easy to read.
 
 1\. Compare naive differences in means: observational vs RCT
-- Observational estimate (you did this in Exercise 1):  
-  \[
-  E[wage \mid train=1] - E[wage \mid train=0]
-  \]
-- RCT estimate:  
-  \[
-  E[wage\_rct \mid train\_rct=1] - E[wage\_rct \mid train\_rct=0]
-  \]
+- Observational estimate (you did this in Exercise 1): $E[wage \mid train=1] - E[wage \mid train=0]$
+- RCT estimate: $E[wage\_rct \mid train\_rct=1] - E[wage\_rct \mid train\_rct=0]$
 
 Use `sum, meanonly`, use `r()` to store group means as `scalar`, and display the differences with a formatted `display` statement. What is the naive mean in the observational data, in the rct data, and what is the true causal effect size (again, some of these you have already calculated or know)?
 

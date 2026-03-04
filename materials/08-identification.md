@@ -8,7 +8,6 @@ language: Stata
 This week we pivot from describing data to using Stata as a tool for thinking about causal questions and research design. This forms the bridge between representing correlational relationships with tables and figures to estimating causal relationships with regression analysis.
 
 This lecture focuses on:
-
 - What a data generating process (DGP) is  
 - What identification means (and why it’s different from association)  
 - How simulations and conditional means help you reason about research design before we learn regression  

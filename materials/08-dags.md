@@ -5,28 +5,18 @@ title: Causal Diagrams (DAGs) and Stata Simulations
 language: Stata
 ---
 
-In this lecture we introduce **causal diagrams**—directed acyclic graphs (DAGs)—and connect them to the simulations and identification ideas from the previous lecture.
-
-Primary reading:
-
-- https://theeffectbook.net/ch-CausalDiagrams.html
-
-We’ll:
-
+In this lecture we introduce **causal diagrams**—directed acyclic graphs (DAGs)—and connect them to the simulations and identification ideas from the previous lecture. We will
 - Define DAGs and basic pieces (nodes, arrows, paths)  
 - Introduce **confounders**, **colliders**, and **mediators**  
 - Use Stata simulations to show how conditioning on different variables affects associations  
 - Connect DAGs back to identification and future regression work
 
----
-
-## What is a DAG?
+### What is a DAG?
 
 A **directed acyclic graph (DAG)** is:
-
-- A set of **nodes** (variables)  
-- Connected by **directed arrows** (causal relationships)  
-- With **no cycles** (you can’t follow arrows and return to the start)
+- A set of nodes (variables)  
+- Connected by directed arrows (causal relationships)  
+- With no cycles (you can’t follow arrows and return to the start)
 
 Example:
 
@@ -37,44 +27,34 @@ soil_q →  yield
 ```
 
 Interpretation:
-
 - `soil_q` causally affects both fertilizer use and yield  
 - `fert` causally affects yield  
 
-Key idea:
+A DAG is your **picture of the DGP** (assumptions), not something “proven” by the data.
 
-- A DAG is your **picture of the DGP** (assumptions), not something “proven” by the data.
+### Three key structures
 
----
-
-## Three key structures
-
-### 1) Confounder
+#### 1) Confounder
 
 ```text
-C → T → Y
-C → Y
+T ← U → Y
 ```
 
-- `C` is a **common cause** of treatment `T` and outcome `Y`  
-- If you don’t adjust for `C`, the association between `T` and `Y` is confounded  
+- `U` is a **common cause** of treatment `T` and outcome `Y`  
+- If you don’t adjust for `U`, the association between `T` and `Y` is confounded  
 
-Rule-of-thumb: you typically **do** adjust for confounders.
+This is what `soil_q` is in our previous example. It is a common cause of both `fert` and `yield`. Rule-of-thumb: you typically **do** adjust for confounders.
 
 ### 2) Mediator
 
 ```text
 T → M → Y
-T → Y
 ```
 
 - `M` lies on a causal path from `T` to `Y`  
 - Adjusting for `M` blocks the indirect effect through `M`
 
-Rule-of-thumb:
-
-- For the **total effect**, typically **do not** adjust for mediators  
-- For the **direct effect**, you *do* adjust
+Rule-of-thumb: for the total effect, you typically **do not** adjust for mediators but for the direct effect, you **do** adjust.
 
 ### 3) Collider
 
@@ -85,11 +65,11 @@ T → C ← Y
 - `C` is a **common effect** of `T` and `Y`  
 - Conditioning on `C` can *create* a spurious association between `T` and `Y`
 
-Rule-of-thumb: typically **avoid** adjusting for colliders.
+Rule-of-thumb: you typically **avoid** adjusting for colliders.
 
----
+> Do [Exercise 4 - Drawing DAGs for Simple DGPs]({{ site.baseurl }}/exercises/08-draw-dags/)
 
-## Confounding revisited (code)
+### Confounding revisited (code)
 
 ```stata
 * simulate confounded DGP
@@ -112,11 +92,8 @@ DAG reasoning:
 - Backdoor path: `fert ← soil_q → yield`  
 - Conditioning on `soil_q` blocks that path
 
-> Do [Exercise 4 - Drawing DAGs for Simple DGPs]({{ site.baseurl }}/exercises/08-draw-dags/)
 
----
-
-## Collider bias simulation
+### Collider bias simulation
 
 DAG:
 
@@ -154,9 +131,7 @@ Interpretation:
 
 > Do [Exercise 5 - Collider Bias Simulation]({{ site.baseurl }}/exercises/08-collider/)
 
----
-
-## Mediation simulation: total vs direct effects
+### Mediation simulation: total vs direct effects
 
 DAG:
 
@@ -203,8 +178,6 @@ Interpretation:
 - Within-skills comparisons approximate the **direct effect** (holding mediator fixed)
 
 > Do [Exercise 6 - Mediation and Conditional Means]({{ site.baseurl }}/exercises/08-mediation/)
-
----
 
 ## Using DAGs to choose adjustment sets
 

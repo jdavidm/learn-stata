@@ -5,24 +5,21 @@ title: Drawing DAGs for Simple DGPs
 language: Stata
 ---
 
-**Goal:** Translate stories into DAGs and connect them to your simulated variables.
+For each of the following stories add a comment-only section in your `.do` file.
 
-### Tasks
+1\. You want the causal effect of training on wages. Higher-ability workers are more likely to enroll in training, and ability also raises wages. So trained workers earn more partly because of training and partly because they have higher ability. What is the causal effect of training on wages?
+   1. Draw DAGs using `<-` `->`.
+   2. Identify confounders (if any), colliders (if any), and mediators (if any).  
+   3. State which variable(s) you would condition on to identify the a causal effect.
 
-1. Draw DAGs (paper/tablet) for:
+2\. You want the causal effect of training on wages. Training increases productivity, and productivity increases wages. So training can raise wages directly and also indirectly by raising productivity. What is the causal effect of training on wages?
+   1. Draw DAGs using `<-` `->`.
+   2. Identify confounders (if any), colliders (if any), and mediators (if any).  
+   3. State which variable(s) you would condition on to identify the a causal effect.
 
-   a. Fertilizer: soil quality, fertilizer, yield  
-   b. Training: prior education, training, skills, wages  
-   c. Selection: treatment, outcome, selection into sample  
-
-2. For each DAG, identify:
-
-   - Confounders (if any)  
-   - Colliders (if any)  
-   - Mediators (if any)  
-
-3. In your `.do` file add a comment-only section describing arrows and roles.
-
-4. For DAG (a), state which variable(s) you would condition on to identify the effect of fertilizer on yield.
-
+3\. You want the causal effect of training on wages. Training and ability both increase the chance you’re included in the sample (e.g., employed or surveyed), and wages also affect inclusion. So conditioning on being included creates a spurious link between training and ability. What is the causal effect of training on wages?
+   1. Draw DAGs using `<-` `->`.
+   2. Identify confounders (if any), colliders (if any), and mediators (if any).  
+   3. State which variable(s) you would condition on to identify the a causal effect.
+   
 ---

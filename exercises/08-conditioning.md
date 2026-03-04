@@ -10,7 +10,8 @@ Continuing with the DGP that you created in exercise 1, we will explore differen
 - Add value labels so output is easy to read:
 
 ```stata
-    label           define abilityq4 1 "lowest ability" 2 "low" 3 "high" 4 "highest ability"
+    label           define abilityq4 1 "lowest ability" 2 "low" ///
+                        3 "high" 4 "highest ability"
     label           values ability_q4 abilityq4
     label           var ability_q4 "ability quartile"
 ```
