@@ -15,43 +15,43 @@ Copy the following code into your `.do` file:
 
 ```stata
 * simulate one dgp with confounding + mediation + selection
-	clear			all
-	set				seed 80808
-	set				obs 40000
+	clear		all
+	set		seed 80808
+	set		obs 40000
 
 * confounder
-	gen				ability = rnormal(0, 1)
+	gen		ability = rnormal(0, 1)
 
 * training selection depends on ability (confounding)
-	gen				p_train = invlogit(-0.3 + 0.9*ability)
-	gen				train = (runiform() < p_train)
+	gen		p_train = invlogit(-0.3 + 0.9*ability)
+	gen		train = (runiform() < p_train)
 
 * mediator: productivity increases with training and ability
-	gen				u_p = rnormal(0, 2)
-	gen				productivity = 10 + 1.5*train + 1.0*ability + u_p
+	gen		u_p = rnormal(0, 2)
+	gen		productivity = 10 + 1.5*train + 1.0*ability + u_p
 
 * outcome: wage depends on training (direct), productivity (indirect), and ability
-	gen				u_w = rnormal(0, 6)
-	gen				wage_lat = 30 + 1.2*train + 1.8*productivity + 2.0*ability + u_w
-	gen				wage = max(wage_lat, 0)
-	drop			wage_lat
+	gen		u_w = rnormal(0, 6)
+	gen		wage_lat = 30 + 1.2*train + 1.8*productivity + 2.0*ability + u_w
+	gen		wage = max(wage_lat, 0)
+	drop		wage_lat
 
 * collider: employed depends on training and wage
-	gen				emp_lat = -1.0 + 0.6*train + 0.05*wage + rnormal(0, 1)
-	gen				employed = (emp_lat > 0)
-	drop			emp_lat
+	gen		emp_lat = -1.0 + 0.6*train + 0.05*wage + rnormal(0, 1)
+	gen		employed = (emp_lat > 0)
+	drop		emp_lat
 
 * labels
-	lab var			ability			"ability (confounder)"
-	lab var			p_train			"p(train=1)"
-	lab var			train			"training (selected)"
-	lab var			productivity	"productivity (mediator)"
-	lab var			wage			"wage"
-	lab var			employed		"employed (collider / sample selection)"
+	lab var		ability "ability (confounder)"
+	lab var		p_train "p(train=1)"
+	lab var		train "training (selected)"
+	lab var		productivity "productivity (mediator)"
+	lab var		wage "wage"
+	lab var		employed "employed (collider / sample selection)"
 
-	lab def			yesno 0 "no" 1 "yes", replace
-	lab val			train yesno
-	lab val			employed yesno
+	lab def		yesno 0 "no" 1 "yes", replace
+	lab val		train yesno
+	lab val		employed yesno
 ```
 
 1\. True effects from the DGP (do this in comments)
