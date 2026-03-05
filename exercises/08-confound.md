@@ -16,7 +16,7 @@ Copy the following code into your `.do` file:
 	set		obs 25000
 
 * confounder
-	gen		ability = rnormal(0, 1)
+	gen ability = rnormal(0, 1)
 
 * training selection depends on ability (different rule than earlier exercise)
 	gen		p_train = invlogit(-0.5 + 0.8*ability)
@@ -29,7 +29,7 @@ Copy the following code into your `.do` file:
 	drop	wage_lat
 
 * labels
-	lab var	ability "ability (confounder)"
+	lab var ability "ability (confounder)"
 	lab var	p_train "p(train=1)"
 	lab var	train "training (selected, not randomized)"
 	lab var	eps "wage shock"
