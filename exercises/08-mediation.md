@@ -11,30 +11,30 @@ Copy the following code into your `.do` file:
 
 ```stata
 * simulate mediation dgp
-	clear			all
-	set				seed 13579
-	set				obs 50000
+	clear		all
+	set			seed 13579
+	set			obs 50000
 
 * randomized training
-	gen				train = (runiform() < 0.5)
+	gen			train = (runiform() < 0.5)
 
 * mediator: productivity increases with training
-	gen				u_p = rnormal(0, 2)
-	gen				productivity = 5 + 1.2*train + u_p
+	gen			u_p = rnormal(0, 2)
+	gen			productivity = 5 + 1.2*train + u_p
 
 * outcome: wage depends on training directly and indirectly via productivity
-	gen				u_w = rnormal(0, 5)
-	gen				wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
-	gen				wage = max(wage_lat, 0)
-	drop			wage_lat
+	gen			u_w = rnormal(0, 5)
+	gen			wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
+	gen			wage = max(wage_lat, 0)
+	drop		wage_lat
 
 * labels
-	lab var			train			"training (randomized)"
-	lab var			productivity	"productivity (mediator)"
-	lab var			wage			"wage"
+	lab var		train "training (randomized)"
+	lab var		productivity "productivity (mediator)"
+	lab var		wage "wage"
 
-	lab def			yesno 0 "no" 1 "yes", replace
-	lab val			train yesno
+	lab def		yesno 0 "no" 1 "yes", replace
+	lab val		train yesno
 ```
 
 1\. What is the true direct causal effect of training on wages?

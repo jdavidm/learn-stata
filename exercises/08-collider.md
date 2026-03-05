@@ -11,26 +11,26 @@ Copy the following code into your `.do` file:
 
 ```stata
 * simulate collider dgp
-	clear			all
-	set				seed 24684
-	set				obs 50000
+	clear		all
+	set			seed 24684
+	set			obs 50000
 
 * train and wage are independent in the population
-	gen				train = (runiform() < 0.5)
-	gen				wage  = rnormal(0, 1)
+	gen			train = (runiform() < 0.5)
+	gen			wage  = rnormal(0, 1)
 
 * collider: inclusion depends on both train and wage
-	gen				emp_lat = -0.3 + 0.7*train + 0.7*wage + rnormal(0, 1)
-	gen				employed     = (emp_lat > 0)
+	gen			emp_lat = -0.3 + 0.7*train + 0.7*wage + rnormal(0, 1)
+	gen			employed = (emp_lat > 0)
 
 * labels
-	lab var			train		"training (randomized)"
-	lab var			wage		"wage (independent of training in population)"
-	lab var			employed	"observed in sample (collider)"
+	lab var		train "training (randomized)"
+	lab var		wage "wage (independent of training in population)"
+	lab var		employed "observed in sample (collider)"
 
-	lab def			yesno 0 "no" 1 "yes", replace
-	lab val			train yesno
-	lab val			employed yesno
+	lab def		yesno 0 "no" 1 "yes", replace
+	lab val		train yesno
+	lab val		employed yesno
 ```
 
 1\. What is the true causal effect of training on wages?
