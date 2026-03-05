@@ -17,7 +17,7 @@ Copy the following code into your `.do` file:
 * simulate one dgp with confounding + mediation + selection
 	clear		all
 	set		seed 80808
-	set		obs 40000
+	set		obs 80000
 
 * confounder
 	gen		ability = rnormal(0, 1)
@@ -58,6 +58,7 @@ Copy the following code into your `.do` file:
 - **true direct effect** of `train` on `wage`  
 - **true indirect effect** of `train` on `wage` through `productivity`  
 - **true total effect** (= direct + indirect)
+
 *(Hint: use the coefficients in the equations above.)*
 
 2\. Confounding: naive vs conditioned
@@ -65,13 +66,13 @@ Copy the following code into your `.do` file:
 - Show selection by reporting **mean ability by training status**.
 - Reduce confounding by:
    - creating `ability_q4` using `xtile`
-   - reporting the **difference in mean wage by training** within **ability quartile 3**
+   - reporting the **difference in mean wage by training** within ability quartile 3
 
 3\. Collider bias: what changes when you condition on employment?
 - Compute the difference in mean wages by training **among the employed** (`employed == 1`).
 - Report the mean probability of being employed by training status.
 - Compare your employed-sample wage difference to the full-sample wage difference from Task 2.
-   - In comments, explain why conditioning on `employed` changes the estimate in this DGP.
+- In comments, explain why conditioning on `employed` changes the estimate in this DGP.
 
 4\. Mediation: total vs indirect vs implied direct (no regressions)
 - Using the **full sample** (do **not** restrict to employed), compute:

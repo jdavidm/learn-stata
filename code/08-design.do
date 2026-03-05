@@ -509,11 +509,10 @@ collider story: conditioning on sample inclusion biases training -> wages
 	lab val			train yesno
 	lab val			employed yesno
 
-
-**## task 1 - true effects from the DGP
-/*
-	wage equation:         wage = 30 + 1.2*train + 1.8*productivity + 2.0*ability
-	productivity equation: productivity = 10 + 1.5*train + 1.0*ability + u_p
+**## 9.1
+/*	true effects
+	wage equation:			wage = 30 + 1.2*train + 1.8*productivity + 2.0*ability
+	productivity equation:	productivity = 10 + 1.5*train + 1.0*ability + u_p
 
 	substituting productivity into the wage equation:
 	wage = 30 + 1.2*train + 1.8*(10 + 1.5*train + 1.0*ability + u_p) + 2.0*ability
@@ -526,9 +525,11 @@ collider story: conditioning on sample inclusion biases training -> wages
 */
 
 
-**## task 2 - confounding: naive vs conditioned
+**## 9.2
+* confounding: naive vs conditioned
 
-* 2a: naive difference in mean wages by training status (full sample)
+**### 9.2.1
+* naive difference in mean wages by training status (full sample)
 	sum				wage if train == 0, meanonly
 	scalar			w0 = r(mean)
 
@@ -538,10 +539,12 @@ collider story: conditioning on sample inclusion biases training -> wages
 	display as text "naive diff in mean wage (train=1 - train=0): " ///
 		as result %9.3f (w1 - w0)
 
-* 2b: show selection - mean ability by training status
+**### 9.2.2
+* show selection - mean ability by training status
 	tabstat			ability, by(train) stat(mean sd n)
 
-* 2c: reduce confounding by conditioning on ability quartiles
+**### 9.2.3
+* reduce confounding by conditioning on ability quartiles
 	xtile			ability_q4 = ability, nq(4)
 	lab var			ability_q4 "ability quartile"
 
@@ -562,10 +565,11 @@ collider story: conditioning on sample inclusion biases training -> wages
 	display as text "  mean wage (train=1): " as result %9.3f w1_q3
 	display as text "  diff (train=1 - train=0): " as result %9.3f diff_q3
 
+**## 9.3
+* collider bias: conditioning on employment
 
-**## task 3 - collider bias: conditioning on employment
-
-* 3a: diff in mean wages by training among the employed
+**## 9.3.1
+* diff in mean wages by training among the employed
 	sum				wage if employed == 1 & train == 0, meanonly
 	scalar			w0_emp = r(mean)
 
@@ -577,15 +581,18 @@ collider story: conditioning on sample inclusion biases training -> wages
 	display as text "diff in mean wage among employed (train=1 - train=0): " ///
 		as result %9.3f diff_emp
 
-* 3b: mean probability of being employed by training status
+**### 9.3.2
+* mean probability of being employed by training status
 	tabstat			employed, by(train) stat(mean n)
 
-* 3c: compare employed-sample estimate to full-sample estimate
+**### 9.3.3
+* compare employed-sample estimate to full-sample estimate
 	display as text "full-sample naive diff:    " as result %9.3f (w1 - w0)
 	display as text "employed-sample diff:      " as result %9.3f diff_emp
 	display as text "difference (emp - full):   " as result %9.3f (diff_emp - (w1 - w0))
 
-/*
+**### 9.3.4
+/* explain collider bias
 	conditioning on employed (a collider) opens a spurious path between
 	training and wage. employed depends on both training and wage, so
 	restricting the sample to employed == 1 induces a negative association:
@@ -595,10 +602,11 @@ collider story: conditioning on sample inclusion biases training -> wages
 	the full-sample estimate.
 */
 
+**## 9.4
+* mediation: total vs indirect vs implied direct
 
-**## task 4 - mediation: total vs indirect vs implied direct
-
-* 4a: total effect - diff in mean wage by training (full sample)
+**## 9.4.1
+* total effect - diff in mean wage by training (full sample)
 	sum				wage if train == 0, meanonly
 	scalar			w0_all = r(mean)
 
@@ -610,7 +618,8 @@ collider story: conditioning on sample inclusion biases training -> wages
 	display as text "total effect (diff in mean wage): " ///
 		as result %9.3f total_hat
 
-* 4b: diff in mean productivity by training
+**### 9.4.2
+* diff in mean productivity by training
 	sum				productivity if train == 0, meanonly
 	scalar			p0 = r(mean)
 
@@ -628,12 +637,14 @@ collider story: conditioning on sample inclusion biases training -> wages
 	display as text "indirect effect (1.8 * delta_p): " ///
 		as result %9.3f indirect_hat
 
-* 4c: implied direct effect = total - indirect
+**### 9.4.3
+* implied direct effect = total - indirect
 	scalar			direct_hat = total_hat - indirect_hat
 
 	display as text "implied direct effect (total - indirect): " ///
 		as result %9.3f direct_hat
 
+**## 9.4.4
 * compare to true direct effect
 	display as text "true direct effect from DGP: " ///
 		as result %9.3f 1.2
