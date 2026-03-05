@@ -16,7 +16,7 @@ Copy the following code into your `.do` file:
 	set		obs 25000
 
 * confounder
-	gen ability = rnormal(0, 1)
+	gen		ability = rnormal(0, 1)
 
 * training selection depends on ability (different rule than earlier exercise)
 	gen		p_train = invlogit(-0.5 + 0.8*ability)
@@ -26,17 +26,17 @@ Copy the following code into your `.do` file:
 	gen		eps = rnormal(0, 4)
 	gen		wage_lat = 20 + 3.5*train + 6*ability + eps
 	gen		wage = max(wage_lat, 0)
-	drop	wage_lat
+	drop		wage_lat
 
 * labels
-	lab var ability "ability (confounder)"
-	lab var	p_train "p(train=1)"
-	lab var	train "training (selected, not randomized)"
-	lab var	eps "wage shock"
-	lab var	wage "wage"
+	lab var		ability "ability (confounder)"
+	lab var		p_train "p(train=1)"
+	lab var		train "training (selected, not randomized)"
+	lab var		eps "wage shock"
+	lab var		wage "wage"
 
-	lab def	yesno 0 "no" 1 "yes", replace
-	lab val	train yesno
+	lab def		yesno 0 "no" 1 "yes", replace
+	lab val		train yesno
 ```
 
 1\. What is the true causal effect of training on wages?
