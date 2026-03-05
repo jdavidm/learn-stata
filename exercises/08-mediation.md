@@ -12,20 +12,20 @@ Copy the following code into your `.do` file:
 ```stata
 * simulate mediation dgp
 	clear		all
-	set			seed 13579
-	set			obs 50000
+	set		seed 13579
+	set		obs 50000
 
 * randomized training
-	gen			train = (runiform() < 0.5)
+	gen		train = (runiform() < 0.5)
 
 * mediator: productivity increases with training
-	gen			u_p = rnormal(0, 2)
-	gen			productivity = 5 + 1.2*train + u_p
+	gen		u_p = rnormal(0, 2)
+	gen		productivity = 5 + 1.2*train + u_p
 
 * outcome: wage depends on training directly and indirectly via productivity
-	gen			u_w = rnormal(0, 5)
-	gen			wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
-	gen			wage = max(wage_lat, 0)
+	gen		u_w = rnormal(0, 5)
+	gen		wage_lat = 25 + 1.0*train + 2.5*productivity + u_w
+	gen		wage = max(wage_lat, 0)
 	drop		wage_lat
 
 * labels

@@ -12,16 +12,16 @@ Copy the following code into your `.do` file:
 ```stata
 * simulate collider dgp
 	clear		all
-	set			seed 24684
-	set			obs 50000
+	set		seed 24684
+	set		obs 50000
 
 * train and wage are independent in the population
-	gen			train = (runiform() < 0.5)
-	gen			wage  = rnormal(0, 1)
+	gen		train = (runiform() < 0.5)
+	gen		wage  = rnormal(0, 1)
 
 * collider: inclusion depends on both train and wage
-	gen			emp_lat = -0.3 + 0.7*train + 0.7*wage + rnormal(0, 1)
-	gen			employed = (emp_lat > 0)
+	gen		emp_lat = -0.3 + 0.7*train + 0.7*wage + rnormal(0, 1)
+	gen		employed = (emp_lat > 0)
 
 * labels
 	lab var		train "training (randomized)"
