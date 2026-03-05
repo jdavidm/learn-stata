@@ -53,6 +53,7 @@ Copy the following code into your `.do` file:
 	lab val			train yesno
 	lab val			employed yesno
 ```
+
 1\. True effects from the DGP (do this in comments)
 - **true direct effect** of `train` on `wage`  
 - **true indirect effect** of `train` on `wage` through `productivity`  

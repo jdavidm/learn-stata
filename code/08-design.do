@@ -469,3 +469,177 @@ collider story: conditioning on sample inclusion biases training -> wages
 ********************************************************************************
 **# challenge 8
 ********************************************************************************
+
+* simulate one dgp with confounding + mediation + selection
+	clear			all
+	set				seed 80808
+	set				obs 40000
+
+* confounder
+	gen				ability = rnormal(0, 1)
+
+* training selection depends on ability (confounding)
+	gen				p_train = invlogit(-0.3 + 0.9*ability)
+	gen				train = (runiform() < p_train)
+
+* mediator: productivity increases with training and ability
+	gen				u_p = rnormal(0, 2)
+	gen				productivity = 10 + 1.5*train + 1.0*ability + u_p
+
+* outcome: wage depends on training (direct), productivity (indirect), and ability
+	gen				u_w = rnormal(0, 6)
+	gen				wage_lat = 30 + 1.2*train + 1.8*productivity + 2.0*ability + u_w
+	gen				wage = max(wage_lat, 0)
+	drop			wage_lat
+
+* collider: employed depends on training and wage
+	gen				emp_lat = -1.0 + 0.6*train + 0.05*wage + rnormal(0, 1)
+	gen				employed = (emp_lat > 0)
+	drop			emp_lat
+
+* labels
+	lab var			ability			"ability (confounder)"
+	lab var			p_train			"p(train=1)"
+	lab var			train			"training (selected)"
+	lab var			productivity	"productivity (mediator)"
+	lab var			wage			"wage"
+	lab var			employed		"employed (collider / sample selection)"
+
+	lab def			yesno 0 "no" 1 "yes", replace
+	lab val			train yesno
+	lab val			employed yesno
+
+
+**## task 1 - true effects from the DGP
+/*
+	wage equation:         wage = 30 + 1.2*train + 1.8*productivity + 2.0*ability
+	productivity equation: productivity = 10 + 1.5*train + 1.0*ability + u_p
+
+	substituting productivity into the wage equation:
+	wage = 30 + 1.2*train + 1.8*(10 + 1.5*train + 1.0*ability + u_p) + 2.0*ability
+	     = 30 + 1.2*train + 18 + 2.7*train + 1.8*ability + 1.8*u_p + 2.0*ability
+	     = 48 + 3.9*train + 3.8*ability + 1.8*u_p
+
+	true direct effect:   1.2   (coefficient on train in the wage equation)
+	true indirect effect: 1.8 * 1.5 = 2.7 (productivity slope * train->productivity)
+	true total effect:    1.2 + 2.7 = 3.9  (direct + indirect)
+*/
+
+
+**## task 2 - confounding: naive vs conditioned
+
+* 2a: naive difference in mean wages by training status (full sample)
+	sum				wage if train == 0, meanonly
+	scalar			w0 = r(mean)
+
+	sum				wage if train == 1, meanonly
+	scalar			w1 = r(mean)
+
+	display as text "naive diff in mean wage (train=1 - train=0): " ///
+		as result %9.3f (w1 - w0)
+
+* 2b: show selection - mean ability by training status
+	tabstat			ability, by(train) stat(mean sd n)
+
+* 2c: reduce confounding by conditioning on ability quartiles
+	xtile			ability_q4 = ability, nq(4)
+	lab var			ability_q4 "ability quartile"
+
+	lab def			abilityq4 1 "lowest" 2 "low" 3 "high" 4 "highest", replace
+	lab val			ability_q4 abilityq4
+
+* difference in mean wage by training within ability quartile 3
+	sum				wage if ability_q4 == 3 & train == 0, meanonly
+	scalar			w0_q3 = r(mean)
+
+	sum				wage if ability_q4 == 3 & train == 1, meanonly
+	scalar			w1_q3 = r(mean)
+
+	scalar			diff_q3 = w1_q3 - w0_q3
+
+	display as text "ability quartile 3 (high):"
+	display as text "  mean wage (train=0): " as result %9.3f w0_q3
+	display as text "  mean wage (train=1): " as result %9.3f w1_q3
+	display as text "  diff (train=1 - train=0): " as result %9.3f diff_q3
+
+
+**## task 3 - collider bias: conditioning on employment
+
+* 3a: diff in mean wages by training among the employed
+	sum				wage if employed == 1 & train == 0, meanonly
+	scalar			w0_emp = r(mean)
+
+	sum				wage if employed == 1 & train == 1, meanonly
+	scalar			w1_emp = r(mean)
+
+	scalar			diff_emp = w1_emp - w0_emp
+
+	display as text "diff in mean wage among employed (train=1 - train=0): " ///
+		as result %9.3f diff_emp
+
+* 3b: mean probability of being employed by training status
+	tabstat			employed, by(train) stat(mean n)
+
+* 3c: compare employed-sample estimate to full-sample estimate
+	display as text "full-sample naive diff:    " as result %9.3f (w1 - w0)
+	display as text "employed-sample diff:      " as result %9.3f diff_emp
+	display as text "difference (emp - full):   " as result %9.3f (diff_emp - (w1 - w0))
+
+/*
+	conditioning on employed (a collider) opens a spurious path between
+	training and wage. employed depends on both training and wage, so
+	restricting the sample to employed == 1 induces a negative association:
+	among the employed, those who trained needed lower wages to be retained,
+	and those with high wages were retained even without training. this
+	selection distorts the estimated training effect downward relative to
+	the full-sample estimate.
+*/
+
+
+**## task 4 - mediation: total vs indirect vs implied direct
+
+* 4a: total effect - diff in mean wage by training (full sample)
+	sum				wage if train == 0, meanonly
+	scalar			w0_all = r(mean)
+
+	sum				wage if train == 1, meanonly
+	scalar			w1_all = r(mean)
+
+	scalar			total_hat = w1_all - w0_all
+
+	display as text "total effect (diff in mean wage): " ///
+		as result %9.3f total_hat
+
+* 4b: diff in mean productivity by training
+	sum				productivity if train == 0, meanonly
+	scalar			p0 = r(mean)
+
+	sum				productivity if train == 1, meanonly
+	scalar			p1 = r(mean)
+
+	scalar			delta_p = p1 - p0
+
+	display as text "delta_p (diff in mean productivity): " ///
+		as result %9.3f delta_p
+
+* indirect effect = productivity slope from wage equation * delta_p
+	scalar			indirect_hat = 1.8 * delta_p
+
+	display as text "indirect effect (1.8 * delta_p): " ///
+		as result %9.3f indirect_hat
+
+* 4c: implied direct effect = total - indirect
+	scalar			direct_hat = total_hat - indirect_hat
+
+	display as text "implied direct effect (total - indirect): " ///
+		as result %9.3f direct_hat
+
+* compare to true direct effect
+	display as text "true direct effect from DGP: " ///
+		as result %9.3f 1.2
+	display as text "difference (direct_hat - true): " ///
+		as result %9.3f (direct_hat - 1.2)
+
+
+* close log
+	log close
