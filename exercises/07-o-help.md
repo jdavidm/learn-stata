@@ -13,6 +13,7 @@ You need to use the Statalist and/or Stack Overflow to find a way to create a da
 - `egen tag by group mean`
 - `egen tag() keep one per group`
 - `egen mean by() tag()`
+
 Find a post where someone demonstrates tagging one row per group (for example, Nick Cox’s example using `egen tag = tag(groupvar)`). Then adapt that code so that you keep the plot-level data set but have mean `yield_USD`, `total_labor_days`, and `nitrogen_kg` for each household and a tag that identifies one value per household. Call these new variables `mean_yield`, `tot_labor`, and `tot_fert`. Then create a variable that tags a single observations per household and call it `tag_hh`. Label all four variables that you created. In addition to your code, add to your `.do` file a short comment block documenting what you used similar to:
 
 ```stata
