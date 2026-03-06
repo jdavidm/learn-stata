@@ -8,7 +8,7 @@ language: Stata
 Last week we used simulations and conditional means to think about identification. This week we formalize that work with **regression**, the most widely used tool for statistical adjustment in the social sciences.
 
 This lecture covers:
-- The `regress` command for simple (single-variable) regression  
+- The `regress` (`reg`) command for simple (single-variable) regression  
 - Interpreting coefficients, standard errors, and p-values  
 - Adding controls (multivariate regression)  
 - Connecting regression to the DAG / identification ideas from Week 8  
@@ -16,7 +16,7 @@ This lecture covers:
 
 We'll continue to use the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`.
 
-### From fitted lines to `regress`
+### From fitted lines to `reg`
 
 In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, that line comes from an OLS regression.
 
@@ -29,7 +29,7 @@ In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, th
                         ytitle("Yield (kg)")
 
 * the regression behind that line
-    regress         yield_kg nitrogen_kg
+    reg             yield_kg nitrogen_kg
 ```
 
 ```text
@@ -66,7 +66,7 @@ The slope coefficient β₁ in
 yield_kg = β₀ + β₁ · nitrogen_kg + ε
 ```
 
-tells us: "a one-unit increase in X is associated with a β₁-unit change in Y." In our example, the slope is -3.17, then each additional kilogram of nitrogen is associated with 3.17 fewer kilograms of yield.
+Tells us: "a one-unit increase in X is associated with a β₁-unit change in Y." In our example, the slope is -3.17, then each additional kilogram of nitrogen is associated with 3.17 fewer kilograms of yield.
 
 Two important caveats:
 
@@ -97,16 +97,16 @@ Recall from Week 8 that conditioning on a confounder can block a back-door path.
 
 ```stata
 * single variable regression (potentially confounded)
-    regress         yield_kg nitrogen_kg
+    reg             yield_kg nitrogen_kg
 
 * multivariate: control for irrigation status
-    regress         yield_kg nitrogen_kg i.irr
+    reg             yield_kg nitrogen_kg i.irr
 ```
 
 The `i.` prefix tells Stata that `irr` is an indicator (factor) variable. In the second regression:
 
 - The coefficient on `nitrogen_kg` is the slope **holding irrigation status fixed**  
-- The coefficient on `1.irr` is the difference in average yield between irrigated and rainfed plots, holding nitrogen fixed
+- The coefficient on `1.irr` is the difference in average yield between irrigated and rainfed plots, **holding nitrogen fixed**
 
 Adding a control is the regression version of "comparing within groups."
 
@@ -114,7 +114,7 @@ Adding a control is the regression version of "comparing within groups."
 
 ```stata
 * add multiple controls
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS total_labor_days
+    reg             yield_kg nitrogen_kg i.irr plot_area_GPS total_labor_days
 ```
 
 Each control variable's coefficient gives its partial association with the outcome, holding everything else in the model fixed.
@@ -131,7 +131,7 @@ The workflow from Week 8, now with regression:
 ```stata
 * suppose the DAG says soil quality confounds nitrogen → yield
 * and we have a proxy for soil quality: soil_cat
-    regress         yield_kg nitrogen_kg i.soil_cat
+    reg             yield_kg nitrogen_kg i.soil_cat
 ```
 
 This is the same logic as conditioning on soil quality quartiles in Week 8, but regression does it more efficiently and allows for continuous controls.
@@ -156,10 +156,10 @@ We can use the simulation skills from Week 8 to check that regression works.
     gen             yield = 2 + 0.5*fert + 1.0*soil_q + rnormal(0, 1)
 
 * naive regression (omits confounder): biased
-    regress         yield fert
+    reg             yield fert
 
 * regression with control: should recover ≈ 0.5
-    regress         yield fert soil_q
+    reg             yield fert soil_q
 ```
 
 The first regression gives a biased estimate because `soil_q` is in the error term and correlated with `fert`. The second regression controls for `soil_q`, blocking the backdoor path and recovering the true effect.
@@ -172,7 +172,7 @@ Many controls are categorical (region, crop type, survey round). Use the `i.` pr
 
 ```stata
 * control for region fixed effects
-    regress         yield_kg nitrogen_kg i.irr i.region
+    reg             yield_kg nitrogen_kg i.irr i.region
 ```
 
 Stata creates a set of indicator variables for each level of the factor, omitting one reference category to avoid perfect collinearity. The coefficient on each level is the difference relative to the omitted category, holding everything else fixed.
@@ -183,7 +183,7 @@ Sometimes the effect of X on Y **differs by group**. An interaction term capture
 
 ```stata
 * does the nitrogen-yield relationship differ by irrigation?
-    regress         yield_kg c.nitrogen_kg##i.irr
+    reg             yield_kg c.nitrogen_kg##i.irr
 ```
 
 The `##` operator includes:
@@ -204,7 +204,7 @@ If the relationship between X and Y is nonlinear, you can add polynomial terms:
 
 ```stata
 * quadratic relationship
-    regress         yield_kg c.nitrogen_kg##c.nitrogen_kg
+    reg             yield_kg c.nitrogen_kg##c.nitrogen_kg
 ```
 
 This fits:
@@ -215,9 +215,9 @@ yield = β₀ + β₁ · nitrogen + β₂ · nitrogen² + ε
 
 A negative β₂ (diminishing returns) is common with agricultural inputs.
 
-### Reading `regress` output: a checklist
+### Reading `reg` output: a checklist
 
-When you run `regress`, look at:
+When you run `reg`, look at:
 
 | Item | Where | What it tells you |
 |---|---|---|
@@ -230,8 +230,8 @@ When you run `regress`, look at:
 
 ### Summary
 
-- `regress Y X` fits a straight line through Y and X, minimizing squared residuals  
-- Adding controls (`regress Y X Z`) is the regression version of conditioning  
+- `reg Y X` fits a straight line through Y and X, minimizing squared residuals  
+- Adding controls (`reg Y X Z`) is the regression version of conditioning  
 - Use DAGs (Week 8) to decide **what** to control for  
 - Factor variables (`i.`), interactions (`##`), and polynomials let you model richer relationships  
 - Regression coefficients are causal only when the exogeneity assumption holds — identification still comes from research design, not from the regression itself
