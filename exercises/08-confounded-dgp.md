@@ -10,7 +10,7 @@ In this exercise we are going to practice simulating a confounded DGP and diagno
 - Generate an unobserved confounder called `ability` that is distributed Normal(0, 1)
 - Generate a variable called `p_train` using a probability rule (`invlogit`) that increases with ability: `invlogit(-0.2 + 1.0*ability)`
 - Then assign training as a Bernoulli draw `train = (runiform() < p_train)`
-- Create a variable `eps ~ Normal(0, 3)` so there is meaningful noise
+- Create a variable `eps ~ rnormal(0, 3)` so there is meaningful noise
 - Generate wages so that the true causal effect of training be **+2** and ability raises wages by **+4** while wages without training (`train = 0`) or ability (`ability = 0`) is **10**
 - Add noise to the wage equation so that `wage_lat = 10 + 2*train + 4*ability + eps`
 - Enforce `wage >= 0` by truncating at 0 using `max(wage_lat, 0)`
