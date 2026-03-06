@@ -472,7 +472,7 @@
 						ytitle("mean plot yield (usd), household") ///
 						legend(order(1 "households" 2 "linear fit") rows(1) pos(6)) 
 
-	graph           export "$answ/07-challenge-2.pdf", replace
+	graph           export "$answ/07-challenge-2.png", replace
 
 * bar chart: mean(mean_yield) by irrigation status
 	graph           bar (mean) mean_yield, ///
@@ -480,7 +480,7 @@
 						title("maize households: mean yield by irrigation") ///
 						ytitle("mean plot yield (usd), household") 
 
-	graph           export "$answ/07-challenge-3.pdf", replace
+	graph           export "$answ/07-challenge-3.png", replace
 
 
 * close the log

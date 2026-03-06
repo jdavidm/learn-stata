@@ -18,7 +18,7 @@ We'll continue to use the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_fina
 
 ### From fitted lines to `regress`
 
-In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, that line comes from an OLS regression. Let's make the connection explicit.
+In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, that line comes from an OLS regression.
 
 ```stata
 * scatter with fitted line (Week 5 review)
@@ -32,12 +32,30 @@ In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, th
     regress         yield_kg nitrogen_kg
 ```
 
+```text
+. reg yield_kg nitrogen_kg
+
+      Source |       SS           df       MS      Number of obs   =    63,411
+-------------+----------------------------------   F(1, 63409)     =     16.78
+       Model |   947008213         1   947008213   Prob > F        =    0.0000
+    Residual |  3.5791e+12    63,409  56444777.9   R-squared       =    0.0003
+-------------+----------------------------------   Adj R-squared   =    0.0002
+       Total |  3.5801e+12    63,410  56458822.4   Root MSE        =      7513
+
+------------------------------------------------------------------------------
+    yield_kg | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ nitrogen_kg |  -3.170407   .7740162    -4.10   0.000     -4.68748   -1.653334
+       _cons |   3218.218   29.92708   107.54   0.000     3159.561    3276.875
+------------------------------------------------------------------------------
+```
+
 Key parts of the output:
 
 - **Coefficient on `nitrogen_kg`** (the slope): the predicted change in yield for each additional kilogram of nitrogen applied  
 - **`_cons`** (the intercept): predicted yield when nitrogen equals zero  
 - **Std. err.**: the estimated standard deviation of the sampling distribution of the coefficient  
-- **t and P>|t|**: t-statistic and p-value testing the null hypothesis that the coefficient equals zero  
+- **t and P>\|t\|**: t-statistic and p-value testing the null hypothesis that the coefficient equals zero  
 - **R-squared**: the fraction of variation in yield explained by nitrogen
 
 ### Interpreting the slope
@@ -48,7 +66,7 @@ The slope coefficient β₁ in
 yield_kg = β₀ + β₁ · nitrogen_kg + ε
 ```
 
-tells us: "a one-unit increase in X is associated with a β₁-unit change in Y." In our example, if the slope is 8.3, then each additional kilogram of nitrogen is associated with 8.3 more kilograms of yield.
+tells us: "a one-unit increase in X is associated with a β₁-unit change in Y." In our example, the slope is -3.17, then each additional kilogram of nitrogen is associated with 3.17 fewer kilograms of yield.
 
 Two important caveats:
 
