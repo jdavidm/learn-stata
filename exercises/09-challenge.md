@@ -5,60 +5,42 @@ title: Challenge 9
 language: Stata
 ---
 
-In this challenge, we will verify that multivariate regression works as expected by running regressions on a simulated Data Generating Process (DGP) where we know the true causal effects.
+This challenge uses `eth_allrounds_final.dta` to practice skills from all three regression lectures (regression, standard errors, concerns).
 
-This DGP features a **confounder** (`ability`), a **mediator** (`productivity`), and a **collider** (`employed`).
+### Setup
 
-### Tasks
+1\. Load `eth_allrounds_final.dta` using your project paths.
 
-1. First, set up the simulation. Copy and run the following code in your do-file:
+### Part A: Regression and interpretation
 
-```stata
-* simulate one dgp with confounding + mediation + selection
-clear all
-set seed 80808
-set obs 80000
+2\. Run a multivariate regression of `yield_kg` on `nitrogen_kg`, `i.irr`, `plot_area_GPS`, and `i.region`.
+3\. In comments, interpret the coefficient on `nitrogen_kg` using the phrase "holding fixed."
+4\. Run `estat vif`. In comments, note any VIF values above 5 and explain whether collinearity is a concern in this specification.
 
-* confounder
-gen ability = rnormal(0, 1)
+### Part B: Predicted values and residuals
 
-* training selection depends on ability (confounding)
-gen p_train = invlogit(-0.3 + 0.9*ability)
-gen train = (runiform() < p_train)
+5\. Use `predict yhat` and `predict resid, residuals` to generate predicted values and residuals.
+6\. Create a scatter plot of `resid` against `yhat` with `yline(0)`. In comments, describe whether you see evidence of heteroskedasticity.
 
-* mediator: productivity increases with training and ability
-gen u_p = rnormal(0, 2)
-gen productivity = 10 + 1.5*train + 1.0*ability + u_p
+### Part C: Standard errors
 
-* outcome: wage depends on training (direct), productivity (indirect), and ability
-gen u_w = rnormal(0, 6)
-gen wage_lat = 30 + 1.2*train + 1.8*productivity + 2.0*ability + u_w
-gen wage = max(wage_lat, 0)
-drop wage_lat
+7\. Run the same regression three ways and record the standard error on `nitrogen_kg` each time:
+   ```stata
+   * default
+   reg yield_kg nitrogen_kg i.irr plot_area_GPS i.region
 
-* collider: employed depends on training and wage
-gen emp_lat = -1.0 + 0.6*train + 0.05*wage + rnormal(0, 1)
-gen employed = (emp_lat > 0)
-drop emp_lat
-```
+   * robust
+   reg yield_kg nitrogen_kg i.irr plot_area_GPS i.region, robust
 
-2. What is the **true total effect** of `train` on `wage` in this DGP?
-   - The direct effect is the coefficient on `train` in the `wage_lat` equation (1.2).
-   - The indirect effect is the effect of `train` on `productivity` (1.5) times the effect of `productivity` on `wage` (1.8).
-   - In comments, write down the true direct, indirect, and total effects.
+   * clustered at household
+   reg yield_kg nitrogen_kg i.irr plot_area_GPS i.region, vce(cluster hhid)
+   ```
+8\. In comments: how do the standard errors change across the three approaches? Which approach is most appropriate for these data and why?
 
-3. **Naive Regression (Confounded)**
-   - Regress `wage` on `train` with no other controls.
-   - Record the coefficient on `train`. Does this naive regression overestimate or underestimate the true total effect? Why?
+### Part D: Getting fancier
 
-4. **Controlling for the Confounder**
-   - Regress `wage` on `train` and `ability`.
-   - Record the coefficient on `train`. How close is it to the true total effect you calculated in Task 2? Have you successfully closed the back-door path?
-
-5. **Controlling for the Mediator (Over-controlling)**
-   - Now regress `wage` on `train`, `ability`, and `productivity`.
-   - Record the coefficient on `train`. Which part of the effect does this represent (direct, indirect, or total)? Is `productivity` a good control if you want the total effect of training?
-
-6. **Collider Bias**
-   - Finally, regress `wage` on `train` and `ability`, but restrict the sample to only those who are employed by adding `if employed == 1` to the end of your regress command.
-   - Compare the coefficient on `train` here to your estimate in Task 4. Explain why conditioning on the collider (`employed`) introduces bias.
+9\. Run a regression with an interaction between nitrogen and irrigation:
+   ```stata
+   reg yield_kg c.nitrogen_kg##i.irr plot_area_GPS i.region, vce(cluster hhid)
+   ```
+10\. In comments, interpret the interaction: does the association between nitrogen and yield differ for irrigated vs rainfed plots?

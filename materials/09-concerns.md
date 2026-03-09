@@ -13,8 +13,6 @@ The previous two lectures covered regression mechanics (coefficients, controls) 
 
 ### Sample weights
 
-#### Why weight?
-
 Most social-science datasets are not simple random samples of the population. Some people (or plots, or firms) are more likely to end up in the sample than others:
 
 - Urban households may be oversampled relative to rural ones  
@@ -29,7 +27,7 @@ In a weighted regression, each observation's contribution to the OLS objective f
 
 The most common type is **inverse probability weights**: each observation is weighted by the inverse of the probability that it was included in the sample. If urban households had a 20% chance of being sampled and rural households had a 5% chance, then each rural household gets a weight 4× larger than each urban household, restoring population proportions.
 
-Many large surveys (census, DHS, LSMS) ship with pre-computed weights. Use them.
+Many large surveys (census, DHS, LSMS) come with pre-computed weights. Use them.
 
 #### Stata syntax
 
@@ -37,10 +35,10 @@ Stata has several weight types. The two most relevant for regression are:
 
 ```stata
 * analytic (aweight): weighted least squares
-    regress         yield_kg nitrogen_kg [aweight = plot_weight]
+    reg             yield fert [aweight = plot_weight]
 
 * frequency/probability (pweight): survey sampling weights
-    regress         yield_kg nitrogen_kg [pweight = hh_weight], robust
+    reg             yield fert [pweight = hh_weight], robust
 ```
 
 - `aweight` treats the weight as an importance measure (weighted least squares)  
@@ -57,7 +55,7 @@ For surveys with complex designs (stratification, clustering, and weights), Stat
     svyset          ea_id [pweight = hh_weight], strata(strata_id)
 
 * run a survey-weighted regression
-    svy:            regress yield_kg nitrogen_kg i.irr
+    svy:            reg yield fert soil_q
 ```
 
 `svyset` tells Stata about the primary sampling unit (`ea_id`), strata, and weights. After that, prefixing any estimation command with `svy:` automatically applies all three design features. This is the gold standard for survey data.
@@ -71,13 +69,11 @@ When in doubt, run both weighted and unweighted regressions and compare. Large d
 
 ### Collinearity
 
-#### What is collinearity?
-
 Collinearity (sometimes "multicollinearity") means that one predictor in your model is strongly predicted by a linear combination of the other predictors.
 
 **Perfect collinearity**: one variable is an exact linear function of others. Example: including both `Winter` and `NotWinter` in a model with an intercept. Stata will drop one variable automatically and tell you so.
 
-**High collinearity**: predictors are very highly (but not perfectly) correlated. Example: including two test-score subscales that measure almost the same skill, or including age **and** birth year.
+**High collinearity**: predictors are very highly (but not perfectly) correlated. Example: including two fertilizer types that are always applied together, or including age **and** birth year.
 
 #### Why it's a problem
 
@@ -94,29 +90,6 @@ Collinearity does **not** bias the coefficients. It just makes them imprecise �
 After running a regression, use `estat vif` to compute the **Variance Inflation Factor** (VIF):
 
 ```stata
-* run regression
-    regress         yield_kg nitrogen_kg phosphorus_kg ///
-                        potassium_kg i.irr
-
-* check for collinearity
-    estat           vif
-```
-
-- VIF = 1: no collinearity  
-- VIF > 5–10: concerning  
-- VIF = ∞: perfect collinearity (Stata will have dropped a variable)
-
-If two fertilizer types (nitrogen, phosphorus) are always applied together, their VIFs will be high — there is no independent variation to tell their effects apart.
-
-#### What to do about collinearity
-
-1. **Drop one of the collinear variables**. If `nitrogen_kg` and `phosphorus_kg` are nearly identical, include just one (or a combined "total fertilizer" variable)  
-2. **Combine variables**. Create an index or total  
-3. **Accept it**. If you must include both variables for theoretical reasons, acknowledge that individual coefficients are imprecise but note that the **joint** effect may still be well-estimated (test joint significance with `test nitrogen_kg phosphorus_kg`)
-
-#### Simulation: collinearity in action
-
-```stata
 * simulate two highly correlated predictors
     clear all
     set             seed 77777
@@ -126,21 +99,35 @@ If two fertilizer types (nitrogen, phosphorus) are always applied together, thei
     gen             x2 = x1 + rnormal(0, 0.1)   // almost the same as x1
 
 * outcome depends on x1 only (true β₁ = 2, true β₂ = 0)
-    gen             Y = 1 + 2*x1 + 0*x2 + rnormal(0, 1)
+    gen             yield = 1 + 2*x1 + 0*x2 + rnormal(0, 1)
 
 * regression with both: huge standard errors
-    regress         Y x1 x2
+    reg             yield x1 x2
     estat           vif
-
-* drop the redundant predictor: precise estimate
-    regress         Y x1
 ```
 
-Notice that the coefficients on `x1` and `x2` in the first regression are wildly imprecise and may not individually be significant, even though their true joint effect is strong.
+- VIF = 1: no collinearity  
+- VIF > 5–10: concerning  
+- VIF = ∞: perfect collinearity (Stata will have dropped a variable)
+
+> Do [Exercise 8 - Collinearity and VIF]({{ site.baseurl }}/exercises/09-vif/)
+
+#### What to do about collinearity
+
+1. **Drop one of the collinear variables**. If `x1` and `x2` are nearly identical, include just one  
+2. **Combine variables**. Create an index or total  
+3. **Accept it**. If you must include both variables for theoretical reasons, acknowledge that individual coefficients are imprecise but note that the **joint** effect may still be well-estimated (test joint significance with `test x1 x2`)
+
+#### Simulation: collinearity in action
+
+```stata
+* drop the redundant predictor: precise estimate
+    reg             yield x1
+```
+
+Notice that the coefficients on `x1` and `x2` in the first regression are wildly imprecise and may not individually be significant, even though their true joint effect is strong. The second regression, with only `x1`, recovers the true effect precisely.
 
 ### Measurement error
-
-#### The problem
 
 In practice, the variables in your dataset are rarely exact. Common sources of imprecision:
 
@@ -161,8 +148,6 @@ The simplest case is **classical measurement error**, where the noise is indepen
 - Measurement error in Y (the outcome) is mostly harmless — it increases residual variance but does not bias coefficients  
 - Measurement error in X (a predictor) **biases the coefficient toward zero** — this is called **attenuation bias**
 
-##### Why attenuation happens
-
 If X is measured with noise, some of the variation in X is random and unrelated to Y. OLS attributes all of X's variation to the coefficient, dragging the estimated slope toward zero because the noisy part isn't related to Y.
 
 ##### Simulation: attenuation bias
@@ -174,19 +159,19 @@ If X is measured with noise, some of the variation in X is random and unrelated 
     set             obs 1000
 
 * true predictor
-    gen             x_true = rnormal(0, 1)
+    gen             soil_q_true = rnormal(0, 1)
 
 * outcome (true beta = 3)
-    gen             Y = 1 + 3*x_true + rnormal(0, 1)
+    gen             yield = 1 + 3*soil_q_true + rnormal(0, 1)
 
 * measured predictor with noise
-    gen             x_noisy = x_true + rnormal(0, 1)
+    gen             soil_q_noisy = soil_q_true + rnormal(0, 1)
 
 * regression with true X: recovers β ≈ 3
-    regress         Y x_true
+    reg             yield soil_q_true
 
 * regression with noisy X: β shrinks toward 0
-    regress         Y x_noisy
+    reg             yield soil_q_noisy
 ```
 
 The second regression gives a coefficient noticeably smaller than 3. This is attenuation bias.

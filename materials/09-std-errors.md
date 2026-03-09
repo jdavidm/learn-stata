@@ -5,20 +5,21 @@ title: Standard Errors
 language: Stata
 ---
 
-In the previous lecture we focused on regression **coefficients** — the point estimates of relationships. This lecture focuses on how much those estimates **wiggle from sample to sample**, i.e., standard errors.
+In the previous lecture we focused on regression **coefficients** — the point estimates of relationships. This lecture focuses on how much those estimates wiggle from sample to sample, i.e., **standard errors**.
 
 This lecture covers:
+- Predicting values and residuals  
 - Why default (OLS) standard errors are often wrong  
 - Heteroskedasticity and robust standard errors  
 - Clustered standard errors  
 - Bootstrap standard errors  
 - Stata syntax for each approach
 
-We'll keep using the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`.
+We'll continue with simulated yield, fertilizer, and soil quality data so we can visualize what different error structures look like.
 
 ### Why standard errors matter
 
-A coefficient tells you the estimated effect size. The standard error tells you how **precise** that estimate is. Together they give you:
+A coefficient tells you the estimated effect size. In the previous lecture and last week's lectures on identification we focused on **bias** in estimating the causal effect. Today we are going to focus on the standard error, which tells you how precise that estimate is. This is known as **inference**. Together they give you:
 
 - **t-statistic** = coefficient / standard error  
 - **p-value**: probability of seeing your estimate (or larger) if the true effect were zero  
@@ -39,41 +40,114 @@ The default OLS standard error formula assumes that the error term ε is **indep
 - **Identically distributed**: every observation's error is drawn from the same distribution (same variance)  
 - **Independent**: one observation's error tells you nothing about another's
 
-When these assumptions hold, the default standard errors from `regress` are correct. When they don't, the default standard errors can be too small or too large, leading to misleading inference.
+When these assumptions hold, the default standard errors from `reg` are correct. When they don't, the default standard errors can be too small or too large, leading to misleading inference.
 
-### Heteroskedasticity
+### Predicting values and graphing them
 
-**Heteroskedasticity** means that the variance of ε changes with the value of the predictors. In other words, the "spread" of data around the regression line differs across the range of X.
+After running a regression, Stata can compute **predicted values** (ŷ) and **residuals** (ê) for every observation:
 
-Example: in our plot-level data, small plots may have very consistent yields while large plots have wildly variable yields. The error variance is bigger for large plots.
+```text
+ŷ = β̂₀ + β̂₁X        (the model's prediction)
+ê = Y − ŷ            (what the model didn't explain)
+```
 
-Why does this break standard errors? The OLS formula estimates **one** variance for the entire sample. If variance actually differs across observations, that single number misrepresents how much the coefficient estimate wiggles across samples.
-
-Important: heteroskedasticity does **not** bias the coefficients — the point estimate is still fine on average. It only makes the standard errors wrong.
-
-#### Quick visual check
-
-Plotting residuals against fitted values can reveal heteroskedasticity:
+Let's set up our simulated data and see this in action:
 
 ```stata
+* simulate DGP with i.i.d. errors
+    clear all
+    set             seed 12345
+    set             obs 2000
+
+    gen             soil_q = rnormal(0, 1)
+    gen             fert = (0.5*soil_q + rnormal(0, 1) > 0)
+    gen             eps = rnormal(0, 1)
+    gen             yield = 2 + 0.5*fert + 1.0*soil_q + eps
+
 * run regression
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS
+    reg             yield fert soil_q
 
-* predict residuals
+* predict fitted values and residuals
+    predict         yhat
     predict         resid, residuals
+```
 
-* predict fitted values
-    predict         yhat, xb
+The predicted value `yhat` is the model's best guess for each observation. The residual `resid` is the gap between the actual outcome and the prediction — it's everything the model missed.
 
-* plot residuals vs fitted values
+```stata
+* graph: actual vs predicted values
+    twoway          (scatter yield yhat, msymbol(Oh) msize(vsmall)) ///
+                    (function y = x, range(0 5)), ///
+                        title("Actual vs predicted yield") ///
+                        xtitle("Predicted yield (ŷ)") ///
+                        ytitle("Actual yield") ///
+                        legend(label(1 "Observations") label(2 "45° line"))
+```
+
+If the model explained everything, all points would fall on the 45° line. The scatter around that line is the residual variation.
+
+> Do [Exercise 4 - Predicting Values]({{ site.baseurl }}/exercises/09-predict/)
+
+### Quick visual check: i.i.d. errors
+
+With the i.i.d. DGP we just created, the residual plot should look like a **uniform cloud** centered on zero — no fan shapes, no patterns:
+
+```stata
+* residuals vs fitted values (i.i.d. errors)
     scatter         resid yhat, ///
-                        title("Residuals vs fitted values") ///
+                        title("Residuals vs fitted: i.i.d. errors") ///
                         ytitle("Residual") ///
                         xtitle("Fitted value") ///
                         yline(0) msymbol(Oh) msize(vsmall)
 ```
 
-If the vertical spread of points changes across the x-axis — a fan or funnel shape — you have heteroskedasticity.
+This is what well-behaved errors look like: the vertical spread of points is roughly constant across the x-axis, and there are no visible patterns or clusters.
+
+> Do [Exercise 5 - Residual Plots]({{ site.baseurl }}/exercises/09-resid-plot/)
+
+### Heteroskedasticity
+
+**Heteroskedasticity** means that the variance of ε changes with the value of the predictors. In other words, the "spread" of data around the regression line differs across the range of X.
+
+Why does this break standard errors? The OLS formula estimates **one** variance for the entire sample. If variance actually differs across observations, that single number misrepresents how much the coefficient estimate wiggles across samples.
+
+Important: heteroskedasticity does **not** bias the coefficients — the point estimate is still fine on average. It only makes the standard errors wrong.
+
+#### Simulating heteroskedastic errors
+
+To see what heteroskedasticity looks like, we modify the DGP so the error variance grows with soil quality:
+
+```stata
+* simulate DGP with heteroskedastic errors
+    clear all
+    set             seed 12345
+    set             obs 2000
+
+    gen             soil_q = rnormal(0, 1)
+    gen             fert = (0.5*soil_q + rnormal(0, 1) > 0)
+
+* error variance increases with soil quality
+    gen             eps = rnormal(0, 1 + abs(soil_q))
+    gen             yield = 2 + 0.5*fert + 1.0*soil_q + eps
+
+* run regression and get residuals
+    reg             yield fert soil_q
+    predict         yhat
+    predict         resid, residuals
+```
+
+#### Quick visual check: heteroskedasticity
+
+```stata
+* residuals vs fitted — look for the "fan" shape
+    scatter         resid yhat, ///
+                        title("Residuals vs fitted: heteroskedastic errors") ///
+                        ytitle("Residual") ///
+                        xtitle("Fitted value") ///
+                        yline(0) msymbol(Oh) msize(vsmall)
+```
+
+If the vertical spread of points changes across the x-axis — a fan or funnel shape — you have heteroskedasticity. Compare this to the i.i.d. residual plot above: the spread here is clearly wider for larger fitted values.
 
 ### Robust standard errors
 
@@ -83,10 +157,10 @@ In Stata, just add `, robust`:
 
 ```stata
 * default OLS standard errors
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS
+    reg             yield fert soil_q
 
 * robust (heteroskedasticity-consistent) standard errors
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS, robust
+    reg             yield fert soil_q, robust
 ```
 
 Notice:
@@ -96,6 +170,8 @@ Notice:
 
 Robust standard errors are so common that many applied economists use them by default.
 
+> Do [Exercise 6 - Robust Standard Errors]({{ site.baseurl }}/exercises/09-robust-se/)
+
 ### Clustered standard errors
 
 Robust standard errors handle heteroskedasticity but still assume that errors are **independent** across observations. In many research settings, errors within groups are correlated:
@@ -103,20 +179,79 @@ Robust standard errors handle heteroskedasticity but still assume that errors ar
 - Students in the same **classroom** share a teacher  
 - Plots on the same **farm** share management practices  
 - People in the same **village** experience the same weather  
+- Observations from the same household over **time**
 
-When observations within a group share unobserved factors, their errors are correlated. This is sometimes called **within-cluster correlation** or **autocorrelation within groups**.
+When observations within a group share unobserved factors, their errors are correlated. This is sometimes called **within-cluster correlation**, **autocorrelation within groups**, or **serial correlation**.
 
 If you ignore this clustering, standard errors tend to be **too small** — you think you have more independent information than you actually do.
+
+#### Simulating clustered errors
+
+To see what clustered errors look like, we create a DGP with village-level shocks:
+
+```stata
+* simulate DGP with clustered errors (village-level shocks)
+    clear all
+    set             seed 11111
+    set             obs 2000
+
+* 100 villages, 20 plots each
+    gen             village = ceil(_n / 20)
+
+* soil quality
+    gen             soil_q = rnormal(0, 1)
+
+* fertilizer adoption
+    gen             fert = (0.5*soil_q + rnormal(0, 1) > 0)
+
+* village-level shock (shared by all plots in the village)
+    gen             v_shock = rnormal(0, 1.5) if mod(_n, 20) == 1
+    bysort          village: replace v_shock = v_shock[1]
+
+* individual-level error
+    gen             ind_eps = rnormal(0, 1)
+
+* yield includes both shocks
+    gen             yield = 2 + 0.5*fert + 1.0*soil_q + v_shock + ind_eps
+
+* run regression and get residuals
+    reg             yield fert soil_q
+    predict         yhat
+    predict         resid, residuals
+```
+
+#### Quick visual check: clustered errors
+
+With clustered errors, you can sometimes see residual "blocks" — groups of observations whose residuals are correlated. A helpful way to visualize this is to plot residuals by cluster:
+
+```stata
+* residuals vs fitted values
+    scatter         resid yhat, ///
+                        title("Residuals vs fitted: clustered errors") ///
+                        ytitle("Residual") ///
+                        xtitle("Fitted value") ///
+                        yline(0) msymbol(Oh) msize(vsmall)
+
+* residuals by village (shows within-cluster correlation)
+    scatter         resid village, ///
+                        title("Residuals by village") ///
+                        ytitle("Residual") ///
+                        xtitle("Village") ///
+                        yline(0) msymbol(Oh) msize(vsmall)
+```
+
+In the second plot, you can see that residuals within the same village tend to be on the same side of zero — that's the village-level shock pulling all plots in a village in the same direction.
 
 #### Syntax
 
 ```stata
-* cluster standard errors at the household level
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS, ///
-                        vce(cluster hhid)
+* cluster standard errors at the village level
+    reg             yield fert soil_q, vce(cluster village)
 ```
 
-`vce(cluster hhid)` tells Stata to allow arbitrary correlation among errors within each value of `hhid`. This accounts for both heteroskedasticity and within-household correlation.
+`vce(cluster village)` tells Stata to allow arbitrary correlation among errors within each village. This accounts for both heteroskedasticity and within-village correlation.
+
+> Do [Exercise 7 - Clustered Standard Errors]({{ site.baseurl }}/exercises/09-cluster-se/)
 
 #### How to choose the cluster level
 
@@ -128,38 +263,30 @@ Some rules of thumb:
 
 Clustered standard errors work well when you have **many clusters** (50+ is a common guideline). With few clusters, they can be unreliable. In that case, you may need wild cluster bootstrap methods (an advanced topic for another time).
 
-### Simulation: seeing why clustering matters
+### Simulation: seeing the consequences for inference
+
+Let's return to the i.i.d. data and compare how standard errors change across methods:
 
 ```stata
-* simulate data with correlated errors within villages
+* regenerate i.i.d. data for comparison
     clear all
-    set             seed 11111
-    set             obs 500
+    set             seed 12345
+    set             obs 2000
 
-* 50 villages, 10 people each
-    gen             village = ceil(_n / 10)
-
-* village-level shock (common to everyone in the village)
-    gen             v_shock = rnormal(0, 1) if mod(_n, 10) == 1
-    bysort          village: replace v_shock = v_shock[1]
-
-* individual-level error
+    gen             soil_q = rnormal(0, 1)
+    gen             fert = (0.5*soil_q + rnormal(0, 1) > 0)
     gen             eps = rnormal(0, 1)
+    gen             yield = 2 + 0.5*fert + 1.0*soil_q + eps
 
-* treatment (randomly assigned)
-    gen             treat = (runiform() < 0.5)
+* side-by-side comparison
+* 1. default
+    reg             yield fert soil_q
 
-* outcome: true effect = 1.0
-    gen             Y = 3 + 1.0*treat + v_shock + eps
-
-* default SEs (ignores clustering — too small)
-    regress         Y treat
-
-* clustered SEs (accounts for village-level correlation)
-    regress         Y treat, vce(cluster village)
+* 2. robust
+    reg             yield fert soil_q, robust
 ```
 
-Compare the standard error on `treat` across the two regressions. The default SE is too small because it treats all 500 observations as independent, when really there are only 50 independent clusters.
+Look at how the standard errors (and therefore p-values) on `fert` change. The coefficients stay the same across both — only the uncertainty estimates differ.
 
 ### Bootstrap standard errors
 
@@ -176,7 +303,7 @@ The bootstrap is very flexible — it makes almost no assumptions about the erro
 ```stata
 * bootstrap standard errors (1000 repetitions)
     bootstrap       _b, reps(1000) seed(9999): ///
-                        regress yield_kg nitrogen_kg i.irr
+                        reg yield fert soil_q
 ```
 
 Stata's `bootstrap` prefix re-estimates the regression 1,000 times on resampled data and reports the resulting standard errors.
@@ -186,31 +313,14 @@ Bootstrap is especially useful when:
 - You're estimating something more complex than a linear regression coefficient  
 - You want a check on your robust/clustered SEs
 
-### Comparing standard error methods
-
-```stata
-* side-by-side comparison
-* 1. default
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS
-
-* 2. robust
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS, robust
-
-* 3. clustered
-    regress         yield_kg nitrogen_kg i.irr plot_area_GPS, ///
-                        vce(cluster hhid)
-```
-
-Look at how the standard errors (and therefore p-values) on `nitrogen_kg` change. The coefficients should stay the same or nearly the same across all three.
-
 ### Quick reference
 
 | Method | Stata syntax | Use when |
 |---|---|---|
-| Default OLS | `regress Y X` | Errors are i.i.d. (rare in practice) |
-| Robust | `regress Y X, robust` | Heteroskedasticity likely |
-| Clustered | `regress Y X, vce(cluster G)` | Errors correlated within groups |
-| Bootstrap | `bootstrap _b, reps(N): regress Y X` | Flexible; few assumptions |
+| Default OLS | `reg Y X` | Errors are i.i.d. (rare in practice) |
+| Robust | `reg Y X, robust` | Heteroskedasticity likely |
+| Clustered | `reg Y X, vce(cluster G)` | Errors correlated within groups |
+| Bootstrap | `bootstrap _b, reps(N): reg Y X` | Flexible; few assumptions |
 
 ### Summary
 

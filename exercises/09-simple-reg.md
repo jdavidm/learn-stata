@@ -5,16 +5,14 @@ title: Simple Regression
 language: Stata
 ---
 
-In this exercise, we will practice running a simple (single-variable) regression and interpreting its output.
+Using `eth_allrounds_final.dta`, run a simple regression and interpret the output.
 
-### Tasks
+1\. Load `eth_allrounds_final.dta` using your project paths.
+2\. Create a scatter plot of `yield_kg` against `nitrogen_kg` with a fitted line (`lfit`).
+3\. Run `reg yield_kg nitrogen_kg`.
+4\. In comments, answer:
+   - What is the slope on `nitrogen_kg` and how do you interpret it?
+   - Is it statistically significant at the 5% level?
+   - What is the R-squared and what does it mean?
 
-1. Create a new do-file.
-2. Load `eth_allrounds_final.dta` using your project paths.
-3. Run a simple regression using the `regress` command with `yield_kg` as the dependent variable and `nitrogen_kg` as the sole independent variable.
-4. Answer the following questions in comments in your do-file:
-   - What is the estimated slope (coefficient) on `nitrogen_kg`? How do you interpret this number in terms of yield and nitrogen?
-   - What is the value of the constant (`_cons`)? What does it represent in this context?
-   - Is the coefficient on `nitrogen_kg` statistically significantly different from zero at the 5% level? (Hint: check the P>|t| column).
-   - What is the R-squared value for this regression? What does it mean in terms of how much variation in yield is explained?
-5. Now, run another simple regression of `yield_kg` on `plot_area_GPS`. In comments, record the slope and explain whether an increase in plot size is associated with higher or lower total yield.
+[Relevant lecture section]({{ site.baseurl }}/materials/09-regression/#from-fitted-lines-to-reg)
