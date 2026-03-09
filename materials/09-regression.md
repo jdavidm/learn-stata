@@ -196,7 +196,7 @@ Interpretation:
 - Coefficient on `1.irr`: level shift for irrigated plots at nitrogen = 0  
 - Coefficient on `1.irr#c.nitrogen_kg`: **how much steeper** the slope is for irrigated plots
 
-The `c.` prefix tells Stata that `nitrogen_kg` is continuous (needed inside `##`).
+The `c.` prefix tells Stata that `nitrogen_kg` is continuous.
 
 #### Polynomials
 
