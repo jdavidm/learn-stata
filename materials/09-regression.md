@@ -18,13 +18,13 @@ We'll work with simulated data on yield, fertilizer, and soil quality — the sa
 
 ### Setting up the simulated data
 
-We begin by generating a dataset where we **know the truth**. The DGP is the same yield–fertilizer–soil story from the identification lecture:
+We begin by generating a dataset where we **know the truth**. The DGP is the same `yield ← soil → fertilizer` from the identification lecture:
 
 ```stata
 * simulate DGP: yield, fertilizer, and soil quality
-    clear all
+    clear           all
     set             seed 12345
-    set             obs 2000
+    set             obs 20000
 
 * soil quality (confounder, continuous)
     gen             soil_q = rnormal(0, 1)
@@ -68,8 +68,6 @@ In Week 5 we added fitted lines to scatter plots with `lfit`. Under the hood, th
 
 The regression tells Stata to fit the line that minimizes the sum of squared vertical distances from each point to the line.
 
-> Do [Exercise 1 - Simple Regression]({{ site.baseurl }}/exercises/09-simple-reg/)
-
 ### Interpreting the slope
 
 The slope coefficient β₁ in
@@ -84,6 +82,8 @@ Two important caveats:
 
 1. **Association, not causation** — unless we've identified the effect (Week 8)  
 2. **Linear approximation** — OLS picks the best straight line, which may or may not describe the true relationship well
+
+> Do [Exercise 1 - Simple Regression]({{ site.baseurl }}/exercises/09-simple-reg/)
 
 ### The error term
 
@@ -117,8 +117,6 @@ Recall from Week 8 that conditioning on a confounder can block a back-door path.
 
 In the first regression, `soil_q` is in the error term and correlated with `fert`, so the coefficient on `fert` is biased upward. The second regression controls for `soil_q`, blocking the backdoor path and recovering the true effect (≈ 0.5).
 
-> Do [Exercise 2 - Multivariate Regression]({{ site.baseurl }}/exercises/09-multi-reg/)
-
 #### General syntax for controls
 
 ```stata
@@ -127,6 +125,8 @@ In the first regression, `soil_q` is in the error term and correlated with `fert
 ```
 
 Each control variable's coefficient gives its partial association with the outcome, holding everything else in the model fixed.
+
+> Do [Exercise 2 - Multivariate Regression]({{ site.baseurl }}/exercises/09-multi-reg/)
 
 ### Connecting regression to DAGs
 
@@ -156,8 +156,6 @@ Many controls are categorical (region, crop type, soil category). Use the `i.` p
 ```
 
 Stata creates a set of indicator variables for each level of the factor, omitting one reference category to avoid perfect collinearity. The coefficient on each level is the difference relative to the omitted category, holding everything else fixed.
-
-> Do [Exercise 3 - Factor Variables and Interactions]({{ site.baseurl }}/exercises/09-factor-vars/)
 
 #### Interaction terms
 
@@ -196,6 +194,8 @@ yield = β₀ + β₁ · soil_q + β₂ · soil_q² + β₃ · fert + ε
 ```
 
 A negative β₂ (diminishing returns) is common with agricultural inputs.
+
+> Do [Exercise 3 - Factor Variables and Interactions]({{ site.baseurl }}/exercises/09-factor-vars/)
 
 ### Reading `reg` output: a checklist
 
