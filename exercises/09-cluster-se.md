@@ -5,12 +5,12 @@ title: Clustered Standard Errors
 language: Stata
 ---
 
-Using `eth_allrounds_final.dta`, cluster standard errors at the household level and compare.
 
-1\. Run `reg yield_kg nitrogen_kg i.irr plot_area_GPS, robust`.
-2\. Now run the same regression with clustered standard errors: `reg yield_kg nitrogen_kg i.irr plot_area_GPS, vce(cluster hhid)`.
-3\. In comments, answer:
-   - How did the standard error on `nitrogen_kg` change when moving from robust to clustered?
-   - Why does clustering at the household level make sense for plot-level data?
+Using the **maize only** version of `eth_allrounds_final.dta` with per hectare inputs, compare default and clustered standard errors.
+- Run `reg yield_kg fert labor i.irr i.admin_1, robust`
+- Run the same regression with clustered standard errors: `, vce(cluster hhid)`
 
-[Relevant lecture section]({{ site.baseurl }}/materials/09-std-errors/#clustered-standard-errors)
+1. How did the standard error on `fert` change when moving from robust to clustered?
+2. Does clustering at the household level or plot-level make sense for this data?
+
+---

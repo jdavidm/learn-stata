@@ -1,0 +1,6 @@
+[1.1] decreased
+
+[2.2] holding fixed irrigation status and labor, a one-kg/ha increase in nitrogen is associated with a 0.0953 kg change in yield
+
+[2.3] holding fixed nitrogen and labor, irrigated plots have average yield that is -324.48 kg different from rainfed plots.
+

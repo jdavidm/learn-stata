@@ -1,0 +1,5 @@
+[2.1] 0.1426
+
+[2.2] yes
+
+[2.3] 0.0009, the model explains 0.09% of the sample variation in yield_kg

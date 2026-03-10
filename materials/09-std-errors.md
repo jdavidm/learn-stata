@@ -103,8 +103,6 @@ With the i.i.d. DGP we just created, the residual plot should look like a **unif
 
 This is what well-behaved errors look like: the vertical spread of points is roughly constant across the x-axis, and there are no visible patterns or clusters.
 
-> Do [Exercise 5 - Residual Plots]({{ site.baseurl }}/exercises/09-resid-plot/)
-
 ### Heteroskedasticity
 
 **Heteroskedasticity** means that the variance of ε changes with the value of the predictors. In other words, the "spread" of data around the regression line differs across the range of X.
@@ -148,6 +146,8 @@ To see what heteroskedasticity looks like, we modify the DGP so the error varian
 ```
 
 If the vertical spread of points changes across the x-axis — a fan or funnel shape — you have heteroskedasticity. Compare this to the i.i.d. residual plot above: the spread here is clearly wider for larger fitted values.
+
+> Do [Exercise 5 - Residual Plots]({{ site.baseurl }}/exercises/09-resid-plot/)
 
 ### Robust standard errors
 

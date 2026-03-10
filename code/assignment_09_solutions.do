@@ -1,61 +1,103 @@
- * course: AAE 497A/597A
-* assignment: 8
-* created on: mar 26
-* created by: jdm
-* edited on: 10 mar 26
-* edited by: jdm
-* Stata v.19.5
-	
+* course: 597a
+* assignment: 9
+* created on: mar 10 2026
+* created by: openai
+* edited on: mar 10 2026
+* edited by: openai
+* stata v.19.5
+
+version         19.5
+
+**********************************************************************
+**# 0 - setup
+**********************************************************************
+
+* define paths
+	global          root        "."
+	global          export      "answers"
+	global          logout      "logs"
+
+* create output folders when needed
+	cap             mkdir       "$export"
+	cap             mkdir       "$logout"
+
 * open log
-	cap log 		close
-	log using		"$logout/09-regress", append
-	
+	cap             log         close
+	log             using       "$logout/assignment_09_solutions", replace text
+
+* define helper to find and load the ethiopia data
+	cap             program     drop load_eth_data
+	program define  load_eth_data
+		local           candidates ///
+                            "eth_allrounds_final.dta" ///
+                            "data/eth_allrounds_final.dta" ///
+                            "../data/eth_allrounds_final.dta" ///
+                            "../../data/eth_allrounds_final.dta"
+
+		local           found ""
+		foreach f of local candidates {
+			cap             confirm file "`f'"
+			if _rc == 0 {
+				local           found "`f'"
+				continue, break
+			}
+		}
+
+		if "`found'" == "" {
+			di as error      "could not find eth_allrounds_final.dta in expected locations"
+			error           601
+		}
+
+		use             "`found'", clear
+		di as text      "loaded data from: `found'"
+	end
+
+* define helper to print a separator in the log
+	cap             program     drop linebreak
+	program define  linebreak
+		di as text      "------------------------------------------------------------"
+	end
+
 **********************************************************************
 **# 1 - simple regression
 **********************************************************************
 
 **## 1.1 - scatter plot with fitted line
 
-* load ethiopia plot data
-    use				"$data/eth_allrounds_final.dta", clear
-	
-* create per ha input variables
-	gen				fert = nitrogen_kg / plot_area_GPS
-	gen				labor = total_labor_days / plot_area_GPS
-	
-* keep only maize observations
-	keep if			crop_name == "MAIZE"
+* load data
+	load_eth_data
 
 * graph yield against nitrogen with linear fit
-	twoway          (scatter yield_kg fert, ///
+	twoway          (scatter yield_kg nitrogen_kg, ///
                             msymbol(oh) msize(vsmall)) ///
-                    (lfit    yield_kg fert), ///
+                    (lfit    yield_kg nitrogen_kg), ///
                         title("yield vs nitrogen") ///
-                        xtitle("nitrogen (kg/ha)") ///
-                        ytitle("yield (kg/ha)") ///
+                        xtitle("nitrogen (kg)") ///
+                        ytitle("yield (kg)") ///
                         legend(order(1 "plots" 2 "linear fit")) ///
                         name(g_simple_reg, replace)
 
-	graph           export      "$answ/09-simple-reg-1.png", replace
+	graph           export      "$export/09_simple_reg_scatter.png", replace
     *** exported a scatter plot with the fitted line for exercise 1
 
 **## 1.2 - run simple regression and interpret output
 
 * estimate simple regression
-	reg             yield_kg fert
+	reg             yield_kg nitrogen_kg
 
 * store key results from simple regression
-	local           b_n_simple  = _b[fert]
-	local           se_n_simple = _se[fert]
-	local           p_n_simple  = 2 * ttail(e(df_r), abs(_b[fert] / _se[fert]))
+	local           b_n_simple  = _b[nitrogen_kg]
+	local           se_n_simple = _se[nitrogen_kg]
+	local           p_n_simple  = 2 * ttail(e(df_r), abs(_b[nitrogen_kg] / _se[nitrogen_kg]))
 	local           r2_simple   = e(r2)
 
 * print solution text to the log
+	linebreak
 	di as result    "exercise 1.2 solution"
-	di as text      "slope on fert: " %9.4f `b_n_simple'
-	di as text      "interpretation: a one-kg increase per hectare in nitrogen is associated with a " ///
+	di as text      "slope on nitrogen_kg: " %9.4f `b_n_simple'
+	di as text      "interpretation: a one-kg increase in nitrogen is associated with a " ///
                     %9.4f `b_n_simple' " kg change in yield, on average."
-	di as text      "p-value on fert: " %9.4f `p_n_simple'
+	di as text      "p-value on nitrogen_kg: " %9.4f `p_n_simple'
 	di as text      "significant at 5%: " cond(`p_n_simple' < 0.05, "yes", "no")
 	di as text      "r-squared: " %9.4f `r2_simple'
 	di as text      "interpretation: the model explains " %6.2f (100 * `r2_simple') ///
@@ -68,23 +110,27 @@
 
 **## 2.1 - add controls
 
-* run simple and multivariate regressions for comparison
-	reg             yield_kg fert
-	local           b_n_simple = _b[fert]
+* reload data for a clean start
+	load_eth_data
 
-	reg             yield_kg fert labor i.irr
-	local           b_n_multi  = _b[fert]
+* run simple and multivariate regressions for comparison
+	reg             yield_kg nitrogen_kg
+	local           b_n_simple = _b[nitrogen_kg]
+
+	reg             yield_kg nitrogen_kg i.irr plot_area_gps
+	local           b_n_multi  = _b[nitrogen_kg]
 	local           b_irr      = _b[1.irr]
 
 * print comparisons and interpretation
+	linebreak
 	di as result    "exercise 2.1 solution"
-	di as text      "simple-regression coefficient on fert: " %9.4f `b_n_simple'
-	di as text      "multivariate coefficient on fert:     " %9.4f `b_n_multi'
+	di as text      "simple-regression coefficient on nitrogen_kg: " %9.4f `b_n_simple'
+	di as text      "multivariate coefficient on nitrogen_kg:     " %9.4f `b_n_multi'
 	di as text      "change in coefficient:                       " %9.4f (`b_n_multi' - `b_n_simple')
-	di as text      "holding fixed irrigation status and labor, a one-kg increase in nitrogen" ///
+	di as text      "holding fixed irrigation status and plot area, a one-kg increase in nitrogen" ///
                     " is associated with a " %9.4f `b_n_multi' " kg change in yield."
 	di as text      "coefficient on 1.irr: " %9.4f `b_irr'
-	di as text      "interpretation: holding fixed nitrogen and labor, irrigated plots have" ///
+	di as text      "interpretation: holding fixed nitrogen and plot area, irrigated plots have" ///
                     " average yield that is " %9.4f `b_irr' " kg different from rainfed plots."
     *** the log reports how the nitrogen coefficient changes after adding controls
 
