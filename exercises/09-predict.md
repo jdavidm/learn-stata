@@ -19,7 +19,6 @@ Using the **maize only** version of `eth_allrounds_final.dta` with per hectare i
 ```
 - Create locals called `gmin` and `gmax` that are the minimum and maximum of `yhat` and `yield_kg`. For example, `gmin = min(`yhat_min', `yield_min')`
 - Use `twoway scatter` to create the scatter plot
-- Add the 45° reference line with `function y = x` and use the locals in the range option:
-  - `function y = x, range(``gmin' ``gmax')`
+- Add the 45° reference line with `function y = x` and use the locals in the range option `function y = x, range(``gmin' ``gmax')`
   
 ---
