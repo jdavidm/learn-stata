@@ -1,0 +1,4 @@
+[1] s.e. on fert got larger
+
+[2] clustering at the household level makes sense because multiple plots from the same household may share shocks, measurement error, or management practices
+    clustering at the plot level does not make sense because the unit of observation is the plot - only 1 obs per plot

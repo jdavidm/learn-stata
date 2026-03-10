@@ -1,0 +1,15 @@
+[1] holding everything else fixed, a one-day increase in labor per hectare is associated with a 0.2033 kg change in yield
+
+[2] all the wave indicators have vifs > 5 so collinearity is a concern
+    but since we typically don't interpret coefficients on controls, and collinearity is a problem of precision, it's not a big deal here
+
+[3.1] see graph
+
+[3.2] yes, there is evidence of heteroskedasticity because the spread widens as predicted values increase
+
+[4.1] 0.0458 (naive), 0.0855 (robust), 0.0977 (clustered)
+
+[4.2] clustered is most appropriate because it takes care of heteroskedasticity and within-cluster correlation
+
+[5] since the coefficient on the interaction is positive and significant
+    it suggests fertilizer is more effective the more labor you have

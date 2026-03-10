@@ -1,0 +1,5 @@
+[1] the two seed variables have vif above 10
+
+[2] they measure the same input in different currencies, so one is just a rescaled version of the other
+
+[3] imprecise

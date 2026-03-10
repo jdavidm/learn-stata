@@ -1,0 +1,3 @@
+[2] the spread widens as values get larger, which suggests the presence of heteroskedasticity
+
+

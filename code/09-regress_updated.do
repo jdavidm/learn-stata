@@ -1,29 +1,53 @@
- * course: AAE 497A/597A
-* assignment: 8
+* course: aae 497a/597a
+* assignment: 9
 * created on: mar 26
 * created by: jdm
 * edited on: 10 mar 26
-* edited by: jdm
-* Stata v.19.5
-	
+* edited by: openai
+* stata v.19.5
+
+**********************************************************************
+**# 0 - setup
+**********************************************************************
+
 * open log
-	cap log 		close
+	cap				log				close
 	log using		"$logout/09-regress", append
 
-* load ethiopia plot data
-    use				"$data/eth_allrounds_final.dta", clear
-	
-* create per ha input variables
-	gen				fert = nitrogen_kg / plot_area_GPS
-	lab var			fert "fertilizer (kg/ha)"
-	gen				labor = total_labor_days / plot_area_GPS
-	lab var			labor "labor (days/ha)"
-	
-* keep only maize observations
-	keep if			crop_name == "MAIZE"
-	
+* define helper program to load maize-only analysis data
+	cap program		drop			load_maize_data
+	program define	load_maize_data
+		use			"$data/eth_allrounds_final.dta", clear
+
+		* keep maize observations
+		keep if			lower(crop_name) == "maize"
+
+		* drop plots with missing or nonpositive area
+		drop if			missing(plot_area_GPS) | plot_area_GPS <= 0
+
+		* create per-hectare input variables
+		cap drop		fert
+		gen				fert  = nitrogen_kg / plot_area_GPS
+		lab var			fert  "nitrogen fertilizer (kg/ha)"
+
+		cap drop		labor
+		gen				labor = total_labor_days / plot_area_GPS
+		lab var			labor "labor (days/ha)"
+
+		cap drop		seed
+		gen				seed  = seed_value_USD / plot_area_GPS
+		lab var			seed  "seed value (usd/ha)"
+
+		* drop observations missing core analysis variables
+		drop if			missing(yield_kg, fert, labor)
+	end
+
+* load prepared analysis data once
+	load_maize_data
+    *** this creates the maize-only data with per-hectare inputs used throughout
+
 **********************************************************************
-**# 1 - simple regression
+**# 1 - simple reg
 **********************************************************************
 
 **## 1.1 - create scatter plot with fitted line
@@ -66,33 +90,34 @@
 					"% of the sample variation in yield_kg."
     *** the log reports the exact coefficient, significance result, and r-squared
 
-
 **********************************************************************
-**# 2 - multivariate regression
+**# 2 - multivariate reg
 **********************************************************************
 
-**## 2.1 - add controls
+**## 2.1 - compare simple and multivariate coefficients
 
-* run simple and multivariate regressions for comparison
-	reg             yield_kg fert
-	local           b_n_simple = _b[fert]
+* re-estimate simple regression for a direct comparison
+	reg				yield_kg fert
+	local			b_fert_simple = _b[fert]
 
-	reg             yield_kg fert labor i.irr
-	local           b_n_multi  = _b[fert]
-	local           b_irr      = _b[1.irr]
+* estimate multivariate regression
+	reg				yield_kg fert labor i.irr
+	local			b_fert_multi = _b[fert]
+	local			b_irr_multi = _b[1.irr]
 
-* print comparisons and interpretation
-	di as result    "exercise 2.1 solution"
-	di as text      "simple-regression coefficient on fert: " %9.4f `b_n_simple'
-	di as text      "multivariate coefficient on fert:     " %9.4f `b_n_multi'
-	di as text      "change in coefficient:                       " %9.4f (`b_n_multi' - `b_n_simple')
-	di as text      "holding fixed irrigation status and labor, a one-kg increase in nitrogen" ///
-                    " is associated with a " %9.4f `b_n_multi' " kg change in yield."
-	di as text      "coefficient on 1.irr: " %9.4f `b_irr'
-	di as text      "interpretation: holding fixed nitrogen and labor, irrigated plots have" ///
-                    " average yield that is " %9.4f `b_irr' " kg different from rainfed plots."
-    *** the log reports how the nitrogen coefficient changes after adding controls
-
+* print the requested answers
+	di as result	"exercise 2 solution"
+	di as text		"simple-regression coefficient on fert: " %9.4f `b_fert_simple'
+	di as text		"multivariate coefficient on fert:     " %9.4f `b_fert_multi'
+	di as text		"change in coefficient:                " %9.4f (`b_fert_multi' - `b_fert_simple')
+	di as text		"holding fixed labor and irrigation status, a one-kg increase in fertilizer" ///
+					" per hectare is associated with a " %9.4f `b_fert_multi' ///
+					" kg change in yield."
+	di as text		"coefficient on 1.irr: " %9.4f `b_irr_multi'
+	di as text		"interpretation: holding fixed fertilizer and labor, irrigated plots have" ///
+					" average yield that is " %9.4f `b_irr_multi' ///
+					" kg higher or lower than rainfed plots, depending on the sign."
+    *** the log compares the simple and multivariate fertilizer slopes and interprets irrigation
 
 **********************************************************************
 **# 3 - factor variables
@@ -152,6 +177,8 @@
 **# 4 - predict
 **********************************************************************
 
+**## 4.1 - generate predicted values
+
 * estimate the prediction model
 	reg				yield_kg fert labor i.irr i.admin_1
 
@@ -159,6 +186,8 @@
 	cap drop		yhat
 	predict			yhat
     *** yhat contains the predicted values from the regression
+
+**## 4.2 - graph actual yield against predicted yield
 
 * store graph range for the 45-degree line
 	qui sum			yhat, meanonly
@@ -182,10 +211,9 @@
 						legend(order(1 "plots" 2 "45-degree line")) ///
 						name(g_predict, replace)
 
-	graph export	"$answ/09-predict.png", replace
+	graph export	"$answ/09-predict-1.png", replace
     *** points closer to the 45-degree line indicate better in-sample fit
 
-	
 **********************************************************************
 **# 5 - residuals
 **********************************************************************
@@ -223,10 +251,11 @@
 	di as text		"if the spread stays roughly constant, the errors look closer to homoskedastic."
     *** the visual pattern in the plot is the primary answer for this exercise
 
-	
 **********************************************************************
 **# 6 - robust
 **********************************************************************
+
+**## 6.1 - compare default and robust standard errors
 
 * estimate default model
 	reg				yield_kg fert labor i.irr i.admin_1
@@ -253,17 +282,18 @@
 						 (`p_default' >= 0.05 & `p_robust' >= 0.05), "no", "yes")
     *** robust standard errors affect inference, not the coefficient estimates themselves
 
-	
 **********************************************************************
 **# 7 - cluster
 **********************************************************************
+
+**## 7.1 - compare robust and clustered standard errors
 
 * estimate robust model
 	reg				yield_kg fert labor i.irr i.admin_1, robust
 	local			se_robust = _se[fert]
 
 * estimate clustered model
-	reg				yield_kg fert labor i.irr i.admin_1, vce(cluster hh_id_obs)
+	reg				yield_kg fert labor i.irr i.admin_1, vce(cluster hhid)
 	local			se_cluster = _se[fert]
 
 * print the answer
@@ -277,10 +307,11 @@
 					" unit of observation rather than a cluster containing multiple correlated observations."
     *** household clustering is the appropriate correction when errors may be correlated within hhid
 
-	
 **********************************************************************
 **# 8 - vif
 **********************************************************************
+
+**## 8.1 - diagnose collinearity
 
 * estimate model with potentially collinear seed measures
 	reg				yield_kg fert labor i.irr i.admin_1 seed_value_LCU seed_value_USD
@@ -296,16 +327,11 @@
 	di as text		"high vif implies imprecision from collinearity, not omitted-variable bias in the coefficients."
     *** the seed-value variables are the most likely source of high vif in this specification
 
-	
 **********************************************************************
 **# 9 - challenge
 **********************************************************************
 
-* create seed variable
-	gen				seed = seed_value_USD / plot_area_GPS
-	lab var			seed "seed (USD/ha)"
-
-**## 9.1 - interpret the coefficient on labor
+**## 9.1 - estimate the main challenge regression
 
 * estimate the challenge specification
 	reg				yield_kg fert labor seed i.irr i.intercropped i.crop_shock i.admin_1 i.wave
@@ -349,7 +375,7 @@
 						ytitle("residual") ///
 						name(g_challenge_resid, replace)
 
-	graph export	"$answ/09-challenge-2.png", replace
+	graph export	"$answ/09-challenge-resid-1.png", replace
     *** use the shape of the residual cloud to judge whether heteroskedasticity is visible
 
 * print the interpretation guidance
@@ -370,7 +396,7 @@
 
 * estimate clustered model
 	reg				yield_kg fert labor seed i.irr i.intercropped i.crop_shock i.admin_1 i.wave, ///
-					vce(cluster hh_id_obs)
+					vce(cluster hhid)
 	local			se_cluster = _se[fert]
 
 * print the answer

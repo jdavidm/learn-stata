@@ -1,0 +1,8 @@
+[1] tigray
+
+[2] 2.409; the interaction tells us how much the fertilizer slope changes on irrigated plots
+
+[3] a negative squared term is consistent with diminishing returns to fertilizer over the observed range
+
+
+
