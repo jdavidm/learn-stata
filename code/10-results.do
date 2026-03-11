@@ -26,23 +26,26 @@
 
 
 ********************************************************************************
-**# exercise 2 - inserting a stata table
+**# exercise 2 - inserting a stata figure
 ********************************************************************************
 
 * load tenure data and keep rice
 	use				"$data/tenuredata.dta", clear
 	keep if			rice == 1
 
-* summary statistics
-	estpost			summarize yield q_f_ha lt_f_ha area, detail
+* scatter plot of yield vs fertilizer
+	twoway			(scatter yield q_f_ha, ///
+							msymbol(oh) msize(vsmall)) ///
+					(lfit yield q_f_ha), ///
+						title("Rice yield vs fertilizer") ///
+						xtitle("Fertilizer (kg/ha)") ///
+						ytitle("Yield (kg/ha)") ///
+						legend(order(1 "Parcels" 2 "Linear fit")) ///
+						graphregion(color(white)) ///
+						name(g_scatter_rice, replace)
 
-* export to LaTeX
-	esttab			using "$answ/10-latex-table.tex", replace ///
-						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
-						noobs nonumber nomtitle ///
-						title("Summary Statistics for Rice Parcels") ///
-						booktabs label
-    *** exported summary statistics table for inclusion in LaTeX
+	graph export	"$answ/10-scatter-rice.png", replace
+    *** exported scatter for inclusion in LaTeX document
 
 
 ********************************************************************************
@@ -140,26 +143,7 @@
 
 
 ********************************************************************************
-**# exercise 6 - inserting a stata figure
-********************************************************************************
-
-* scatter plot of yield vs fertilizer
-	twoway			(scatter yield q_f_ha, ///
-							msymbol(oh) msize(vsmall)) ///
-					(lfit yield q_f_ha), ///
-						title("Rice yield vs fertilizer") ///
-						xtitle("Fertilizer (kg/ha)") ///
-						ytitle("Yield (kg/ha)") ///
-						legend(order(1 "Parcels" 2 "Linear fit")) ///
-						graphregion(color(white)) ///
-						name(g_scatter_rice, replace)
-
-	graph export	"$answ/10-scatter-rice.png", replace
-    *** exported scatter for inclusion in LaTeX document
-
-
-********************************************************************************
-**# exercise 7 - basic coefplot
+**# exercise 6 - basic coefplot
 ********************************************************************************
 
 * run regression
@@ -178,7 +162,7 @@
 
 
 ********************************************************************************
-**# exercise 8 - multi-model coefplot
+**# exercise 7 - multi-model coefplot
 ********************************************************************************
 
 * model 1: baseline
@@ -207,14 +191,14 @@
 	graph export	"$answ/10-coefplot-multi.png", replace
 
 * print interpretation
-	di as result	"exercise 8 solution"
+	di as result	"exercise 7 solution"
 	di as text		"check whether the fertilizer coefficient is stable across specifications."
 	di as text		"if the point estimate and CI barely move, the result is robust to control choice."
     *** the stability of q_f_ha across specs is the key answer
 
 
 ********************************************************************************
-**# exercise 9 - specification chart
+**# exercise 8 - specification chart
 ********************************************************************************
 
 * reload data
