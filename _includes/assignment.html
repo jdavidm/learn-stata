@@ -5,7 +5,7 @@
   {% assign exercise_loop = forloop %}
   {% for otherpage in site.pages %}
   {% if exercise == otherpage.title and page.language == otherpage.language and otherpage.layout == 'exercise'%}
-  <li markdown="1">
+  <li>
     <h4><a href="{{ site.baseurl }}{{ otherpage.url }}">
         {% if page.points[exercise_loop.index0] == 'optional' or page.points[exercise_loop.index0] == 'Challenge -
         optional' %}
@@ -19,7 +19,7 @@
     <font color="000000">{{ otherpage.title }}</font></a></h4>
     {% endif %}
 
-    {{ otherpage.content }}
+    {{ otherpage.content | markdownify }}
 
   </li>
   {% endif %}
