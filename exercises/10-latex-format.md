@@ -11,19 +11,19 @@ In your `lastname.tex` file in the `semester26` Overleaf project, under `\sectio
 
 2\. Write the OLS regression equation in display math (using `\begin{equation}` ... `\end{equation}`):
 
-$$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$$
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
 
 Use `\beta`, subscripts (`_`), and `\varepsilon`.
 
 3\. Write the formula for the OLS estimator of $\hat{\beta}_1$ as a displayed equation:
 
-$$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n}(X_i - \bar{X})^2}$$
+$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n}(X_i - \bar{X})^2}$
 
 Use `\hat{}`, `\bar{}`, `\frac{}{}`, `\sum_{i=1}^{n}`, and superscripts (`^`).
 
 4\. Write the formula for the standard error of the regression as a displayed equation:
 
-$$SE(\hat{\beta}) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}$$
+$SE(\hat{\beta}) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}$
 
 Use `\sqrt{}`, `\frac{}{}`, `\sum_{i=1}^{n}`, `\bar{}`, and `\hat{}`.
 
