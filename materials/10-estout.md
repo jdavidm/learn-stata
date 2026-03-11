@@ -78,6 +78,8 @@ To export to LaTeX:
 
 The `booktabs` option in your preamble produces cleaner horizontal rules (`\toprule`, `\midrule`, `\bottomrule`).
 
+> Do [Exercise 3 - Summary Statistics Table]({{ site.baseurl }}/exercises/10-sumstats/)
+
 ### Single regression table
 
 ```stata
@@ -86,21 +88,26 @@ The `booktabs` option in your preamble produces cleaner horizontal rules (`\topr
                         vce(cluster hh_id_obs)
     eststo          m_full
 
-* display with customization
-    esttab          m_full, ///
-                        se star(* 0.10 ** 0.05 *** 0.01) ///
+* display with customization and export to LaTeX
+    esttab          m_full using "$answ/10-yield-regs.tex", replace ///
+                        b(3) se(3) ///
                         keep(fert labor 1.irr) ///
-                        label ///
-                        title("Yield regression") ///
-                        note("Clustered SEs at household level")
+                        label booktabs nonum nomtitle collabels(none) nobaselevels nogaps ///
+                        prehead("\begin{tabular}{l*{1}{c}} \hline \hline \\[-1.8ex]" ///
+                        "& \multicolumn{1}{c}{Yield (kg/ha)} \\ ") ///
+                        postfoot("\hline \hline \\[-1.8ex] \multicolumn{2}{p{0.5\linewidth}}{\small " ///
+                        "\noindent \textit{Note}: Regression results " ///
+                        "from our specification with region fixed effects. " ///
+                        "Standard errors are clustered at the household level, " ///
+                        "with standard errors displayed in parentheses.} \end{tabular}")
 ```
 
 Key options:
-- `se` — show standard errors in parentheses below coefficients
-- `star(* 0.10 ** 0.05 *** 0.01)` — significance stars at conventional levels
+- `b(3)` and `se(3)` — controls decimal formatting to 3 places
 - `keep(...)` — show only the variables of interest (hides fixed effects)
 - `label` — use variable labels instead of variable names
-- `title(...)` and `note(...)` — add a title and footnote
+- `booktabs` — uses cleaner horizontal rules when generating LaTeX tables
+- `prehead(...)` and `postfoot(...)` — custom LaTeX wrappers for the top and bottom of the table, including column headers and notes
 
 ### Multi-column regression tables
 
@@ -150,8 +157,6 @@ Key new options:
 - `stats(N r2, ...)` — adds model statistics at the bottom
 - `fmt(...)` — controls decimal formatting
 
-> Do [Exercise 3 - Basic esttab Table]({{ site.baseurl }}/exercises/10-esttab-basic/)
-
 ### Exporting to LaTeX
 
 To produce a `.tex` file that you can `\input{}` in Overleaf, add `using "filename.tex"`:
@@ -186,7 +191,7 @@ Then in your Overleaf document:
 \end{table}
 ```
 
-> Do [Exercise 4 - Multi-Column Table with Notes]({{ site.baseurl }}/exercises/10-esttab-multi/)
+> Do [Exercise 4 - Basic `esttab` Table]({{ site.baseurl }}/exercises/10-esttab-basic/)
 
 ### More customization
 
@@ -228,7 +233,7 @@ You can add custom scalars (e.g., mean of the dependent variable):
                               fmt(1 0 3))
 ```
 
-> Do [Exercise 5 - Summary Statistics Table]({{ site.baseurl }}/exercises/10-sumstats/)
+> Do [Exercise 5 - Multi-Column Table with Notes]({{ site.baseurl }}/exercises/10-esttab-multi/)
 
 ### Quick reference
 
