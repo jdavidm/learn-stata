@@ -5,7 +5,7 @@ title: Introducing LaTeX via Overleaf
 language: Stata
 ---
 
-So far, all of our results ΓÇö regressions, graphs, summary statistics ΓÇö have been produced in Stata. But how do you present them in a professional document? In economics, the standard is **LaTeX** (pronounced "lah-tech" or "lay-tech"), a typesetting system designed for technical writing.
+So far, all of our results — regressions, graphs, summary statistics — have been produced in Stata. But how do you present them in a professional document? In economics, the standard is **LaTeX** (pronounced "lah-tech" or "lay-tech"), a typesetting system designed for technical writing.
 
 This lecture covers:
 - What LaTeX is and why researchers use it
@@ -13,7 +13,7 @@ This lecture covers:
 - Formatting text: sections, bold, italic, lists
 - Writing math in LaTeX
 - Including figures from Stata
-- Including tables from Stata (preview ΓÇö we'll produce them next lecture)
+- Including tables from Stata (preview — we'll produce them next lecture)
 
 ### Why LaTeX?
 
@@ -22,7 +22,7 @@ Most academic papers, theses, and working papers in economics are written in LaT
 - **Math** looks professional and is easy to type once you learn the syntax
 - **Tables and figures** are included as code, so they update automatically when you re-run your analysis
 - **Cross-references**, numbered equations, and bibliography entries are managed automatically
-- **Formatting** is consistent ΓÇö you focus on content, LaTeX handles layout
+- **Formatting** is consistent — you focus on content, LaTeX handles layout
 
 The tradeoff: LaTeX has a learning curve. But with Overleaf (a free, cloud-based LaTeX editor), you can get started without installing anything.
 
@@ -30,7 +30,7 @@ The tradeoff: LaTeX has a learning curve. But with Overleaf (a free, cloud-based
 
 Your `semester26` Overleaf project is connected to the `semester26` git repository. The workflow is:
 
-1. Run your Stata code ΓåÆ graphs and tables are exported to the repo
+1. Run your Stata code → graphs and tables are exported to the repo
 2. The repo syncs with your Overleaf project
 3. In your `lastname.tex` file, you use `\input{}` or `\includegraphics{}` to pull in those results
 4. Compile your document in Overleaf to produce a PDF
@@ -64,11 +64,11 @@ Every LaTeX document has the same skeleton:
 
 Key pieces:
 
-- `\documentclass{article}` ΓÇö tells LaTeX this is a standard article
-- `\usepackage{...}` ΓÇö loads extra features (like including graphics)
-- `\begin{document}` ... `\end{document}` ΓÇö everything between these is the actual content
-- `\maketitle` ΓÇö renders the title, author, and date
-- `\section*{...}` ΓÇö creates a section heading (the `*` suppresses numbering)
+- `\documentclass{article}` — tells LaTeX this is a standard article
+- `\usepackage{...}` — loads extra features (like including graphics)
+- `\begin{document}` ... `\end{document}` — everything between these is the actual content
+- `\maketitle` — renders the title, author, and date
+- `\section*{...}` — creates a section heading (the `*` suppresses numbering)
 
 ### Formatting text
 
@@ -96,7 +96,7 @@ This is \textbf{bold} and this is \textit{italic}.
 \end{enumerate}
 ```
 
-Note that `%` is the comment character in LaTeX ΓÇö everything after `%` on a line is ignored by the compiler.
+Note that `%` is the comment character in LaTeX — everything after `%` on a line is ignored by the compiler.
 
 ### Math in LaTeX
 
@@ -110,7 +110,7 @@ Surround math with dollar signs to write it inline:
 The regression model is $Y = \beta_0 + \beta_1 X + \varepsilon$.
 ```
 
-This renders as: The regression model is *Y = ╬▓ΓéÇ + ╬▓ΓéüX + ╬╡*.
+This renders as: The regression model is *Y = β₀ + β₁X + ε*.
 
 #### Display math
 
@@ -134,15 +134,15 @@ Or use `\[` ... `\]` for an unnumbered displayed equation:
 
 | Symbol | LaTeX code | What it is |
 |---|---|---|
-| ╬▓ | `\beta` | Greek letter |
-| ╬╡ | `\varepsilon` | Error term |
-| ╬▓╠é | `\hat{\beta}` | Estimate (hat) |
-| ╚▓ | `\bar{Y}` | Mean (bar) |
-| ╬ú | `\sum_{i=1}^{n}` | Summation |
-| ΓêÜ | `\sqrt{x}` | Square root |
-| Γëá | `\neq` | Not equal |
-| Γëñ | `\leq` | Less than or equal |
-| Γê₧ | `\infty` | Infinity |
+| β | `\beta` | Greek letter |
+| ε | `\varepsilon` | Error term |
+| β̂ | `\hat{\beta}` | Estimate (hat) |
+| Ȳ | `\bar{Y}` | Mean (bar) |
+| Σ | `\sum_{i=1}^{n}` | Summation |
+| √ | `\sqrt{x}` | Square root |
+| ≠ | `\neq` | Not equal |
+| ≤ | `\leq` | Less than or equal |
+| ∞ | `\infty` | Infinity |
 | subscript | `X_i` | Subscript |
 | superscript | `X^2` | Superscript |
 | fraction | `\frac{a}{b}` | Fraction a/b |
@@ -164,11 +164,11 @@ When your Stata code exports a graph (e.g., `graph export "$answ/coefplot.png", 
 
 Key elements:
 
-- `[htbp]` ΓÇö tells LaTeX where to try placing the figure (here, top, bottom, own page)
-- `\centering` ΓÇö centers the figure
-- `[width=0.8\textwidth]` ΓÇö scales the image to 80% of the text width
-- `\caption{...}` ΓÇö adds a caption below the figure
-- `\label{fig:coefplot}` ΓÇö creates a label so you can cross-reference with `Figure \ref{fig:coefplot}`
+- `[htbp]` — tells LaTeX where to try placing the figure (here, top, bottom, own page)
+- `\centering` — centers the figure
+- `[width=0.8\textwidth]` — scales the image to 80% of the text width
+- `\caption{...}` — adds a caption below the figure
+- `\label{fig:coefplot}` — creates a label so you can cross-reference with `Figure \ref{fig:coefplot}`
 
 > Do [Exercise 2 - Inserting a Stata Figure]({{ site.baseurl }}/exercises/10-latex-figure/)
 
@@ -188,7 +188,7 @@ When your Stata code exports a table with `esttab using "table.tex"` (covered in
 The `\input{}` command pastes the contents of `table.tex` directly into your document. This means:
 
 - When you re-run your Stata code and the `.tex` file updates, your document updates too
-- You don't need to copy-paste tables ΓÇö just re-compile
+- You don't need to copy-paste tables — just re-compile
 
 We'll create these `.tex` files in the estout lecture.
 
@@ -196,14 +196,14 @@ We'll create these `.tex` files in the estout lecture.
 
 1. **Missing closing braces**: every `{` needs a `}`. Overleaf highlights errors in red
 2. **Special characters**: `%`, `&`, `$`, `_`, `#` have special meanings in LaTeX. To print them literally, use `\%`, `\&`, `\$`, `\_`, `\#`
-3. **Spaces after commands**: `\beta x` prints "╬▓x" ΓÇö if you want a space, use `\beta\ x` or `\beta{} x`
+3. **Spaces after commands**: `\beta x` prints "βx" — if you want a space, use `\beta\ x` or `\beta{} x`
 4. **Compile often**: small errors are easier to find if you compile after each change
 
 ### Summary
 
 - LaTeX is the standard typesetting system for academic economics
 - Overleaf gives you a free, cloud-based editor with real-time compilation
-- Your `semester26` workflow: Stata exports ΓåÆ git repo ΓåÆ Overleaf ΓåÆ PDF
+- Your `semester26` workflow: Stata exports → git repo → Overleaf → PDF
 - Master the basics: document structure, sections, bold/italic, and math mode
 - Figures go in with `\includegraphics{}`, tables with `\input{}`
 
