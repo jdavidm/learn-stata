@@ -1,4 +1,4 @@
- * course: AAE 497A/597A
+* course: AAE 497A/597A
 * assignment: 10
 * created on: mar 26
 * created by: jdm
@@ -26,12 +26,122 @@
 
 
 ********************************************************************************
-**# exercise 2 - inserting a stata figure
+**# exercise 2 - inserting a stata table
 ********************************************************************************
 
 * load tenure data and keep rice
 	use				"$data/tenuredata.dta", clear
 	keep if			rice == 1
+
+* summary statistics
+	estpost			summarize yield q_f_ha lt_f_ha area, detail
+
+* export to LaTeX
+	esttab			using "$answ/10-latex-table.tex", replace ///
+						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
+						noobs nonumber nomtitle ///
+						title("Summary Statistics for Rice Parcels") ///
+						booktabs label
+    *** exported summary statistics table for inclusion in LaTeX
+
+
+********************************************************************************
+**# exercise 3 - basic esttab table
+********************************************************************************
+
+* reload data
+	use				"$data/tenuredata.dta", clear
+	keep if			rice == 1
+
+* run and store
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
+						vce(cluster panelid)
+	estimates		store r1
+
+* display table
+	esttab			r1, se star(* 0.10 ** 0.05 *** 0.01) ///
+						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+						label ///
+						title("Rice yield regression") ///
+						stats(N r2, labels("Observations" "R-squared") ///
+							fmt(0 3))
+
+* print interpretation
+	di as result	"exercise 3 solution"
+	di as text		"stars: * significant at 10%, ** at 5%, *** at 1%"
+    *** the stars indicate the p-value threshold for significance
+
+
+********************************************************************************
+**# exercise 4 - multi-column table with notes
+********************************************************************************
+
+* run and store three regressions
+	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
+	estimates		store r1
+
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
+						vce(cluster panelid)
+	estimates		store r2
+
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure ///
+						i.site i.year, vce(cluster panelid)
+	estimates		store r3
+
+* display in Stata
+	esttab			r1 r2 r3, ///
+						se star(* 0.10 ** 0.05 *** 0.01) ///
+						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+						label ///
+						mtitles("(1)" "(2)" "(3)") ///
+						indicate("Site FE = *.site" "Year FE = *.year") ///
+						stats(N r2, labels("Observations" "R-squared") ///
+							fmt(0 3)) ///
+						note("Clustered SEs at household level." ///
+							 "* p<0.10, ** p<0.05, *** p<0.01")
+
+* export to LaTeX
+	esttab			r1 r2 r3 using "$answ/10-rice-regs.tex", replace ///
+						se star(* 0.10 ** 0.05 *** 0.01) ///
+						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+						label booktabs ///
+						mtitles("(1)" "(2)" "(3)") ///
+						indicate("Site FE = *.site" "Year FE = *.year") ///
+						stats(N r2, labels("Observations" "R-squared") ///
+							fmt(0 3)) ///
+						note("Clustered SEs at household level." ///
+							 "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)")
+    *** exported multi-column regression table to LaTeX
+
+
+********************************************************************************
+**# exercise 5 - summary statistics table
+********************************************************************************
+
+* summary statistics
+	estpost			summarize yield q_f_ha lt_f_ha area irrig tenure, ///
+						detail
+
+* display
+	esttab,			cells("count mean sd min max") ///
+						noobs nonumber nomtitle ///
+						title("Summary Statistics — Rice Parcels") ///
+						label
+
+* export to LaTeX
+	esttab			using "$answ/10-sumstats-rice.tex", replace ///
+						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
+						noobs nonumber nomtitle ///
+						title("Summary Statistics — Rice Parcels") ///
+						booktabs label
+    *** exported summary statistics table to LaTeX
+
+
+********************************************************************************
+**# exercise 6 - inserting a stata figure
+********************************************************************************
 
 * scatter plot of yield vs fertilizer
 	twoway			(scatter yield q_f_ha, ///
@@ -49,7 +159,7 @@
 
 
 ********************************************************************************
-**# exercise 3 - basic coefplot
+**# exercise 7 - basic coefplot
 ********************************************************************************
 
 * run regression
@@ -68,7 +178,7 @@
 
 
 ********************************************************************************
-**# exercise 4 - multi-model coefplot
+**# exercise 8 - multi-model coefplot
 ********************************************************************************
 
 * model 1: baseline
@@ -97,14 +207,14 @@
 	graph export	"$answ/10-coefplot-multi.png", replace
 
 * print interpretation
-	di as result	"exercise 4 solution"
+	di as result	"exercise 8 solution"
 	di as text		"check whether the fertilizer coefficient is stable across specifications."
 	di as text		"if the point estimate and CI barely move, the result is robust to control choice."
     *** the stability of q_f_ha across specs is the key answer
 
 
 ********************************************************************************
-**# exercise 5 - specification chart
+**# exercise 9 - specification chart
 ********************************************************************************
 
 * reload data
@@ -220,108 +330,14 @@
 
 
 ********************************************************************************
-**# exercise 6 - basic esttab table
+**# exercise 10 - challenge
 ********************************************************************************
 
-* reload data
+**## 10.1 - setup
 	use				"$data/tenuredata.dta", clear
 	keep if			rice == 1
 
-* run and store
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
-						vce(cluster panelid)
-	estimates		store r1
-
-* display table
-	esttab			r1, se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label ///
-						title("Rice yield regression") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3))
-
-* print interpretation
-	di as result	"exercise 6 solution"
-	di as text		"stars: * significant at 10%, ** at 5%, *** at 1%"
-    *** the stars indicate the p-value threshold for significance
-
-
-********************************************************************************
-**# exercise 7 - multi-column table with notes
-********************************************************************************
-
-* run and store three regressions
-	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
-	estimates		store r1
-
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
-						vce(cluster panelid)
-	estimates		store r2
-
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure ///
-						i.site i.year, vce(cluster panelid)
-	estimates		store r3
-
-* display in Stata
-	esttab			r1 r2 r3, ///
-						se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label ///
-						mtitles("(1)" "(2)" "(3)") ///
-						indicate("Site FE = *.site" "Year FE = *.year") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3)) ///
-						note("Clustered SEs at household level." ///
-							 "* p<0.10, ** p<0.05, *** p<0.01")
-
-* export to LaTeX
-	esttab			r1 r2 r3 using "$answ/10-rice-regs.tex", replace ///
-						se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label booktabs ///
-						mtitles("(1)" "(2)" "(3)") ///
-						indicate("Site FE = *.site" "Year FE = *.year") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3)) ///
-						note("Clustered SEs at household level." ///
-							 "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)")
-    *** exported multi-column regression table to LaTeX
-
-
-********************************************************************************
-**# exercise 8 - summary statistics table
-********************************************************************************
-
-* summary statistics
-	estpost			summarize yield q_f_ha lt_f_ha area irrig tenure, ///
-						detail
-
-* display
-	esttab,			cells("count mean sd min max") ///
-						noobs nonumber nomtitle ///
-						title("Summary Statistics — Rice Parcels") ///
-						label
-
-* export to LaTeX
-	esttab			using "$answ/10-sumstats-rice.tex", replace ///
-						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
-						noobs nonumber nomtitle ///
-						title("Summary Statistics — Rice Parcels") ///
-						booktabs label
-    *** exported summary statistics table to LaTeX
-
-
-********************************************************************************
-**# exercise 9 - challenge
-********************************************************************************
-
-**## 9.1 - setup
-	use				"$data/tenuredata.dta", clear
-	keep if			rice == 1
-
-**## 9.2 - summary statistics
+**## 10.2 - summary statistics
 	estpost			summarize yield q_f_ha lt_f_ha area irrig tenure ///
 						educhoh agehoh, detail
 
@@ -332,7 +348,7 @@
 						booktabs label
     *** exported challenge summary stats table
 
-**## 9.3 - regression table
+**## 10.3 - regression table
 
 * run and store four specifications
 	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
@@ -365,7 +381,7 @@
 							 "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)")
     *** exported challenge regression table
 
-**## 9.4 - coefficient plot
+**## 10.4 - coefficient plot
 
 * multi-model coefplot
 	coefplot		c1 c2 c3 c4, keep(q_f_ha) xline(0) ///

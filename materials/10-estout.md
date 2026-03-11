@@ -154,7 +154,7 @@ Key new options:
 - `stats(N r2, ...)` — adds model statistics at the bottom
 - `fmt(...)` — controls decimal formatting
 
-> Do [Exercise 6 - Basic esttab Table]({{ site.baseurl }}/exercises/10-esttab-basic/)
+> Do [Exercise 3 - Basic esttab Table]({{ site.baseurl }}/exercises/10-esttab-basic/)
 
 ### Exporting to LaTeX
 
@@ -189,7 +189,7 @@ Then in your Overleaf document:
 \end{table}
 ```
 
-> Do [Exercise 7 - Multi-Column Table with Notes]({{ site.baseurl }}/exercises/10-esttab-multi/)
+> Do [Exercise 4 - Multi-Column Table with Notes]({{ site.baseurl }}/exercises/10-esttab-multi/)
 
 ### More customization
 
@@ -231,7 +231,7 @@ You can add custom scalars (e.g., mean of the dependent variable):
                               fmt(1 0 3))
 ```
 
-> Do [Exercise 8 - Summary Statistics Table]({{ site.baseurl }}/exercises/10-sumstats/)
+> Do [Exercise 5 - Summary Statistics Table]({{ site.baseurl }}/exercises/10-sumstats/)
 
 ### Quick reference
 

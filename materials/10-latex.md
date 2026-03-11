@@ -12,8 +12,8 @@ This lecture covers:
 - The structure of a LaTeX document
 - Formatting text: sections, bold, italic, lists
 - Writing math in LaTeX
-- Including figures from Stata
 - Including tables from Stata (preview — we'll produce them next lecture)
+- Including figures from Stata
 
 ### Why LaTeX?
 
@@ -149,6 +149,28 @@ Or use `\[` ... `\]` for an unnumbered displayed equation:
 
 > Do [Exercise 1 - LaTeX Formatting and Math]({{ site.baseurl }}/exercises/10-latex-format/)
 
+### Including tables
+
+When your Stata code exports a table with `esttab using "table.tex"` (covered in the next lecture), the `.tex` file contains LaTeX code for the table. To include it:
+
+```latex
+\begin{table}[htbp]
+    \centering
+    \caption{Regression results: yield on inputs}
+    \label{tab:yield_reg}
+    \input{table.tex}
+\end{table}
+```
+
+The `\input{}` command pastes the contents of `table.tex` directly into your document. This means:
+
+- When you re-run your Stata code and the `.tex` file updates, your document updates too
+- You don't need to copy-paste tables — just re-compile
+
+We'll create these `.tex` files in the `estout` lecture.
+
+> Do [Exercise 2 - Inserting a Stata Table]({{ site.baseurl }}/exercises/10-latex-table/)
+
 ### Including figures
 
 When your Stata code exports a graph (e.g., `graph export "$answ/coefplot.png", replace`), that file lands in your repo and syncs to Overleaf. To include it in your document:
@@ -170,27 +192,7 @@ Key elements:
 - `\caption{...}` — adds a caption below the figure
 - `\label{fig:coefplot}` — creates a label so you can cross-reference with `Figure \ref{fig:coefplot}`
 
-> Do [Exercise 2 - Inserting a Stata Figure]({{ site.baseurl }}/exercises/10-latex-figure/)
-
-### Including tables
-
-When your Stata code exports a table with `esttab using "table.tex"` (covered in the estout lecture), the `.tex` file contains LaTeX code for the table. To include it:
-
-```latex
-\begin{table}[htbp]
-    \centering
-    \caption{Regression results: yield on inputs}
-    \label{tab:yield_reg}
-    \input{table.tex}
-\end{table}
-```
-
-The `\input{}` command pastes the contents of `table.tex` directly into your document. This means:
-
-- When you re-run your Stata code and the `.tex` file updates, your document updates too
-- You don't need to copy-paste tables — just re-compile
-
-We'll create these `.tex` files in the estout lecture.
+> Do [Exercise 6 - Inserting a Stata Figure]({{ site.baseurl }}/exercises/10-latex-figure/)
 
 ### Common mistakes and tips
 
@@ -205,6 +207,6 @@ We'll create these `.tex` files in the estout lecture.
 - Overleaf gives you a free, cloud-based editor with real-time compilation
 - Your `semester26` workflow: Stata exports → git repo → Overleaf → PDF
 - Master the basics: document structure, sections, bold/italic, and math mode
-- Figures go in with `\includegraphics{}`, tables with `\input{}`
+- Tables go in with `\input{}`, figures with `\includegraphics{}`
 
-Next lecture: creating publication-quality graphs of regression results with `coefplot`.
+Next lecture: producing publication-ready tables with `estout`.

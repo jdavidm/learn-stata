@@ -103,7 +103,7 @@ By default, `coefplot` uses variable names. You can relabel:
                         xtitle("Coefficient")
 ```
 
-> Do [Exercise 3 - Basic Coefplot]({{ site.baseurl }}/exercises/10-coefplot-basic/)
+> Do [Exercise 7 - Basic Coefplot]({{ site.baseurl }}/exercises/10-coefplot-basic/)
 
 ### Multi-model coefficient plots
 
@@ -144,7 +144,7 @@ The real power of `coefplot` is comparing coefficients across models. The workfl
 
 This shows at a glance whether the fertilizer effect is stable as you add controls — a key test of robustness.
 
-> Do [Exercise 4 - Multi-Model Coefplot]({{ site.baseurl }}/exercises/10-coefplot-multi/)
+> Do [Exercise 8 - Multi-Model Coefplot]({{ site.baseurl }}/exercises/10-coefplot-multi/)
 
 ### Exporting graphs for LaTeX
 
@@ -317,7 +317,7 @@ The key features of this chart:
 
 If most blue and maroon markers cluster on one side of zero and the result is stable across specifications, the researcher can be more confident in the finding.
 
-> Do [Exercise 5 - Specification Chart]({{ site.baseurl }}/exercises/10-spec-chart/)
+> Do [Exercise 9 - Specification Chart]({{ site.baseurl }}/exercises/10-spec-chart/)
 
 ### Summary
 
@@ -327,4 +327,4 @@ If most blue and maroon markers cluster on one side of zero and the result is st
 - **Specification charts** systematically test how sensitive your result is to researcher choices
 - Always `graph export` your plots for inclusion in LaTeX documents
 
-Next lecture: producing publication-ready tables with `estout`.
+Next up: completing the final challenge exercise for this week.
