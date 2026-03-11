@@ -1,7 +1,7 @@
 ---
 layout: page
 element: solution
-title: Results
+title: Producing Results
 language: Stata
 ---
 
