@@ -21,6 +21,8 @@
 
 * no Stata code needed for exercise 1 (LaTeX-only exercise)
 	di as result	"exercise 1: LaTeX formatting and math — done in Overleaf"
+	di as text		"part 4 standard error formula should look like:"
+	di as text		"SE(\hat{\beta}) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}"
 
 
 ********************************************************************************

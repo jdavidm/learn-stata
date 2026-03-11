@@ -9,7 +9,7 @@ In your `lastname.tex` file in the `semester26` Overleaf project, under `\sectio
 
 1\. Write a short paragraph (2–3 sentences) explaining what omitted variable bias is. Use `\textbf{}` to bold the term "omitted variable bias" and `\textit{}` to italicize the word "biased."
 
-2\. Write the OLS regression equation in display math (using `\[` ... `\]`):
+2\. Write the OLS regression equation in display math (using `\begin{equation}` ... `\end{equation}`):
 
 $$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$$
 
@@ -21,6 +21,10 @@ $$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}
 
 Use `\hat{}`, `\bar{}`, `\frac{}{}`, `\sum_{i=1}^{n}`, and superscripts (`^`).
 
-4\. Compile your document in Overleaf and verify that the math renders correctly.
+4\. Write the formula for the standard error of the regression as a displayed equation:
+
+$$SE(\hat{\beta}) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}$$
+
+Use `\sqrt{}`, `\frac{}{}`, `\sum_{i=1}^{n}`, `\bar{}`, and `\hat{}`.
 
 ---
