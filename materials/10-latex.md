@@ -5,7 +5,7 @@ title: Introducing LaTeX via Overleaf
 language: Stata
 ---
 
-So far, all of our results — regressions, graphs, summary statistics — have been produced in Stata. But how do you present them in a professional document? In economics, the standard is **LaTeX** (pronounced "lah-tech" or "lay-tech"), a typesetting system designed for technical writing.
+So far, all of our results — regressions, graphs, summary statistics — have been produced in Stata. But how do you present them in a professional document? In economics, the standard is **LaTeX** (pronounced "lay-tech" not "lah-tech"), a typesetting system designed for technical writing.
 
 This lecture covers:
 - What LaTeX is and why researchers use it
@@ -23,6 +23,7 @@ Most academic papers, theses, and working papers in economics are written in LaT
 - **Tables and figures** are included as code, so they update automatically when you re-run your analysis
 - **Cross-references**, numbered equations, and bibliography entries are managed automatically
 - **Formatting** is consistent — you focus on content, LaTeX handles layout
+- **Bibliography** management is built-in via BibTeX
 
 The tradeoff: LaTeX has a learning curve. But with Overleaf (a free, cloud-based LaTeX editor), you can get started without installing anything.
 
@@ -102,8 +103,6 @@ Note that `%` is the comment character in LaTeX — everything after `%` on a li
 
 This is where LaTeX really shines. You'll recognize these equations from our regression lectures.
 
-#### Inline math
-
 Surround math with dollar signs to write it inline:
 
 ```latex
@@ -112,13 +111,11 @@ The regression model is $Y = \beta_0 + \beta_1 X + \varepsilon$.
 
 This renders as: The regression model is *Y = β₀ + β₁X + ε*.
 
-#### Display math
-
 For stand-alone equations, use the `equation` environment:
 
 ```latex
 \begin{equation}
-    \hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i
+    Y = \beta_0 + \beta_1 X + \varepsilon
 \end{equation}
 ```
 
@@ -126,7 +123,7 @@ Or use `\[` ... `\]` for an unnumbered displayed equation:
 
 ```latex
 \[
-    SE(\hat{\beta}) = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2}
+    Y = \beta_0 + \beta_1 X + \varepsilon
 \]
 ```
 
@@ -156,9 +153,9 @@ When your Stata code exports a graph (e.g., `graph export "$answ/coefplot.png", 
 ```latex
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{coefplot.png}
     \caption{Coefficient plot of yield regression}
     \label{fig:coefplot}
+    \includegraphics[width=0.8\textwidth]{coefplot.png}
 \end{figure}
 ```
 
@@ -167,8 +164,8 @@ Key elements:
 - `[htbp]` — tells LaTeX where to try placing the figure (here, top, bottom, own page)
 - `\centering` — centers the figure
 - `[width=0.8\textwidth]` — scales the image to 80% of the text width
-- `\caption{...}` — adds a caption below the figure
-- `\label{fig:coefplot}` — creates a label so you can cross-reference with `Figure \ref{fig:coefplot}`
+- `\caption{...}` — adds a caption abovethe figure
+- `\label{fig:coefplot}` — creates a label so you can cross-reference with `Figure~\ref{fig:coefplot}`
 
 > Do [Exercise 2 - Inserting a Stata Figure]({{ site.baseurl }}/exercises/10-latex-figure/)
 

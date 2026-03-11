@@ -1,0 +1,22 @@
+Rice yield regression
+------------------------------------
+                              (1)   
+                     Quantity h~a   
+------------------------------------
+Fertilizer (kg/ha)          1.318** 
+                          (0.599)   
+
+Total labor for gr~)        2.490   
+                          (5.195)   
+
+Irrigation (= 1 fo~1        199.9   
+                          (137.1)   
+
+Tenure (=1 for own~1       -434.5***
+                          (136.6)   
+------------------------------------
+Observations                  739   
+R-squared                   0.030   
+------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01

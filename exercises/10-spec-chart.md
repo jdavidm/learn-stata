@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Producing Results
+topic: LaTeX Figures
 title: Specification Chart
 language: Stata
 ---

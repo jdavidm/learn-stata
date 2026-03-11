@@ -1,13 +1,13 @@
 ---
 layout: exercise
-topic: Producing Results
+topic: LaTeX
 title: LaTeX Formatting and Math
 language: Stata
 ---
 
 In your `lastname.tex` file in the `semester26` Overleaf project, under `\section*{Assignment 10}`, write the following using proper LaTeX formatting. You do not need to run any Stata code for this exercise.
 
-1\. Write a short paragraph (2–3 sentences) explaining what omitted variable bias is. Use `\textbf{}` to bold the term "omitted variable bias" and `\textit{}` to italicize the word "biased."
+1\. Write a short paragraph (2–3 sentences) explaining what omitted variable bias is. Bold the term "omitted variable bias" and italicize the word "biased."
 
 2\. Write the OLS regression equation in display math (using `\begin{equation}` ... `\end{equation}`):
 

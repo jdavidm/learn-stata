@@ -8,7 +8,6 @@ language: Stata
 Journals, advisors, and referees expect **tables** — neatly formatted, with standard errors in parentheses, significance stars, and informative notes. Doing this by hand is tedious and error-prone. The `estout` package automates the entire process and can export complete LaTeX code ready for your Overleaf document.
 
 This lecture covers:
-- Installing `estout` and its companion `esttab`
 - The `estimates store` → `esttab` workflow
 - Summary statistics tables
 - Single- and multi-column regression tables
@@ -16,17 +15,12 @@ This lecture covers:
 - Exporting to LaTeX (`.tex` files)
 - Integrating tables into Overleaf with `\input{}`
 
-We'll use the maize-only `eth_allrounds_final` data for all lecture examples.
+If you don't have the `estout` package already installed, add it to the list of packages in your `project.do` file, change `$pack = 1` and run `project.do`. Then change `$pack = 0`.
 
-### Setup
+We'll use the maize-only `eth_allrounds_final` data for all lecture examples. Before we start, we need to create the following variables
 
 ```stata
-* install estout (only need to do this once)
-    ssc             install estout, replace
-
-* load and prepare data
-    use             "$data/eth_allrounds_final.dta", clear
-    keep if         crop_name == "MAIZE"
+* create per ha inputs
     gen             fert = nitrogen_kg / plot_area_GPS
     lab var         fert "fertilizer (kg/ha)"
     gen             labor = total_labor_days / plot_area_GPS
@@ -35,19 +29,19 @@ We'll use the maize-only `eth_allrounds_final` data for all lecture examples.
     lab var         seed "seed (USD/ha)"
 ```
 
-### The `estimates store` → `esttab` workflow
+### The `eststo` → `esttab` workflow
 
 The core idea:
 
 1. Run a regression with `reg`
-2. Store the results with `estimates store name`
+2. Store the results with `eststo name`
 3. Repeat for additional models
 4. Display all stored models in one table with `esttab`
 
 ```stata
 * step 1: run and store
     reg             yield_kg fert labor, vce(cluster hh_id_obs)
-    estimates       store m1
+    eststo          m1
 
 * step 2: display
     esttab          m1
@@ -61,7 +55,7 @@ Before showing regression results, most papers include a table of summary statis
 
 ```stata
 * summary statistics
-    estpost         summarize yield_kg fert labor seed, detail
+    estpost         sum yield_kg fert labor seed, detail
 
 * display as a table
     esttab,         cells("count mean sd min max") ///
@@ -75,13 +69,14 @@ To export to LaTeX:
 ```stata
 * export summary stats to .tex
     esttab          using "$answ/10-sumstats.tex", replace ///
-                        cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
+                        cells("count(fmt(0)) mean(fmt(2)) ///
+                        sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
                         noobs nonumber nomtitle ///
                         title("Summary Statistics") ///
                         booktabs label
 ```
 
-The `booktabs` option produces cleaner horizontal rules (`\toprule`, `\midrule`, `\bottomrule`) — these require `\usepackage{booktabs}` in your LaTeX preamble.
+The `booktabs` option in your preamble produces cleaner horizontal rules (`\toprule`, `\midrule`, `\bottomrule`).
 
 ### Single regression table
 
@@ -89,7 +84,7 @@ The `booktabs` option produces cleaner horizontal rules (`\toprule`, `\midrule`,
 * run and store a regression
     reg             yield_kg fert labor i.irr i.admin_1, ///
                         vce(cluster hh_id_obs)
-    estimates       store m_full
+    eststo          m_full
 
 * display with customization
     esttab          m_full, ///
@@ -114,21 +109,21 @@ This is where `esttab` really shines. Build up specifications column by column:
 ```stata
 * model 1: baseline
     reg             yield_kg fert labor, vce(cluster hh_id_obs)
-    estimates       store c1
+    eststo          c1
 
 * model 2: add irrigation
     reg             yield_kg fert labor i.irr, vce(cluster hh_id_obs)
-    estimates       store c2
+    eststo          c2
 
 * model 3: add region FE
     reg             yield_kg fert labor i.irr i.admin_1, ///
                         vce(cluster hh_id_obs)
-    estimates       store c3
+    eststo          c3
 
 * model 4: full specification
     reg             yield_kg fert labor seed i.irr i.intercropped ///
                         i.admin_1 i.wave, vce(cluster hh_id_obs)
-    estimates       store c4
+    eststo          c4
 
 * four-column table
     esttab          c1 c2 c3 c4, ///
@@ -137,10 +132,11 @@ This is where `esttab` really shines. Build up specifications column by column:
                         order(fert labor seed 1.irr 1.intercropped) ///
                         label ///
                         mtitles("(1)" "(2)" "(3)" "(4)") ///
-                        title("Yield regressions: building up specifications") ///
+                        title("Maize yield regressions") ///
                         indicate("Region FE = *.admin_1" ///
                                  "Wave FE = *.wave") ///
-                        note("Standard errors clustered at household level in parentheses." ///
+                        note("Standard errors clustered " ///
+                             "at household level in parentheses. " ///
                              "* p<0.10, ** p<0.05, *** p<0.01") ///
                         stats(N r2, labels("Observations" "R-squared") ///
                               fmt(0 3))
@@ -166,13 +162,14 @@ To produce a `.tex` file that you can `\input{}` in Overleaf, add `using "filena
                         se star(* 0.10 ** 0.05 *** 0.01) ///
                         keep(fert labor seed 1.irr 1.intercropped) ///
                         order(fert labor seed 1.irr 1.intercropped) ///
-                        label booktabs ///
+                        label ///
                         mtitles("(1)" "(2)" "(3)" "(4)") ///
-                        title("Yield regressions") ///
+                        title("Maize yield regressions") ///
                         indicate("Region FE = *.admin_1" ///
                                  "Wave FE = *.wave") ///
-                        note("Standard errors clustered at household level in parentheses." ///
-                             "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)") ///
+                        note("Standard errors clustered " ///
+                             "at household level in parentheses. " ///
+                             "* p<0.10, ** p<0.05, *** p<0.01") ///
                         stats(N r2, labels("Observations" "R-squared") ///
                               fmt(0 3))
 ```
@@ -184,8 +181,8 @@ Then in your Overleaf document:
 ```latex
 \begin{table}[htbp]
     \centering
-    \input{10-yield-regs.tex}
     \label{tab:yield_regs}
+    \input{10-yield-regs.tex}
 \end{table}
 ```
 

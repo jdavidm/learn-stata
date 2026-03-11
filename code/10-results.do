@@ -2,7 +2,7 @@
 * assignment: 10
 * created on: mar 26
 * created by: jdm
-* edited on: 10 mar 26
+* edited on: 11 mar 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -10,13 +10,9 @@
 	cap log 		close
 	log using		"$logout/10-results", append
 
-* install packages (only need once)
-	* ssc			install coefplot, replace
-	* ssc			install estout, replace
-
 
 ********************************************************************************
-**# exercise 1 - latex formatting and math
+**# 1 - latex formatting and math
 ********************************************************************************
 
 * no Stata code needed for exercise 1 (LaTeX-only exercise)
@@ -26,7 +22,7 @@
 
 
 ********************************************************************************
-**# exercise 2 - inserting a stata figure
+**# 2 - inserting a stata figure
 ********************************************************************************
 
 * load tenure data and keep rice
@@ -44,22 +40,18 @@
 						graphregion(color(white)) ///
 						name(g_scatter_rice, replace)
 
-	graph export	"$answ/10-scatter-rice.png", replace
+	graph export	"$answ/10-latex-figure-1.png", replace
     *** exported scatter for inclusion in LaTeX document
 
 
 ********************************************************************************
-**# exercise 3 - basic esttab table
+**# 3 - basic esttab table
 ********************************************************************************
-
-* reload data
-	use				"$data/tenuredata.dta", clear
-	keep if			rice == 1
 
 * run and store
 	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
 						vce(cluster panelid)
-	estimates		store r1
+	eststo 			r1
 
 * display table
 	esttab			r1, se star(* 0.10 ** 0.05 *** 0.01) ///
@@ -69,14 +61,9 @@
 						stats(N r2, labels("Observations" "R-squared") ///
 							fmt(0 3))
 
-* print interpretation
-	di as result	"exercise 3 solution"
-	di as text		"stars: * significant at 10%, ** at 5%, *** at 1%"
-    *** the stars indicate the p-value threshold for significance
-
 
 ********************************************************************************
-**# exercise 4 - multi-column table with notes
+**# 4 - multi-column table with notes
 ********************************************************************************
 
 * run and store three regressions
@@ -120,7 +107,7 @@
 
 
 ********************************************************************************
-**# exercise 5 - summary statistics table
+**# 5 - summary statistics table
 ********************************************************************************
 
 * summary statistics
@@ -143,7 +130,7 @@
 
 
 ********************************************************************************
-**# exercise 6 - basic coefplot
+**# 6 - basic coefplot
 ********************************************************************************
 
 * run regression
@@ -162,7 +149,7 @@
 
 
 ********************************************************************************
-**# exercise 7 - multi-model coefplot
+**# 7 - multi-model coefplot
 ********************************************************************************
 
 * model 1: baseline
@@ -198,7 +185,7 @@
 
 
 ********************************************************************************
-**# exercise 8 - specification chart
+**# 8 - specification chart
 ********************************************************************************
 
 * reload data
@@ -314,7 +301,7 @@
 
 
 ********************************************************************************
-**# exercise 10 - challenge
+**# 10 - challenge
 ********************************************************************************
 
 **## 10.1 - setup
