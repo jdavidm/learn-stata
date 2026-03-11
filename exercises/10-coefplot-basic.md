@@ -1,7 +1,7 @@
 ---
 layout: exercise
-topic: Producing Results
-title: Basic Coefplot
+topic: LaTeX Figures
+title: Basic `coefplot`
 language: Stata
 ---
 

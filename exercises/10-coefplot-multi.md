@@ -1,7 +1,7 @@
 ---
 layout: exercise
-topic: Producing Results
-title: Multi-Model Coefplot
+topic: LaTeX Figures
+title: Multi-Model `coefplot`
 language: Stata
 ---
 

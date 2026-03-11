@@ -3,7 +3,7 @@ layout: page
 element: assignment
 title: Producing Results
 language: Stata
-exercises: ['LaTeX Formatting and Math', 'Inserting a Stata Figure', 'Basic esttab Table', 'Multi-Column Table with Notes', 'Summary Statistics Table', 'Basic Coefplot', 'Multi-Model Coefplot', 'Specification Chart', 'Check That Your Code Runs', 'Challenge 10']
+exercises: ['LaTeX Formatting and Math', 'Inserting a Stata Figure', 'Basic `esttab` Table', 'Multi-Column Table with Notes', 'Summary Statistics Table', 'Basic `coefplot`', 'Multi-Model `coefplot`', 'Specification Chart', 'Check That Your Code Runs', 'Challenge 10']
 points: [10, 10, 10, 20, 10, 10, 10, 15, 5, Challenge - 20]
 ---
 

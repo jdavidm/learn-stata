@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Producing Results
+topic: LaTeX Tables
 title: Summary Statistics Table
 language: Stata
 ---
