@@ -316,24 +316,32 @@
 **# 10 - challenge
 ********************************************************************************
 
-**## 10.1 - setup
+* setup
 	use				"$data/tenuredata.dta", clear
 	keep if			rice == 1
 
-**## 10.2 - summary statistics
-	estpost			summarize yield q_f_ha lt_f_ha area irrig tenure ///
-						educhoh agehoh, detail
+	estimates clear
+	
+**## 10.1 - summary statistics
+	estpost			sum yield q_f_ha lt_f_ha area irrig tenure ///
+						educhoh agehoh
 
 	esttab			using "$answ/10-challenge-sumstats.tex", replace ///
 						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
-						noobs nonumber nomtitle ///
-						title("Summary Statistics — Rice Parcels") ///
-						booktabs label
+						booktabs label nonum nomtitle nobaselevels ///
+						nogaps noobs fragment ///
+						prehead("\begin{tabular}{l*{5}{c}}" ///
+							"\toprule") ///
+						posthead("\midrule") ///
+						postfoot("\bottomrule" ///
+							"\multicolumn{6}{p{0.8\linewidth}}{\footnotesize " ///
+							"\textit{Note}: Data restricted to rice parcels.} \\ " ///
+							"\end{tabular}")
     *** exported challenge summary stats table
 
-**## 10.3 - regression table
+**## 10.2 - coefficient plot
 
-* run and store four specifications
+* run and store four specifications for the coefplot
 	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
 	estimates		store c1
 
@@ -350,33 +358,18 @@
 						vce(cluster panelid)
 	estimates		store c4
 
-* export four-column table
-	esttab			c1 c2 c3 c4 using "$answ/10-challenge-regs.tex", replace ///
-						se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure educhoh agehoh) ///
-						order(q_f_ha lt_f_ha 1.irrig 1.tenure educhoh agehoh) ///
-						label booktabs ///
-						mtitles("(1)" "(2)" "(3)" "(4)") ///
-						indicate("Site FE = *.site" "Year FE = *.year") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3)) ///
-						note("Clustered SEs at household level." ///
-							 "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)")
-    *** exported challenge regression table
-
-**## 10.4 - coefficient plot
-
 * multi-model coefplot
 	coefplot		c1 c2 c3 c4, keep(q_f_ha) xline(0) ///
-						title("Fertilizer coefficient across specifications") ///
 						xtitle("Effect on yield (kg/ha)") ///
 						legend(order(2 "Baseline" 4 "+ Tenure/Irrig" ///
 									 6 "+ HH chars" 8 "+ Full FE")) ///
-						graphregion(color(white)) ///
-						name(g_challenge_coef, replace)
+						graphregion(color(white)) 
 
 	graph export	"$answ/10-challenge-coefplot.png", replace
     *** exported challenge coefplot
+
+**## 10.3 - import into LaTeX
+
 
 
 ********************************************************************************
