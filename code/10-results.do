@@ -158,9 +158,9 @@
 						graphregion(color(white)) ///
 						name(g_coefplot_basic, replace)
 
-	graph export	"$answ/10-coefplot-rice.png", replace
+	graph export	"$answ/10-coefplot-basic.png", replace
     *** basic coefplot showing all regressors except the constant
-
+fdfs
 
 ********************************************************************************
 **# 7 - multi-model coefplot

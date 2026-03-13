@@ -265,15 +265,15 @@ Here is a publication-ready table using our `c1`–`c4` yield regressions. It co
                               fmt(0 3)) ///
                         noobs booktabs nonum nomtitle collabels(none) ///
                         nobaselevels nogaps fragment label ///
-                        prehead("\begin{tabular}{l*{4}{c}} ///
-                            \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                        prehead("\begin{tabular}{l*{4}{c}} " ///
+                            "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
                             "& \multicolumn{2}{c}{Baseline} & ///
-                            \multicolumn{2}{c}{With FE} \\ " ///
+                            "\multicolumn{2}{c}{With FE} \\ " ///
                             "\cline{2-3} \cline{4-5} \\[-1.8ex] " ///
                             "& \multicolumn{1}{c}{(1)} & ///
-                            \multicolumn{1}{c}{(2)} " ///
+                            "\multicolumn{1}{c}{(2)} " ///
                             "& \multicolumn{1}{c}{(3)} & ///
-                            \multicolumn{1}{c}{(4)} " ///
+                            "\multicolumn{1}{c}{(4)} " ///
                             "\\ \midrule") ///
                         postfoot("\hline \hline \\[-1.8ex] " ///
                             "\multicolumn{5}{p{0.8\linewidth}}{\small " ///

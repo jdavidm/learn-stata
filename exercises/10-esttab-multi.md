@@ -23,13 +23,13 @@ Display a three-column table with `esttab` and export it to LaTeX using the `pre
                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                    noobs booktabs nonum nomtitle collabels(none) ///
                    nobaselevels nogaps fragment label ///
-                   prehead("\begin{tabular}{l*{3}{c}} ///
-                     \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                   prehead("\begin{tabular}{l*{3}{c}} " ///
+                     "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
                      "& \multicolumn{1}{c}{Baseline} & ///
-                     \multicolumn{2}{c}{With Controls} \\ " ///
+                     "\multicolumn{2}{c}{With Controls} \\ " ///
                      "\cline{2-2} \cline{3-4} \\[-1.8ex] " ///
                      "& \multicolumn{1}{c}{(1)} & ///
-                     \multicolumn{1}{c}{(2)} " ///
+                     "\multicolumn{1}{c}{(2)} " ///
                      "& \multicolumn{1}{c}{(3)} \\ \midrule") ///
                    postfoot("\hline \hline \\[-1.8ex] " ///
                      "\multicolumn{4}{p{0.8\linewidth}}{\small " ///
