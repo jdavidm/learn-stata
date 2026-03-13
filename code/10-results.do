@@ -2,7 +2,7 @@
 * assignment: 10
 * created on: mar 26
 * created by: jdm
-* edited on: 12 mar 26
+* edited on: 13 mar 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -100,15 +100,49 @@
                    note("Clustered SEs at household level." ///
                         "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), " ///
                         "\sym{***} \(p<0.01\)")
-
 				   
 				   
 ********************************************************************************
 **# 5 - multi-column table with notes
 ********************************************************************************
 
+* reg 1
+	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
+	estimates		store r3
 
+* reg 2
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, vce(cluster panelid)
+	estimates		store r3
 
+* reg 3
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure i.site i.year, vce(cluster panelid)
+	estimates		store r3
+
+* output to latex
+   esttab      r1 r2 r3 using "$answ/10-esttab-multi.tex", replace ///
+                   b(3) se(3) ///
+                   keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+                   order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+                   star(* 0.10 ** 0.05 *** 0.01) ///
+                   indicate("Site FE = *.site" "Year FE = *.year") ///
+                   stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                   noobs booktabs nonum nomtitle collabels(none) ///
+                   nobaselevels nogaps fragment label ///
+                   prehead("\begin{tabular}{l*{3}{c}} \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                   "& \multicolumn{1}{c}{Baseline} & \multicolumn{2}{c}{With Controls} \\ " ///
+                   "\cline{2-2} \cline{3-4} \\[-1.8ex] " ///
+                   "& \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} " ///
+                   "& \multicolumn{1}{c}{(3)} \\ ") ///
+                   postfoot("\hline \hline \\[-1.8ex] " ///
+                   "\multicolumn{4}{p{0.8\linewidth}}{\small " ///
+                   "\noindent \textit{Note}: Dependent variable " ///
+                   "is rice yield in kg/ha. All models use " ///
+                   "OLS with standard errors clustered at the " ///
+                   "household level (in parentheses). " ///
+                   "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                   "\end{tabular}")
+						
+						
 ********************************************************************************
 **# 6 - basic coefplot
 ********************************************************************************

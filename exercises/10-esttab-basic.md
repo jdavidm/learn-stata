@@ -11,6 +11,7 @@ Using `tenuredata.dta` (rice observations only), produce a formatted regression 
 - Run `reg yield q_f_ha lt_f_ha, vce(cluster panelid)` a
 - Store results as `r1`.
 - Display the table with `esttab`:
+
    ```stata
    esttab      r1 using "$answ/10-esttab-basic-1.tex", replace ///
                    se star(* 0.10 ** 0.05 *** 0.01) ///

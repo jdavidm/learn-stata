@@ -1,0 +1,33 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{4}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}\\
+                    &\multicolumn{1}{c}{Yield amount (harvest in kg/ha)}&\multicolumn{1}{c}{Yield amount (harvest in kg/ha)}&\multicolumn{1}{c}{Yield amount (harvest in kg/ha)}&\multicolumn{1}{c}{Yield amount (harvest in kg/ha)}\\
+\midrule
+fertilizer (kg/ha)  &      0.0642         &      0.0645         &      0.0660\sym{*}  &      0.0685\sym{*}  \\
+                    &    (0.0393)         &    (0.0393)         &    (0.0399)         &    (0.0392)         \\
+\addlinespace
+labor (days/ha)     &      0.0433         &      0.0430         &      0.0404         &      0.0391         \\
+                    &    (0.0344)         &    (0.0344)         &    (0.0334)         &    (0.0324)         \\
+\addlinespace
+seed (USD/ha)       &   -0.000801         &   -0.000787         &   -0.000722         &   -0.000727         \\
+                    &  (0.000978)         &  (0.000975)         &  (0.000957)         &  (0.000945)         \\
+\addlinespace
+Yes                 &                     &       502.3\sym{***}&       832.5\sym{***}&       689.4\sym{***}\\
+                    &                     &     (185.6)         &     (202.8)         &     (197.6)         \\
+\addlinespace
+Yes                 &                     &                     &                     &      1045.1\sym{***}\\
+                    &                     &                     &                     &     (94.90)         \\
+\addlinespace
+Region FE           &          No         &          No         &         Yes         &         Yes         \\
+\addlinespace
+Wave FE             &          No         &          No         &          No         &         Yes         \\
+\midrule
+Observations        &       47480         &       47404         &       47404         &       47404         \\
+R-squared           &       0.015         &       0.015         &       0.040         &       0.060         \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Standard errors clustered  at household level in parentheses.  * p<0.10, ** p<0.05, *** p<0.01}\\
+\multicolumn{5}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
