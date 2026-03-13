@@ -37,8 +37,7 @@
 						xtitle("Fertilizer (kg/ha)") ///
 						ytitle("Yield (kg/ha)") ///
 						legend(order(1 "Parcels" 2 "Linear fit")) ///
-						graphregion(color(white)) ///
-						name(g_scatter_rice, replace)
+						graphregion(color(white))
 
 	graph export	"$answ/10-latex-figure-1.png", replace
     *** exported scatter for inclusion in LaTeX document
@@ -155,8 +154,7 @@
 	coefplot,		drop(_cons) xline(0) ///
 						title("Rice yield regression coefficients") ///
 						xtitle("Coefficient estimate") ///
-						graphregion(color(white)) ///
-						name(g_coefplot_basic, replace)
+						graphregion(color(white))
 
 	graph export	"$answ/10-coefplot-basic.png", replace
     *** basic coefplot showing all regressors except the constant
