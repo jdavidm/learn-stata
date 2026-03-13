@@ -25,10 +25,10 @@ Display a three-column table with `esttab` and export it to LaTeX using the `pre
                    nobaselevels nogaps fragment label ///
                    prehead("\begin{tabular}{l*{3}{c}} " ///
                      "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-                     "& \multicolumn{1}{c}{Baseline} & ///
+                     "& \multicolumn{1}{c}{Baseline} & " ///
                      "\multicolumn{2}{c}{With Controls} \\ " ///
                      "\cline{2-2} \cline{3-4} \\[-1.8ex] " ///
-                     "& \multicolumn{1}{c}{(1)} & ///
+                     "& \multicolumn{1}{c}{(1)} & " ///
                      "\multicolumn{1}{c}{(2)} " ///
                      "& \multicolumn{1}{c}{(3)} \\ \midrule") ///
                    postfoot("\hline \hline \\[-1.8ex] " ///
