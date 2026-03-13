@@ -15,10 +15,10 @@ title: Readings
 * [Research Design](08-design)
 * [Basic Regressions](09-regress)
 * [Producing Results](10-results)
-* [Simulations](11-simulate)
-* [Fixed Effects](12-FE)
-* [Difference-in-Difference](13-did)
-* [Event Studies](14-event)
+* [Fixed Effects](11-FE)
+* [Difference-in-Difference](12-did)
+* [Event Studies](13-event)
+* [Regression Discontinuity](14-rdd)
 * [Basic Machine Learning](15-ml)
 
 ## Github

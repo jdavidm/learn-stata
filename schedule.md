@@ -13,10 +13,10 @@ assignments:
     "Research Design",
     "Basic Regressions",
     "Producing Results",
-    "Simulations",
     "Fixed Effects",
     "Difference-in-Difference",
     "Event Studies",
+    "Regression Discontinuity",
     "Basic Machine Learning",
   ]
 ---
