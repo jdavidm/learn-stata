@@ -152,13 +152,17 @@
 
 * basic coefficient plot
 	coefplot,		drop(_cons) xline(0) ///
+                        rename(q_f_ha = "Fertilizer (kg/ha)" ///
+                               lt_f_ha = "Labor (days/ha)" ///
+                               1.irrig = "Irrigated (=1)" ///
+							   1.tenure = "Own Plot (=1)") ///
 						title("Rice yield regression coefficients") ///
-						xtitle("Coefficient estimate") ///
+						xtitle("Coefficients") ///
 						graphregion(color(white))
 
 	graph export	"$answ/10-coefplot-basic.png", replace
     *** basic coefplot showing all regressors except the constant
-fdfs
+
 
 ********************************************************************************
 **# 7 - multi-model coefplot
@@ -179,21 +183,14 @@ fdfs
 	estimates		store m3
 
 * multi-model coefplot: fertilizer across specs
-	coefplot		m1 m2 m3, keep(q_f_ha) xline(0) ///
-						title("Fertilizer coefficient across specifications") ///
-						xtitle("Effect on yield (kg/ha)") ///
-						legend(order(2 "Baseline" 4 "+ Tenure/Irrig" ///
-									 6 "+ FE")) ///
-						graphregion(color(white)) ///
-						name(g_coefplot_multi, replace)
+   coefplot			(m1, label("Baseline") ) ///
+					(m2, label("+ Tenure/Irrig") ) ///
+					(m3, label("+ Village/Year FE") ), ///
+						keep(q_f_ha lt_f_ha) xline(0) ///
+						title("Input impact on yield") ///
+						xtitle("Coefficient size")
 
 	graph export	"$answ/10-coefplot-multi.png", replace
-
-* print interpretation
-	di as result	"exercise 7 solution"
-	di as text		"check whether the fertilizer coefficient is stable across specifications."
-	di as text		"if the point estimate and CI barely move, the result is robust to control choice."
-    *** the stability of q_f_ha across specs is the key answer
 
 
 ********************************************************************************

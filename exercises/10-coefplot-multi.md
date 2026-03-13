@@ -5,20 +5,22 @@ title: Multi-Model `coefplot`
 language: Stata
 ---
 
-Using `tenuredata.dta` (rice observations only), compare the fertilizer coefficient across multiple specifications.
-
-1\. Load `tenuredata.dta` and keep only rice (`keep if rice == 1`).
-2\. Run and store three regressions, all with `vce(cluster panelid)`:
+Using `tenuredata.dta` (rice observations only), compare the fertilizer and labor coefficients across multiple specifications.
+- Run and store three regressions, all with `vce(cluster panelid)`:
    - **m1**: `yield` on `q_f_ha lt_f_ha i.irrig i.tenure`
    - **m2**: `yield` on `q_f_ha lt_f_ha i.irrig i.tenure i.site`
    - **m3**: `yield` on `q_f_ha lt_f_ha i.irrig i.tenure i.site i.year`
-3\. Create a multi-model coefplot showing only `q_f_ha`:
+- Create a multi-model coefplot showing only `q_f_ha` and `lt_f_ha`:
+
    ```stata
-   coefplot    m1 m2 m3, keep(q_f_ha) xline(0) ///
-                   title("Fertilizer coefficient across specifications") ///
-                   legend(order(2 "Baseline" 4 "+ Tenure/Irrig" 6 "+ FE"))
+   coefplot    (m1, label("Baseline") ) ///
+               (m2, label("+ Tenure/Irrig") ) ///
+               (m3, label("+ Village/Year FE") ), ///
+                  keep(q_f_ha lt_f_ha) xline(0) ///
+                  xtitle("Coefficient size")
    ```
-4\. Export the graph: `graph export "$answ/10-coefplot-multi.png", replace`
-5\. In comments: is the fertilizer coefficient stable across specifications?
+
+- Export the graph: `graph export "$answ/10-coefplot-multi.png", replace`
+- In your `lastname.tex`, include the graph using `\includegraphics[width=0.8\textwidth]{10-coefplot-multi.png}`
 
 ---

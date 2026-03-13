@@ -45,3 +45,4 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Introducing LaTeX via Overleaf]({{ site.baseurl }}/materials/10-latex)
 - [Producing Tables with `estout`]({{ site.baseurl }}/materials/10-estout)
 - [Graphing Regression Results]({{ site.baseurl }}/materials/10-coefplot)
+

@@ -94,48 +94,43 @@ By default, `coefplot` uses variable names. You can relabel:
                         xtitle("Coefficient")
 ```
 
-> Do [Exercise 7 - Basic Coefplot]({{ site.baseurl }}/exercises/10-coefplot-basic/)
+> Do [Exercise 6 - Basic Coefplot]({{ site.baseurl }}/exercises/10-coefplot-basic/)
 
 ### Multi-model coefficient plots
 
 The real power of `coefplot` is comparing coefficients across models. The workflow:
 
 1. Run each regression
-2. Store the estimates with `estimates store`
+2. Store the estimates with `eststo`
 3. Plot them together
 
 ```stata
 * model 1: baseline
-    reg             yield_kg fert labor, vce(cluster hh_id_obs)
-    estimates       store m1
+    reg             yield_kg fert labor seed, vce(cluster hh_id_obs)
+    eststo          m1
 
-* model 2: add irrigation
-    reg             yield_kg fert labor i.irr, vce(cluster hh_id_obs)
-    estimates       store m2
-
-* model 3: add region FE
-    reg             yield_kg fert labor i.irr i.admin_1, ///
+* model 2: add controls
+    reg             yield_kg fert labor seed i.irrigated i.intercropped, ///
                         vce(cluster hh_id_obs)
-    estimates       store m3
+    eststo          m2
 
-* model 4: add wave FE and controls
-    gen             seed = seed_value_USD / plot_area_GPS
-    reg             yield_kg fert labor seed i.irr i.intercropped ///
-                        i.admin_1 i.wave, vce(cluster hh_id_obs)
-    estimates       store m4
+* model 3: add region & wave FE
+    reg             yield_kg fert labor seed i.irrigated i.intercropped i.admin_1 i.wave, ///
+                        vce(cluster hh_id_obs)
+    eststo          m3
 
 * multi-model coefplot: compare fert across specs
-    coefplot        m1 m2 m3 m4, keep(fert) xline(0) ///
-                        title("Fertilizer coefficient across specifications") ///
-                        xtitle("Effect on yield (kg/ha)") ///
-                        legend(order(2 "Baseline" 4 "+ Irrigation" ///
-                                     6 "+ Region FE" 8 "+ Full controls")) ///
-                        graphregion(color(white))
+	coefplot		(m1, label("Baseline")) ///
+					(m2, label("+ Controls")) ///
+					(m3, label("+ Region & Wave FE")), ///
+						keep(fert labor seed) ///
+						xline(0) levels(90) ///
+						title("Input coefficient across specifications") ///
+						xtitle("Effect on yield (kg/ha)") ///
+						graphregion(color(white))	
 ```
 
-This shows at a glance whether the fertilizer effect is stable as you add controls — a key test of robustness.
-
-> Do [Exercise 8 - Multi-Model Coefplot]({{ site.baseurl }}/exercises/10-coefplot-multi/)
+This shows at a glance whether the effect of measured inputs is stable as you add controls — a key test of robustness.
 
 ### Exporting graphs for LaTeX
 
@@ -151,11 +146,13 @@ Then in your LaTeX file:
 ```latex
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{coefplot_fert.png}
-    \caption{Fertilizer coefficient across specifications}
+    \caption{Input impact on yield}
     \label{fig:coefplot_fert}
+    \includegraphics[width=0.8\textwidth]{coefplot_fert.png}
 \end{figure}
 ```
+
+> Do [Exercise 7 - Multi-Model Coefplot]({{ site.baseurl }}/exercises/10-coefplot-multi/)
 
 ### Specification charts
 
