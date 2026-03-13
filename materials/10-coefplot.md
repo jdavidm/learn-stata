@@ -156,7 +156,7 @@ Then in your LaTeX file:
 
 ### Specification charts
 
-A **specification chart** takes the multi-model idea further. Instead of comparing 3–4 models, you run **many** specifications (varying the controls, sample, dependent variable, etc.) and plot the key coefficient from each one. The bottom of the chart shows which specification choices are active in each column.
+A **specification chart** takes the multi-model idea further. Instead of comparing 3–4 models, you run **many** specifications (varying the controls, sample, etc.) and plot the key coefficient from each one. The bottom of the chart shows which specification choices are active in each column.
 
 This is a powerful tool for showing that your result is (or isn't) robust across many researcher degrees of freedom.
 
@@ -164,46 +164,51 @@ This is a powerful tool for showing that your result is (or isn't) robust across
 
 The approach is:
 
-1. Run many regressions in a loop, storing the coefficient, CI, and specification indicators
+1. Run many regressions in a loop, storing the coefficient, confidence intervals (CI), and specification indicators
 2. Collapse the results into a dataset
 3. Sort by effect size
 4. Plot the coefficients on top and specification indicators on the bottom
 
-Here is a simplified example using our yield data. We'll vary the controls and dependent variable:
+Here is a simplified example using our yield data. We'll vary the controls, fixed effects, and standard errors:
 
 ```stata
 * set up a results dataset
     clear all
     use             "$data/eth_allrounds_final.dta", clear
     keep if         crop_name == "MAIZE"
-    gen             fert = nitrogen_kg / plot_area_GPS
-    gen             labor = total_labor_days / plot_area_GPS
-    gen             seed = seed_value_USD / plot_area_GPS
-    gen             ln_yield = ln(yield_kg)
+    gen             lnf = asinh(nitrogen_kg / plot_area_GPS)
+    gen             lnl = asinh(total_labor_days / plot_area_GPS)
+    gen             lns = asinh(seed_value_USD / plot_area_GPS)
+    gen             lny = asinh(yield_kg)
 
 * create a temporary dataset to store results
     tempfile        results
     postfile        handle spec beta se ci_lo ci_up ///
-                        depvar controls cluster_hh ///
+                        controls fe cluster_hh ///
                         using `results'
 
 * define specifications and loop
     local           spec = 0
 
-    foreach dv in yield_kg ln_yield {
-        foreach ctrl in 0 1 2 {
+    foreach ctrl in 0 1 2 3 {
+        foreach f in 0 1 2 {
             foreach cl in 0 1 {
 
                 local       spec = `spec' + 1
 
-                * set dep var indicator
-                local       dv_ind = cond("`dv'" == "yield_kg", 1, 2)
-
                 * set controls
-                local       rhs "fert labor"
-                if `ctrl' >= 1  local rhs "`rhs' i.irr i.admin_1"
-                if `ctrl' == 2  local rhs "`rhs' seed i.intercropped i.wave"
+                local       rhs "lnf lnl lns"
+                if `ctrl' >= 1  local rhs "`rhs' i.irrigated i.intercropped i.improved i.used_pesticides"
+                if `ctrl' >= 2  local rhs "`rhs' crop_shock"
+                if `ctrl' == 3  local rhs "`rhs' hh_size hh_asset_index"
                 local       ctrl_ind = `ctrl' + 1
+
+                * set FEs
+                local       fe_opt ""
+                if `f' >= 1    local fe_opt "i.admin_1"
+                if `f' == 2    local fe_opt "`fe_opt' i.wave"
+                if "`fe_opt'" != "" local rhs "`rhs' `fe_opt'"
+                local       fe_ind = `f' + 1
 
                 * set clustering
                 local       vce_opt ""
@@ -211,14 +216,14 @@ Here is a simplified example using our yield data. We'll vary the controls and d
                 if `cl' == 1    local vce_opt ", vce(cluster hh_id_obs)"
 
                 * run regression
-                cap reg     `dv' `rhs' `vce_opt'
+                cap reg     lny `rhs' `vce_opt'
                 if _rc == 0 {
-                    local   b = _b[fert]
-                    local   s = _se[fert]
+                    local   b = _b[lnf]
+                    local   s = _se[lnf]
                     local   lo = `b' - 1.96*`s'
                     local   hi = `b' + 1.96*`s'
                     post    handle (`spec') (`b') (`s') (`lo') (`hi') ///
-                                (`dv_ind') (`ctrl_ind') (`cl_ind')
+                                (`ctrl_ind') (`fe_ind') (`cl_ind')
                 }
             }
         }
@@ -244,9 +249,9 @@ The chart has two parts: coefficients on a y-axis (right) and specification indi
     gen             obs = _n
 
 * stack specification indicators
-    gen             k1 = depvar
-    gen             k2 = controls + 3
-    gen             k3 = cluster_hh + 7
+    gen             k1 = controls
+    gen             k2 = fe + 5
+    gen             k3 = cluster_hh + 9
 
 * set axis ranges
     qui sum         ci_up
@@ -263,12 +268,12 @@ The chart has two parts: coefficients on a y-axis (right) and specification indi
                         msize(small small small) ///
                         mcolor(gs10 gs10 gs10) ///
                         ylabel( ///
-                            1 "Yield (kg)" 2 "Ln(yield)" ///
-                            3 "{bf:Dep. Var.}" ///
-                            4 "Baseline" 5 "+ Region/Irr" 6 "+ Full" ///
-                            7 "{bf:Controls}" ///
-                            8 "Default" 9 "Clustered" ///
-                            10 "{bf:Std. Errors}" 12 " ", ///
+                            1 "Baseline (inputs)" 2 "+ Plot chars" 3 "+ Shocks" 4 "+ HH chars" ///
+                            5 "{bf:Controls}" ///
+                            6 "None" 7 "Region" 8 "Region & Wave" ///
+                            9 "{bf:Fixed Effects}" ///
+                            10 "Default" 11 "Clustered" ///
+                            12 "{bf:Std. Errors}" 22 " ", ///
                             angle(0) labsize(vsmall) tstyle(notick)) ///
                         plotregion(margin(4 4 4 7))) ///
                     || (scatter b_sig obs if beta > 0, yaxis(2) ///
@@ -300,10 +305,10 @@ The key features of this chart:
 - **Blue** markers/bars = significant and positive
 - **Red/maroon** markers/bars = significant and negative
 - **Black/grey** = not significant
-- The bottom rows show which choices (dep var, controls, SEs) are active
+- The bottom rows show which choices (inputs, controls, FEs, SEs) are active
 - A horizontal reference line at zero
 
-If most blue and maroon markers cluster on one side of zero and the result is stable across specifications, the researcher can be more confident in the finding.
+If most of the markers are blue or maroon the result is stable across specifications and the researcher can be more confident in the finding.
 
 > Do [Exercise 9 - Specification Chart]({{ site.baseurl }}/exercises/10-spec-chart/)
 
@@ -314,5 +319,3 @@ If most blue and maroon markers cluster on one side of zero and the result is st
 - **Multi-model coefplots** show robustness at a glance
 - **Specification charts** systematically test how sensitive your result is to researcher choices
 - Always `graph export` your plots for inclusion in LaTeX documents
-
-Next up: completing the final challenge exercise for this week.
