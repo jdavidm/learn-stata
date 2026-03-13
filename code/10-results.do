@@ -200,31 +200,35 @@
 * reload data
 	use				"$data/tenuredata.dta", clear
 	keep if			rice == 1
-	gen				ln_yield = ln(yield)
 
 * set up postfile for results
 	tempfile		results
 	postfile		handle spec beta se ci_lo ci_up ///
-						depvar controls cluster_hh ///
+						controls fe cluster_hh ///
 						using `results'
 
 * loop over specifications
 	local			spec = 0
 
-	foreach dv in yield ln_yield {
-		foreach ctrl in 0 1 2 {
+	foreach ctrl in 0 1 2 3 {
+		foreach f in 0 1 2 {
 			foreach cl in 0 1 {
 
 				local		spec = `spec' + 1
 
-				* dep var indicator
-				local		dv_ind = cond("`dv'" == "yield", 1, 2)
-
-				* build RHS
-				local		rhs "q_f_ha lt_f_ha"
+				* build RHS controls
+				local		rhs "lnf lnl lnp"
 				if `ctrl' >= 1	local rhs "`rhs' i.irrig i.tenure"
-				if `ctrl' == 2	local rhs "`rhs' i.site i.year"
+				if `ctrl' >= 2	local rhs "`rhs' tractor carabao"
+				if `ctrl' == 3	local rhs "`rhs' hhsize educhoh agehoh"
 				local		ctrl_ind = `ctrl' + 1
+
+				* build RHS fixed effects
+				local		fe_opt ""
+				if `f' >= 1		local fe_opt "i.site"
+				if `f' == 2		local fe_opt "`fe_opt' i.year"
+				if "`fe_opt'" != "" local rhs "`rhs' `fe_opt'"
+				local		fe_ind = `f' + 1
 
 				* clustering
 				local		vce_opt ""
@@ -232,14 +236,14 @@
 				if `cl' == 1	local vce_opt ", vce(cluster panelid)"
 
 				* run regression
-				cap reg		`dv' `rhs' `vce_opt'
+				cap reg		lny `rhs' `vce_opt'
 				if _rc == 0 {
-					local	b = _b[q_f_ha]
-					local	s = _se[q_f_ha]
+					local	b = _b[lnf]
+					local	s = _se[lnf]
 					local	lo = `b' - 1.96*`s'
 					local	hi = `b' + 1.96*`s'
 					post	handle (`spec') (`b') (`s') (`lo') (`hi') ///
-								(`dv_ind') (`ctrl_ind') (`cl_ind')
+								(`ctrl_ind') (`fe_ind') (`cl_ind')
 				}
 			}
 		}
@@ -257,9 +261,9 @@
 	gen				obs = _n
 
 * stack specification indicators
-	gen				k1 = depvar
-	gen				k2 = controls + 3
-	gen				k3 = cluster_hh + 7
+	gen				k1 = controls
+	gen				k2 = fe + 5
+	gen				k3 = cluster_hh + 9
 
 * compute axis ranges
 	qui sum			ci_up
@@ -276,12 +280,13 @@
 						msize(small small small) ///
 						mcolor(gs10 gs10 gs10) ///
 						ylabel( ///
-							1 "Yield (kg)" 2 "Ln(yield)" ///
-							3 "{bf:Dep. Var.}" ///
-							4 "Baseline" 5 "+ Tenure/Irrig" 6 "+ Full FE" ///
-							7 "{bf:Controls}" ///
-							8 "Default" 9 "Clustered" ///
-							10 "{bf:Std. Errors}" 12 " ", ///
+							1 "Baseline (inputs)" 2 "+ Plot chars" ///
+							3 "+ Assets" 4 "+ HH chars" ///
+							5 "{bf:Controls}" ///
+							6 "None" 7 "Site" 8 "Site & Year" ///
+							9 "{bf:Fixed Effects}" ///
+							10 "Default" 11 "Clustered" ///
+							12 "{bf:Std. Errors}" 22 " ", ///
 							angle(0) labsize(vsmall) tstyle(notick)) ///
 						plotregion(margin(4 4 4 7))) ///
 					|| (scatter b_sig obs if beta > 0, yaxis(2) ///
@@ -300,10 +305,8 @@
 						barwidth(.3) color(maroon%50) yaxis(2) ///
 						yline(0, lcolor(maroon) axis(2) lstyle(solid))), ///
 					legend(order(5 "Not sig." 6 "Sig. (positive)" ///
-								 7 "Sig. (negative)") ///
-						cols(3) size(small) pos(6)) ///
-					title("Specification chart: fertilizer effect on rice yield") ///
-					name(g_spec_chart, replace)
+						7 "Sig. (negative)") ///
+						cols(3) size(small) pos(6)) 
 
 	graph export	"$answ/10-spec-chart-rice.png", replace
     *** specification chart showing robustness of fertilizer coefficient

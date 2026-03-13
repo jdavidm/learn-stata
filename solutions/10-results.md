@@ -12,7 +12,7 @@ language: Stata
 5. [Multi-Column Table with Notes]({{ site.baseurl }}/solutions/10-esttab-multi.png)
 6. [Basic `coefplot`]({{ site.baseurl }}/solutions/10-coefplot-basic.png)
 7. [Multi-Model `coefplot`]({{ site.baseurl }}/solutions/10-coefplot-multi.png)
-8. [Specification Chart]({{ site.baseurl }}/solutions/10-spec-chart-rice.png)
+8. [Specification Chart]({{ site.baseurl }}/solutions/10-spec-chart.png)
 9. [Check That Your Code Runs]({{ site.baseurl }}/solutions/check-that-your-code-runs.gif)
 10. Challenge 10 [1]({{ site.baseurl }}/solutions/10-challenge-sumstats.tex), [2]({{ site.baseurl }}/solutions/10-challenge-regs.tex), [3]({{ site.baseurl }}/solutions/10-challenge-coefplot.png)
 

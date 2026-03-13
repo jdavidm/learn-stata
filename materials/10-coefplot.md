@@ -268,7 +268,8 @@ The chart has two parts: coefficients on a y-axis (right) and specification indi
                         msize(small small small) ///
                         mcolor(gs10 gs10 gs10) ///
                         ylabel( ///
-                            1 "Baseline (inputs)" 2 "+ Plot chars" 3 "+ Shocks" 4 "+ HH chars" ///
+                            1 "Baseline (inputs)" 2 "+ Plot chars" ///
+                            3 "+ Shocks" 4 "+ HH chars" ///
                             5 "{bf:Controls}" ///
                             6 "None" 7 "Region" 8 "Region & Wave" ///
                             9 "{bf:Fixed Effects}" ///
@@ -292,9 +293,8 @@ The chart has two parts: coefficients on a y-axis (right) and specification indi
                         barwidth(.3) color(maroon%50) yaxis(2) ///
                         yline(0, lcolor(maroon) axis(2) lstyle(solid))), ///
                     legend(order(5 "Not sig." 6 "Sig. (positive)" ///
-                                 7 "Sig. (negative)") ///
-                        cols(3) size(small) pos(6)) ///
-                    title("Specification chart: fertilizer effect on yield")
+                        7 "Sig. (negative)") ///
+                        cols(3) size(small) pos(6))
 
     graph export    "$answ/spec_chart.png", replace
 ```
