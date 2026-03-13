@@ -2,7 +2,7 @@
 * assignment: 10
 * created on: mar 26
 * created by: jdm
-* edited on: 11 mar 26
+* edited on: 12 mar 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -43,72 +43,12 @@
 	graph export	"$answ/10-latex-figure-1.png", replace
     *** exported scatter for inclusion in LaTeX document
 
-
+	
 ********************************************************************************
-**# 3 - basic esttab table
-********************************************************************************
-
-* run and store
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
-						vce(cluster panelid)
-	eststo 			r1
-
-* display table
-	esttab			r1, se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label ///
-						title("Rice yield regression") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3))
-
-
-********************************************************************************
-**# 4 - multi-column table with notes
+**# 3 - summary statistics table
 ********************************************************************************
 
-* run and store three regressions
-	reg				yield q_f_ha lt_f_ha, vce(cluster panelid)
-	estimates		store r1
-
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
-						vce(cluster panelid)
-	estimates		store r2
-
-	reg				yield q_f_ha lt_f_ha i.irrig i.tenure ///
-						i.site i.year, vce(cluster panelid)
-	estimates		store r3
-
-* display in Stata
-	esttab			r1 r2 r3, ///
-						se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label ///
-						mtitles("(1)" "(2)" "(3)") ///
-						indicate("Site FE = *.site" "Year FE = *.year") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3)) ///
-						note("Clustered SEs at household level." ///
-							 "* p<0.10, ** p<0.05, *** p<0.01")
-
-* export to LaTeX
-	esttab			r1 r2 r3 using "$answ/10-rice-regs.tex", replace ///
-						se star(* 0.10 ** 0.05 *** 0.01) ///
-						keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
-						label booktabs ///
-						mtitles("(1)" "(2)" "(3)") ///
-						indicate("Site FE = *.site" "Year FE = *.year") ///
-						stats(N r2, labels("Observations" "R-squared") ///
-							fmt(0 3)) ///
-						note("Clustered SEs at household level." ///
-							 "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)")
-    *** exported multi-column regression table to LaTeX
-
-
-********************************************************************************
-**# 5 - summary statistics table
-********************************************************************************
+	estimates clear
 
 * summary statistics
 	estpost			summarize yield q_f_ha lt_f_ha area irrig tenure, ///
@@ -120,13 +60,53 @@
 						title("Summary Statistics — Rice Parcels") ///
 						label
 
-* export to LaTeX
-	esttab			using "$answ/10-sumstats-rice.tex", replace ///
-						cells("count(fmt(0)) mean(fmt(2)) sd(fmt(2)) min(fmt(1)) max(fmt(1))") ///
-						noobs nonumber nomtitle ///
-						title("Summary Statistics — Rice Parcels") ///
-						booktabs label
-    *** exported summary statistics table to LaTeX
+
+********************************************************************************
+**# 4 - basic esttab table
+********************************************************************************
+
+**## 4.1 run and store
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
+						vce(cluster panelid)
+	eststo 			r1
+
+
+* print table
+   esttab      r1 using "$answ/10-esttab-basic-1.tex", replace ///
+                   se star(* 0.10 ** 0.05 *** 0.01) ///
+                   keep(q_f_ha lt_f_ha) ///
+                   label booktabs ///
+                   stats(N r2, labels("Observations" "R-squared") fmt(0 3))
+
+
+**## 4.2 - multiple regressions
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure, ///
+						vce(cluster panelid)
+	estimates		store r2
+
+	reg				yield q_f_ha lt_f_ha i.irrig i.tenure ///
+						i.site i.year, vce(cluster panelid)
+	estimates		store r3
+
+
+* print table
+   esttab      r1 r2 r3 using "$answ/10-esttab-basic-2.tex", replace ///
+                   se star(* 0.10 ** 0.05 *** 0.01) ///
+                   keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+                   order(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
+                   label booktabs ///
+                   indicate("Site FE = *.site" "Year FE = *.year") ///
+                   stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                   note("Clustered SEs at household level." ///
+                        "\sym{*} \(p<0.10\), \sym{**} \(p<0.05\), " ///
+                        "\sym{***} \(p<0.01\)")
+
+				   
+				   
+********************************************************************************
+**# 5 - multi-column table with notes
+********************************************************************************
+
 
 
 ********************************************************************************
