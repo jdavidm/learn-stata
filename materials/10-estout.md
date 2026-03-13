@@ -17,7 +17,7 @@ This lecture covers:
 
 If you don't have the `estout` package already installed, add it to the list of packages in your `project.do` file, change `$pack = 1` and run `project.do`. Then change `$pack = 0`.
 
-We'll use the maize-only `eth_allrounds_final` data for all lecture examples. Before we start, we need to create the following variables
+We'll use the maize-only `eth_allrounds_final` data for all lecture examples. Before we start, we need to create the following variables.
 
 ```stata
 * create per ha inputs
@@ -102,7 +102,8 @@ Build up specifications column by column to create a multi-column table:
     eststo          c1
 
 * model 2: add irrigation
-    reg             yield_kg fert labor seed i.irrigated, vce(cluster hh_id_obs)
+    reg             yield_kg fert labor seed i.irrigated, ///
+                        vce(cluster hh_id_obs)
     eststo          c2
 
 * model 3: add region FE
@@ -264,21 +265,25 @@ Here is a publication-ready table using our `c1`–`c4` yield regressions. It co
                               fmt(0 3)) ///
                         noobs booktabs nonum nomtitle collabels(none) ///
                         nobaselevels nogaps fragment label ///
-                        prehead("\begin{tabular}{l*{4}{c}} \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-                        "& \multicolumn{2}{c}{Baseline} & \multicolumn{2}{c}{With FE} \\ " ///
-                        "\cline{2-3} \cline{4-5} \\[-1.8ex] " ///
-                        "& \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} " ///
-                        "& \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} " ///
-                        "\\ \midrule") ///
+                        prehead("\begin{tabular}{l*{4}{c}} ///
+                            \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                            "& \multicolumn{2}{c}{Baseline} & ///
+                            \multicolumn{2}{c}{With FE} \\ " ///
+                            "\cline{2-3} \cline{4-5} \\[-1.8ex] " ///
+                            "& \multicolumn{1}{c}{(1)} & ///
+                            \multicolumn{1}{c}{(2)} " ///
+                            "& \multicolumn{1}{c}{(3)} & ///
+                            \multicolumn{1}{c}{(4)} " ///
+                            "\\ \midrule") ///
                         postfoot("\hline \hline \\[-1.8ex] " ///
-                        "\multicolumn{5}{p{0.8\linewidth}}{\small " ///
-                        "\noindent \textit{Note}: Dependent variable " ///
-                        "is maize yield in kg/ha. All models use " ///
-                        "OLS with standard errors clustered at the " ///
-                        "household level (in parentheses). Columns 3 " ///
-                        "and 4 add region and wave fixed effects. " ///
-                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
-                        "\end{tabular}")
+                            "\multicolumn{5}{p{0.8\linewidth}}{\small " ///
+                            "\noindent \textit{Note}: Dependent variable " ///
+                            "is maize yield in kg/ha. All models use " ///
+                            "OLS with standard errors clustered at the " ///
+                            "household level (in parentheses). Columns 3 " ///
+                            "and 4 add region and wave fixed effects. " ///
+                            "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                            "\end{tabular}")
 ```
 
 This table has four columns grouped into two categories (Baseline and With FE). The `prehead` builds two header rows — one with grouped labels and one with column numbers — while the `postfoot` includes a methodological note spanning the full table width. The `fragment` option ensures `esttab` doesn't wrap the output in its own `\begin{tabular}...\end{tabular}`, since `prehead` and `postfoot` already handle that.

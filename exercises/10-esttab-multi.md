@@ -23,19 +23,22 @@ Display a three-column table with `esttab` and export it to LaTeX using the `pre
                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                    noobs booktabs nonum nomtitle collabels(none) ///
                    nobaselevels nogaps fragment label ///
-                   prehead("\begin{tabular}{l*{3}{c}} \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-                   "& \multicolumn{1}{c}{Baseline} & \multicolumn{2}{c}{With Controls} \\ " ///
-                   "\cline{2-2} \cline{3-4} \\[-1.8ex] " ///
-                   "& \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} " ///
-                   "& \multicolumn{1}{c}{(3)} \\ \midrule") ///
+                   prehead("\begin{tabular}{l*{3}{c}} ///
+                     \\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                     "& \multicolumn{1}{c}{Baseline} & ///
+                     \multicolumn{2}{c}{With Controls} \\ " ///
+                     "\cline{2-2} \cline{3-4} \\[-1.8ex] " ///
+                     "& \multicolumn{1}{c}{(1)} & ///
+                     \multicolumn{1}{c}{(2)} " ///
+                     "& \multicolumn{1}{c}{(3)} \\ \midrule") ///
                    postfoot("\hline \hline \\[-1.8ex] " ///
-                   "\multicolumn{4}{p{0.8\linewidth}}{\small " ///
-                   "\noindent \textit{Note}: Dependent variable " ///
-                   "is rice yield in kg/ha. All models use " ///
-                   "OLS with standard errors clustered at the " ///
-                   "household level (in parentheses). " ///
-                   "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
-                   "\end{tabular}")
+                     "\multicolumn{4}{p{0.8\linewidth}}{\small " ///
+                     "\noindent \textit{Note}: Dependent variable " ///
+                     "is rice yield in kg/ha. All models use " ///
+                     "OLS with standard errors clustered at the " ///
+                     "household level (in parentheses). " ///
+                     "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                     "\end{tabular}")
 ```
 
 In your `lastname.tex`, include the table using `\input{10-rice-regs.tex}` inside a `table` environment. To get the `***` to render correctly, you'll need to add 

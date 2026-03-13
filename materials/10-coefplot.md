@@ -15,27 +15,18 @@ This lecture covers:
 - Specification charts: showing how your key result holds across many specifications
 - Exporting graphs for LaTeX
 
-We'll use the maize-only `eth_allrounds_final` data for all lecture examples.
+If you don’t have the `coefplot` package already installed, add it to the list of packages in your `project.do` file, change `$pack = 1` and run `project.do`. Then change `$pack = 0`.
 
-### Setup
-
-Make sure `coefplot` is installed:
+We'll use the maize-only `eth_allrounds_final` data for all lecture examples. You should already have the following variables from previous exercises but if you don't, create them now.
 
 ```stata
-* install coefplot (only need to do this once)
-    ssc             install coefplot, replace
-```
-
-And load the data we've been using:
-
-```stata
-* load and prepare data
-    use             "$data/eth_allrounds_final.dta", clear
-    keep if         crop_name == "MAIZE"
+* create per ha inputs
     gen             fert = nitrogen_kg / plot_area_GPS
     lab var         fert "fertilizer (kg/ha)"
     gen             labor = total_labor_days / plot_area_GPS
     lab var         labor "labor (days/ha)"
+    gen             seed = seed_value_USD / plot_area_GPS
+    lab var         seed "seed (USD/ha)"
 ```
 
 ### Why coefficient plots?
@@ -53,7 +44,7 @@ If the confidence interval crosses zero, the coefficient is not significant at t
 
 ```stata
 * run a regression
-    reg             yield_kg fert labor i.irr i.admin_1, ///
+    reg             yield_kg fert labor seed i.admin_1, ///
                         vce(cluster hh_id_obs)
 
 * basic coefficient plot
@@ -72,7 +63,7 @@ Often you want to show only the variables of interest:
 
 ```stata
 * show only key variables
-    coefplot,       keep(fert labor 1.irr) xline(0) ///
+    coefplot,       keep(fert labor seed) xline(0) ///
                         title("Key coefficients") ///
                         xtitle("Effect on yield (kg/ha)")
 ```
@@ -81,7 +72,7 @@ Often you want to show only the variables of interest:
 
 ```stata
 * customize the look
-    coefplot,       keep(fert labor 1.irr) xline(0) ///
+    coefplot,       keep(fert labor seed) xline(0) ///
                         mcolor(edkblue) ciopts(lcolor(edkblue)) ///
                         msymbol(D) ///
                         title("Yield regression") ///
@@ -95,10 +86,10 @@ By default, `coefplot` uses variable names. You can relabel:
 
 ```stata
 * relabel coefficients
-    coefplot,       keep(fert labor 1.irr) xline(0) ///
+    coefplot,       keep(fert labor seed) xline(0) ///
                         rename(fert = "Fertilizer (kg/ha)" ///
                                labor = "Labor (days/ha)" ///
-                               1.irr = "Irrigated") ///
+                               seed = "Seed (USD/ha)") ///
                         title("Yield regression") ///
                         xtitle("Coefficient")
 ```
