@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Regression Discontinuity
 element: reading
 language: Stata
