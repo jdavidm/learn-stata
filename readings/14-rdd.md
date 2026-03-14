@@ -1,7 +1,7 @@
 ---
-title: "Reading: Regression Discontinuity"
-topic: "Regression Discontinuity"
-layout: page
+title: Regression Discontinuity
+element: reading
+language: Stata
 ---
 
 ## Required Reading
