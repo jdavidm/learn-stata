@@ -13,4 +13,4 @@ Using `tenuredata.dta` (`keep if rice == 1`), we want to evaluate the effect of 
 - Use `bysort panelid:` to replace `first_irrig` with the minimum value of `first_irrig` for that parcel across all years (`egen ... = min()`).
 - For parcels that *never* received irrigation, replace `first_irrig` = 0.
 
-You now have the exact cohort group variable needed for modern TWFE estimators. Run a TWFE regression using either `xtreg` and year dummies or `areg`. What is the coefficient on irrigation?
+You now have the exact cohort group variable needed for modern TWFE estimators. Run a TWFE regression using either `xtreg` with year dummies or `reghdfe`. What is the coefficient on irrigation?

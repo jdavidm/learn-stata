@@ -19,22 +19,23 @@ where $\alpha_i$ are individual fixed effects and $\gamma_t$ are time fixed effe
 * estimate TWFE using xtreg and i.wave
 	xtreg           yield_kg fert i.wave, fe vce(cluster hh_id_obs)
 ```
-Recent years have seen new commands for estimating 2+ levels of fixed effects as well as a growing recognitition that TWFE estimates can be wrong under certin, commonly occuring circumstances.
 
-### The `areg` Command
+Recent years have seen new commands for estimating 2+ levels of fixed effects as well as a growing recognitition that TWFE estimates can be wrong under certain, commonly occuring circumstances. We will return to this issue later in this section.
 
-When you have two or more levels of fixed effects, `xtreg, fe` becomes less efficient because it only "demeans" out the panel identifier (`panelid`), while explicitly estimating a dummy variable coefficient for every single time period (`i.wave`) or whatever your other FE is. If your dataset is very large, has many time periods, or has many additional levels of data that you want to control for (e.g., state of residence), this can quickly hit Stata's matrix limits or slow down computation.
+### The `reghdfe` Command
 
-A standard alternative is to use the `areg` command. Like `xtreg`, it avoids estimating thousands of dummy parameters, but rather than "demeaning" the data, it uses a computational algorithm to "absorb" the fixed effect into the sum of squares. 
+When you have two or more levels of fixed effects, `xtreg, fe` becomes less efficient because it only "demeans" out the panel identifier, while explicitly estimating a dummy variable coefficient for every single time period (`i.wave`) or whatever your other FE is. If your dataset is very large, has many time periods, or has many additional levels of data that you want to control for (e.g., state of residence), this can quickly hit Stata's matrix limits or slow down computation.
 
-While `xtreg` always absorbs the panel identifier you specify in `xtset`, `areg` allows you to explicitly indicate which dimension to absorb via the `absorb()` option:
+The modern solution is the user-written `reghdfe` command (Correia, 2016). It efficiently absorbs multiple high-dimensional fixed effects without estimating thousands of dummy parameters, and it correctly adjusts the degrees of freedom and standard errors.
+
+Install `reghdfe` by adding it to the package loop in your `project.do` file. Then use the `absorb()` option to specify which dimensions to absorb:
 
 ```stata
-* estimate the identical TWFE model using areg
-	areg            yield_kg fert, absorb(hh_id_obs wave) vce(cluster hh_id_obs)
+* estimate the identical TWFE model using reghdfe
+	reghdfe         yield_kg fert, absorb(hh_id_obs wave) vce(cluster hh_id_obs)
 ```
 
-For models with two high-dimensional fixed effects (e.g., hundreds of thousands of firms *and* hundreds of thousands of workers), you would typically use an external package like `reghdfe`, which can perform multi-level absorption. But for traditional TWFE (one high-dimensional panel effect and one low-dimensional time effect), `areg` is standard and extremely fast.
+`reghdfe` produces the same point estimates as `xtreg, fe` with `i.wave`, but with correctly adjusted standard errors. It also scales easily to models with two or more high-dimensional fixed effects (e.g., hundreds of thousands of firms *and* hundreds of thousands of workers).
 
 > Do [Exercise 5 - Adding Time Fixed Effects]({{ site.baseurl }}/exercises/11-twfe/)
 

@@ -36,7 +36,11 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Single and Multivariate Regression]({{ site.baseurl }}/materials/09-regression)
 - [Standard Errors]({{ site.baseurl }}/materials/09-std-errors)
 - [Weights, Collinearity, and Measurement Error]({{ site.baseurl }}/materials/09-concerns)
-- [Producing Results]({{ site.baseurl }}/materials/10-results)
+- [Introducing LaTeX via Overleaf]({{ site.baseurl }}/materials/10-latex)
+- [Producing Tables with `estout`]({{ site.baseurl }}/materials/10-estout)
+- [Graphing Regression Results]({{ site.baseurl }}/materials/10-coefplot)
+- [One-Way Fixed Effects]({{ site.baseurl }}/materials/11-FE)
+- [Two-Way Fixed Effects]({{ site.baseurl }}/materials/11-twfe)
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)
