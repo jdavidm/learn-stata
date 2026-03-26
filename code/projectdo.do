@@ -66,7 +66,8 @@ if $pack == 1 {
 					mrtab distinct winsor2 catplot colrspace ivreg2 ranktest
 					carryforward missings xtivreg2 fre coefplot colrspace
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
-					eventstudyinteract avar grc1leg2" ;
+					eventstudyinteract avar grc1leg2 reghdfe require
+					bacondecomp csdid" ;
     #delimit cr
 	
 	* install packages that are on ssc	
@@ -87,8 +88,11 @@ if $pack == 1 {
 		}
 
 	* install -xfill and dm89_1 - packages
-		net install xfill, 	replace from(https://www.sealedenvelope.com/)
+		net install xfill,	replace from("https://www.sealedenvelope.com/")
 		
+	* install csdid
+		net install csdid, replace from("https://raw.githubusercontent.com/friosavila/csdid_drdid/main/code/")
+	
 	* update all ado files
 		ado update, update
 

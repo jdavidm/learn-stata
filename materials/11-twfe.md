@@ -28,7 +28,7 @@ When you have two or more levels of fixed effects, `xtreg, fe` becomes less effi
 
 The modern solution is the user-written `reghdfe` command (Correia, 2016). It efficiently absorbs multiple high-dimensional fixed effects without estimating thousands of dummy parameters, and it correctly adjusts the degrees of freedom and standard errors.
 
-Install `reghdfe` by adding it to the package loop in your `project.do` file. Then use the `absorb()` option to specify which dimensions to absorb:
+Install `reghdfe` by adding it to the package loop in your `project.do` file. The `reghdfe` command also requires that you install `require` package, so do that by also adding `require` to the package loop in your `project.do` file. Then use the `absorb()` option to specify which dimensions to absorb:
 
 ```stata
 * estimate the identical TWFE model using reghdfe
@@ -68,8 +68,10 @@ But what if treatments are staggered? Let's assign individuals different treatme
 
 ```stata
 * simulate staggered adoption with dynamic effects
-	gen             treat_time = runiformint(3, 9)
-	gen             treated_stag = (t >= treat_time)
+	bysort id:      gen treat_time = runiformint(3, 11) if _n == 1
+	bysort id:      replace treat_time = treat_time[1]
+	replace         treat_time = 0 if treat_time > 9
+	gen             treated_stag = (t >= treat_time) & (treat_time > 0)
 	
 * dynamic effect: baseline effect of 5, grows by 2 each year
 	gen             true_effect = 5 + 2 * (t - treat_time)
@@ -78,7 +80,7 @@ But what if treatments are staggered? Let's assign individuals different treatme
 	xtreg           y_stag treated_stag i.t, fe
 ```
 
-If you run this, you will notice the TWFE estimate is often wildly wrong—sometimes even negative! Why? Because standard TWFE calculates a weighted average of all possible 2x2 Difference-in-Difference combinations. When adoption is staggered, TWFE uses **already-treated units as controls** for newly-treated units. Because the treatment effect for the "already-treated" is growing over time, this creates negative weights, severely biasing your estimate.
+In our simulation, the true treatment effect is 9.8 but if you run the naive TWFE you will notice the estimate is often wildly wrong—sometimes even negative! Based on our simulation, `xtreg` gives us an estimate of 6.14. Why the downward bias? Because standard TWFE calculates a weighted average of all possible 2x2 Difference-in-Difference combinations. When adoption is staggered, TWFE uses **already-treated units as controls** for newly-treated units. Because the treatment effect for the "already-treated" is growing over time, this creates negative weights, severely biasing your estimate.
 
 > Do [Exercise 6 - Simulating the Bias]({{ site.baseurl }}/exercises/11-bias/)
 
@@ -88,7 +90,18 @@ Goodman-Bacon (2021) proved that TWFE is a weighted average of comparisons. We c
 
 Install the `bacondecomp` package by adding it to our list of packages in `project.do`. Then switch the value of `pack` to 1 and re-run the `project.do` file. Finally, switch the value of `pack` back to zero and save the `project.do` file.
 
-The `bacondecomp` command produces a scatterplot showing the different 2x2 DiD comparisons and their weights. Look for the red triangles—those are the problematic Early vs. Later comparisons.
+The `bacondecomp` command produces a scatterplot showing the different 2x2 DiD comparisons and their weights. 
+
+```stata
+* decompose the TWFE estimate
+	bacondecomp     y_stag treated_stag, ddetail
+```
+
+Look at the resulting graph. You will see two distinct groups of comparisons:
+1. **Solid triangles**: These are the "good" comparisons (e.g., comparing newly-treated units to never-treated units). These 2x2 estimates are large and positive (ranging from 5 to 10), which accurately reflects our true growing treatment effect.
+2. **Hollow circles**: These are the problematic comparisons where already-treated units act as controls for newly-treated units. Because the treatment effect for the "controls" is growing, these difference-in-difference estimates are severely biased downward, with many close to zero or even negative.
+
+The dotted horizontal line shows the overall TWFE estimate (around 3.9). The TWFE estimate is simply a weighted average of all these points. Because the problematic hollow circles receive substantial weight, they drag the overall TWFE estimate down far below the true treatment effect.
 
 ### Modern Solutions (e.g., `csdid`)
 
@@ -98,7 +111,7 @@ One of the most popular packages is `csdid` (Callaway & Sant'Anna). Unlike `baco
 
 ```stata
 	* install -xfill and dm89_1 - packages
-		net install xfill, 	replace from(https://www.sealedenvelope.com/)
+		net install xfill, from(https://www.sealedenvelope.com/) replace
 ```
 
 If not, add it before the final `}` bracket in the package loop. On the line immediately following the command to install `xfill` add this line:
@@ -108,16 +121,15 @@ If not, add it before the final `}` bracket in the package loop. On the line imm
 	net             install csdid, from("https://raw.githubusercontent.com/friosavila/csdid_drdid/main/code/") replace
 ```
 
-Rerun `project.do` and save it. Now that we have `csdid`, the package requires a variable indicating the *first period* an individual was treated (the cohort variable).
+Rerun `project.do` and save it (you may also need to install `drdid`). Now that we have `csdid`, the package requires a variable indicating the *first period* an individual was treated (the cohort variable). We already created `treat_time` for our simulation, where never-treated units are correctly set to 0.
 
 ```stata
-* replace 0 for never treated
-	replace         treat_time = 0 if treated_stag == 0 
-
 * run csdid
-	csdid           y_stag, time(t) ivar(id) gname(treat_time)
+	csdid           y_stag, time(t) ivar(id) gvar(treat_time)
+
+* calculate the true att
+	estat 			simple
 ```
+`csdid` first calculates all the pair-wise difference-in-differences. The `estat simple` command then calculates the average treatment effect for the entire treated group, which it estimates as 9.96, much closer to the true value of 9.8.
 
-`csdid` correctly calculates the group-time average treatment effects without negative weighting bias!
-
-> Do [Exercise 7 - Exploring BACON]({{ site.baseurl }}/exercises/11-bacon/)
+> Do [Exercise 7 - Modern TWFE Solutions]({{ site.baseurl }}/exercises/11-bacon/)
