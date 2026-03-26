@@ -27,7 +27,7 @@
 
 * load tenure data and keep rice
 	use				"$data/tenuredata.dta", clear
-	keep if			rice == 1
+
 
 * scatter plot of yield vs fertilizer
 	twoway			(scatter yield q_f_ha, ///
@@ -199,7 +199,7 @@
 
 * reload data
 	use				"$data/tenuredata.dta", clear
-	keep if			rice == 1
+
 
 * set up postfile for results
 	tempfile		results
@@ -318,7 +318,7 @@
 
 * setup
 	use				"$data/tenuredata.dta", clear
-	keep if			rice == 1
+
 
 	estimates clear
 	

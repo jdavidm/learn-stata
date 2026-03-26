@@ -5,7 +5,7 @@ title: Multi-Model `coefplot`
 language: Stata
 ---
 
-Using `tenuredata.dta` (rice observations only), compare the fertilizer and labor coefficients across multiple specifications.
+Using `tenuredata.dta`, compare the fertilizer and labor coefficients across multiple specifications.
 - Run and store three regressions, all with `vce(cluster panelid)`:
    - **m1**: `yield` on `q_f_ha lt_f_ha i.irrig i.tenure`
    - **m2**: `yield` on `q_f_ha lt_f_ha i.irrig i.tenure i.site`

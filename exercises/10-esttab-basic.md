@@ -5,7 +5,7 @@ title: Basic `esttab` Table
 language: Stata
 ---
 
-Using `tenuredata.dta` (rice observations only), produce a formatted regression table.
+Using `tenuredata.dta`, produce a formatted regression table.
 
 1\. In your `lastname.tex`, include the table using `\input{10-rice-regs.tex}` inside a `table` environment.
 - Run `reg yield q_f_ha lt_f_ha, vce(cluster panelid)` a

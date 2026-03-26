@@ -5,7 +5,7 @@ title: Basic `coefplot`
 language: Stata
 ---
 
-Using `tenuredata.dta` (rice observations only), create a coefficient plot.
+Using `tenuredata.dta`, create a coefficient plot.
 - Run a regression of `yield` on `q_f_ha`, `lt_f_ha`, `i.irrig`, and `i.tenure`, with standard errors clustered at the household level: `vce(cluster panelid)`.
 - Create a coefficient plot using `coefplot`:
    - Drop the constant (`drop(_cons)`)

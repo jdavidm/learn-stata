@@ -5,7 +5,7 @@ title: Challenge 10
 language: Stata
 ---
 
-This challenge uses `tenuredata.dta` (rice observations only) to practice skills from all three lectures (LaTeX, coefplot, estout). You will produce a short results section with a summary statistics table and a coefficient plot — all integrated into your LaTeX document. Reload the `tenuredata.dta` and type `estimates clear`.
+This challenge uses `tenuredata.dta` to practice skills from all three lectures (LaTeX, coefplot, estout). You will produce a short results section with a summary statistics table and a coefficient plot — all integrated into your LaTeX document. Reload the `tenuredata.dta` and type `estimates clear`.
 
 1\. Use `estpost sum` to compute summary statistics for: `yield`, `q_f_ha`, `lt_f_ha`, `area`, `irrig`, `tenure`, `educhoh`, `aghoh`. Then export the table to `$answ/10-challenge-sumstats.tex` using `esttab` with `booktabs` and `label`, `posthead`, `postfoot`, `nonum`, `nomtitle`, `nobaselevels`, `nogaps`, and `fragment`.
 
