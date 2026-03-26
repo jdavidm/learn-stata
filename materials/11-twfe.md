@@ -74,7 +74,7 @@ But what if treatments are staggered? Let's assign individuals different treatme
 	xtreg           y_stag treated_stag i.t, fe
 ```
 
-If you run this, you will notice the TWFE estimate is often wildly wrong—sometimes even negative! Why? Because standard TWFE calculates a weighted average of all possible 2x2 Difference-in-Differences combinations. When adoption is staggered, TWFE uses **already-treated units as controls** for newly-treated units. Because the treatment effect for the "already-treated" is growing over time, this creates negative weights, severely biasing your estimate.
+If you run this, you will notice the TWFE estimate is often wildly wrong—sometimes even negative! Why? Because standard TWFE calculates a weighted average of all possible 2x2 Difference-in-Difference combinations. When adoption is staggered, TWFE uses **already-treated units as controls** for newly-treated units. Because the treatment effect for the "already-treated" is growing over time, this creates negative weights, severely biasing your estimate.
 
 > Do [Exercise 6 - Simulating the Bias]({{ site.baseurl }}/exercises/11-bias/)
 
@@ -82,26 +82,31 @@ If you run this, you will notice the TWFE estimate is often wildly wrong—somet
 
 Goodman-Bacon (2021) proved that TWFE is a weighted average of comparisons. We can use a user-written Stata package `bacondecomp` to see exactly how much weight is being placed on bad comparisons (Later vs. Earlier Treated).
 
-```stata
-* install the bacondecomp package
-	ssc             install bacondecomp, replace
+Install the `bacondecomp` package by adding it to our list of packages in `project.do`. Then switch the value of `pack` to 1 and re-run the `project.do` file. Finally, switch the value of `pack` back to zero and save the `project.do` file.
 
-* decompose the TWFE estimate
-	bacondecomp     y_stag treated_stag
-```
-
-This command produces a scatterplot showing the different 2x2 DiD comparisons and their weights. Look for the red triangles—those are the problematic Early vs. Later comparisons.
+The `bacondecomp` command produces a scatterplot showing the different 2x2 DiD comparisons and their weights. Look for the red triangles—those are the problematic Early vs. Later comparisons.
 
 ### Modern Solutions (e.g., `csdid`)
 
 To fix this, econometricians have developed new estimators (Callaway & Sant'Anna, 2021; Sun & Abraham, 2021; Borusyak et al., 2021). These "modern TWFE" estimators explicitly avoid using already-treated units as controls. Instead, they only compare newly-treated units to "not-yet-treated" or "never-treated" units.
 
-One of the most popular packages is `csdid` (Callaway & Sant'Anna). It requires a variable indicating the *first period* an individual was treated (the cohort variable).
+One of the most popular packages is `csdid` (Callaway & Sant'Anna). Unlike `bacondecomp`, `csdid` is not on the `ssc` repository. Rather, we need to install it from the creator's github repo. In the package loop that is already in your `project.do`, you should have the following line:
+
+```stata
+	* install -xfill and dm89_1 - packages
+		net install xfill, 	replace from(https://www.sealedenvelope.com/)
+```
+
+If not, add it before the final `}` bracket in the package loop. On the line immediately following the command to install `xfill` add this line:
 
 ```stata
 * install csdid
 	net             install csdid, from("https://raw.githubusercontent.com/friosavila/csdid_drdid/main/code/") replace
+```
 
+Rerun `project.do` and save it. Now that we have `csdid`, the package requires a variable indicating the *first period* an individual was treated (the cohort variable).
+
+```stata
 * replace 0 for never treated
 	replace         treat_time = 0 if treated_stag == 0 
 
