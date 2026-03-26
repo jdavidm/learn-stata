@@ -7,20 +7,23 @@ language: Stata
 
 While One-Way Fixed Effects absorb unobserved, time-invariant heterogeneity across individuals, **Two-Way Fixed Effects (TWFE)** go a step further. We add time fixed effects to absorb any unobserved macroeconomic shocks or trends that affect all individuals in a given time period identically.
 
-The classic TWFE model is:
-$$ Y_{it} = \beta D_{it} + \alpha_i + \gamma_t + \epsilon_{it} $$
+The classic TWFE model is
 
-Where $\alpha_i$ are individual fixed effects and $\gamma_t$ are time fixed effects. For a long time, TWFE was the undisputed gold standard for analyzing panel data. You simply included `i.year` in your `xtreg`:
+$$
+    Y_{it} = \beta D_{it} + \alpha_i + \gamma_t + \epsilon_{it},
+$$
+
+where $\alpha_i$ are individual fixed effects and $\gamma_t$ are time fixed effects. For a long time, TWFE was the undisputed gold standard for analyzing panel data. You simply included `i.wave` in your `xtreg`:
 
 ```stata
-* estimate TWFE using xtreg and i.year
-	xtreg           yield fert i.year, fe vce(cluster panelid)
+* estimate TWFE using xtreg and i.wave
+	xtreg           yield_kg fert i.wave, fe vce(cluster hh_id_obs)
 ```
 Recent years have seen new commands for estimating 2+ levels of fixed effects as well as a growing recognitition that TWFE estimates can be wrong under certin, commonly occuring circumstances.
 
 ### The `areg` Command
 
-When you have two or more levels of fixed effects, `xtreg, fe` becomes less efficient because it only "demeans" out the panel identifier (`panelid`), while explicitly estimating a dummy variable coefficient for every single time period (`i.year`) or whatever your other FE is. If your dataset is very large, has many time periods, or has many additional levels of data that you want to control for (e.g., state of residence), this can quickly hit Stata's matrix limits or slow down computation.
+When you have two or more levels of fixed effects, `xtreg, fe` becomes less efficient because it only "demeans" out the panel identifier (`panelid`), while explicitly estimating a dummy variable coefficient for every single time period (`i.wave`) or whatever your other FE is. If your dataset is very large, has many time periods, or has many additional levels of data that you want to control for (e.g., state of residence), this can quickly hit Stata's matrix limits or slow down computation.
 
 A standard alternative is to use the `areg` command. Like `xtreg`, it avoids estimating thousands of dummy parameters, but rather than "demeaning" the data, it uses a computational algorithm to "absorb" the fixed effect into the sum of squares. 
 
@@ -28,7 +31,7 @@ While `xtreg` always absorbs the panel identifier you specify in `xtset`, `areg`
 
 ```stata
 * estimate the identical TWFE model using areg
-	areg            yield fert, absorb(panelid year) vce(cluster panelid)
+	areg            yield_kg fert, absorb(hh_id_obs wave) vce(cluster hh_id_obs)
 ```
 
 For models with two high-dimensional fixed effects (e.g., hundreds of thousands of firms *and* hundreds of thousands of workers), you would typically use an external package like `reghdfe`, which can perform multi-level absorption. But for traditional TWFE (one high-dimensional panel effect and one low-dimensional time effect), `areg` is standard and extremely fast.

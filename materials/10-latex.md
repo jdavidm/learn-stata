@@ -47,7 +47,7 @@ Every LaTeX document has the same skeleton:
 ```latex
 \documentclass{article}
 \usepackage{graphicx}       % for including images
-\usepackage{booktabs}       % for nice table formatting
+\usepackage{booktabs,calc}  % for nice table formatting
 \usepackage{amsmath}        % for math environments
 \usepackage{placeins}       % for figure and table placement
 
