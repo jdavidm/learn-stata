@@ -5,6 +5,7 @@ title: List of datasets
 
 | Name | File type | Download from |
 |:--------|:-------|:--------|
+| Chickpea adoption | dta | <https://jdavidm.github.io/learn-stata/data/mm.dta> |
 | Country GDP | xls | <https://jdavidm.github.io/learn-stata/data/API_NY.GDP.MKTP.KD_DS2_en_excel_v2_68.xls> |
 | Dietary info | dta | <https://jdavidm.github.io/learn-stata/data/dietary_cleaned.dta> |
 | District size | csv | <https://jdavidm.github.io/learn-stata/data/district_size.csv> |

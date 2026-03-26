@@ -16,21 +16,21 @@
 ********************************************************************************
 
 * load tenure data and keep rice
-	use				"$data/tenuredata.dta", clear
+	use				"$data/mm.dta", clear
 
 * run pooled OLS regression
-	reg				yield q_f_ha, vce(cluster panelid)
+	reg				yield totfertcostha, vce(cluster qnno)
 	eststo			ols
 
 * sort by panel id and time
-	sort			panelid year
+	sort			qnno year
 
 * create first-differenced variables
-	by panelid:		gen d_yield = yield - yield[_n-1]
-	by panelid:		gen d_fert = q_f_ha - q_f_ha[_n-1]
+	by qnno:		gen d_yield = yield - yield[_n-1]
+	by qnno:		gen d_fert = totfertcostha - totfertcostha[_n-1]
 
 * regress the differenced variables
-	reg				d_yield d_fert, vce(cluster panelid)
+	reg				d_yield d_fert, vce(cluster qnno)
 	eststo			fd
 
 **## 1.2 - export table
@@ -38,8 +38,8 @@
 * print table with OLS and FD columns
    esttab      ols fd using "$answ/11-fd.tex", replace ///
                     b(3) se(3) ///
-                    rename(q_f_ha "Fertilizer" d_fert "Fertilizer") ///
-                    keep("Fertilizer") ///
+                    rename(totfertcostha "Fertilizer Cost" d_fert "Fertilizer Cost") ///
+                    keep("Fertilizer Cost") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -51,7 +51,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{3}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -65,24 +65,24 @@
 ********************************************************************************
 
 * calculate household-specific means
-	bysort panelid:	egen mean_yield = mean(yield)
-	bysort panelid:	egen mean_fert  = mean(q_f_ha)
+	bysort qnno:	egen mean_yield = mean(yield)
+	bysort qnno:	egen mean_fert  = mean(totfertcostha)
 
 * demean the variables
 	gen				dm_yield = yield - mean_yield
-	gen				dm_fert  = q_f_ha - mean_fert
+	gen				dm_fert  = totfertcostha - mean_fert
 
 * run the regression on demeaned data
-	reg				dm_yield dm_fert, vce(cluster panelid)
+	reg				dm_yield dm_fert, vce(cluster qnno)
 	eststo			demean
 
 **## 2.1 - export table with three columns
 
    esttab      ols fd demean using "$answ/11-demean.tex", replace ///
                     b(3) se(3) ///
-                    rename(q_f_ha "Fertilizer" d_fert "Fertilizer" ///
-                           dm_fert "Fertilizer") ///
-                    keep("Fertilizer") ///
+                    rename(totfertcostha "Fertilizer Cost" d_fert "Fertilizer Cost" ///
+                           dm_fert "Fertilizer Cost") ///
+                    keep("Fertilizer Cost") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -95,7 +95,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{4}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -109,16 +109,16 @@
 ********************************************************************************
 
 * include household fixed effects via dummy variables using i.
-	reg				yield q_f_ha i.panelid, vce(cluster panelid)
+	reg				yield totfertcostha i.qnno, vce(cluster qnno)
 	eststo			lsdv
 
 **## 3.1 - export table with four columns
 
    esttab      ols fd demean lsdv using "$answ/11-lsdv.tex", replace ///
                     b(3) se(3) ///
-                    rename(q_f_ha "Fertilizer" d_fert "Fertilizer" ///
-                           dm_fert "Fertilizer") ///
-                    keep("Fertilizer") ///
+                    rename(totfertcostha "Fertilizer Cost" d_fert "Fertilizer Cost" ///
+                           dm_fert "Fertilizer Cost") ///
+                    keep("Fertilizer Cost") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -132,7 +132,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{5}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -146,19 +146,19 @@
 ********************************************************************************
 
 * declare panel data structure
-	xtset			panelid
+	xtset			qnno
 
 * estimate the fixed effects model
-	xtreg			yield q_f_ha, fe vce(cluster panelid)
+	xtreg			yield totfertcostha, fe vce(cluster qnno)
 	eststo			fe
 
 **## 4.1 - export table with five columns
 
    esttab      ols fd demean lsdv fe using "$answ/11-fe.tex", replace ///
                     b(3) se(3) ///
-                    rename(q_f_ha "Fertilizer" d_fert "Fertilizer" ///
-                           dm_fert "Fertilizer") ///
-                    keep("Fertilizer") ///
+                    rename(totfertcostha "Fertilizer Cost" d_fert "Fertilizer Cost" ///
+                           dm_fert "Fertilizer Cost") ///
+                    keep("Fertilizer Cost") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -173,7 +173,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{6}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -187,26 +187,26 @@
 ********************************************************************************
 
 * declare panel data structure
-	xtset			panelid
+	xtset			qnno
 
 * run a one-way fe model
-	xtreg			yield q_f_ha, fe vce(cluster panelid)
+	xtreg			yield totfertcostha, fe vce(cluster qnno)
 	eststo			owfe
 	
 * run a two-way fe model
-	xtreg			yield q_f_ha i.year, fe vce(cluster panelid)
+	xtreg			yield totfertcostha i.year, fe vce(cluster qnno)
 	eststo			twfe
 	
 * run a two-way fe model with reghdfe
-	reghdfe			yield q_f_ha, absorb(panelid year) vce(cluster panelid)
+	reghdfe			yield totfertcostha, absorb(qnno year) vce(cluster qnno)
 	eststo			reghdfe
 
 **## 5.1 - export table with three columns
 
    esttab      owfe twfe reghdfe using "$answ/11-twfe.tex", replace ///
                     b(3) se(3) ///
-                    rename(q_f_ha "Fertilizer") ///
-                    keep("Fertilizer") ///
+                    rename(totfertcostha "Fertilizer Cost") ///
+                    keep("Fertilizer Cost") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -219,7 +219,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{4}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -233,17 +233,17 @@
 ********************************************************************************
 
 * sort by panel id and time
-	sort			panelid year
+	sort			qnno year
 
 * create cohort matching variable
-	gen				first_irrig = year if irrig == 1
-	bysort panelid:	egen min_irrig = min(first_irrig)
-	replace			first_irrig = min_irrig
-	drop			min_irrig
-	replace			first_irrig = 0 if missing(first_irrig)
+	gen				first_icp = year if icp == 1
+	bysort qnno:	egen min_icp = min(first_icp)
+	replace			first_icp = min_icp
+	drop			min_icp
+	replace			first_icp = 0 if missing(first_icp)
 
 * run a twfe model
-	reghdfe			yield irrig, absorb(panelid year) vce(cluster panelid)
+	reghdfe			yield icp, absorb(qnno year) vce(cluster qnno)
 	eststo			bias_twfe
 
 ********************************************************************************
@@ -251,11 +251,13 @@
 ********************************************************************************
 
 **## 7.1 - bacon decomposition
-	bacondecomp		yield irrig, ddetail
+	xtset			qnno year
+
+	bacondecomp		yield icp, ddetail
 	graph export	"$answ/11-bacon.png", replace
 
 * run csdid
-	csdid			yield, ivar(panelid) time(year) gvar(first_irrig) tr(irrig)
+	csdid			yield, ivar(qnno) time(year) gvar(first_icp) tr(icp)
 	
 * display and save event study
 	estat			event
@@ -275,7 +277,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{3}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -289,30 +291,30 @@
 ********************************************************************************
 
 * load tenure data
-	use				"$data/tenuredata.dta", clear
+	use				"$data/mm.dta", clear
 	estimates		clear
 
 * run pooled OLS regression
-	reg				yield irrig q_f_ha lt_f_ha, vce(cluster panelid)
+	reg				yield icp totfertcostha totchemcostha, vce(cluster qnno)
 	eststo			c1
 
 * run time FE regression
-	reg				yield irrig q_f_ha lt_f_ha i.year, vce(cluster panelid)
+	reg				yield icp totfertcostha totchemcostha i.year, vce(cluster qnno)
 	eststo			c2
 
 * run one-way FE regression
-	xtset			panelid
-	xtreg			yield irrig q_f_ha lt_f_ha, fe vce(cluster panelid)
+	xtset			qnno
+	xtreg			yield icp totfertcostha totchemcostha, fe vce(cluster qnno)
 	eststo			c3
 
 * run two-way FE regression
-	xtreg			yield irrig q_f_ha lt_f_ha i.year, fe vce(cluster panelid)
+	xtreg			yield icp totfertcostha totchemcostha i.year, fe vce(cluster qnno)
 	eststo			c4
 
 **## 8.1 - export table
    esttab      c1 c2 c3 c4 using "$answ/11-challenge-regs.tex", replace ///
                     b(3) se(3) ///
-                    keep(irrig) ///
+                    keep(icp) ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
@@ -326,7 +328,7 @@
                     postfoot("\hline \hline \\[-1.8ex] " ///
                       "\multicolumn{5}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is rice yield in kg/ha. All models use " ///
+                      "is chickpea yield in kg/ha. All models use " ///
                       "standard errors clustered at the " ///
                       "household level (in parentheses). " ///
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
@@ -334,7 +336,7 @@
 
 **## 8.2 - export coefficient plot
 	coefplot		c1 c2 c3 c4, ///
-					drop(_cons) keep(irrig) ///
+					drop(_cons) keep(icp) ///
 					xline(0) ///
 					title("Coefficient on Irrigation across Models") ///
 					legend(order(2 "OLS" 4 "Time FE" 6 "OWFE" 8 "TWFE") ///
