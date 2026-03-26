@@ -29,14 +29,16 @@ The tradeoff: LaTeX has a learning curve. But with Overleaf (a free, cloud-based
 
 ### The Overleaf workflow for this course
 
-Your `semester26` Overleaf project is connected to the `semester26` git repository. The workflow is:
+One nice thing about Overleaf is that you can connect it to your git repository. That way you run your code in Stata, export the results to the repo, and then Overleaf will automatically update with the new results. So when you update a regression or table in Stata, you can just re-compile your LaTeX document and the new results will be included.
 
-1. Run your Stata code → graphs and tables are exported to the repo
-2. The repo syncs with your Overleaf project
+However, you can only connect an Overleaf project to the `main` branch of a git repository. In our `semester26` repo you are all working on your own branches. So, for this course, we will need to add one additional step to the workflow, which is uploading your results to Overleaf (instead of having it automatically sync). The workflow is:
+
+1. Run your Stata code → graphs and tables are exported to your branch on the `semester26` repo
+2. Upload your graphs and tables to each week's results folder within your own folder in the Overleaf project `semester26 -597A`
 3. In your `lastname.tex` file, you use `\input{}` or `\includegraphics{}` to pull in those results
 4. Compile your document in Overleaf to produce a PDF
 
-This means your results are **always reproducible**: re-run the Stata code and the document updates automatically.
+This means your results are **always reproducible**, though for this course you won't be able to fully automate this process. 
 
 ### Structure of a LaTeX document
 
@@ -45,8 +47,9 @@ Every LaTeX document has the same skeleton:
 ```latex
 \documentclass{article}
 \usepackage{graphicx}       % for including images
-\usepackage{booktabs}        % for nice table formatting
-\usepackage{amsmath}         % for math environments
+\usepackage{booktabs}       % for nice table formatting
+\usepackage{amsmath}        % for math environments
+\usepackage{placeins}       % for figure and table placement
 
 \title{AAE 497A/597A: Semester 2026}
 \author{Your Name}
@@ -58,6 +61,13 @@ Every LaTeX document has the same skeleton:
 
 \section*{Assignment 10}
 
+\subsection*{Exercise 1 - \LaTeX \ Formatting and Math}
+
+\subsubsection*{1.1}
+% your content goes here
+
+\FloatBarrier
+\subsection*{Exercise 2 - Inserting a Stata Figure}
 % your content goes here
 
 \end{document}
@@ -70,6 +80,7 @@ Key pieces:
 - `\begin{document}` ... `\end{document}` — everything between these is the actual content
 - `\maketitle` — renders the title, author, and date
 - `\section*{...}` — creates a section heading (the `*` suppresses numbering)
+- `\FloatBarrier` — prevents floats (figures and tables) from moving across sections
 
 ### Formatting text
 
