@@ -16,14 +16,14 @@
 ********************************************************************************
 
 * load tenure data and keep rice
-	use				"$data/mm.dta", clear
+	use				"$data/mm-1.dta", clear
 
 * run pooled OLS regression
 	reg				yield totfertcostha, vce(cluster qnno)
 	eststo			ols
 
 * sort by panel id and time
-	sort			qnno year
+	sort			qnno tindex
 
 * create first-differenced variables
 	by qnno:		gen d_yield = yield - yield[_n-1]
@@ -194,11 +194,11 @@
 	eststo			owfe
 	
 * run a two-way fe model
-	xtreg			yield totfertcostha i.year, fe vce(cluster qnno)
+	xtreg			yield totfertcostha i.tindex, fe vce(cluster qnno)
 	eststo			twfe
 	
 * run a two-way fe model with reghdfe
-	reghdfe			yield totfertcostha, absorb(qnno year) vce(cluster qnno)
+	reghdfe			yield totfertcostha, absorb(qnno tindex) vce(cluster qnno)
 	eststo			reghdfe
 
 **## 5.1 - export table with three columns
@@ -233,17 +233,17 @@
 ********************************************************************************
 
 * sort by panel id and time
-	sort			qnno year
+	sort			qnno tindex
 
 * create cohort matching variable
-	gen				first_icp = year if icp == 1
+	gen				first_icp = tindex if icp == 1
 	bysort qnno:	egen min_icp = min(first_icp)
 	replace			first_icp = min_icp
 	drop			min_icp
 	replace			first_icp = 0 if missing(first_icp)
 
 * run a twfe model
-	reghdfe			yield icp, absorb(qnno year) vce(cluster qnno)
+	reghdfe			yield icp, absorb(qnno tindex) vce(cluster qnno)
 	eststo			bias_twfe
 
 ********************************************************************************
@@ -251,13 +251,13 @@
 ********************************************************************************
 
 **## 7.1 - bacon decomposition
-	xtset			qnno year
+	xtset			qnno tindex
 
 	bacondecomp		yield icp, ddetail
 	graph export	"$answ/11-bacon.png", replace
 
 * run csdid
-	csdid			yield, ivar(qnno) time(year) gvar(first_icp) tr(icp)
+	csdid			yield, ivar(qnno) time(tindex) gvar(first_icp) tr(icp)
 	
 * display and save event study
 	estat			event
@@ -291,7 +291,7 @@
 ********************************************************************************
 
 * load tenure data
-	use				"$data/mm.dta", clear
+	use				"$data/mm-2.dta", clear
 	estimates		clear
 
 * run pooled OLS regression
@@ -299,7 +299,7 @@
 	eststo			c1
 
 * run time FE regression
-	reg				yield icp totfertcostha totchemcostha i.year, vce(cluster qnno)
+	reg				yield icp totfertcostha totchemcostha i.tindex, vce(cluster qnno)
 	eststo			c2
 
 * run one-way FE regression
@@ -308,7 +308,7 @@
 	eststo			c3
 
 * run two-way FE regression
-	xtreg			yield icp totfertcostha totchemcostha i.year, fe vce(cluster qnno)
+	xtreg			yield icp totfertcostha totchemcostha i.tindex, fe vce(cluster qnno)
 	eststo			c4
 
 **## 8.1 - export table
