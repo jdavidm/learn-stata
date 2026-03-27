@@ -2,7 +2,7 @@
 * assignment: 11
 * created on: mar 26
 * created by: jdm
-* edited on: 26 mar 26
+* edited on: 27 mar 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -16,7 +16,7 @@
 ********************************************************************************
 
 * load tenure data and keep rice
-	use				"$data/mm-1.dta", clear
+	use				"$data/mm.dta", clear
 
 * run pooled OLS regression
 	reg				yield totfertcostha, vce(cluster qnno)
@@ -246,6 +246,7 @@
 	reghdfe			yield icp, absorb(qnno tindex) vce(cluster qnno)
 	eststo			bias_twfe
 
+	
 ********************************************************************************
 **# 7 - modern TWFE estimators
 ********************************************************************************
@@ -260,7 +261,7 @@
 	csdid			yield, ivar(qnno) time(tindex) gvar(first_icp) tr(icp)
 	
 * display and save event study
-	estat			event
+	estat			simple
 	eststo			bacon_csdid
 
 **## 7.2 - export table with two columns

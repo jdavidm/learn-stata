@@ -128,7 +128,7 @@ Rerun `project.do` and save it (you may also need to install `drdid`). Now that 
 	csdid           y_stag, time(t) ivar(id) gvar(treat_time)
 
 * calculate the true att
-	estat 			simple
+	estat           simple
 ```
 `csdid` first calculates all the pair-wise difference-in-differences. The `estat simple` command then calculates the average treatment effect for the entire treated group, which it estimates as 9.96, much closer to the true value of 9.8.
 
