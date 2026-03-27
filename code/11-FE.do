@@ -260,13 +260,14 @@
 * run csdid
 	csdid			yield, ivar(qnno) time(tindex) gvar(first_icp) tr(icp)
 	
-* display and save event study
-	estat			simple
-	eststo			bacon_csdid
+* display and save simple aggregation
+	estat			simple, estore(bacon_csdid)
 
 **## 7.2 - export table with two columns
    esttab      bias_twfe bacon_csdid using "$answ/11-bacon.tex", replace ///
                     b(3) se(3) ///
+                    rename(icp "Treatment Effect" ATT "Treatment Effect") ///
+                    keep("Treatment Effect") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
                     stats(N, labels("Observations") fmt(0)) ///
                     noobs booktabs nonum nomtitle collabels(none) ///
