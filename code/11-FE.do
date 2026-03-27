@@ -292,7 +292,7 @@
 ********************************************************************************
 
 * load tenure data
-	use				"$data/mm-2.dta", clear
+	use				"$data/mm.dta", clear
 	estimates		clear
 
 * run pooled OLS regression

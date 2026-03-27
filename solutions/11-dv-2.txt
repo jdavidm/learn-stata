@@ -1,1 +1,1 @@
-[2] 1.981; larger than OLS, smaller than FD, same as demeaned
+[2] 0.144; larger than OLS, larger than FD, same as demeaned
