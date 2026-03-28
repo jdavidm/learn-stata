@@ -1,0 +1,1 @@
+[3] coefficient is smaller reflecting bias in the uncorrected TWFE estimate

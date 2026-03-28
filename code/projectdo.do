@@ -116,3 +116,4 @@ if $pack == 1 {
 *	do				"$code/08-design.do"
 *	do				"$code/09-regress.do"
 *	do				"$code/10-results.do"
+*	do				"$code/11-FE.do"

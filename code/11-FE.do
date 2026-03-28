@@ -2,7 +2,7 @@
 * assignment: 11
 * created on: mar 26
 * created by: jdm
-* edited on: 27 mar 26
+* edited on: 28 mar 26
 * edited by: jdm
 * Stata v.19.5
 	
@@ -259,9 +259,13 @@
 
 * run csdid
 	csdid			yield, ivar(qnno) time(tindex) gvar(first_icp) tr(icp)
+	local			obs = e(N)
 	
 * display and save simple aggregation
 	estat			simple, estore(bacon_csdid)
+	estimates		restore bacon_csdid
+	estadd			scalar N = `obs'
+	estimates		store bacon_csdid
 
 **## 7.2 - export table with two columns
    esttab      bias_twfe bacon_csdid using "$answ/11-bacon.tex", replace ///
@@ -345,7 +349,7 @@
 						row(1) pos(6)) ///
 					name(chal, replace)
 
-	graph export	"$answ/11-challenge-coefplot.png", replace
+	graph export	"$answ/11-challenge-2.png", replace
 
   
 ********************************************************************************
