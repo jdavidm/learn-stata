@@ -1,7 +1,8 @@
 <h3>Solutions</h3>
+{% capture defined_baseurl %}{% raw %}{{ site.baseurl }}{% endraw %}{% endcapture %}
 {% for solutionpage in site.pages %}
   {% if solutionpage.title == page.title and solutionpage.element == 'solution' %}
-   {{ solutionpage.content }}
+   {{ solutionpage.content | replace: defined_baseurl, site.baseurl }}
   {% endif %}
 {% endfor %}
 <hr>
