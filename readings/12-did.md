@@ -7,14 +7,15 @@ language: Stata
 
 ### Topics
 
-* How fixed effects work
-* First differences
+* How event studies work
+* Event study regressions
+* Visualizing event studies
 * Difference-in-differences
-* Two-way fixed effects
-* Triple differences
 * Parallel trends
+* Triple differences
 
 
 ### Readings
 
+* Reading (chapter 17): [*The Effect*](https://theeffectbook.net/ch-EventStudies.html)
 * Reading (chapter 18): [*The Effect*](https://theeffectbook.net/ch-DifferenceinDifference.html)
