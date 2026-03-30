@@ -41,6 +41,9 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Graphing Regression Results]({{ site.baseurl }}/materials/10-coefplot)
 - [One-Way Fixed Effects]({{ site.baseurl }}/materials/11-FE)
 - [Two-Way Fixed Effects]({{ site.baseurl }}/materials/11-twfe)
+- [Difference-in-Differences]({{ site.baseurl }}/materials/12-did)
+- [Event Studies]({{ site.baseurl }}/materials/12-event-studies) 
+- [Instrumental Variables]({{ site.baseurl }}/materials/13-iv)
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)

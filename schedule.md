@@ -14,8 +14,8 @@ assignments:
     "Basic Regressions",
     "Producing Results",
     "Fixed Effects",
-    "Difference-in-Difference",
-    "Event Studies",
+    "Difference-in-Differences",
+    "Instrumental Variables",
     "Regression Discontinuity",
     "Basic Machine Learning",
   ]

@@ -16,8 +16,8 @@ title: Assignments
 * [Basic Regressions](09-regress)
 * [Producing Results](10-results)
 * [Fixed Effects](11-FE)
-* [Difference-in-Difference](12-did)
-* [Event Studies](13-event)
+* [Difference-in-Differences](12-did)
+* [Instrumental Variables](13-iv)
 * [Regression Discontinuity](14-rdd)
 * [Basic Machine Learning](15-ml)
 
