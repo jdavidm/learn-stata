@@ -1,7 +1,7 @@
 ---
 layout: page
 element: reading
-title: Difference-in-Difference
+title: Difference-in-Differences
 language: Stata
 ---
 
