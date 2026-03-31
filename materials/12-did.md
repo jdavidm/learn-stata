@@ -5,7 +5,7 @@ title: Difference-in-Differences
 language: Stata
 ---
 
-Difference-in-Differences (DiD) is one of the most widely used methods for estimating causal effects in observational data. When we have panel data (repeated observations of the same units over time), DiD allows us to control for unobserved confounding factors that are constant over time.
+Difference-in-Differences (DiD) is one of the most widely used methods for estimating causal effects in observational data. When we have panel data (repeated observations of the same units over time), DiD allows us to control for unobserved confounding factors that are constant over time (just like fixed effects).
 
 This lecture covers:
 - The intuition behind the 2x2 DiD model
@@ -13,7 +13,7 @@ This lecture covers:
 - Implementing DiD using Two-Way Fixed Effects (TWFE)
 - Continuous Treatment DiD
 
-We will use data from Cheng and Hoekstra (2013) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`post` = 1 after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
+We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`post = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
 
 ### The 2x2 DiD Model
 
@@ -27,6 +27,15 @@ $$ Y_{it} = \beta_0 + \beta_1 Treat_i + \beta_2 Post_t + \beta_3 (Treat_i \times
 - $\beta_1$ controls for baseline differences between the Treatment and Control groups.
 - $\beta_2$ controls for the time trend common to both groups.
 - $\beta_3$ is the Difference-in-Differences estimator—the causal effect of the treatment!
+
+![Difference-in-Differences Intuition]({{ site.baseurl }}/images/DID_graph.webp)
+
+The graphic above highlights the core intuition of DiD. To isolate the causal effect of the intervention, we calculate three distinct differences:
+1. **Pre-Difference ($\Delta A$)**: The baseline difference between the treatment and control groups prior to the intervention.
+2. **Post-Difference ($\Delta B$)**: The difference between the actual outcomes of the two groups after the intervention.
+3. **Difference-in-Differences (DiD Estimate)**: The difference between these two differences, yielding the effect of the intervention. 
+
+Visually, the DiD estimate is the gap between the actual outcome for the treated group and their counterfactual outcome (the dashed line, which assumes they followed the exact same trajectory as the control group in the absence of treatment).
 
 ```stata
 * We can load the Castle Doctrine dataset directly from the internet
