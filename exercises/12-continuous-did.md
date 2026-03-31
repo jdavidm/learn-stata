@@ -5,12 +5,34 @@ title: Continuous Treatment DiD
 language: Stata
 ---
 
-We will use `panel_gis.dta` to estimate the effect of STRV seed adoption on crop yields (`evi_med`) in flooded environments. The treatment metric `seed` is uniquely continuous—it captures the combined cumulative availability of the seed in each district (`district_id`) over time (`year`).
+We will use `panel_gis.dta` to estimate the effect of STRV seed adoption on crop yields (`evi_med`) in flooded environments. The data is from Bangaldesh and is at the district level for the whole country. All data except the `seed` data is measured using remote sensing and a deep learning algorithm. The data is from [Impact evaluations in data-scarce environments: The case of stress-tolerant rice varieties in Bangladesh](https://doi.org/10.1016/j.jdeveco.2025.103648), which was a former student's MS thesis.
 
-### Tasks
+In the data, the treatment metric `seed` is uniquely continuous—it captures the combined cumulative availability of the seed in each district (`district_id`) over time (`year`).
 
-1. Create a modern script (do-file) in your standard structure.
-2. Load `panel_gis.dta` using your paths.
-3. Tell Stata that your dataset is a panel using `xtset`. What is your panel identifier and what is your time variable?
-4. Run a Two-Way Fixed Effects regression. Regress the yield measure (`evi_med`) on the continuous treatment (`seed`) using `xtreg, fe`, and strictly control for time effects by adding `i.year`. Cluster your standard errors at the `district_id` level.
-5. In comments, how would you interpret the coefficient on `seed`? Does a one-unit increase in cumulative seed availability lead to an increase or decrease in yield across the board?
+- Regress the yield measure (`evi_med`) on the continuous treatment (`seed`) interacted with `year`. Cluster your standard errors at the `district_id` level.
+    - Save the results using `eststo` calling it `did1`
+- Repeat the regression but this time using `didregress`.
+    - Save the results using `eststo` calling it `did2`
+- Use `esttab` to create a table of results using the following table structure and place the table into Overleaf:
+
+```stata
+   esttab      did1 did2 using "$answ/12-continuous-did.tex", replace ///
+                    b(3) se(3) ///
+                    rename(seed##year "Seed x Year") ///
+                    keep("Seed x Year") ///
+                    star(* 0.10 ** 0.05 *** 0.01) ///
+                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                    noobs booktabs nonum nomtitle collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{1}{c}} " ///
+                      "\\[-1.8ex]\hline \hline \[-1.8ex] " ///
+                      "& \multicolumn{1}{c}{DiD} \\ \midrule") ///
+                    postfoot("\hline \hline \[-1.8ex] " ///
+                      "\multicolumn{2}{p{\linewidth}}{\small " ///
+                      "\noindent \textit{Note}: Dependent variable " ///
+                      "is crop yield in kg/ha. All models use " ///
+                      "standard errors clustered at the " ///
+                      "district level (in parentheses). " ///
+                      "* p$<0.10, ** p$<0.05, *** p$<0.01.}" ///
+                      "\end{tabular}")
+```

@@ -38,14 +38,28 @@ The graphic above highlights the core intuition of DiD. To isolate the causal ef
 Visually, the DiD estimate is the gap between the actual outcome for the treated group and their counterfactual outcome (the dashed line, which assumes they followed the exact same trajectory as the control group in the absence of treatment).
 
 ```stata
-* We can load the Castle Doctrine dataset directly from the internet
-use "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
+* load the castle doctrine dataset
+	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 
-* To run a 2x2 DiD, we need an artificial 2x2 setup (two groups, two periods)
-* We can collapse the data into "Before 2005" and "After 2005" 
-* and compare states that passed a law in 2005 to states that never passed one.
-* (This is just an illustration - the real data has staggered rollouts!)
+* fix coding error in treatment variable
+	replace         cdl = 1 if cdl > 0
+
+* create time period dummy
+	gen             after = (year >= 2006)
+
+* run the 2x2 did regression
+	reg             l_homicide i.cdl##i.after
 ```
+
+While manually calculating the interaction with `reg` is great for understanding the mathematical mechanics, Stata 17+ has a dedicated suite of Difference-in-Differences commands. The `didregress` command automates the setup, calculates standard errors properly out-of-the-box, and naturally handles the uncollapsed, full panel dataset.
+
+```stata
+* use didregress on the uncollapsed panel
+* syntax: didregress (depvar) (treatment_variable), group(group_id) time(time_id)
+	didregress      (l_homicide) (cdl), group(sid) time(year) vce(hc2)
+```
+
+> Do [Exercise 1 - Continuous Treatment DiD]({{ site.baseurl }}/exercises/12-continuous-did/)
 
 ### Parallel Trends Assumption
 
@@ -54,29 +68,25 @@ The validity of DiD hinges on the **Parallel Trends Assumption**: in the absence
 To visualize parallel trends, we compute the average outcome for both groups in each period and plot them.
 
 ```stata
-* Reload full data 
-use "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
+* define ever treated vs never treated
+	gen             treated = (effyear != .)
 
-* Define "Ever Treated" vs "Never Treated"
-gen treated = (effyear != .)
-
-* Calculate means over time
-preserve
-    collapse (mean) l_homicide, by(treated year)
+* calculate means over time
+	preserve
+	collapse        (mean) l_homicide, by(treated year)
     
-    * Plotting
-    twoway (connected l_homicide year if treated == 1, lcolor(maroon)) ///
-           (connected l_homicide year if treated == 0, lcolor(navy)), ///
-           xline(2005, lpattern(dash) lcolor(black)) ///
-           legend(order(1 "Passed Castle Doctrine" 2 "Never Passed")) ///
-           xtitle("Year") ytitle("Log Homicide Rate") ///
-           title("Parallel Trends Check")
-restore
+* parallel trends plot
+	twoway          (connected l_homicide year if treated == 1, lcolor(maroon)) ///
+			        (connected l_homicide year if treated == 0, lcolor(navy)), ///
+			        xline(2005, lpattern(dash) lcolor(black)) ///
+			        legend(order(1 "Passed Castle Doctrine" 2 "Never Passed")) ///
+			        xtitle("Year") ytitle("Log Homicide Rate") ///
+			        title("Parallel Trends Check")
+	restore
 ```
 
 If the lines look roughly parallel before the treatment point (e.g., prior to 2005 when the first laws passed), the assumption is more plausible.
 
-> Do [Exercise 1 - Continuous Treatment DiD]({{ site.baseurl }}/exercises/12-continuous-did/)
 > Do [Exercise 2 - Parallel Trends]({{ site.baseurl }}/exercises/12-parallel-trends/)
 
 ### DiD with Two-Way Fixed Effects (TWFE)
@@ -88,13 +98,14 @@ $$ Y_{it} = \alpha_i + \gamma_t + \beta^{TWFE} D_{it} + \epsilon_{it} $$
 Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t$ are time fixed effects  and $D_{it}$ is the policy status dummy (`post` variable).
 
 ```stata
-use "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
+* load full data
+	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 
-* Set panel
-xtset sid year
+* set panel
+	xtset           sid year
 
-* TWFE regression
-xtreg l_homicide post i.year, fe vce(cluster sid)
+* twfe regression
+	xtreg           l_homicide post i.year, fe vce(cluster sid)
 ```
 
 The coefficient on `post` calculates the treatment effect holding both state and year averages constant.
@@ -106,8 +117,8 @@ The coefficient on `post` calculates the treatment effect holding both state and
 Not all treatments are binary (0/1). You might have a continuous measure of treatment, such as the cumulative amount of seed distributed in a district. In this case, continuous difference-in-differences applies:
 
 ```stata
-* Assuming a hypothetical continuous treatment variable 'gun_sales'
-* xtreg l_homicide c.gun_sales i.year, fe vce(cluster sid)
+* assuming a hypothetical continuous treatment variable 'gun_sales'
+*	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
 ```
 
 You can also interact your continuous treatment with a shock index (like flooding) to isolate how the severity of a shock modulates the effectiveness of the treatment!

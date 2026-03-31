@@ -28,11 +28,12 @@ We recenter time around the intervention year (`effyear`) to create "event time"
 $$ RelativeTime = CalendarTime - TreatmentTime $$
 
 ```stata
-use "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
+* load data
+	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 
-* Create relative time
-* For never-treated units, we leave it missing (or handle via dedicated packages later)
-gen rel_time = year - effyear if effyear != .
+* create relative time
+* for never-treated units, we leave it missing
+	gen             rel_time = year - effyear if effyear != .
 ```
 
 `rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods).
@@ -48,19 +49,20 @@ $$ Y_{it} = \alpha_i + \gamma_t + \sum_{k=-K}^{-2} \delta_k D_{it}^k + \sum_{k=0
 Notice we intentionally **omit $k = -1$**, the period just before treatment. This anchors our estimates. All coefficients $\delta_k$ are interpreted as the effect compared to the pre-treatment baseline.
 
 ```stata
-* In standard analysis, we must "bin" the far endpoints so we don't have dummies with only 1 state.
-* E.g. anything past 5 years post- law is grouped into "5+ years"
-gen rel_time_binned = rel_time
-replace rel_time_binned = -5 if rel_time <= -5 & rel_time != .
-replace rel_time_binned =  5 if rel_time >=  5 & rel_time != .
+* bin the far endpoints 
+* so we don't have dummies with only 1 state
+	gen             rel_time_binned = rel_time
+	replace         rel_time_binned = -5 if rel_time <= -5 & rel_time != .
+	replace         rel_time_binned =  5 if rel_time >=  5 & rel_time != .
 
-* Shift rel_time so it is strictly positive (Stata factor variables can't be negative)
-gen event_factor = rel_time_binned + 10  
+* shift rel_time so it is strictly positive 
+* (stata factor variables can't be negative)
+	gen             event_factor = rel_time_binned + 10  
 
-* Run regression, omitting rel_time = -1 (which is 9 in our shifted variable)
-* The 'ib9' prefix tells Stata to use 9 as the base category.
-xtset sid year
-xtreg l_homicide ib9.event_factor i.year if effyear != ., fe vce(cluster sid)
+* run regression, omitting rel_time = -1 
+* (the 'ib9' prefix tells stata to use 9 as the base category)
+	xtset           sid year
+	xtreg           l_homicide ib9.event_factor i.year if effyear != ., fe vce(cluster sid)
 ```
 
 The pre-treatment coefficients tests parallel trends. The post-treatment coefficients show the dynamic effect curve.
@@ -72,18 +74,18 @@ The pre-treatment coefficients tests parallel trends. The post-treatment coeffic
 Regression tables for event studies are massive. Using `coefplot` allows us to visualize the dynamic effects curve.
 
 ```stata
-* Plotting with coefplot
-coefplot, keep(*.event_factor) ///
-          rename(*.event_factor = "") ///
-          vertical ///
-          yline(0, lcolor(black) lpattern(dash)) ///
-          xline(9, lcolor(maroon) lpattern(dash)) ///
-          title("Event Study: Castle Doctrine on Homicides") ///
-          xtitle("Periods Relative to Treatment") ///
-          ytitle("Log Homicide Rate") ///
-          recast(connected) ///
-          ciopts(recast(rcap)) ///
-          graphregion(color(white))
+* plot with coefplot
+	coefplot,       keep(*.event_factor) ///
+			        rename(*.event_factor = "") ///
+			        vertical ///
+			        yline(0, lcolor(black) lpattern(dash)) ///
+			        xline(9, lcolor(maroon) lpattern(dash)) ///
+			        title("Event Study: Castle Doctrine on Homicides") ///
+			        xtitle("Periods Relative to Treatment") ///
+			        ytitle("Log Homicide Rate") ///
+			        recast(connected) ///
+			        ciopts(recast(rcap)) ///
+			        graphregion(color(white))
 ```
 
 *Note: Since we shifted the relative time by +10, you can use the `coeflabels` option in `coefplot` to remap 5 to "-5", 9 to "-1", 10 to "0", etc.*
@@ -95,11 +97,13 @@ coefplot, keep(*.event_factor) ///
 Manually shifting, binning, and relabeling factor variables is tedious. `xtevent` and `eventdd` are prominent packages specifically written for event studies. Using these handles all the data-reshaping for you!
 
 ```stata
-* ssc install eventdd
-* ssc install boottest
+* install event study packages
+*	ssc             install eventdd
+*	ssc             install boottest
 
-* Assuming rel_time is set up without modification
-* eventdd l_homicide i.year, timevar(rel_time) method(fe, cluster(sid)) graph_op(ytitle("Effect on Homicide"))
+* run eventdd assuming rel_time is set up without modification
+*	eventdd         l_homicide i.year, timevar(rel_time) method(fe, cluster(sid)) ///
+			        graph_op(ytitle("Effect on Homicide"))
 ```
 
 > Do [Exercise 8 - Evaluating Non-Binary Treatments]({{ site.baseurl }}/exercises/12-event-package/)
