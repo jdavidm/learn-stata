@@ -76,7 +76,7 @@ To visualize parallel trends, we compute the average outcome for both groups in 
 	collapse        (mean) l_homicide, by(treated year)
     
 * parallel trends plot
-	twoway          (connected l_homicide year if treated == 1, ///
+	twoway      (connected l_homicide year if treated == 1, ///
                         lcolor(maroon)) ///
                     (connected l_homicide year if treated == 0, ///
                         lcolor(navy)), ///
