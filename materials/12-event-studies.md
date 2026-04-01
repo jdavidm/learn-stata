@@ -22,36 +22,36 @@ We continue using the Castle Doctrine dataset (`castle.dta`). Our outcome is the
 
 ### From DiD to Event Study: Leads and Lags
 
-In a staggered rollout, different states pass the castle doctrine in different years. The variable `effyear` records the year each state adopted the law. To conduct an event study, we need to measure time *relative to treatment*.
-
-The Castle Doctrine dataset already contains pre-built lead and lag dummies:
-- `lead9` through `lead1`: 9 to 1 years *before* the law passed
-- `lag1` through `lag5`: 1 to 5 years *after* the law passed
-- The year of treatment itself (`lag0`) is the *omitted category*
-
-The event study regression replaces the single `cdl` dummy with this full set of period-specific dummies:
-
-$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k=-9}^{-1} \delta_k \text{Lead}_{it}^k + \sum_{k=1}^{5} \delta_k \text{Lag}_{it}^k + X_{it}\beta + \epsilon_{it} $$
-
-By omitting `lag0`, all coefficients are interpreted relative to the year of treatment. The pre-treatment leads test for parallel trends: if $\delta_{-k} \approx 0$, the treatment and control groups were trending similarly before the law. The post-treatment lags trace the dynamic effect path.
+In a staggered rollout, different states pass the castle doctrine in different years. The variable `effyear` records the year each state adopted the law. To conduct an event study, we need to measure time *relative to treatment*:
 
 ```stata
 * load data and set panel
 	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 	xtset           sid year
 
+* create relative time
+* for never-treated units, we leave it missing
+	gen             rel_time = year - effyear if effyear != .
+```
+
+`rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `rel_time` and serve as controls.
+
+The event study regression replaces the single `cdl` dummy with a full set of relative-time dummies. Using Stata's factor variable notation `ib0.rel_time`, we get a dummy for every value of `rel_time` with $t = 0$ (the treatment year) as the omitted reference category:
+
+$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \mathbf{1}[\text{rel\_time}_{it} = k] + X_{it}\beta + \epsilon_{it} $$
+
+The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they are close to zero, the treatment and control groups were trending similarly before the law. The post-treatment coefficients trace the dynamic effect path.
+
+```stata
 * define controls
 	global          region r20001-r20104
 
-* event study regression — lag0 is omitted
-	xtreg           l_homicide i.year $region ///
-	                    lead9 lead8 lead7 lead6 lead5 ///
-	                    lead4 lead3 lead2 lead1 ///
-	                    lag1 lag2 lag3 lag4 lag5 ///
+* event study regression — rel_time == 0 is omitted
+	xtreg           l_homicide i.year $region ib0.rel_time ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
-Look at the output: leads 1 through 6 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive and may grow over time, showing that homicides increased *after* states passed castle doctrine laws.
+Look at the output: relative-time coefficients for $t = -1$ through $t = -6$ should be close to zero and statistically insignificant — evidence consistent with parallel trends. The positive-time coefficients ($t = 1, 2, \ldots$) should be positive, showing that homicides increased *after* states passed castle doctrine laws.
 
 > Do [Exercise 4 - Event Study Regression]({{ site.baseurl }}/exercises/12-event-dummies/)
 
@@ -61,12 +61,10 @@ Event study tables are massive and hard to interpret at a glance. The standard p
 
 ```stata
 * event study plot
-	coefplot,       keep(lead9 lead8 lead7 lead6 lead5 ///
-	                    lead4 lead3 lead2 lead1 ///
-	                    lag1 lag2 lag3 lag4 lag5) ///
+	coefplot,       keep(*.rel_time) ///
 	                    vertical ///
 	                    yline(0, lcolor(black) lpattern(dash)) ///
-	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
+	                    xline(10, lcolor(maroon) lpattern(dash)) ///
 	                    title("Event Study: Castle Doctrine on Homicides") ///
 	                    xtitle("Periods Relative to Treatment") ///
 	                    ytitle("Log Homicide Rate") ///
