@@ -16,23 +16,24 @@ In the data, the treatment metric `seed` is uniquely continuous—it captures th
 - Use `esttab` to create a table of results using the following table structure and place the table into Overleaf:
 
 ```stata
-   esttab      did1 did2 using "$answ/12-continuous-did.tex", replace ///
-                    b(3) se(3) ///
-                    rename(seed##year "Seed x Year") ///
-                    keep("Seed x Year") ///
+   esttab      did1 did2 using "$answ/12-did.tex", replace ///
+                    b(4) se(4) ///
+                    rename(seed "STRV Seed") ///
+                    keep("STRV Seed") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
-                    stats(N r2, labels("Observations" "R-squared") ///
-                    noobs booktabs nonum nomtitle collabels(none) ///
-                    nobaselevels nogaps fragment label fmt(0 3)) ///
-                    prehead("\begin{tabular}{l*{1}{c}} " ///
-                      "\\[-1.8ex]\hline \hline \[-1.8ex] " ///
-                      "& \multicolumn{1}{c}{DiD} \\ \midrule") ///
-                    postfoot("\hline \hline \[-1.8ex] " ///
-                      "\multicolumn{2}{p{\linewidth}}{\small " ///
+                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                    noobs booktabs nonum nomtitle eqlabels(none) collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{2}{c}} " ///
+                      "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                      "& \multicolumn{1}{c}{xtreg} & " ///
+                      "\multicolumn{1}{c}{didreg} \\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                      "\multicolumn{3}{p{\linewidth}}{\small " ///
                       "\noindent \textit{Note}: Dependent variable " ///
-                      "is crop yield in kg/ha. All models use " ///
+                      "is median EVI. All models use " ///
                       "standard errors clustered at the " ///
-                      "district level (in parentheses). " ///
-                      "* p$<0.10, ** p$<0.05, *** p$<0.01.}" ///
+                      "household level (in parentheses). " ///
+                      "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
                       "\end{tabular}")
 ```

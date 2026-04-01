@@ -15,13 +15,13 @@
 	log             using "12-did.log", append
 
 **********************************************************************
-**# exercise 1
+**# exercise 1 - Continuous Treatment DiD
 **********************************************************************
 
 **## 1.1
 
 * load data
-	use             "panel_gis.dta", clear
+	use             "$data/panel_gis.dta", clear
     
 * set panel   
 	xtset           district_id year
@@ -31,11 +31,32 @@
 						vce(cluster district_id)
 
 * did using didregress
-	eststo          did2: didregress (evi_med) (seed), group(district_id) ///
+	eststo          did2: didregress (evi_med) (seed, continuous), group(district_id) ///
 						time(year) vce(cluster district_id)
-
+						
+   esttab      did1 did2 using "$answ/12-did.tex", replace ///
+                    b(4) se(4) ///
+                    rename(seed "STRV Seed") ///
+                    keep("STRV Seed") ///
+                    star(* 0.10 ** 0.05 *** 0.01) ///
+                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                    noobs booktabs nonum nomtitle eqlabels(none) collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{2}{c}} " ///
+                      "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                      "& \multicolumn{1}{c}{xtreg} & " ///
+                      "\multicolumn{1}{c}{didreg} \\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                      "\multicolumn{3}{p{\linewidth}}{\small " ///
+                      "\noindent \textit{Note}: Dependent variable " ///
+                      "is median EVI. All models use " ///
+                      "standard errors clustered at the " ///
+                      "household level (in parentheses). " ///
+                      "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                      "\end{tabular}")
+					  
 **********************************************************************
-**# exercise 2
+**# exercise 2 - Parallel Trends
 **********************************************************************
 
 **## 2.1
@@ -58,17 +79,17 @@
 	twoway          (connected evi_med year if high_adopt == 1, ///
 						lcolor(maroon)) ///
 					(connected evi_med year if high_adopt == 0, ///
-						lcolor(navy)), ///
+						lcolor(navy)), xline(2011) ///
 						legend(order(1 "High Adopters" ///
 						2 "Low/Never Adopters")) xtitle("Year") ///
 						ytitle("Mean EVI") ///
 						title("Parallel Trends Check")
-	graph export    "parallel_trends.png", replace
+	graph export    "$answ/12-parallel_trends.png", replace
 	restore
 	*** generally, the parallel trends appear consistent pre-adoption
 
 **********************************************************************
-**# exercise 3
+**# exercise 3 - Continuous Interacted DiD
 **********************************************************************
 
 **## 3.1
@@ -78,23 +99,28 @@
 						fe vce(cluster district_id)
 
 * build esttab table
-	esttab          did1 did2 did3 using "12-continuous-did.tex", replace ///
-						b(3) se(3) ///
-						star(* 0.10 ** 0.05 *** 0.01) ///
-						stats(N r2, labels("Observations" "R-squared") ///
-						noobs booktabs nonum nomtitle collabels(none) ///
-						nobaselevels nogaps fragment label fmt(0 3)) ///
-						prehead("\begin{tabular}{l*{3}{c}} " ///
-						  "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-						  "& \multicolumn{3}{c}{DiD} \\ \midrule") ///
-						postfoot("\hline \hline \\[-1.8ex] " ///
-						  "\multicolumn{4}{p{\linewidth}}{\small " ///
-						  "\noindent \textit{Note}: Dependent variable " ///
-						  "is crop yield in kg/ha. All models use " ///
-						  "standard errors clustered at the " ///
-						  "district level (in parentheses). " ///
-						  "* p$<0.10, ** p$<0.05, *** p$<0.01.}" ///
-						  "\end{tabular}")
+
+   esttab      did1 did2 did3 using "$answ/12-interact-did.tex", replace ///
+                    b(4) se(4) ///
+                    rename(seed "STRV Seed") ///
+                    keep("STRV Seed") ///
+                    star(* 0.10 ** 0.05 *** 0.01) ///
+                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                    noobs booktabs nonum nomtitle eqlabels(none) collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{3}{c}} " ///
+                      "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                      "& \multicolumn{1}{c}{xtreg} & " ///
+                      "\multicolumn{1}{c}{didreg} & " ///
+					  "\multicolumn{1}{c}{inter} \\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                      "\multicolumn{4}{p{\linewidth}}{\small " ///
+                      "\noindent \textit{Note}: Dependent variable " ///
+                      "is median EVI. All models use " ///
+                      "standard errors clustered at the " ///
+                      "household level (in parentheses). " ///
+                      "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                      "\end{tabular}")
 
 **********************************************************************
 **# 4 - end matter
