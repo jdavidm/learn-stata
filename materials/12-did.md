@@ -13,7 +13,7 @@ This lecture covers:
 - Implementing DiD using Two-Way Fixed Effects (TWFE)
 - Continuous Treatment DiD
 
-We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`post = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
+We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`after = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
 
 ### The 2x2 DiD Model
 
@@ -111,22 +111,6 @@ Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t
 
 The coefficient on `cdl` calculates the treatment effect holding both state and year averages constant.
 
-
-### Continuous Treatment and Variations
-
-Not all treatments are binary (0/1). You might have a continuous measure of treatment, such as the amount of gun sales in a state in a given year. In this case, continuous difference-in-differences applies:
-
-```stata
-* assuming a hypothetical continuous treatment variable 'gun_sales'
-	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
-```
-
-You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
-
-> Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
-
-### Replicating the Castle Doctrine TWFE
-
 We have been using the Castle Doctrine dataset to illustrate basic DiD concepts. Now let's replicate the full TWFE specification from Cheng and Hoekstra (2013) — the one that produces the headline finding of an ~8% increase in homicides will be our starting point for next lecture's event study analysis.
 
 Cunningham defines the controls through global macros, which is a good habit when you have many covariates:
@@ -153,3 +137,17 @@ Now run the TWFE regression with the `post` variable and analytical weights. **A
 ```
 
 The coefficient on `post` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.
+
+
+### Continuous Treatment and Variations
+
+Not all treatments are binary (0/1). You might have a continuous measure of treatment, such as the amount of gun sales in a state in a given year. In this case, continuous difference-in-differences applies:
+
+```stata
+* assuming a hypothetical continuous treatment variable 'gun_sales'
+	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
+```
+
+You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
+
+> Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
