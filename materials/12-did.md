@@ -81,11 +81,11 @@ To visualize parallel trends, we compute the average outcome for both groups in 
                     (connected l_homicide year if treated == 0, ///
                         lcolor(navy)), ///
                         xline(2005, lpattern(dash) ///
-						lcolor(black)) xtitle("Year") ///
-						legend(order(1 "Passed Castle Law" ///
+                        lcolor(black)) xtitle("Year") ///
+                        legend(order(1 "Passed Castle Law" ///
                         2 "Never Passed"))  ///
                         ytitle("Log Homicide Rate") ///
-			        	title("Parallel Trends Check")
+                        title("Parallel Trends Check")
 	restore
 ```
 
