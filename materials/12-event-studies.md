@@ -18,7 +18,7 @@ This lecture covers:
 - Visualizing the event study with `coefplot`
 - The Bacon decomposition: understanding what TWFE actually estimates under staggered adoption
 
-We continue using the Castle Doctrine dataset (`castle.dta`) from [Cunningham's *Causal Inference: The Mixtape*](https://mixtape.scunning.com/09-difference_in_differences). Our outcome is the log homicide rate (`l_homicide`), identified by state (`sid`) across years (`year`). Recall from the previous lecture that the TWFE coefficient on `post` was approximately 0.08 — an 8% increase in homicides. Now let's see what's behind that number.
+We continue using the Castle Doctrine dataset (`castle.dta`). Our outcome is the log homicide rate (`l_homicide`), identified by state (`sid`) across years (`year`). Recall from the previous lecture that the TWFE coefficient on `cdl` was approximately 0.08 — an 8% increase in homicides. Now let's see what's behind that number.
 
 ### From DiD to Event Study: Leads and Lags
 
@@ -29,7 +29,7 @@ The Castle Doctrine dataset already contains pre-built lead and lag dummies:
 - `lag1` through `lag5`: 1 to 5 years *after* the law passed
 - The year of treatment itself (`lag0`) is the *omitted category*
 
-The event study regression replaces the single `post` dummy with this full set of period-specific dummies:
+The event study regression replaces the single `cdl` dummy with this full set of period-specific dummies:
 
 $$ Y_{it} = \alpha_i + \gamma_t + \sum_{k=-9}^{-1} \delta_k \text{Lead}_{it}^k + \sum_{k=1}^{5} \delta_k \text{Lag}_{it}^k + X_{it}\beta + \epsilon_{it} $$
 

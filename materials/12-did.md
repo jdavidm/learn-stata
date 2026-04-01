@@ -111,13 +111,14 @@ Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t
 
 The coefficient on `cdl` calculates the treatment effect holding both state and year averages constant.
 
-We have been using the Castle Doctrine dataset to illustrate basic DiD concepts. Now let's replicate the full TWFE specification from Cheng and Hoekstra (2013) — the one that produces the headline finding of an ~8% increase in homicides will be our starting point for next lecture's event study analysis.
+The above is a very parsimonious specification. Now let's replicate the full TWFE specification from Cheng and Hoekstra (2013) — the one that produces the headline finding of an ~8% increase in homicides will be our starting point for next lecture's event study analysis.
 
-Cunningham defines the controls through global macros, which is a good habit when you have many covariates:
+First define global macros for the controls:
 
 ```stata
 * define controls using global macros
-	global          demo blackm_15_24 whitem_15_24 blackm_25_44 whitem_25_44
+	global          demo blackm_15_24 whitem_15_24 ///
+						blackm_25_44 whitem_25_44
 	global          spending l_exp_subsidy l_exp_pubwelfare
 	global          xvar l_police unemployrt poverty l_income ///
 	                    l_prisoner l_lagprisoner $demo $spending
@@ -125,18 +126,18 @@ Cunningham defines the controls through global macros, which is a good habit whe
 	global          region r20001-r20104
 ```
 
-Now run the TWFE regression with the `post` variable and analytical weights. **Analytical weights** (`[aweight=popwt]`) tell Stata that each observation represents a different number of underlying units (here, state population). Larger states receive proportionally more weight — this is common in state-level panel studies where you want per-capita effects.
+Now run the TWFE regression with the `cdl` variable and analytical weights. **Analytical weights** (`[aweight=popwt]`) tell Stata that each observation represents a different number of underlying units (here, state population). Larger states receive proportionally more weight — this is common in state-level panel studies where you want per-capita effects.
 
 ```stata
 * set panel
 	xtset           sid year
 
 * full twfe specification
-	xtreg           l_homicide i.year $region $xvar $lintrend post ///
+	xtreg           l_homicide i.year $region $xvar $lintrend cdl ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
-The coefficient on `post` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.
+The coefficient on `cdl` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.
 
 
 ### Continuous Treatment and Variations
@@ -145,7 +146,8 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 
 ```stata
 * assuming a hypothetical continuous treatment variable 'gun_sales'
-	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
+	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend cdl ///
+	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
 You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
