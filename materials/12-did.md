@@ -76,12 +76,15 @@ To visualize parallel trends, we compute the average outcome for both groups in 
 	collapse        (mean) l_homicide, by(treated year)
     
 * parallel trends plot
-	twoway          (connected l_homicide year if treated == 1, lcolor(maroon)) ///
-			        (connected l_homicide year if treated == 0, lcolor(navy)), ///
-			        xline(2005, lpattern(dash) lcolor(black)) ///
-			        legend(order(1 "Passed Castle Doctrine" 2 "Never Passed")) ///
-			        xtitle("Year") ytitle("Log Homicide Rate") ///
-			        title("Parallel Trends Check")
+	twoway          (connected l_homicide year if treated == 1, ///
+	                	lcolor(maroon)) ///
+			        (connected l_homicide year if treated == 0, ///
+			        	lcolor(navy)), ///
+			        	xline(2005, lpattern(dash) lcolor(black)) ///
+			        	legend(order(1 "Passed Castle Doctrine" ///
+						2 "Never Passed")) xtitle("Year") ///
+			        	ytitle("Log Homicide Rate") ///
+			        	title("Parallel Trends Check")
 	restore
 ```
 
@@ -91,36 +94,33 @@ If the lines look roughly parallel before the treatment point (e.g., prior to 20
 
 ### DiD with Two-Way Fixed Effects (TWFE)
 
-When we have multiple time periods and staggered adoption (units getting treated at different times), the classic $2 \times 2$ formula doesn't quite apply. Traditionally, economists handled this by estimating a Two-Way Fixed Effects (TWFE) regression. The `post` variable is equal to 1 if a state actively has the Castle-Doctrine law that year, and 0 otherwise.
+When we have multiple time periods and staggered adoption (units getting treated at different times), the classic $2 \times 2$ formula doesn't quite apply. Traditionally, economists handled this by estimating a Two-Way Fixed Effects (TWFE) regression. The `cdl` variable is equal to 1 if a state actively has the Castle Doctrine law that year, and 0 otherwise.
 
 $$ Y_{it} = \alpha_i + \gamma_t + \beta^{TWFE} D_{it} + \epsilon_{it} $$
 
-Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t$ are time fixed effects  and $D_{it}$ is the policy status dummy (`post` variable).
+Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t$ are time fixed effects  and $D_{it}$ is the policy status dummy (`cdl` variable).
 
 ```stata
-* load full data
-	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
-
 * set panel
 	xtset           sid year
 
 * twfe regression
-	xtreg           l_homicide post i.year, fe vce(cluster sid)
+	xtreg           l_homicide cdl i.year, fe vce(cluster sid)
 ```
 
-The coefficient on `post` calculates the treatment effect holding both state and year averages constant.
+The coefficient on `cdl` calculates the treatment effect holding both state and year averages constant.
 
 > Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
 
 ### Continuous Treatment and Variations
 
-Not all treatments are binary (0/1). You might have a continuous measure of treatment, such as the cumulative amount of seed distributed in a district. In this case, continuous difference-in-differences applies:
+Not all treatments are binary (0/1). You might have a continuous measure of treatment, such as the amount of gun sales in a state in a given year. In this case, continuous difference-in-differences applies:
 
 ```stata
 * assuming a hypothetical continuous treatment variable 'gun_sales'
-*	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
+	xtreg           l_homicide c.gun_sales i.year, fe vce(cluster sid)
 ```
 
-You can also interact your continuous treatment with a shock index (like flooding) to isolate how the severity of a shock modulates the effectiveness of the treatment!
+You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
 
 > Do [Exercise 4 - Interpreting Interactions]({{ site.baseurl }}/exercises/12-did-interpretation/)

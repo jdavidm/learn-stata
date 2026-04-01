@@ -21,9 +21,9 @@ In the data, the treatment metric `seed` is uniquely continuous—it captures th
                     rename(seed##year "Seed x Year") ///
                     keep("Seed x Year") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
-                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+                    stats(N r2, labels("Observations" "R-squared") ///
                     noobs booktabs nonum nomtitle collabels(none) ///
-                    nobaselevels nogaps fragment label ///
+                    nobaselevels nogaps fragment label fmt(0 3)) ///
                     prehead("\begin{tabular}{l*{1}{c}} " ///
                       "\\[-1.8ex]\hline \hline \[-1.8ex] " ///
                       "& \multicolumn{1}{c}{DiD} \\ \midrule") ///
