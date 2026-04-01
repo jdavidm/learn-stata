@@ -124,3 +124,32 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
 
 > Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
+
+### Replicating the Castle Doctrine TWFE
+
+We have been using the Castle Doctrine dataset to illustrate basic DiD concepts. Now let's replicate the full TWFE specification from Cheng and Hoekstra (2013) — the one that produces the headline finding of an ~8% increase in homicides will be our starting point for next lecture's event study analysis.
+
+Cunningham defines the controls through global macros, which is a good habit when you have many covariates:
+
+```stata
+* define controls using global macros
+	global          demo blackm_15_24 whitem_15_24 blackm_25_44 whitem_25_44
+	global          spending l_exp_subsidy l_exp_pubwelfare
+	global          xvar l_police unemployrt poverty l_income ///
+	                    l_prisoner l_lagprisoner $demo $spending
+	global          lintrend trend_1-trend_51
+	global          region r20001-r20104
+```
+
+Now run the TWFE regression with the `post` variable and analytical weights. **Analytical weights** (`[aweight=popwt]`) tell Stata that each observation represents a different number of underlying units (here, state population). Larger states receive proportionally more weight — this is common in state-level panel studies where you want per-capita effects.
+
+```stata
+* set panel
+	xtset           sid year
+
+* full twfe specification
+	xtreg           l_homicide i.year $region $xvar $lintrend post ///
+	                    [aweight=popwt], fe vce(cluster sid)
+```
+
+The coefficient on `post` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.

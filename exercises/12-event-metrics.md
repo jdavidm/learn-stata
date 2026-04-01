@@ -1,16 +1,16 @@
 ---
 layout: exercise
 topic: Event Studies
-title: Generating Event Time Metrics
+title: Bacon Decomposition
 language: Stata
 ---
 
-Event study regressions rely entirely on mapping the calendar `year` relative to the policy intervention (e.g., the first year the STRV seed was heavily adopted in a district). 
+In the lecture we applied the Bacon decomposition to the Castle Doctrine data. Now let's apply it to our own `panel_gis.dta` to see whether the staggered adoption of STRV seed creates bias in a standard TWFE estimate.
 
-### Tasks
+- Using `panel_gis.dta`, create a binary treatment variable: `gen icp = (seed > 0.5)`.
+- Use the `adopt_year` variable you created in Exercise 4 to generate a binary post-treatment indicator: `gen post_adopt = (year >= adopt_year) & (adopt_year > 0)`.
+- Run a minimal TWFE regression: `areg evi_med post_adopt i.year, absorb(district_id) robust`. Note the coefficient on `post_adopt`.
+- Run the Bacon decomposition: `bacondecomp evi_med post_adopt, ddetail`.
 
-1. Working with your `panel_gis.dta` data, let's artificially define an "event time" for when a district first crossed an arbitrary cumulative seed distribution threshold (e.g., `seed > 0.5`). 
-2. Create `first_adopt = year` if `seed > 0.5`. 
-3. Use `bysort district_id: egen adopt_year = min(first_adopt)` to push this year down to all observations for each district. Use `replace adopt_year = 0 if adopt_year == .` for districts that never adopt heavily.
-4. Create a relative event time variable: `gen rel_time = year - adopt_year if adopt_year > 0`. 
-5. What does a `rel_time` of `-3` mean intuitively in this context? Explain in a comment.
+1. Which type of comparison — "Treated vs Never-Treated," "Earlier vs Later Treated," or "Later vs Earlier Treated" — receives the most weight?
+2. Compare the Bacon decomposition scatter plot to the one we saw for castle doctrine in lecture. Does the staggered-adoption bias appear to be more or less severe for seed adoption than for the castle doctrine? Why might that be?
