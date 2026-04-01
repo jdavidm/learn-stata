@@ -3,8 +3,8 @@ layout: page
 element: assignment
 title: Difference-in-Differences
 language: Stata
-exercises: ['Continuous Treatment DiD', 'Parallel Trends in Interventions', 'Continuous Interacted DiD', 'Interpreting Interactions Effect', 'Generating Event Time Metrics', 'Manual Dummies', 'Event Plot with coefplot', 'Using the eventdd Package', 'Challenge 12']
-points: [10, 10, 10, 10, 10, 10, 10, 10, Challenge - 20]
+exercises: ['Continuous Treatment DiD', 'Parallel Trends in Interventions', 'Continuous Interacted DiD', 'Generating Event Time Metrics', 'Manual Dummies', 'Event Plot with coefplot', 'Using the eventdd Package', 'Challenge 12']
+points: [10, 10, 10, 10, 10, 10, 10, Challenge - 30]
 ---
 
 ### Learning Objectives

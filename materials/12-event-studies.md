@@ -38,7 +38,7 @@ $$ RelativeTime = CalendarTime - TreatmentTime $$
 
 `rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods).
 
-> Do [Exercise 5 - Event Time Metrics]({{ site.baseurl }}/exercises/12-event-metrics/)
+> Do [Exercise 4 - Event Time Metrics]({{ site.baseurl }}/exercises/12-event-metrics/)
 
 ### Estimating Event Study Regressions
 
@@ -67,7 +67,7 @@ Notice we intentionally **omit $k = -1$**, the period just before treatment. Thi
 
 The pre-treatment coefficients tests parallel trends. The post-treatment coefficients show the dynamic effect curve.
 
-> Do [Exercise 6 - Replicating Dummies manually]({{ site.baseurl }}/exercises/12-event-dummies/)
+> Do [Exercise 5 - Replicating Dummies manually]({{ site.baseurl }}/exercises/12-event-dummies/)
 
 ### Visualizing with `coefplot`
 
@@ -90,7 +90,7 @@ Regression tables for event studies are massive. Using `coefplot` allows us to v
 
 *Note: Since we shifted the relative time by +10, you can use the `coeflabels` option in `coefplot` to remap 5 to "-5", 9 to "-1", 10 to "0", etc.*
 
-> Do [Exercise 7 - Event Plot]({{ site.baseurl }}/exercises/12-event-plot/)
+> Do [Exercise 6 - Event Plot]({{ site.baseurl }}/exercises/12-event-plot/)
 
 ### Dedicated Packages
 
@@ -106,4 +106,4 @@ Manually shifting, binning, and relabeling factor variables is tedious. `xtevent
 			        graph_op(ytitle("Effect on Homicide"))
 ```
 
-> Do [Exercise 8 - Evaluating Non-Binary Treatments]({{ site.baseurl }}/exercises/12-event-package/)
+> Do [Exercise 7 - Evaluating Non-Binary Treatments]({{ site.baseurl }}/exercises/12-event-package/)

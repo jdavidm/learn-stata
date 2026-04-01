@@ -11,7 +11,7 @@ In the data, the treatment metric `seed` is uniquely continuous—it captures th
 
 - Regress the yield measure (`evi_med`) on the continuous treatment (`seed`) interacted with `year`. Cluster your standard errors at the `district_id` level.
     - Save the results using `eststo` calling it `did1`
-- Repeat the regression but this time using `didregress`.
+- Repeat the regression but this time using `didregress`. Cluster your standard errors at the `district_id` level.
     - Save the results using `eststo` calling it `did2`
 - Use `esttab` to create a table of results using the following table structure and place the table into Overleaf:
 

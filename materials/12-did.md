@@ -110,7 +110,6 @@ Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t
 
 The coefficient on `cdl` calculates the treatment effect holding both state and year averages constant.
 
-> Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
 
 ### Continuous Treatment and Variations
 
@@ -123,4 +122,4 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 
 You can also interact your continuous treatment with a shock index (like passing a Castle Doctrine law) to isolate how the severity of a shock modulates the effectiveness of the treatment!
 
-> Do [Exercise 4 - Interpreting Interactions]({{ site.baseurl }}/exercises/12-did-interpretation/)
+> Do [Exercise 3 - Continuous Treatment Interaction]({{ site.baseurl }}/exercises/12-interacted-did/)
