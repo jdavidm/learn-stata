@@ -5,12 +5,13 @@ title: Using the eventdd Package
 language: Stata
 ---
 
-Manual dummy-shifting and binning works but is inherently repetitive across projects. Advanced dedicated Stata packages such as `eventdd` or `xtevent` abstract the dummy management away!
+Manual dummy-shifting and binning works but is inherently repetitive across projects. Dedicated Stata packages such as `eventdd` abstract the dummy management away.
 
 - Add `eventdd` and `boottest` to the package loop in your `project.do` file. Change `$pack` to 1 and re-run `project.do`. Then change `$pack` back to 0. (Skip this step if you're on a secure lab server and cannot download packages.)
-- Assuming you successfully installed `eventdd`: run the command explicitly mapping relative time using the `rel_time` variable you created in Exercise 4.
+- Assuming you successfully installed `eventdd`: run the command using the `rel_time` variable you created in Exercise 4.
    ```stata
-   eventdd evi_med i.year, timevar(rel_time) method(fe, cluster(district_id)) ///
+   eventdd evi_med c.bin_max_60_611 i.year, timevar(rel_time) ///
+                           method(fe, cluster(district_id)) ///
                            graph_op(ytitle("Effect on EVI (Yield Index)"))
    ```
 

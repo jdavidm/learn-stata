@@ -12,7 +12,7 @@
 
 * open log
 	cap             log close
-	log             using "12-did.log", append
+	log             using "$logout/12-did.log", append
 
 **********************************************************************
 **# exercise 1 - Continuous Treatment DiD
@@ -55,6 +55,7 @@
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
                       "\end{tabular}")
 					  
+					  
 **********************************************************************
 **# exercise 2 - Parallel Trends
 **********************************************************************
@@ -86,7 +87,7 @@
 						title("Parallel Trends Check")
 	graph export    "$answ/12-parallel_trends.png", replace
 	restore
-	*** generally, the parallel trends appear consistent pre-adoption
+
 
 **********************************************************************
 **# exercise 3 - Continuous Interacted DiD

@@ -21,8 +21,9 @@ In the data, the treatment metric `seed` is uniquely continuous—it captures th
                     rename(seed "STRV Seed") ///
                     keep("STRV Seed") ///
                     star(* 0.10 ** 0.05 *** 0.01) ///
-                    stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
-                    noobs booktabs nonum nomtitle eqlabels(none) collabels(none) ///
+                    stats(N r2, labels("Observations" "R-squared") ///
+                    noobs booktabs nonum nomtitle eqlabels(none) ///
+                    collabels(none) fmt(0 3))  ///
                     nobaselevels nogaps fragment label ///
                     prehead("\begin{tabular}{l*{2}{c}} " ///
                       "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///

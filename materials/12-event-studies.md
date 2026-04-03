@@ -38,7 +38,7 @@ In a staggered rollout, different states pass the castle doctrine in different y
 
 The event study regression replaces the single `cdl` dummy with a full set of relative-time dummies. Using Stata's factor variable notation `ib0.rel_time`, we get a dummy for every value of `rel_time` with $t = 0$ (the treatment year) as the omitted reference category:
 
-$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \mathbf{1}[\text{rel\_time}_{it} = k] + X_{it}\beta + \epsilon_{it} $$
+$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \mathbf{1}[\text{rel\_ time}_{it} = k] + X_{it}\beta + \epsilon_{it} $$
 
 The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they are close to zero, the treatment and control groups were trending similarly before the law. The post-treatment coefficients trace the dynamic effect path.
 

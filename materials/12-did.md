@@ -118,10 +118,10 @@ First define global macros for the controls:
 ```stata
 * define controls using global macros
 	global          demo blackm_15_24 whitem_15_24 ///
-						blackm_25_44 whitem_25_44
+                         blackm_25_44 whitem_25_44
 	global          spending l_exp_subsidy l_exp_pubwelfare
 	global          xvar l_police unemployrt poverty l_income ///
-	                    l_prisoner l_lagprisoner $demo $spending
+                         l_prisoner l_lagprisoner $demo $spending
 	global          lintrend trend_1-trend_51
 	global          region r20001-r20104
 ```
@@ -146,7 +146,7 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 
 ```stata
 * assuming a hypothetical continuous treatment variable 'gun_sales'
-	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend cdl ///
+	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
