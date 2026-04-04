@@ -146,7 +146,7 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 
 ```stata
 * assuming a hypothetical continuous treatment variable 'gun_sales'
-	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend post ///
+	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
