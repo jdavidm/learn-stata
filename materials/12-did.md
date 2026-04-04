@@ -13,7 +13,7 @@ This lecture covers:
 - Implementing DiD using Two-Way Fixed Effects (TWFE)
 - Continuous Treatment DiD
 
-We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`after = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
+We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`post = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
 
 ### The 2x2 DiD Model
 
@@ -41,14 +41,14 @@ Visually, the DiD estimate is the gap between the actual outcome for the treated
 * load the castle doctrine dataset
 	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 
-* fix coding error in treatment variable
-	replace         cdl = 1 if cdl > 0
-
-* create time period dummy
+* create time period dummy (1 for post-period)
 	gen             after = (year >= 2006)
 
+* create treatment group dummy (1 for states that ever passed a cdl law)
+	gen             treat = (effyear != .)
+
 * run the 2x2 did regression
-	reg             l_homicide i.cdl##i.after
+	reg             l_homicide i.treat##i.after
 ```
 
 While manually calculating the interaction with `reg` is great for understanding the mathematical mechanics, Stata 17+ has a dedicated suite of Difference-in-Differences commands. The `didregress` command automates the setup, calculates standard errors properly out-of-the-box, and naturally handles the uncollapsed, full panel dataset.
@@ -56,7 +56,7 @@ While manually calculating the interaction with `reg` is great for understanding
 ```stata
 * use didregress on the uncollapsed panel
 * syntax: didregress (depvar) (treatment_variable), group(group_id) time(time_id)
-	didregress      (l_homicide) (cdl), group(sid) time(year) vce(hc2)
+	didregress      (l_homicide) (post), group(sid) time(year) vce(hc2)
 ```
 
 > Do [Exercise 1 - Continuous Treatment DiD]({{ site.baseurl }}/exercises/12-continuous-did/)
@@ -68,17 +68,14 @@ The validity of DiD hinges on the **Parallel Trends Assumption**: in the absence
 To visualize parallel trends, we compute the average outcome for both groups in each period and plot them.
 
 ```stata
-* define ever treated vs never treated
-	gen             treated = (effyear != .)
-
 * calculate means over time
 	preserve
-	collapse        (mean) l_homicide, by(treated year)
+	collapse        (mean) l_homicide, by(treat year)
     
 * parallel trends plot
-	twoway      (connected l_homicide year if treated == 1, ///
+	twoway      (connected l_homicide year if treat == 1, ///
                         lcolor(maroon)) ///
-                    (connected l_homicide year if treated == 0, ///
+                    (connected l_homicide year if treat == 0, ///
                         lcolor(navy)), ///
                         xline(2005, lpattern(dash) ///
                         lcolor(black)) xtitle("Year") ///
@@ -95,49 +92,52 @@ If the lines look roughly parallel before the treatment point (e.g., prior to 20
 
 ### DiD with Two-Way Fixed Effects (TWFE)
 
-When we have multiple time periods and staggered adoption (units getting treated at different times), the classic $2 \times 2$ formula doesn't quite apply. Traditionally, economists handled this by estimating a Two-Way Fixed Effects (TWFE) regression. The `cdl` variable is equal to 1 if a state actively has the Castle Doctrine law that year, and 0 otherwise.
+When we have multiple time periods and staggered adoption (units getting treated at different times), the classic $2 \times 2$ formula doesn't quite apply. Traditionally, economists handled this by estimating a Two-Way Fixed Effects (TWFE) regression. The `post` variable is equal to 1 if a state actively has the Castle Doctrine law that year, and 0 otherwise.
 
 $$ Y_{it} = \alpha_i + \gamma_t + \beta^{TWFE} D_{it} + \epsilon_{it} $$
 
-Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t$ are time fixed effects  and $D_{it}$ is the policy status dummy (`cdl` variable).
+Here, $\alpha_i$ are unit fixed effects (replacing the $Treat$ dummy), $\gamma_t$ are time fixed effects  and $D_{it}$ is the policy status dummy (`post` variable).
 
 ```stata
 * set panel
 	xtset           sid year
 
 * twfe regression
-	xtreg           l_homicide cdl i.year, fe vce(cluster sid)
+	xtreg           l_homicide post i.year, fe vce(cluster sid)
 ```
 
-The coefficient on `cdl` calculates the treatment effect holding both state and year averages constant.
+The coefficient on `post` calculates the treatment effect holding both state and year averages constant.
 
 The above is a very parsimonious specification. Now let's replicate the full TWFE specification from Cheng and Hoekstra (2013) — the one that produces the headline finding of an ~8% increase in homicides will be our starting point for next lecture's event study analysis.
 
 First define global macros for the controls:
 
 ```stata
-* define controls using global macros
-	global          demo blackm_15_24 whitem_15_24 ///
-						blackm_25_44 whitem_25_44
-	global          spending l_exp_subsidy l_exp_pubwelfare
-	global          xvar l_police unemployrt poverty l_income ///
-	                    l_prisoner l_lagprisoner $demo $spending
-	global          lintrend trend_1-trend_51
-	global          region r20001-r20104
+* define global macros
+	global 			crime1 jhcitizen_c jhpolice_c murder homicide ///
+						robbery assault burglary larceny motor robbery_gun_r 
+	global 			demo blackm_15_24 whitem_15_24 blackm_25_44 whitem_25_44 //demographics
+	global 			lintrend trend_1-trend_51 //state linear trend
+	global 			region r20001-r20104  //region-quarter fixed effects
+	global 			exocrime l_larceny l_motor // exogenous crime rates
+	global 			spending l_exp_subsidy l_exp_pubwelfare
+	global 			xvar l_police unemployrt poverty l_income ///
+		l_prisoner l_lagprisoner $demo $spending
+	lab var			post "Year of treatment"
 ```
 
-Now run the TWFE regression with the `cdl` variable and analytical weights. **Analytical weights** (`[aweight=popwt]`) tell Stata that each observation represents a different number of underlying units (here, state population). Larger states receive proportionally more weight — this is common in state-level panel studies where you want per-capita effects.
+Now run the TWFE regression with the `post` variable and analytical weights. **Analytical weights** (`[aweight=popwt]`) tell Stata that each observation represents a different number of underlying units (here, state population). Larger states receive proportionally more weight — this is common in state-level panel studies where you want per-capita effects.
 
 ```stata
 * set panel
 	xtset           sid year
 
 * full twfe specification
-	xtreg           l_homicide i.year $region $xvar $lintrend cdl ///
-	                    [aweight=popwt], fe vce(cluster sid)
+	xi: xtreg 		l_homicide post i.year $region $xvar ///
+						$lintrend [aweight=popwt], fe vce(cluster sid)
 ```
 
-The coefficient on `cdl` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.
+The coefficient on `post` is approximately 0.08, or an 8% increase in homicides. But this single coefficient tells us nothing about *dynamics*: Were homicides already rising before the law? Did the effect grow over time? In the next lecture, we will use event studies to answer these questions.
 
 
 ### Continuous Treatment and Variations
@@ -146,7 +146,7 @@ Not all treatments are binary (0/1). You might have a continuous measure of trea
 
 ```stata
 * assuming a hypothetical continuous treatment variable 'gun_sales'
-	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend cdl ///
+	xtreg           l_homicide c.gun_sales i.year $region $xvar $lintrend post ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 

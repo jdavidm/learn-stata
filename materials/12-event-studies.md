@@ -29,29 +29,53 @@ In a staggered rollout, different states pass the castle doctrine in different y
 	use             "https://github.com/scunning1975/mixtape/raw/master/castle.dta", clear
 	xtset           sid year
 
+* define global macros
+	global 			crime1 jhcitizen_c jhpolice_c murder homicide ///
+						robbery assault burglary larceny motor robbery_gun_r 
+	global 			demo blackm_15_24 whitem_15_24 blackm_25_44 whitem_25_44 //demographics
+	global 			lintrend trend_1-trend_51 //state linear trend
+	global 			region r20001-r20104  //region-quarter fixed effects
+	global 			exocrime l_larceny l_motor // exogenous crime rates
+	global 			spending l_exp_subsidy l_exp_pubwelfare
+	global 			xvar l_police unemployrt poverty l_income ///
+		l_prisoner l_lagprisoner $demo $spending
+	lab var			post "Year of treatment"
+
 * create relative time
 * for never-treated units, we leave it missing
 	gen             rel_time = year - effyear if effyear != .
+
+* create lead dummies (pre-treatment)
+	forvalues       k = 1/9 {
+	    gen         lead`k' = (rel_time == -`k')
+	}
+
+* create lag dummies (post-treatment)
+	forvalues       k = 0/5 {
+	    gen         lag`k' = (rel_time == `k')
+	}
 ```
 
-`rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `rel_time` and serve as controls.
+`rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `rel_time` — their lead and lag dummies are all zero, so they serve as controls.
 
-The event study regression replaces the single `cdl` dummy with a full set of relative-time dummies. Using Stata's factor variable notation `ib0.rel_time`, we get a dummy for every value of `rel_time` with $t = 0$ (the treatment year) as the omitted reference category:
+The `forvalues` loops create a dummy for each period relative to treatment. For example, `lead3` equals 1 when a state is 3 years *before* its law passed, and `lag2` equals 1 when a state is 2 years *after*.
 
-$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \mathbf{1}[\text{rel\_time}_{it} = k] + X_{it}\beta + \epsilon_{it} $$
+The event study regression replaces the single `post` dummy with this full set of period-specific dummies. We include leads 9 through 1 and lags 1 through 5, but *omit* `lag0` (the treatment year) — making it the reference category:
+
+$$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \cdot D_{it}^k + X_{it}\beta + \epsilon_{it} $$
 
 The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they are close to zero, the treatment and control groups were trending similarly before the law. The post-treatment coefficients trace the dynamic effect path.
 
 ```stata
-* define controls
-	global          region r20001-r20104
-
-* event study regression — rel_time == 0 is omitted
-	xtreg           l_homicide i.year $region ib0.rel_time ///
+* event study regression — lag0 is omitted as the reference category
+	xi: xtreg       l_homicide lead9 lead8 lead7 lead6 lead5 ///
+	                    lead4 lead3 lead2 lead1 ///
+	                    lag1 lag2 lag3 lag4 lag5 ///
+	                    i.year $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
-Look at the output: relative-time coefficients for $t = -1$ through $t = -6$ should be close to zero and statistically insignificant — evidence consistent with parallel trends. The positive-time coefficients ($t = 1, 2, \ldots$) should be positive, showing that homicides increased *after* states passed castle doctrine laws.
+Look at the output: leads 1 through 6 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive, showing that homicides increased *after* states passed castle doctrine laws.
 
 > Do [Exercise 4 - Event Study Regression]({{ site.baseurl }}/exercises/12-event-dummies/)
 
@@ -61,10 +85,12 @@ Event study tables are massive and hard to interpret at a glance. The standard p
 
 ```stata
 * event study plot
-	coefplot,       keep(*.rel_time) ///
+	coefplot,       keep(lead9 lead8 lead7 lead6 lead5 ///
+	                    lead4 lead3 lead2 lead1 ///
+	                    lag1 lag2 lag3 lag4 lag5) ///
 	                    vertical ///
 	                    yline(0, lcolor(black) lpattern(dash)) ///
-	                    xline(10, lcolor(maroon) lpattern(dash)) ///
+	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
 	                    title("Event Study: Castle Doctrine on Homicides") ///
 	                    xtitle("Periods Relative to Treatment") ///
 	                    ytitle("Log Homicide Rate") ///
@@ -75,7 +101,7 @@ Event study tables are massive and hard to interpret at a glance. The standard p
 ```
 
 Reading the plot:
-- **Left of the vertical dashed line** (at `xline(9.5)`): these are the *pre-treatment* leads. If the points hover around zero, there's no evidence of differential pre-trends.
+- **Left of the vertical dashed line**: these are the *pre-treatment* leads. If the points hover around zero, there's no evidence of differential pre-trends.
 - **Right of the line**: these are the *post-treatment* lags. Positive coefficients indicate castle doctrine raised homicides.
 - **The horizontal dashed line** at $y = 0$ is the reference: no effect.
 

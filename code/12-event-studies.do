@@ -41,21 +41,36 @@
 * for never-treated units, we leave it missing
 	gen             rel_time = year - effyear if effyear != .
 
-* event study regression — rel_time == 0 is omitted
-	xtreg           l_homicide i.year $region ib0.rel_time ///
+* create lead dummies (pre-treatment)
+	forvalues       k = 1/9 {
+	    gen         lead`k' = (rel_time == -`k')
+	}
+
+* create lag dummies (post-treatment)
+	forvalues       k = 0/5 {
+	    gen         lag`k' = (rel_time == `k')
+	}
+
+* event study regression — lag0 is omitted as the reference category
+	xi: xtreg       l_homicide lead9 lead8 lead7 lead6 lead5 ///
+	                    lead4 lead3 lead2 lead1 ///
+	                    lag1 lag2 lag3 lag4 lag5 ///
+	                    i.year $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
-	*** pre-treatment coefficients near zero — consistent with parallel trends
-	*** post-treatment coefficients positive — homicides rose after castle doctrine
+	*** leads 1-6 near zero — consistent with parallel trends
+	*** lags positive — homicides rose after castle doctrine
 
 **********************************************************************
 **# 3 - event study plot
 **********************************************************************
 
 * plot coefficients with coefplot
-	coefplot,       keep(*.rel_time) ///
+	coefplot,       keep(lead9 lead8 lead7 lead6 lead5 ///
+	                    lead4 lead3 lead2 lead1 ///
+	                    lag1 lag2 lag3 lag4 lag5) ///
 	                    vertical ///
 	                    yline(0, lcolor(black) lpattern(dash)) ///
-	                    xline(10, lcolor(maroon) lpattern(dash)) ///
+	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
 	                    title("Event Study: Castle Doctrine on Homicides") ///
 	                    xtitle("Periods Relative to Treatment") ///
 	                    ytitle("Log Homicide Rate") ///
