@@ -47,59 +47,85 @@ In a staggered rollout, different states pass the castle doctrine in different y
 
 * create relative time
 * for never-treated units, we leave it missing
-	gen             rel_time = year - effyear if effyear != .
+	gen             ry = year - effyear if effyear != .
 
-* create lead dummies (pre-treatment)
-	forvalues       k = 1/9 {
-	    gen         ld`k' = (rel_time == -`k')
+* identify control cohort (last-treated states)
+	gen             last_treat = (effyear == 2007)
+
+* generate lead dummies (pre-treatment)
+	forvalues       k = 9(-1)2 {
+	    gen         g_`k' = ry == -`k'
 	}
-    global          leads ld9 ld8 ld7 ld6 ld5 ld4 ld3 ld2 ld1
 
-* create lag dummies (post-treatment)
+* generate lag dummies (post-treatment, bin at +5)
 	forvalues       k = 0/5 {
-	    gen         lg`k' = (rel_time == `k')
+	    gen         g`k' = ry == `k'
 	}
-    global          lags lg1 lg2 lg3 lg4 lg5
 ```
 
-`rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `rel_time` — their lead and lag dummies are all zero, so they serve as controls.
+`ry` $= 0$ is the year the law passed. `ry` $< 0$ are the "leads" (pre-treatment periods). `ry` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `ry` — their lead and lag dummies are all zero, so they serve as controls.
 
-The `forvalues` loops create a dummy for each period relative to treatment. For example, `lead3` equals 1 when a state is 3 years *before* its law passed, and `lag2` equals 1 when a state is 2 years *after*.
+The `forvalues` loops create a dummy for each period relative to treatment. For example, `g_3` equals 1 when a state is 3 years *before* its law passed, and `g2` equals 1 when a state is 2 years *after*. We use the naming convention `g_k` for leads (with an underscore) and `gk` for lags.
 
-The event study regression replaces the single `post` dummy with this full set of period-specific dummies. We include leads 9 through 1 and lags 1 through 5, but *omit* `lag0` (the treatment year) — making it the reference category:
+The event study regression replaces the single `post` dummy with this full set of period-specific dummies. We omit `g_1` (one year before treatment) as the reference category:
 
 $$ Y_{it} = \alpha_i + \gamma_t + \sum_{k \neq 0} \delta_k \cdot D_{it}^k + X_{it}\beta + \epsilon_{it} $$
 
 The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they are close to zero, the treatment and control groups were trending similarly before the law. The post-treatment coefficients trace the dynamic effect path.
 
 ```stata
-* event study regression — lag0 is omitted as the reference category
-	xi: xtreg       l_homicide $leads $lags i.year ///
+* event study regression — g_1 is omitted as the reference category
+	xi: xtreg       l_homicide g_* g0-g5 i.year ///
 	                    $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
-Look at the output: leads 1 through 6 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive, showing that homicides increased *after* states passed castle doctrine laws.
+Look at the output: leads 2 through 9 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive, showing that homicides increased *after* states passed castle doctrine laws.
 
-> Do [Exercise 4 - Event Study Regression]({{ site.baseurl }}/exercises/12-event-dummies/)
+#### Robust Estimation with `eventstudyinteract`
+
+The standard TWFE event study above can produce biased estimates under staggered adoption — the same concern we discussed with the Bacon decomposition. The `eventstudyinteract` package (Sun and Abraham, 2021) provides an interaction-weighted estimator that corrects for this bias.
+
+Add `eventstudyinteract`, `avar`, and `reghdfe` to the package loop in your `project.do` file. Change `$pack` to 1, re-run, then change back to 0.
+
+```stata
+* robust event study using interaction-weighted estimator
+	eventstudyinteract  l_homicide g_* g0-g5, ///
+	                        cohort(effyear) control_cohort(last_treat) ///
+	                        absorb(i.sid i.year) ///
+	                        vce(cluster sid)
+```
+
+The key options: `cohort()` specifies the treatment timing variable, `control_cohort()` identifies the comparison group (here, last-treated states), and `absorb()` controls for unit and time fixed effects. The results are stored in `e(b_iw)` and `e(V_iw)` — we'll use those to build plots in the next section.
+
+> Do [Exercise 4 - Event Study Regression]({{ site.baseurl }}/exercises/12-event-reg/)
 
 ### Visualizing with `coefplot`
 
 Event study tables are massive and hard to interpret at a glance. The standard practice is to plot the coefficients with confidence intervals. The `coefplot` command (by Ben Jann) makes this straightforward:
 
 ```stata
-* event study plot
-	coefplot,       keep($leads $lags) vertical ///
-	                    yline(0, lcolor(black) lpattern(dash)) ///
-	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
-	                    title("Castle Doctrine on Homicides") ///
-	                    xtitle("Periods Relative to Treatment") ///
-	                    ytitle("Log Homicide Rate") ///
-	                    msymbol(D) mfcolor(white) ///
-	                    recast(connected) ///
-	                    ciopts(recast(rcap)) ///
-	                    graphregion(color(white))
+* extract interaction-weighted estimates into a matrix
+	matrix          C = e(b_iw)
+	mata            st_matrix("A", sqrt(diagonal(st_matrix("e(V_iw)"))))
+	matrix          C = C \ A'
+	matrix          list C
+
+* event study plot from the matrix
+	coefplot        matrix(C[1]), se(C[2]) ///
+	                    graphregion(fcolor(white)) ///
+	                    xtitle("Event years", size(medlarge)) ///
+	                    vertical omitted msymbol(s) ///
+	                    mc(black) mfcolor(white) ///
+	                    yline(0, lc(black) lw(vthin)) ///
+	                    recast(connected) lw(thick) lc(black) ///
+	                    ciopts(recast(rline) lw(thin) lc(black) lp(dash)) ///
+	                    ylabel(, angle(0) nogrid) keep(g_* g*) ///
+	                    rename(g_* = "-" g* = "") ///
+	                    ytitle("Log Homicide Rate")
 ```
+
+The first three lines extract results from `eventstudyinteract`: `e(b_iw)` holds the interaction-weighted coefficients, and `e(V_iw)` holds the variance-covariance matrix. The `mata` line takes the square root of the diagonal (the variances) to get standard errors. Stacking them with `\` gives `coefplot` a matrix where row 1 = coefficients and row 2 = standard errors.
 
 Reading the plot:
 - **Left of the vertical dashed line**: these are the *pre-treatment* leads. If the points hover around zero, there's no evidence of differential pre-trends.

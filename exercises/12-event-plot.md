@@ -5,12 +5,34 @@ title: Event Plot with coefplot
 language: Stata
 ---
 
-Instead of staring at a giant table of relative year coefficients, we can visualize the dynamic treatment effect path using `coefplot`.
+The `eventstudyinteract` command stores its interaction-weighted estimates in matrices rather than the standard `e(b)` vector. To plot them with `coefplot`, you first need to extract and reshape those matrices. This exercise walks you through using Stata's `matrix` commands and `mata` to build a publishable event study plot.
 
-- Run `coefplot` immediately after the regression you ran in the previous exercise, restricting the output to keep only the coefficients on the interaction terms `*.event_factor#c.bin_max_60_611`. Suppress the legend.
-- Include the necessary styling options covered in the lecture to make the graph vertically aligned (`vertical`), connect the points (`recast(connected)`), and cap the standard error bands (`ciopts(recast(rcap))`).
-- Plot a horizontal reference line at $Y = 0$ (`yline(0)`) and a vertical reference line at the base period.
-- Export your `coefplot` to a `.png` file and input it into your Overleaf document.
+#### 5.1 — Extract and View the Results Matrix
 
-1. Do the pre-adoption interaction coefficients hover around zero, consistent with parallel trends?
-2. After adoption, does the interaction between `event_factor` and `bin_max_60_611` suggest that STRV seed mitigates or exacerbates the impact of flooding on `evi_med`?
+- After running `eventstudyinteract` (from Exercise 4), extract the interaction-weighted coefficients into a matrix: use `matrix C = e(b_iw)` to grab the point estimates from the stored results.
+- The variance-covariance matrix `e(V_iw)` contains the variances on its diagonal. To get standard errors, you need the square root of those diagonal elements. Use `mata` to do this in one line: `mata st_matrix("A", sqrt(diagonal(st_matrix("e(V_iw)"))))`. This calls Mata (Stata's matrix programming language), extracts the diagonal of the variance matrix, takes the element-wise square root, and stores the result back in a Stata matrix called `A`.
+- Stack the standard errors below the coefficients: `matrix C = C \ A'`. The backslash (`\`) stacks matrices vertically, and `A'` transposes `A` from a column vector to a row vector so it aligns with `C`. Now row 1 of `C` is the coefficients and row 2 is the standard errors.
+- Print the matrix to verify: `matrix list C`. You should see one row of point estimates and one row of standard errors, with columns named after your lead and lag dummies.
+
+1. How many columns does your matrix `C` have? Does this match the number of lead and lag dummies you created?
+
+#### 5.2 — Create the Event Study Plot
+
+Now use `coefplot` to plot directly from the matrix `C`. Build the plot with the following options:
+
+- Source the coefficients from row 1 of `C` using `matrix(C[1])` and pair them with standard errors from row 2 using `se(C[2])`.
+- Set the graph region background to white with `graphregion(fcolor(white))`.
+- Label the x-axis "Event years" using `xtitle()` with `size(medlarge)`.
+- Orient the plot vertically and include the omitted period as a zero with the `vertical` and `omitted` options.
+- Use square markers (`msymbol(s)`), colored black (`mc(black)`) with white fill (`mfcolor(white)`).
+- Add a horizontal reference line at zero using `yline(0)` with thin black styling.
+- Connect the points with thick black lines using `recast(connected)`, `lw(thick)`, and `lc(black)`.
+- Display the confidence intervals as dashed lines using `ciopts(recast(rline) lw(thin) lc(black) lp(dash))`.
+- Add a vertical treatment reference line at position 16 (where `g_1` would be — the last pre-treatment period) using `xline()` in red.
+- Suppress the grid with `ylabel(, angle(0) nogrid)` and keep only the lead/lag coefficients with `keep(g_* g*)`.
+- Clean up the coefficient labels using `rename(g_* = "-" g* = "")` so leads show as negative numbers and lags as positive.
+- Set the y-axis title to "Median EVI" and manually label the x-axis tick marks at informative intervals (e.g., positions 02, 07, 12, 16, 21, 25 labeled as "-15", "-10", "-5", "0", "5", "10").
+- Export the plot as `"$answ/12-event-plot.png"`.
+
+1. Do the pre-treatment coefficients hover near zero, consistent with parallel trends?
+2. After adoption, does the effect of STRV seed on `evi_med` appear to grow over time, or is it immediate and constant?

@@ -10,7 +10,8 @@ language: Stata
 3. Continuous Interacted DiD [1]({{ site.baseurl }}/solutions/12-interacted-did-1.png), [2]({{ site.baseurl }}/solutions/12-interacted-did-2.png)  
 4. Event Study Regression
 5. Event Plot with `coefplot`
-6. Bacon Decomposition
+6. Treatment Adoption Heatmap
 7. Using the `eventdd` Package
-8. [Check That Your Code Runs]({{ site.baseurl }}/solutions/check-that-your-code-runs.gif)
-9. Challenge 12
+8. Ridgeline Plot
+9. [Check That Your Code Runs]({{ site.baseurl }}/solutions/check-that-your-code-runs.gif)
+10. Challenge 12

@@ -2,9 +2,10 @@
 * assignment: 12
 * created on: 31 mar 26
 * created by: jdm
-* edited on: 31 mar 26
+* edited on: 5 apr 26
 * edited by: jdm
 * stata v.18.0
+
 
 **********************************************************************
 **# 0 - setup
@@ -124,7 +125,131 @@
                       "\end{tabular}")
 
 **********************************************************************
-**# 4 - end matter
+**# exercise 4 - Event Study Regression
+**********************************************************************
+
+**## 4.1
+
+* generate cohort variable
+	gen			seed_year = year if seed > 0
+    bysort		district_id: ///
+		egen		first_seed = min(seed_year)
+    drop		seed_year
+ 
+* code the relative time categorical variable.
+	gen 		ry = year - first_seed
+	replace		ry = 10 if ry > 10 & ry != .
+
+* take the control cohort to be districts that never got strvs
+	gen 		never_seed = (first_seed == .)
+	gen			last_seed = (first_seed == 2019)
+	
+* generate relative time indicators
+	forvalues 	k = 16(-1)2 {
+		gen 		g_`k' = ry == -`k'
+	}
+	forvalues k = 0/10 {
+		gen 		g`k' = ry == `k'
+	}
+        
+* event study of evi_med	
+	eventstudyinteract 	evi_med g_* g0-g10, ///
+							cohort(first_seed) control_cohort(last_seed) ///
+							covariates(fld_cuml) absorb(i.district_id i.year) ///
+							vce(cluster district_id)
+	
+
+**********************************************************************
+**# exercise 5 - Event Plot with coefplot
+**********************************************************************
+
+**## 5.1
+
+ 
+* event study of evi_med	
+	eventstudyinteract 	evi_med g_* g0-g10, ///
+							cohort(first_seed) control_cohort(last_seed) ///
+							covariates(fld_cuml) absorb(i.district_id i.year) ///
+							vce(cluster district_id)
+
+* set up matrix of results
+	matrix 		C = e(b_iw)
+	mata 		st_matrix("A",sqrt(diagonal(st_matrix("e(V_iw)"))))
+	matrix 		C = C \ A'
+	matrix 		list C							
+							
+* graph for paper
+	coefplot 	matrix(C[1]), se(C[2]) graphregion(fcolor(white))  ///
+						xtitle("Event years", size(medlarge)) ///
+						vertical omitted msymbol(s) ///
+						mc(black) mfcolor(white) yline(0, lc(black) lw(vthin)) ///
+						recast(connected) lw(thick) lc(black) ///
+						ciopts(recast(rline) lw(thin) lc(black) lp(dash)) ///
+						xline(16, lc(red) lw(vthin) lp(solid) ) ///
+						ylabel(,angle(0) nogrid) keep(g_* g*) ///
+						rename(g_* ="-" g* = "") ///
+						ytitle("Median EVI") xlabel(02 "-15" 07 "-10" 12 "-5" ///
+						16 "0" 21 "5" 25 "10" )
+	
+* graph save
+	graph export    "$answ/12-event-plot.png", replace
+
+**********************************************************************
+**# exercise 6 - Treatment Adoption Heatmap
+**********************************************************************
+
+**## 6.1
+
+* create post-adoption indicator
+	gen             post_adopt = (year >= adopt_year) & (adopt_year > 0)
+
+* treatment adoption heatmap
+	heatplot        post_adopt i.district_id i.year, ///
+	                    colors(white dkgreen) ///
+	                    ylabel(, labsize(tiny) angle(0)) ///
+	                    xlabel(, labsize(small) angle(45)) ///
+	                    ytitle("District") xtitle("Year") ///
+	                    title("STRV Seed Adoption Timing") ///
+	                    legend(order(1 "No Seed" 2 "Seed Adopted")) ///
+	                    graphregion(color(white))
+	graph export    "$answ/12-heatmap.png", replace
+
+**********************************************************************
+**# exercise 7 - Using the eventdd Package
+**********************************************************************
+
+**## 7.1
+
+* eventdd automates event study estimation and plotting
+	eventdd         evi_med c.bin_max_60_611 i.year, ///
+	                    timevar(rel_time) ///
+	                    method(fe, cluster(district_id)) ///
+	                    graph_op(ytitle("Effect on EVI (Yield Index)"))
+	graph export    "$answ/12-eventdd.png", replace
+
+**********************************************************************
+**# exercise 8 - Ridgeline Plot
+**********************************************************************
+
+**## 8.1
+
+* ridgeline plot of yield distributions by event time
+	joyplot         evi_med if inrange(rel_time, -3, 5) ///
+	                    & adopt_year > 0, ///
+	                    by(rel_time) droplow ///
+	                    palette(HCL heat, reverse) ///
+	                    alpha(80) overlap(8) bwidth(0.3) ///
+	                    lcolor(white) lwidth(0.2) ///
+	                    ytitle("Relative Time", size(medsmall)) ///
+	                    xtitle("EVI (Yield Index)", size(medsmall)) ///
+	                    title("Yield Distribution by Event Time", ///
+	                        size(medium)) ///
+	                    graphregion(color(white)) ///
+	                    plotregion(margin(zero))
+	graph export    "$answ/12-joyplot.png", replace
+
+**********************************************************************
+**# 9 - end matter
 **********************************************************************
 
 * close log
