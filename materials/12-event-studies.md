@@ -30,15 +30,19 @@ In a staggered rollout, different states pass the castle doctrine in different y
 	xtset           sid year
 
 * define global macros
-	global 			crime1 jhcitizen_c jhpolice_c murder homicide ///
-						robbery assault burglary larceny motor robbery_gun_r 
-	global 			demo blackm_15_24 whitem_15_24 blackm_25_44 whitem_25_44 //demographics
-	global 			lintrend trend_1-trend_51 //state linear trend
-	global 			region r20001-r20104  //region-quarter fixed effects
-	global 			exocrime l_larceny l_motor // exogenous crime rates
-	global 			spending l_exp_subsidy l_exp_pubwelfare
-	global 			xvar l_police unemployrt poverty l_income ///
-		l_prisoner l_lagprisoner $demo $spending
+	global           crime1 jhcitizen_c jhpolice_c murder ///
+                        homicide robbery assault burglary ///
+                        larceny motor robbery_gun_r 
+	global           demo blackm_15_24 whitem_15_24 blackm_25_44 ///
+                        whitem_25_44 //demographics
+	global           lintrend trend_1-trend_51 //state linear trend
+	global           region r20001-r20104  //region-quarter fe
+	global           exocrime l_larceny ///
+                        l_motor // exogenous crime rates
+	global           spending l_exp_subsidy ///
+                        l_exp_pubwelfare
+	global           xvar l_police unemployrt poverty l_income ///
+                        l_prisoner l_lagprisoner
 	lab var			post "Year of treatment"
 
 * create relative time
@@ -47,13 +51,15 @@ In a staggered rollout, different states pass the castle doctrine in different y
 
 * create lead dummies (pre-treatment)
 	forvalues       k = 1/9 {
-	    gen         lead`k' = (rel_time == -`k')
+	    gen         ld`k' = (rel_time == -`k')
 	}
+    global          leads ld9 ld8 ld7 ld6 ld5 ld4 ld3 ld2 ld1
 
 * create lag dummies (post-treatment)
 	forvalues       k = 0/5 {
-	    gen         lag`k' = (rel_time == `k')
+	    gen         lg`k' = (rel_time == `k')
 	}
+    global          lags lg1 lg2 lg3 lg4 lg5
 ```
 
 `rel_time` $= 0$ is the year the law passed. `rel_time` $< 0$ are the "leads" (pre-treatment periods). `rel_time` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `rel_time` — their lead and lag dummies are all zero, so they serve as controls.
@@ -68,10 +74,8 @@ The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they
 
 ```stata
 * event study regression — lag0 is omitted as the reference category
-	xi: xtreg       l_homicide lead9 lead8 lead7 lead6 lead5 ///
-	                    lead4 lead3 lead2 lead1 ///
-	                    lag1 lag2 lag3 lag4 lag5 ///
-	                    i.year $region $xvar $lintrend ///
+	xi: xtreg       l_homicide $leads $lags i.year ///
+	                    $region $xvar $lintrend ///
 	                    [aweight=popwt], fe vce(cluster sid)
 ```
 
@@ -85,13 +89,10 @@ Event study tables are massive and hard to interpret at a glance. The standard p
 
 ```stata
 * event study plot
-	coefplot,       keep(lead9 lead8 lead7 lead6 lead5 ///
-	                    lead4 lead3 lead2 lead1 ///
-	                    lag1 lag2 lag3 lag4 lag5) ///
-	                    vertical ///
+	coefplot,       keep($leads $lags) vertical ///
 	                    yline(0, lcolor(black) lpattern(dash)) ///
 	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
-	                    title("Event Study: Castle Doctrine on Homicides") ///
+	                    title("Castle Doctrine on Homicides") ///
 	                    xtitle("Periods Relative to Treatment") ///
 	                    ytitle("Log Homicide Rate") ///
 	                    msymbol(D) mfcolor(white) ///
@@ -105,9 +106,31 @@ Reading the plot:
 - **Right of the line**: these are the *post-treatment* lags. Positive coefficients indicate castle doctrine raised homicides.
 - **The horizontal dashed line** at $y = 0$ is the reference: no effect.
 
-This kind of figure has become the "heart and soul" of modern DiD papers (Cunningham 2021). It simultaneously demonstrates the plausibility of parallel trends and the dynamic causal effect.
+This kind of figure has become the "heart and soul" of modern DiD papers. It simultaneously demonstrates the plausibility of parallel trends and the dynamic causal effect.
 
 > Do [Exercise 5 - Event Plot]({{ site.baseurl }}/exercises/12-event-plot/)
+
+### Visualizing Staggered Adoption with `heatplot`
+
+Before decomposing the TWFE estimate, it helps to *see* the staggered rollout. A heatmap with states on the y-axis, years on the x-axis, and cells colored by treatment status immediately reveals the adoption pattern — which states adopted early, which late, and which never adopted at all.
+
+Add `heatplot`, `palettes`, and `colrspace` to the package loop in your `project.do` file. Change `$pack` to 1, re-run `project.do`, then change `$pack` back to 0.
+
+```stata
+* treatment adoption heatmap
+	heatplot        post i.sid i.year, ///
+	                    colors(white maroon) ///
+	                    ylabel(, labsize(tiny) angle(0)) ///
+	                    xlabel(, labsize(small) angle(45)) ///
+	                    ytitle("State") xtitle("Year") ///
+	                    title("Castle Doctrine Adoption Timing") ///
+	                    legend(order(1 "No Law" 2 "Law in Effect")) ///
+	                    graphregion(color(white))
+```
+
+Each row is a state and each column is a year. White cells mean no law; maroon cells mean the law is in effect. The staggered pattern is immediately visible — this is exactly the variation that TWFE exploits (and that the Bacon decomposition dissects).
+
+> Do [Exercise 6 - Treatment Adoption Heatmap]({{ site.baseurl }}/exercises/12-event-heatmap/)
 
 ### The Bacon Decomposition: What's Inside the TWFE Estimate?
 
@@ -139,8 +162,6 @@ The dashed horizontal line is the overall TWFE estimate — the weighted average
 
 **Why this matters:** When the Bacon decomposition shows that problematic comparisons have large weights *and* pull the estimate in a different direction, you should turn to modern robust estimators like `csdid` (which we covered last lecture). The event study plot and the Bacon decomposition together form your diagnostic toolkit.
 
-> Do [Exercise 6 - Bacon Decomposition]({{ site.baseurl }}/exercises/12-event-metrics/)
-
 ### Dedicated Packages
 
 Manually creating lead and lag dummies, binning endpoints, and relabeling axes is tedious. Dedicated event study packages handle all of this automatically. Two popular options:
@@ -151,9 +172,6 @@ Manually creating lead and lag dummies, binning endpoints, and relabeling axes i
 To install these, add `eventdd` and `boottest` to the package loop in your `project.do` file. Then change `$pack` to 1 and re-run `project.do`. Once the packages install, change `$pack` back to 0.
 
 ```stata
-* create relative time for eventdd
-	gen             rel_time = year - effyear if effyear != .
-
 * eventdd automates the entire process
 	eventdd         l_homicide i.year, timevar(rel_time) ///
 	                    method(fe, cluster(sid)) ///
@@ -163,3 +181,36 @@ To install these, add `eventdd` and `boottest` to the package loop in your `proj
 These packages not only automate the dummy creation and plotting, but also handle endpoint binning and allow for alternative estimation methods that address the TWFE bias we discovered with the Bacon decomposition.
 
 > Do [Exercise 7 - Using the eventdd Package]({{ site.baseurl }}/exercises/12-event-package/)
+
+### Distributional Diagnostics with `joyplot`
+
+The event study plot shows us how the *mean* effect evolves over relative time, but it hides what's happening to the full distribution. A **ridgeline plot** (also called a joy plot) stacks density curves for each time period, letting us see whether the *entire distribution* of homicide rates shifts — not just the average.
+
+Add `joyplot` to the package loop in your `project.do` file (it shares the `palettes` and `colrspace` dependencies you already installed for `heatplot`). Change `$pack` to 1, re-run, then change back to 0.
+
+The `palette()` option controls the color scheme applied across the ridges. It draws from Ben Jann's `palettes` package, which provides access to hundreds of named color palettes — scientific schemes like `viridis` and `magma`, perceptual palettes like `CET C1`, and many more. Browse the full catalog at the [palettes getting started guide](https://repec.sowi.unibe.ch/stata/palettes/getting-started.html).
+
+```stata
+* ridgeline plot of homicide rates by relative time
+	joyplot         l_homicide if inrange(rel_time, -5, 5), ///
+	                    by(rel_time) droplow ///
+	                    palette(HCL heat, reverse) ///
+	                    alpha(80) overlap(8) bwidth(0.3) ///
+	                    lcolor(white) lwidth(0.2) ///
+	                    ytitle("Relative Time", size(medsmall)) ///
+	                    xtitle("Log Homicide Rate", size(medsmall)) ///
+	                    title("Distribution of Homicide Rates" ///
+	                        "by Event Time", size(medium)) ///
+	                    xline(0, lcolor(gs12) lpattern(dash)) ///
+	                    graphregion(color(white)) ///
+	                    plotregion(margin(zero))
+```
+
+Reading the ridgeline plot:
+- Each ridge is the density of `l_homicide` for one value of `rel_time`
+- Pre-treatment ridges (negative values) should look similar to each other — another way to assess parallel trends
+- Post-treatment ridges should shift rightward if the Castle Doctrine increased homicides across the board, not just on average
+- If only the right tail shifts, the effect may be driven by a few high-crime states rather than a broad increase
+
+> Do [Exercise 8 - Ridgeline Plot]({{ site.baseurl }}/exercises/12-event-joyplot/)
+
