@@ -1,0 +1,1 @@
+[2] No, there isn't much difference between the two columns which suggests that the standard TWFE estimator is not significantly biased in this case.

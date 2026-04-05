@@ -19,8 +19,6 @@
 **# exercise 1 - Continuous Treatment DiD
 **********************************************************************
 
-**## 1.1
-
 * load data
 	use             "$data/panel_gis.dta", clear
     
@@ -61,8 +59,6 @@
 **# exercise 2 - Parallel Trends
 **********************************************************************
 
-**## 2.1
-
 * find maximum seed adoption per district
 	bysort          district_id: egen max_seed = max(seed)
 
@@ -94,7 +90,7 @@
 **# exercise 3 - Continuous Interacted DiD
 **********************************************************************
 
-**## 3.1
+**## 3.1 - table
 
 * interacted model
 	eststo          did3: xtreg evi_med c.seed##c.bin_max_60_611 i.year, ///
@@ -124,11 +120,13 @@
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
                       "\end{tabular}")
 
+**## 3.2 - interpretation					  
+					  
 **********************************************************************
 **# exercise 4 - Event Study Regression
 **********************************************************************
 
-**## 4.1
+**## 4.1 - table
 
 * generate cohort variable
 	gen			seed_year = year if seed > 0
@@ -147,18 +145,54 @@
 * generate relative time indicators
 	forvalues 	k = 16(-1)2 {
 		gen 		g_`k' = ry == -`k'
+		label 		var g_`k' "-`k'"
 	}
 	forvalues k = 0/10 {
 		gen 		g`k' = ry == `k'
+		label 		var g`k' "`k'"
 	}
-        
-* event study of evi_med	
+   **## 4.1 - TWFE event study
+
+* event study of evi_med using standard TWFE
+	eststo twfe: xtreg  evi_med g_* g0-g10 i.year, ///
+							fe vce(cluster district_id)
+
+**## 4.2 - robust event study
+
+* event study of evi_med using eventstudyinteract
 	eventstudyinteract 	evi_med g_* g0-g10, ///
 							cohort(first_seed) control_cohort(last_seed) ///
 							covariates(fld_cuml) absorb(i.district_id i.year) ///
 							vce(cluster district_id)
-	
 
+* post results for esttab
+	matrix          b_iw = e(b_iw)
+	matrix          V_iw = e(V_iw)
+	erepost         b = b_iw V = V_iw
+	eststo iw
+
+* export results to latex
+   esttab       twfe iw using "$answ/12-event-reg.tex", replace ///
+                    b(4) se(4) ///
+                    drop(*.year _cons) ///
+                    star(* 0.10 ** 0.05 *** 0.01) ///
+                    mtitles("TWFE" "Interaction-Weighted") ///
+                    noobs booktabs nonum ///
+                    eqlabels(none) collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{2}{c}} " ///
+                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                        "& \multicolumn{2}{c}{Event Study} \\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                        "\multicolumn{3}{p{\linewidth}}{\small " ///
+                        "\noindent \textit{Note}: Dependent variable " ///
+                        "is median EVI. Standard errors clustered at the " ///
+                        "district level (in parentheses). " ///
+                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+                        "\end{tabular}")	
+
+**## 4.3 - Compare Models
+					   
 **********************************************************************
 **# exercise 5 - Event Plot with coefplot
 **********************************************************************

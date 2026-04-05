@@ -20,9 +20,7 @@ This lecture covers:
 
 We continue using the Castle Doctrine dataset (`castle.dta`). Our outcome is the log homicide rate (`l_homicide`), identified by state (`sid`) across years (`year`). Recall from the previous lecture that the TWFE coefficient on `cdl` was approximately 0.08 — an 8% increase in homicides. Now let's see what's behind that number.
 
-### From DiD to Event Study: Leads and Lags
-
-In a staggered rollout, different states pass the castle doctrine in different years. The variable `effyear` records the year each state adopted the law. To conduct an event study, we need to measure time *relative to treatment*:
+If you don't have the castle data still loaded, then re-load the data set and define the global macros as we did in the previous lecture.	
 
 ```stata
 * load data and set panel
@@ -44,7 +42,13 @@ In a staggered rollout, different states pass the castle doctrine in different y
 	global           xvar l_police unemployrt poverty l_income ///
                         l_prisoner l_lagprisoner
 	lab var			post "Year of treatment"
+```
 
+### From DiD to Event Study: Leads and Lags
+
+In a staggered rollout, different states pass the castle doctrine in different years. The variable `effyear` records the year each state adopted the law. To conduct an event study, we need to measure time *relative to treatment*:
+
+```stata
 * create relative time
 * for never-treated units, we leave it missing
 	gen             ry = year - effyear if effyear != .
@@ -82,11 +86,9 @@ The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they
 
 Look at the output: leads 2 through 9 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive, showing that homicides increased *after* states passed castle doctrine laws.
 
-#### Robust Estimation with `eventstudyinteract`
+The standard TWFE event study above can produce biased estimates under staggered adoption — the same concern we discussed with the Bacon decomposition and Callaway & Sant'Anna in the two-way fixed effects lecture. The `eventstudyinteract` package (Sun and Abraham, 2021) provides an interaction-weighted estimator that corrects for this bias.
 
-The standard TWFE event study above can produce biased estimates under staggered adoption — the same concern we discussed with the Bacon decomposition. The `eventstudyinteract` package (Sun and Abraham, 2021) provides an interaction-weighted estimator that corrects for this bias.
-
-Add `eventstudyinteract`, `avar`, and `reghdfe` to the package loop in your `project.do` file. Change `$pack` to 1, re-run, then change back to 0.
+Add `eventstudyinteract` and `avar` to the package loop in your `project.do` file. Change `$pack` to 1, re-run, then change back to 0.
 
 ```stata
 * robust event study using interaction-weighted estimator
@@ -105,27 +107,22 @@ The key options: `cohort()` specifies the treatment timing variable, `control_co
 Event study tables are massive and hard to interpret at a glance. The standard practice is to plot the coefficients with confidence intervals. The `coefplot` command (by Ben Jann) makes this straightforward:
 
 ```stata
-* extract interaction-weighted estimates into a matrix
-	matrix          C = e(b_iw)
-	mata            st_matrix("A", sqrt(diagonal(st_matrix("e(V_iw)"))))
-	matrix          C = C \ A'
-	matrix          list C
-
-* event study plot from the matrix
-	coefplot        matrix(C[1]), se(C[2]) ///
-	                    graphregion(fcolor(white)) ///
-	                    xtitle("Event years", size(medlarge)) ///
-	                    vertical omitted msymbol(s) ///
-	                    mc(black) mfcolor(white) ///
-	                    yline(0, lc(black) lw(vthin)) ///
-	                    recast(connected) lw(thick) lc(black) ///
-	                    ciopts(recast(rline) lw(thin) lc(black) lp(dash)) ///
-	                    ylabel(, angle(0) nogrid) keep(g_* g*) ///
-	                    rename(g_* = "-" g* = "") ///
-	                    ytitle("Log Homicide Rate")
+* re-runevent study regression — g_1 is omitted as the reference category
+	xi: xtreg       l_homicide g_* g0-g5 i.year ///
+	                    $region $xvar $lintrend ///
+	                    [aweight=popwt], fe vce(cluster sid)
+* event study plot
+	coefplot,       keep($leads $lags) vertical ///
+	                    yline(0, lcolor(black) lpattern(dash)) ///
+	                    xline(9.5, lcolor(maroon) lpattern(dash)) ///
+	                    title("Castle Doctrine on Homicides") ///
+	                    xtitle("Periods Relative to Treatment") ///
+	                    ytitle("Log Homicide Rate") ///
+	                    msymbol(D) mfcolor(white) ///
+	                    recast(connected) ///
+	                    ciopts(recast(rcap)) ///
+	                    graphregion(color(white))
 ```
-
-The first three lines extract results from `eventstudyinteract`: `e(b_iw)` holds the interaction-weighted coefficients, and `e(V_iw)` holds the variance-covariance matrix. The `mata` line takes the square root of the diagonal (the variances) to get standard errors. Stacking them with `\` gives `coefplot` a matrix where row 1 = coefficients and row 2 = standard errors.
 
 Reading the plot:
 - **Left of the vertical dashed line**: these are the *pre-treatment* leads. If the points hover around zero, there's no evidence of differential pre-trends.

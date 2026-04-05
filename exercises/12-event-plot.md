@@ -5,20 +5,15 @@ title: Event Plot with coefplot
 language: Stata
 ---
 
-The `eventstudyinteract` command stores its interaction-weighted estimates in matrices rather than the standard `e(b)` vector. To plot them with `coefplot`, you first need to extract and reshape those matrices. This exercise walks you through using Stata's `matrix` commands and `mata` to build a publishable event study plot.
-
-#### 5.1 — Extract and View the Results Matrix
-
-- After running `eventstudyinteract` (from Exercise 4), extract the interaction-weighted coefficients into a matrix: use `matrix C = e(b_iw)` to grab the point estimates from the stored results.
-- The variance-covariance matrix `e(V_iw)` contains the variances on its diagonal. To get standard errors, you need the square root of those diagonal elements. Use `mata` to do this in one line: `mata st_matrix("A", sqrt(diagonal(st_matrix("e(V_iw)"))))`. This calls Mata (Stata's matrix programming language), extracts the diagonal of the variance matrix, takes the element-wise square root, and stores the result back in a Stata matrix called `A`.
+- You already estimated the robust event study in Exercise 4.2 using `eventstudyinteract`. Re-run that exact `eventstudyinteract` command (without the `erepost` part) to ensure the model results are fresh in Stata's memory.
+- Extract the interaction-weighted coefficients into a matrix: use `matrix C = e(b_iw)` to grab the point estimates from the stored results.
+- The variance-covariance matrix `e(V_iw)` contains the variances on its diagonal. To get standard errors, you need the square root of those diagonal elements. Use `mata` to do this in one line: `mata st_matrix("A", sqrt(diagonal(st_matrix("e(V_iw)"))))`.
 - Stack the standard errors below the coefficients: `matrix C = C \ A'`. The backslash (`\`) stacks matrices vertically, and `A'` transposes `A` from a column vector to a row vector so it aligns with `C`. Now row 1 of `C` is the coefficients and row 2 is the standard errors.
 - Print the matrix to verify: `matrix list C`. You should see one row of point estimates and one row of standard errors, with columns named after your lead and lag dummies.
 
-1. How many columns does your matrix `C` have? Does this match the number of lead and lag dummies you created?
+1\. How many columns does your matrix `C` have? Does this match the number of lead and lag dummies you created?
 
-#### 5.2 — Create the Event Study Plot
-
-Now use `coefplot` to plot directly from the matrix `C`. Build the plot with the following options:
+2\.Now use `coefplot` to plot directly from the matrix `C`. Build the plot with the following options:
 
 - Source the coefficients from row 1 of `C` using `matrix(C[1])` and pair them with standard errors from row 2 using `se(C[2])`.
 - Set the graph region background to white with `graphregion(fcolor(white))`.
@@ -34,5 +29,4 @@ Now use `coefplot` to plot directly from the matrix `C`. Build the plot with the
 - Set the y-axis title to "Median EVI" and manually label the x-axis tick marks at informative intervals (e.g., positions 02, 07, 12, 16, 21, 25 labeled as "-15", "-10", "-5", "0", "5", "10").
 - Export the plot as `"$answ/12-event-plot.png"`.
 
-1. Do the pre-treatment coefficients hover near zero, consistent with parallel trends?
-2. After adoption, does the effect of STRV seed on `evi_med` appear to grow over time, or is it immediate and constant?
+3\. Do the pre-treatment coefficients hover near zero, consistent with parallel trends? After adoption, does the effect of STRV seed on `evi_med` appear to grow over time, or is it immediate and constant?
