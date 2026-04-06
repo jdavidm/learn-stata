@@ -11,15 +11,21 @@ Our dataset only has 3 regions! This means `vce(cluster)` will severely miscalcu
 
 *(Note: You may need to run `ssc install boottest` first).*
 
-1. Run the standard clustered regression:
-   ```stata
-   reg lexp gnppc, vce(cluster region)
-   ```
-2. Note the p-value on `gnppc`. Is it surprisingly small?
-3. Now run the wild cluster bootstrap via post-estimation on that variable:
-   ```stata
-   boottest gnppc
-   ```
-4. Does having only 3 clusters inflate our standard significance initially, or does wild bootstrapping confirm we are highly significant?
+- Run the standard clustered regression:
+
+```stata
+* clustered regression
+	reg             lexp gnppc, vce(cluster region)
+```
+
+- Note the p-value on `gnppc`. Is it surprisingly small?
+- Now run the wild cluster bootstrap via post-estimation on that variable:
+
+```stata
+* wild cluster bootstrap
+	boottest        gnppc
+```
+
+1. Does having only 3 clusters inflate our standard significance initially, or does wild bootstrapping confirm we are highly significant?
 
 ---

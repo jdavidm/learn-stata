@@ -33,6 +33,7 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Line Fitting]({{ site.baseurl }}/materials/05-lfit)
 - [Macros and Storing Results]({{ site.baseurl }}/materials/06-macros)
 - [Loops and Programming Commands]({{ site.baseurl }}/materials/06-loops)
+- [Writing Custom Stata Programs]({{ site.baseurl }}/materials/06-programs)
 - [Single and Multivariate Regression]({{ site.baseurl }}/materials/09-regression)
 - [Standard Errors]({{ site.baseurl }}/materials/09-std-errors)
 - [Weights, Collinearity, and Measurement Error]({{ site.baseurl }}/materials/09-concerns)
@@ -44,6 +45,7 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Difference-in-Differences]({{ site.baseurl }}/materials/12-did)
 - [Event Studies]({{ site.baseurl }}/materials/12-event-studies) 
 - [Instrumental Variables]({{ site.baseurl }}/materials/13-iv)
+- [Standard Errors & Inference]({{ site.baseurl }}/materials/13-se)
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)

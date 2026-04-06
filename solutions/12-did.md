@@ -13,4 +13,4 @@ language: Stata
 6. [Treatment Adoption Heatmap]({{ site.baseurl }}/solutions/12-heatmap.png)
 7. [Using the `eventdd` Package]({{ site.baseurl }}/solutions/12-eventdd.png)
 8. [Check That Your Code Runs]({{ site.baseurl }}/solutions/check-that-your-code-runs.gif)
-9. Challenge 12 [1]({{ site.baseurl }}/solutions/challenge-coefplot.png), [3]({{ site.baseurl }}/solutions/challenge-mc.png), [txt]({{ site.baseurl }}/solutions/12-challenge-3.txt)
+9. Challenge 12 [1]({{ site.baseurl }}/solutions/12-challenge-1.png), [2]({{ site.baseurl }}/solutions/12-challenge-2.txt), [3]({{ site.baseurl }}/solutions/12-challenge-3.png)

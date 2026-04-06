@@ -268,22 +268,24 @@
 
 * load mc simulation data
 	use             "$data/mc_data.dta", clear
-	
+/*	
 * baseline regression
-	eststo baseline: reg yield sub omv trv durflood subfld trvfld omvfld ///
-	                        fld_12 sub_12 i.bl_fe, vce(cluster village_id)
+	reg				yield sub omv trv durflood subfld trvfld omvfld ///
+						fld_12 sub_12 i.bl_fe, vce(cluster village_id)	
 
+	eststo 			baseline
+	
 * coefplot
 	coefplot        baseline, keep(durflood subfld trvfld omvfld fld_12 sub_12) ///
 	                    xline(0) ///
 	                    title("Baseline Regression Coefficients")
-	graph export    "$answ/challenge-coefplot.png", replace
-
+	graph export    "$answ/12-challenge-1.png", replace
+*/
 **## 12.2 - Monte Carlo Simulation
 
 	capture program drop yld_reg
 
-* program to run regression with noise
+* set up program to add noise to yield
 	program 		yld_reg, rclass
 		args 			np
 		qui: sum        yield
@@ -296,52 +298,71 @@
 		replace         yield = yield + rnormal(0,`ysd')
 		replace			yield = 0 if yield < 0
         
+		sum				yield
+		return scalar 	mean = r(mean)
+	
 		reg				yield sub omv trv durflood subfld trvfld omvfld ///
 							fld_12 sub_12 i.bl_fe, vce(cluster village_id)
-	end
-	
-* run mc simulations
-	set				seed 5762
-	forvalues 		j = 0/20 {
-		local 			i = `j'/100
-		tempfile 		results`j'
-		use 			"$data/mc_data.dta", clear
-		simulate 		_b _se dfr=(e(df_r)), ///
-							saving(`results`j'') reps(100): yld_reg `i'
-	}
+end
 
-* append results
+* prepare an empty file for results
 	clear
 	tempfile 		building
 	save 			`building', emptyok
-	forvalues 		j = 0/20 {
-		use 			`results`j'', clear
-		gen 			noise = `j'/100
+
+* run mc simulations
+	set				seed 5762
+	forvalues 		j = 0/10 {
+		local 			i = `j'/100
+		
+		* load data and run simulation for current noise level
+		use 			"$data/mc_data.dta", clear
+		simulate 		_b _se dfr=(e(df_r)) mean=r(mean), ///
+							reps(5000): yld_reg `i'
+							
+		* add noise indicator and append to master results file
+		gen 			noise = `i'
 		append 			using `building'
 		save 			`"`building'"', replace
 	}
 
+* examine mc results
+	rename 			_eq2_dfr dfr
+	rename			_eq2_mean yield
+	gen             t_subfld = _b_subfld/_se_subfld
+	gen             p_subfld = 2*ttail(dfr,abs(t_subfld))
+	gen				sig = 1 if p_subfld < 0.051
+	replace			sig = 0 if sig == .
+	replace			sig = . if p_subfld == .
+	bys noise:		sum _b_subfld _se_subfld yield
+	bys noise:		tab	sig
+
+* label stuff for graph
+	replace			noise = noise * 100
+	*replace			noise = 15 if noise > 15 & noise < 15.5
+	capture label drop noise
+	forvalues i = 0/10 {
+		if `i' < 10 {
+        label define noise `i' "0.0`i'{&sigma}", add
+		}
+    else {
+        label define noise `i' "0.`i'{&sigma}", add
+		}
+	}
+
 **## 12.3 - Visualize P-Value Attenuation
 
-* calculate p-values
-	gen             t_subfld = _b_subfld / _se_subfld
-	gen             p_subfld = 2 * ttail(dfr, abs(t_subfld))
+* summarize p-values to determine when # of sig p-values ~ 5%	
+	bys noise:		tab sig
 	
-* significance indicator
-	gen             sig = 1 if p_subfld <= 0.05
-	replace         sig = 0 if sig == .
-	replace         sig = . if p_subfld == .
-
-* format noise for axis
-	replace         noise = noise * 100
-	
-* plot p-values grouped by noise level
+* generate ridge plot of p-value variation
 	set 			scheme white_tableau
-	joyplot         p_subfld, by(noise) yline bwid(0.01) norm(local) rescale ///
-	                    overlap(2) xline(0.05, lcolor(maroon)) alpha(60) ///
-	                    xlabel(0(.1)1) xtitle("p-values") palette(crest) ///
-	                    ytitle("Amount of Added Noise in Yield Measure")
-	graph export    "$answ/challenge-mc.png", replace
+	
+	joyplot			p_subfld, by(noise) yline bwid(0.01) norm(local) rescale ///
+						overlap(2) xline(0.05, lcolor(maroon)) alpha(60) ///
+						xlabel(0(.1)1) xtitle("p-values") palette(crest) ///
+						ytitle("Amount of Added Noise in Yield Measure", margin(r=4))
+	graph export    "$answ/12-challenge-3.png", replace
 
 **********************************************************************
 **# 9 - end matter
