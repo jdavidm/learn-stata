@@ -3,8 +3,8 @@ layout: page
 element: assignment
 title: Difference-in-Differences
 language: Stata
-exercises: ['Continuous Treatment DiD', 'Parallel Trends in Interventions', 'Continuous Interacted DiD', 'Event Study Regression', 'Event Plot with coefplot', 'Treatment Adoption Heatmap', 'Using the eventdd Package', 'Ridgeline Plot', 'Challenge 12']
-points: [10, 10, 10, 10, 10, 10, 10, 10, 'Challenge - 30']
+exercises: ['Continuous Treatment DiD', 'Parallel Trends in Interventions', 'Continuous Interacted DiD', 'Event Study Regression', 'Event Plot with `coefplot`', 'Treatment Adoption Heatmap', 'Using the `eventdd` Package', 'Ridgeline Plot', 'Check That Your Code Runs', 'Challenge 12']
+points: [10, 10, 10, 10, 10, 10, 10, 10, 5, 'Challenge - 25']
 ---
 
 ### Learning Objectives

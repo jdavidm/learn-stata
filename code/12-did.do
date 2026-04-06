@@ -232,10 +232,8 @@
 **# exercise 6 - Treatment Adoption Heatmap
 **********************************************************************
 
-**## 6.1
-
 * create post-adoption indicator
-	gen             post_adopt = (year >= adopt_year) & (adopt_year > 0)
+	gen             post_adopt = (year >= first_seed) & (first_seed != .)
 
 * treatment adoption heatmap
 	heatplot        post_adopt i.district_id i.year, ///
@@ -243,11 +241,11 @@
 	                    ylabel(, labsize(tiny) angle(0)) ///
 	                    xlabel(, labsize(small) angle(45)) ///
 	                    ytitle("District") xtitle("Year") ///
-	                    title("STRV Seed Adoption Timing") ///
 	                    legend(order(1 "No Seed" 2 "Seed Adopted")) ///
 	                    graphregion(color(white))
 	graph export    "$answ/12-heatmap.png", replace
 
+	
 **********************************************************************
 **# exercise 7 - Using the eventdd Package
 **********************************************************************
@@ -255,12 +253,13 @@
 **## 7.1
 
 * eventdd automates event study estimation and plotting
-	eventdd         evi_med c.bin_max_60_611 i.year, ///
-	                    timevar(rel_time) ///
-	                    method(fe, cluster(district_id)) ///
-	                    graph_op(ytitle("Effect on EVI (Yield Index)"))
+ 
+   eventdd 			evi_med c.bin_max_60_611 i.year, timevar(ry) ///
+                           method(fe, cluster(district_id)) ///
+                           graph_op(ytitle("Effect on EVI (Yield Index)"))
 	graph export    "$answ/12-eventdd.png", replace
 
+	fdsf
 **********************************************************************
 **# exercise 8 - Ridgeline Plot
 **********************************************************************
@@ -268,18 +267,17 @@
 **## 8.1
 
 * ridgeline plot of yield distributions by event time
-	joyplot         evi_med if inrange(rel_time, -3, 5) ///
-	                    & adopt_year > 0, ///
-	                    by(rel_time) droplow ///
-	                    palette(HCL heat, reverse) ///
-	                    alpha(80) overlap(8) bwidth(0.3) ///
-	                    lcolor(white) lwidth(0.2) ///
-	                    ytitle("Relative Time", size(medsmall)) ///
-	                    xtitle("EVI (Yield Index)", size(medsmall)) ///
-	                    title("Yield Distribution by Event Time", ///
-	                        size(medium)) ///
-	                    graphregion(color(white)) ///
-	                    plotregion(margin(zero))
+   joyplot     evi_med if inrange(ry, -3, 5) ///
+                   & first_seed != ., ///
+                   by(ry) droplow ///
+                   palette(CET C1) ///
+                   lcolor(white) lwidth(0.2) ///
+                   ytitle("Relative Time") ///
+                   xtitle("EVI (Yield Index)") ///
+                   title("Yield Distribution by Event Time")
+				   
+				   
+				   fdsfs
 	graph export    "$answ/12-joyplot.png", replace
 
 **********************************************************************

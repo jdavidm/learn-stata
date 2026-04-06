@@ -67,7 +67,7 @@ if $pack == 1 {
 					carryforward missings xtivreg2 fre coefplot colrspace
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
 					eventstudyinteract avar grc1leg2 reghdfe require
-					bacondecomp csdid eventdd xtevent matsort" ;
+					bacondecomp csdid eventdd xtevent matsort erepost" ;
     #delimit cr
 	
 	* install packages that are on ssc	
@@ -117,3 +117,4 @@ if $pack == 1 {
 *	do				"$code/09-regress.do"
 *	do				"$code/10-results.do"
 *	do				"$code/11-FE.do"
+*	do				"$code/12-did.do"

@@ -15,7 +15,7 @@ This lecture covers:
 - Specification charts: showing how your key result holds across many specifications
 - Exporting graphs for LaTeX
 
-If you don’t have the `coefplot` package already installed, add it to the list of packages in your `project.do` file, change `$pack = 1` and run `project.do`. Then change `$pack = 0`.
+If you don’t have Ben Jann's [`coefplot`](https://repec.sowi.unibe.ch/stata/coefplot/) package already installed, add it to the list of packages in your `project.do` file, change `$pack = 1` and run `project.do`. Then change `$pack = 0`.
 
 We'll use the maize-only `eth_allrounds_final` data for all lecture examples. You should already have the following variables from previous exercises but if you don't, create them now.
 

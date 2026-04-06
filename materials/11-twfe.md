@@ -105,7 +105,7 @@ The dotted horizontal line shows the overall TWFE estimate (around 3.9). The TWF
 
 ### Modern Solutions (e.g., `csdid`)
 
-To fix this, econometricians have developed new estimators ([Callaway & Sant'Anna, 2021](https://doi.org/10.1016/j.jeconom.2020.12.001); [Sun & Abraham, 2021](https://doi.org/10.1016/j.jeconom.2020.09.006); Borusyak et al., 2021). These "modern TWFE" estimators explicitly avoid using already-treated units as controls. Instead, they only compare newly-treated units to "not-yet-treated" or "never-treated" units.
+To fix this, econometricians have developed new estimators ([Callaway & Sant'Anna, 2021](https://doi.org/10.1016/j.jeconom.2020.12.001); [Sun & Abraham, 2021](https://doi.org/10.1016/j.jeconom.2020.09.006); [Borusyak et al., 2024](https://doi.org/10.1093/restud/rdae007)). These "modern TWFE" estimators explicitly avoid using already-treated units as controls. Instead, they only compare newly-treated units to "not-yet-treated" or "never-treated" units.
 
 One of the most popular packages is `csdid` ([Callaway & Sant'Anna](https://doi.org/10.1016/j.jeconom.2020.12.001)). Unlike `bacondecomp`, `csdid` is not on the `ssc` repository. Rather, we need to install it from the creator's github repo. In the package loop that is already in your `project.do`, you should have the following line:
 

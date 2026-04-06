@@ -58,13 +58,19 @@ In a staggered rollout, different states pass the castle doctrine in different y
 
 * generate lead dummies (pre-treatment)
 	forvalues       k = 9(-1)2 {
-	    gen         g_`k' = ry == -`k'
+	    gen              g_`k' = ry == -`k'
 	}
+	
+* define global macro for leads
+	global      leads g_9 g_8 g_7 g_6 g_5 g_4 g_3 g_2
 
 * generate lag dummies (post-treatment, bin at +5)
 	forvalues       k = 0/5 {
-	    gen         g`k' = ry == `k'
+	    gen              g`k' = ry == `k'
 	}
+	
+* define global macro for lags
+	global      lags g0 g1 g2 g3 g4 g5
 ```
 
 `ry = 0` is the year the law passed. `ry < 0` are the "leads" (pre-treatment periods). `ry > 0` are the "lags" (post-treatment periods). Never-treated states have missing `ry = .` — their lead and lag dummies are all zero, so they serve as controls.
@@ -79,20 +85,20 @@ The pre-treatment coefficients ($\delta_{-k}$) test for parallel trends: if they
 
 ```stata
 * event study regression — g_1 is omitted as the reference category
-	xi: xtreg       l_homicide g_* g0-g5 i.year ///
-	                    $region $xvar $lintrend ///
-	                    [aweight=popwt], fe vce(cluster sid)
+	xtreg       l_homicide $leads $lags i.year ///
+	                $region $xvar $lintrend ///
+	                [aweight=popwt], fe vce(cluster sid)
 ```
 
 Look at the output: leads 2 through 9 should be close to zero and statistically insignificant — evidence consistent with parallel trends. The lags should be positive, showing that homicides increased *after* states passed castle doctrine laws.
 
-The standard TWFE event study above can produce biased estimates under staggered adoption — the same concern we discussed with the Bacon decomposition and Callaway & Sant'Anna in the two-way fixed effects lecture. The `eventstudyinteract` package (Sun and Abraham, 2021) provides an interaction-weighted estimator that corrects for this bias.
+The standard TWFE event study above can produce biased estimates under staggered adoption — the same concern we discussed with the [Bacon decomposition](https://doi.org/10.1016/j.jeconom.2021.03.014) and [Callaway & Sant'Anna](https://doi.org/10.1016/j.jeconom.2020.12.001) in the two-way fixed effects lecture. The `eventstudyinteract` package ([Sun and Abraham, 2021](https://doi.org/10.1016/j.jeconom.2020.09.006)) provides an interaction-weighted estimator that corrects for this bias.
 
 Add `eventstudyinteract` and `avar` to the package loop in your `project.do` file. Change `$pack` to 1, re-run, then change back to 0.
 
 ```stata
 * robust event study using interaction-weighted estimator
-	eventstudyinteract  l_homicide g_* g0-g5, ///
+	eventstudyinteract  l_homicide $leads $lags, ///
 	                        cohort(effyear) control_cohort(last_treat) ///
 	                        absorb(i.sid i.year) ///
 	                        vce(cluster sid)
@@ -104,13 +110,14 @@ The key options: `cohort()` specifies the treatment timing variable, `control_co
 
 ### Visualizing with `coefplot`
 
-Event study tables are massive and hard to interpret at a glance. The standard practice is to plot the coefficients with confidence intervals. The `coefplot` command (by Ben Jann) makes this straightforward:
+Event study tables are massive and hard to interpret at a glance. The standard practice is to plot the coefficients with confidence intervals. The `coefplot` command (by [Ben Jann](https://repec.sowi.unibe.ch/stata/coefplot/)) makes this straightforward:
 
 ```stata
 * re-runevent study regression — g_1 is omitted as the reference category
-	xi: xtreg       l_homicide g_* g0-g5 i.year ///
-	                    $region $xvar $lintrend ///
-	                    [aweight=popwt], fe vce(cluster sid)
+	xtreg       l_homicide $leads $lags i.year ///
+	                $region ///
+	                [aweight=popwt], fe vce(cluster sid)
+
 * event study plot
 	coefplot,       keep($leads $lags) vertical ///
 	                    yline(0, lcolor(black) lpattern(dash)) ///
@@ -124,12 +131,19 @@ Event study tables are massive and hard to interpret at a glance. The standard p
 	                    graphregion(color(white))
 ```
 
+You'll notice several new `coefplot` options in this command:
+- `vertical`: Swaps the axes so that the coefficients are on the y-axis and the time periods are on the x-axis.
+- `recast(connected)`: Changes the markers from isolated points to points connected by a line, creating the classic event study shape.
+- `ciopts(recast(rcap))`: Changes the confidence intervals from horizontal lines to vertical capped spikes (`rcap`), aligning them with our vertical layout.
+- `mfcolor(white)`: Fills the center of the markers with white so they appear hollow.
+- `yline(0)`: We use `yline` instead of `xline` here to draw a reference line at zero, since `vertical` flipped our axes.
+
 Reading the plot:
 - **Left of the vertical dashed line**: these are the *pre-treatment* leads. If the points hover around zero, there's no evidence of differential pre-trends.
 - **Right of the line**: these are the *post-treatment* lags. Positive coefficients indicate castle doctrine raised homicides.
 - **The horizontal dashed line** at $y = 0$ is the reference: no effect.
 
-This kind of figure has become the "heart and soul" of modern DiD papers. It simultaneously demonstrates the plausibility of parallel trends and the dynamic causal effect.
+This kind of figure has become the core of modern DiD papers. It simultaneously demonstrates the plausibility of parallel trends and the dynamic causal effect.
 
 > Do [Exercise 5 - Event Plot]({{ site.baseurl }}/exercises/12-event-plot/)
 
@@ -155,36 +169,6 @@ Each row is a state and each column is a year. White cells mean no law; maroon c
 
 > Do [Exercise 6 - Treatment Adoption Heatmap]({{ site.baseurl }}/exercises/12-event-heatmap/)
 
-### The Bacon Decomposition: What's Inside the TWFE Estimate?
-
-We introduced Goodman-Bacon's (2021) decomposition in the TWFE lecture and applied `bacondecomp` to simulated data. Now let's revisit it with the Castle Doctrine — a real-world example of staggered adoption.
-
-Recall the three types of 2×2 comparisons hiding inside TWFE:
-
-1. **Treated vs. Never-Treated** — the "clean" comparison.
-2. **Early-Treated vs. Not-Yet-Treated** — also clean.
-3. **Later-Treated vs. Already-Treated** — *Problematic*: the "control" group is already treated!
-
-Let's decompose the Castle Doctrine TWFE estimate:
-
-```stata
-* simple twfe for decomposition (no extra covariates)
-	areg            l_homicide post i.year, absorb(sid) robust
-
-* bacon decomposition
-	bacondecomp     l_homicide post, ddetail
-```
-
-`bacondecomp` produces a scatter plot where:
-- Each point is one $2 \times 2$ sub-estimate
-- The x-axis shows the **weight** that sub-estimate receives in the final TWFE coefficient
-- The y-axis shows the **point estimate** from that $2 \times 2$
-- Points are colored/shaped by type (Treated vs. Never Treated, Earlier vs. Later Treated, etc.)
-
-The dashed horizontal line is the overall TWFE estimate — the weighted average of all these points. Unlike our simulation where the bias was dramatic, the Castle Doctrine case is reassuring: the "clean" comparisons and the full TWFE estimate point in the same direction, suggesting the staggered-adoption bias is modest here.
-
-**Why this matters:** When the Bacon decomposition shows that problematic comparisons have large weights *and* pull the estimate in a different direction, you should turn to modern robust estimators like `csdid` (which we covered last lecture). The event study plot and the Bacon decomposition together form your diagnostic toolkit.
-
 ### Dedicated Packages
 
 Manually creating lead and lag dummies, binning endpoints, and relabeling axes is tedious. Dedicated event study packages handle all of this automatically. Two popular options:
@@ -196,27 +180,27 @@ To install these, add `eventdd` and `boottest` to the package loop in your `proj
 
 ```stata
 * eventdd automates the entire process
-	eventdd         l_homicide i.year, timevar(rel_time) ///
+	eventdd         l_homicide i.year, timevar(ry) ///
 	                    method(fe, cluster(sid)) ///
 	                    graph_op(ytitle("Effect on Homicide"))
 ```
 
-These packages not only automate the dummy creation and plotting, but also handle endpoint binning and allow for alternative estimation methods that address the TWFE bias we discovered with the Bacon decomposition.
+These packages not only automate the dummy creation and plotting, but also handle endpoint binning and allow for alternative estimation methods that address the TWFE bias if it exists.
 
 > Do [Exercise 7 - Using the eventdd Package]({{ site.baseurl }}/exercises/12-event-package/)
 
 ### Distributional Diagnostics with `joyplot`
 
-The event study plot shows us how the *mean* effect evolves over relative time, but it hides what's happening to the full distribution. A **ridgeline plot** (also called a joy plot) stacks density curves for each time period, letting us see whether the *entire distribution* of homicide rates shifts — not just the average.
+The event study plot shows us how the *mean* effect evolves over relative time, but it hides what's happening to the full distribution. A **ridgeline plot** (also called a joy plot after the [Joy Division album cover](https://dbzbooks.com/products/joy-division-unknown-pleasure-album-cover-poster-size-24x36-individually-rolled-labeled)) stacks density curves for each time period, letting us see whether the *entire distribution* of homicide rates shifts — not just the average.
 
 Add `joyplot` to the package loop in your `project.do` file (it shares the `palettes` and `colrspace` dependencies you already installed for `heatplot`). Change `$pack` to 1, re-run, then change back to 0.
 
-The `palette()` option controls the color scheme applied across the ridges. It draws from Ben Jann's `palettes` package, which provides access to hundreds of named color palettes — scientific schemes like `viridis` and `magma`, perceptual palettes like `CET C1`, and many more. Browse the full catalog at the [palettes getting started guide](https://repec.sowi.unibe.ch/stata/palettes/getting-started.html).
+The `palette()` option controls the color scheme applied across the ridges. It draws from Ben Jann's `palettes` package, which provides access to hundreds of named color palettes — scientific schemes like `viridis` and `magma`, perceptual palettes like `CET C1`, and many more. Browse the full catalog at the [palettes getting started guide](https://repec.sowi.unibe.ch/stata/palettes/index.html).
 
 ```stata
 * ridgeline plot of homicide rates by relative time
-	joyplot         l_homicide if inrange(rel_time, -5, 5), ///
-	                    by(rel_time) droplow ///
+	joyplot         l_homicide if inrange(ry, -5, 5), ///
+	                    by(ry) droplow ///
 	                    palette(HCL heat, reverse) ///
 	                    alpha(80) overlap(8) bwidth(0.3) ///
 	                    lcolor(white) lwidth(0.2) ///
@@ -229,8 +213,16 @@ The `palette()` option controls the color scheme applied across the ridges. It d
 	                    plotregion(margin(zero))
 ```
 
+There are a few critical options driving the structure and aesthetics of this ridgeline plot:
+- `if inrange(ry, -5, 5)`: Restricts the plot to a window of 5 periods before and after treatment. If you plot periods with very few observations, their densities will look erratic and distort the figure.
+- `by(ry)`: The most important option! This tells `joyplot` to draw a separate density ridge for each category of relative time.
+- `droplow`: Trims the left and right "tails" of each individual curve where the density is essentially zero, giving the ridges clean edges rather than tapering off infinitely.
+- `alpha(80)`: Sets the opacity of the ridge fill colors to 80%, allowing underlying ridges and grid lines to subtly show through.
+- `overlap(8)`: Controls how densely the ridges are packed. Higher numbers cause the ridges to overlap each other more forcefully.
+- `bwidth(0.3)`: Specifies the bandwidth for the kernel density estimation. A custom bandwidth prevents Stata from overly smoothing the curves, revealing more granular shifts in the data.
+
 Reading the ridgeline plot:
-- Each ridge is the density of `l_homicide` for one value of `rel_time`
+- Each ridge is the density of `l_homicide` for one value of `ry`
 - Pre-treatment ridges (negative values) should look similar to each other — another way to assess parallel trends
 - Post-treatment ridges should shift rightward if the Castle Doctrine increased homicides across the board, not just on average
 - If only the right tail shifts, the effect may be driven by a few high-crime states rather than a broad increase
