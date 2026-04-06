@@ -5,7 +5,7 @@ title: Event Study Regression
 language: Stata
 ---
 
-In this exercise, you'll build an event study from scratch using `panel_gis.dta`. The goal is to trace out the dynamic effect of STRV seed adoption on crop yields over time, using the interaction-weighted estimator from Sun and Abraham (2021).
+In this exercise, you'll build an event study from scratch using `panel_gis.dta`. The goal is to trace out the dynamic effect of STRV seed adoption on crop yields over time, using the interaction-weighted estimator from [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006).
 
 - Generate a cohort variable that records the first year each district received STRV seed. Create a temporary variable equal to `year` when `seed > 0`, then use `bysort` and `egen min()` to create `first_seed` that pushes the earliest adoption year to all observations within each district. Drop the temporary variable.
 - Create a relative time variable `ry` equal to `year` minus the cohort variable. Bin any values greater than 10 to 10 by making `ry = 10` when `ry > 10` and also not missing (remember, Stata treats `.` as infinitely large).

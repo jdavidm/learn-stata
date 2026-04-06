@@ -41,7 +41,7 @@ Install `reghdfe` by adding it to the package loop in your `project.do` file. Th
 
 ### The Staggered Treatment Problem
 
-In recent years, econometricians (such as Goodman-Bacon, 2021) discovered a major flaw in the standard TWFE estimator when evaluating treatments that are adopted at *different times* (staggered adoption) and where the treatment effect *changes over time* (dynamic effects).
+In recent years, econometricians (such as [Goodman-Bacon, 2021](https://doi.org/10.1016/j.jeconom.2021.03.014)) discovered a major flaw in the standard TWFE estimator when evaluating treatments that are adopted at *different times* (staggered adoption) and where the treatment effect *changes over time* (dynamic effects).
 
 Let's illustrate this with simulated data. First, we'll simulate a clean setup where everyone who gets treated gets it at the exact same time (non-staggered):
 
@@ -86,7 +86,7 @@ In our simulation, the true treatment effect is 9.8 but if you run the naive TWF
 
 ### Decomposing the Bias
 
-Goodman-Bacon (2021) proved that TWFE is a weighted average of comparisons. We can use a user-written Stata package `bacondecomp` to see exactly how much weight is being placed on bad comparisons (Later vs. Earlier Treated).
+[Goodman-Bacon (2021)](https://doi.org/10.1016/j.jeconom.2021.03.014) proved that TWFE is a weighted average of comparisons. We can use a user-written Stata package `bacondecomp` to see exactly how much weight is being placed on bad comparisons (Later vs. Earlier Treated).
 
 Install the `bacondecomp` package by adding it to our list of packages in `project.do`. Then switch the value of `pack` to 1 and re-run the `project.do` file. Finally, switch the value of `pack` back to zero and save the `project.do` file.
 
@@ -105,9 +105,9 @@ The dotted horizontal line shows the overall TWFE estimate (around 3.9). The TWF
 
 ### Modern Solutions (e.g., `csdid`)
 
-To fix this, econometricians have developed new estimators (Callaway & Sant'Anna, 2021; Sun & Abraham, 2021; Borusyak et al., 2021). These "modern TWFE" estimators explicitly avoid using already-treated units as controls. Instead, they only compare newly-treated units to "not-yet-treated" or "never-treated" units.
+To fix this, econometricians have developed new estimators ([Callaway & Sant'Anna, 2021](https://doi.org/10.1016/j.jeconom.2020.12.001); [Sun & Abraham, 2021](https://doi.org/10.1016/j.jeconom.2020.09.006); Borusyak et al., 2021). These "modern TWFE" estimators explicitly avoid using already-treated units as controls. Instead, they only compare newly-treated units to "not-yet-treated" or "never-treated" units.
 
-One of the most popular packages is `csdid` (Callaway & Sant'Anna). Unlike `bacondecomp`, `csdid` is not on the `ssc` repository. Rather, we need to install it from the creator's github repo. In the package loop that is already in your `project.do`, you should have the following line:
+One of the most popular packages is `csdid` ([Callaway & Sant'Anna](https://doi.org/10.1016/j.jeconom.2020.12.001)). Unlike `bacondecomp`, `csdid` is not on the `ssc` repository. Rather, we need to install it from the creator's github repo. In the package loop that is already in your `project.do`, you should have the following line:
 
 ```stata
 	* install -xfill and dm89_1 - packages

@@ -67,9 +67,9 @@ In a staggered rollout, different states pass the castle doctrine in different y
 	}
 ```
 
-`ry` $= 0$ is the year the law passed. `ry` $< 0$ are the "leads" (pre-treatment periods). `ry` $> 0$ are the "lags" (post-treatment periods). Never-treated states have missing `ry` — their lead and lag dummies are all zero, so they serve as controls.
+`ry = 0` is the year the law passed. `ry < 0` are the "leads" (pre-treatment periods). `ry > 0` are the "lags" (post-treatment periods). Never-treated states have missing `ry = .` — their lead and lag dummies are all zero, so they serve as controls.
 
-The `forvalues` loops create a dummy for each period relative to treatment. For example, `g_3` equals 1 when a state is 3 years *before* its law passed, and `g2` equals 1 when a state is 2 years *after*. We use the naming convention `g_k` for leads (with an underscore) and `gk` for lags.
+The `forvalues` loops create a dummy for each period relative to treatment. For example, `g_3 = 1` when a state is 3 years *before* its law passed, and `g2 = 1` when a state is 2 years *after*. We use the naming convention `g_k` for leads (with an underscore) and `gk` for lags.
 
 The event study regression replaces the single `post` dummy with this full set of period-specific dummies. We omit `g_1` (one year before treatment) as the reference category:
 
