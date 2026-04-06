@@ -2,7 +2,7 @@
 * assignment: 12
 * created on: 31 mar 26
 * created by: jdm
-* edited on: 5 apr 26
+* edited on: 6 apr 26
 * edited by: jdm
 * stata v.18.0
 
@@ -259,6 +259,7 @@
                            graph_op(ytitle("Effect on EVI (Yield Index)"))
 	graph export    "$answ/12-eventdd.png", replace
 
+	
 **********************************************************************
 **# challenge 12
 **********************************************************************
@@ -280,27 +281,20 @@
 
 **## 12.2 - Monte Carlo Simulation
 
-	capture program drop fld_reg
+	capture program drop yld_reg
 
 * program to run regression with noise
-	program 		fld_reg, rclass
+	program 		yld_reg, rclass
 		args 			np
-		qui: sum        durflood
-		local           f_mean = r(mean)
-		local           f_std = r(sd)
+		qui: sum        yield
+		local           y_mean = r(mean)
+		local           y_std = r(sd)
     
-		local    		fmn = `f_mean'*`np'
-		local    		fsd = `f_std'*`np'
+		local    		ymn = `y_mean'*`np'
+		local    		ysd = `y_std'*`np'
 
-		replace         durflood = durflood + rnormal(0,`fsd')
-		replace			durflood = 0 if durflood < 0
-		
-		replace			subfld = sub*durflood
-		replace			trvfld = trv*durflood
-		replace			omvfld = omv*durflood
-		replace			fld_12 = durflood - 12
-		replace			fld_12 = 0 if fld_12 < 1
-		replace			sub_12 = sub*fld_12
+		replace         yield = yield + rnormal(0,`ysd')
+		replace			yield = 0 if yield < 0
         
 		reg				yield sub omv trv durflood subfld trvfld omvfld ///
 							fld_12 sub_12 i.bl_fe, vce(cluster village_id)
@@ -313,7 +307,7 @@
 		tempfile 		results`j'
 		use 			"$data/mc_data.dta", clear
 		simulate 		_b _se dfr=(e(df_r)), ///
-							saving(`results`j'') reps(100): fld_reg `i'
+							saving(`results`j'') reps(100): yld_reg `i'
 	}
 
 * append results
@@ -346,7 +340,7 @@
 	joyplot         p_subfld, by(noise) yline bwid(0.01) norm(local) rescale ///
 	                    overlap(2) xline(0.05, lcolor(maroon)) alpha(60) ///
 	                    xlabel(0(.1)1) xtitle("p-values") palette(crest) ///
-	                    ytitle("Amount of Added Noise in Flood Measure")
+	                    ytitle("Amount of Added Noise in Yield Measure")
 	graph export    "$answ/challenge-mc.png", replace
 
 **********************************************************************
