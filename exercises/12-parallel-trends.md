@@ -16,3 +16,5 @@ The credibility of a DiD design depends on parallel trends. Even with a continuo
 
 1. Save the figure and input it into your Overleaf document.
 2. Visually inspect the pre-adoption period. Do the two groups appear to have parallel trends? State your finding in comments.
+
+---

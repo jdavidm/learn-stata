@@ -14,3 +14,5 @@ Bootstrapping pulls randomly from our dataset 1,000 times (with replacement), re
    reg lexp gnppc, vce(bootstrap, reps(1000) seed(123))
    ```
 2. How do the standard errors compare to the computationally derived HC2 model from the previous exercise? Are the bootstrapped standard errors tighter or wider?
+
+---

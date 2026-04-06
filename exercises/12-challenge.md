@@ -39,3 +39,5 @@ Now, we will test how robust the `subfld` coefficient is if we assume the contin
 - Format the plot nicely (using the `white_tableau` scheme or similar) and export your ridgeline plot as `"$answ/challenge-mc.png"`.
 
 1. Looking at your final ridgeline plot, as the amount of added noise to the flood measure increases, what happens to the distribution of p-values? At approximately what percentage of added noise do we entirely lose statistical significance at the 5% level?
+
+---

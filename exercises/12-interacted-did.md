@@ -13,3 +13,5 @@ The true value of Swarna-Sub1 (the STRV seed) is measured when districts flood. 
 
 1. Adapt the table code from Exercise 1 to add one more column (for `did3`) and place the table into Overleaf:
 2. In the relevant section/subsection of your Overleaf file, evaluate the coefficient of the interaction term `c.seed#c.bin_max_60_611`. What does a positive or negative sign tell us about how the seed mediates the impact of floods on yield?
+
+---

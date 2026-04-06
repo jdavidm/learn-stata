@@ -12,3 +12,5 @@ Using `mm.dta`, we want to evaluate the effect of improved chickpea adoption (`i
 - For parcels that *never* adopted improved chickpeas (`missing(first_icp)`), replace `first_icp` = 0.
 
 You now have the exact cohort group variable needed for modern TWFE estimators. Run a TWFE regression using either `xtreg` with time dummies (`i.tindex`) or `reghdfe` and use `eststo` to save the result. What is the coefficient on improved chickpea adoption?
+
+---

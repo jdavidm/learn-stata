@@ -259,26 +259,95 @@
                            graph_op(ytitle("Effect on EVI (Yield Index)"))
 	graph export    "$answ/12-eventdd.png", replace
 
-	fdsf
 **********************************************************************
-**# exercise 8 - Ridgeline Plot
+**# challenge 12
 **********************************************************************
 
-**## 8.1
+**## 12.1 - Baseline Regression and Coefplot
 
-* ridgeline plot of yield distributions by event time
-   joyplot     evi_med if inrange(ry, -3, 5) ///
-                   & first_seed != ., ///
-                   by(ry) droplow ///
-                   palette(CET C1) ///
-                   lcolor(white) lwidth(0.2) ///
-                   ytitle("Relative Time") ///
-                   xtitle("EVI (Yield Index)") ///
-                   title("Yield Distribution by Event Time")
-				   
-				   
-				   fdsfs
-	graph export    "$answ/12-joyplot.png", replace
+* load mc simulation data
+	use             "$data/mc_data.dta", clear
+	
+* baseline regression
+	eststo baseline: reg yield sub omv trv durflood subfld trvfld omvfld ///
+	                        fld_12 sub_12 i.bl_fe, vce(cluster village_id)
+
+* coefplot
+	coefplot        baseline, keep(durflood subfld trvfld omvfld fld_12 sub_12) ///
+	                    xline(0) ///
+	                    title("Baseline Regression Coefficients")
+	graph export    "$answ/challenge-coefplot.png", replace
+
+**## 12.2 - Monte Carlo Simulation
+
+	capture program drop fld_reg
+
+* program to run regression with noise
+	program 		fld_reg, rclass
+		args 			np
+		qui: sum        durflood
+		local           f_mean = r(mean)
+		local           f_std = r(sd)
+    
+		local    		fmn = `f_mean'*`np'
+		local    		fsd = `f_std'*`np'
+
+		replace         durflood = durflood + rnormal(0,`fsd')
+		replace			durflood = 0 if durflood < 0
+		
+		replace			subfld = sub*durflood
+		replace			trvfld = trv*durflood
+		replace			omvfld = omv*durflood
+		replace			fld_12 = durflood - 12
+		replace			fld_12 = 0 if fld_12 < 1
+		replace			sub_12 = sub*fld_12
+        
+		reg				yield sub omv trv durflood subfld trvfld omvfld ///
+							fld_12 sub_12 i.bl_fe, vce(cluster village_id)
+	end
+	
+* run mc simulations
+	set				seed 5762
+	forvalues 		j = 0/20 {
+		local 			i = `j'/100
+		tempfile 		results`j'
+		use 			"$data/mc_data.dta", clear
+		simulate 		_b _se dfr=(e(df_r)), ///
+							saving(`results`j'') reps(100): fld_reg `i'
+	}
+
+* append results
+	clear
+	tempfile 		building
+	save 			`building', emptyok
+	forvalues 		j = 0/20 {
+		use 			`results`j'', clear
+		gen 			noise = `j'/100
+		append 			using `building'
+		save 			`"`building'"', replace
+	}
+
+**## 12.3 - Visualize P-Value Attenuation
+
+* calculate p-values
+	gen             t_subfld = _b_subfld / _se_subfld
+	gen             p_subfld = 2 * ttail(dfr, abs(t_subfld))
+	
+* significance indicator
+	gen             sig = 1 if p_subfld <= 0.05
+	replace         sig = 0 if sig == .
+	replace         sig = . if p_subfld == .
+
+* format noise for axis
+	replace         noise = noise * 100
+	
+* plot p-values grouped by noise level
+	set 			scheme white_tableau
+	joyplot         p_subfld, by(noise) yline bwid(0.01) norm(local) rescale ///
+	                    overlap(2) xline(0.05, lcolor(maroon)) alpha(60) ///
+	                    xlabel(0(.1)1) xtitle("p-values") palette(crest) ///
+	                    ytitle("Amount of Added Noise in Flood Measure")
+	graph export    "$answ/challenge-mc.png", replace
 
 **********************************************************************
 **# 9 - end matter

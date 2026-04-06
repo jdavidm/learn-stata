@@ -38,3 +38,5 @@ In the data, the treatment metric `seed` is uniquely continuous—it captures th
                       "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
                       "\end{tabular}")
 ```
+
+---

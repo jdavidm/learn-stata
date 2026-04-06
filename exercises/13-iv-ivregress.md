@@ -15,3 +15,5 @@ Instead, we use Stata's built-in `ivregress` command, which automatically handle
    ```
 2. Is the coefficient on `educ` identical to the one you found manually using the two-step prediction method?
 3. Are the standard errors the same as your manual two-step process? *(They shouldn't be! Notice how Stata corrects them).*
+
+---

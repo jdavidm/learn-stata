@@ -21,3 +21,5 @@ Our dataset only has 3 regions! This means `vce(cluster)` will severely miscalcu
    boottest gnppc
    ```
 4. Does having only 3 clusters inflate our standard significance initially, or does wild bootstrapping confirm we are highly significant?
+
+---

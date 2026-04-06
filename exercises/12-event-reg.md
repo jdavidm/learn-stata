@@ -52,3 +52,5 @@ Export both stored results to a single LaTeX table using the code block below. A
 ```
 
 2\. Looking at the two columns, do you see evidence of bias in the TWFE pre-trend coefficients (the negative lags) compared to the interaction-weighted estimator?
+
+---

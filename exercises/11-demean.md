@@ -13,3 +13,5 @@ Using `mm.dta`:
 
 1. Use `eststo` to save the demeaned results. Then adapt the table structure from the previous exercise to create a table of results with a third column headed `Demean`.
 2. What is the coefficient on fertilizer cost in the demeaned regression and how does it compare to the coefficients you calculated in Exercises 1?
+
+---

@@ -32,3 +32,5 @@ In this exercise, you'll graph the results of the event study you estimated in t
 - Export the plot and import it into your Overleaf file.
 
 3\. Do the pre-treatment coefficients hover near zero, consistent with parallel trends? After adoption, does the effect of STRV seed on `evi_med` appear to grow over time, or is it immediate and constant?
+
+---

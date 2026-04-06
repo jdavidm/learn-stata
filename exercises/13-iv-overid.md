@@ -16,3 +16,5 @@ This is highly desirable because it allows us to formally test whether our instr
 2. Run the command `estat overid`. 
 3. This runs a Sargan test to check if your instruments are uncorrelated with the error term. If the $p$-value is $>0.05$, we fail to reject the null that our instruments are valid. 
 4. Based on the output, did our instruments pass the exogeneity test?
+
+---

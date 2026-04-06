@@ -16,3 +16,5 @@ To solve this we will use instruments: mother's education (`motheduc`) and fathe
 5. Run the naive OLS regression (`reg lwage educ exper expersq`) to compare. 
 
 Did the returns to education coefficient go up or down compared to the naive OLS?
+
+---

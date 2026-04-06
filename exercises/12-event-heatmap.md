@@ -19,3 +19,5 @@ In lecture we visualized the Castle Doctrine's staggered rollout with a heatmap.
                    graphregion(color(white))
    ```
 - Export the heatmap as a `.png` and input it into your Overleaf document.
+
+---

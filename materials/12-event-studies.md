@@ -226,6 +226,3 @@ Reading the ridgeline plot:
 - Pre-treatment ridges (negative values) should look similar to each other — another way to assess parallel trends
 - Post-treatment ridges should shift rightward if the Castle Doctrine increased homicides across the board, not just on average
 - If only the right tail shifts, the effect may be driven by a few high-crime states rather than a broad increase
-
-> Do [Exercise 8 - Ridgeline Plot]({{ site.baseurl }}/exercises/12-event-joyplot/)
-

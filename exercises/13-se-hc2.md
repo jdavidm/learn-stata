@@ -17,3 +17,5 @@ The `lifeexp.dta` dataset contains life expectancy and GNP per capita for variou
    reg lexp gnppc, vce(hc2)
    ```
 4. Compare the standard error for `gnppc` under HC1 vs HC2. Does adjusting for leverage increase or decrease our confidence (standard error) in the estimate?
+
+---
