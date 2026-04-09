@@ -18,7 +18,7 @@ Before trusting any IV estimate, we must test whether our instrument is actually
 
 - Examine the diagnostic statistics reported at the bottom of the `ivreg2` output. These include the **Kleibergen-Paap F-statistic** (testing instrument relevance) and the **endogeneity test** (testing whether IV is necessary).
 
-1\. What is the Kleibergen-Paap F-statistic? Does `wardNGO` pass the standard rule-of-thumb threshold of $F > 10$ for instrument strength? *(Note: `ivreg2` reports this automatically, unlike `ivregress` which requires a separate `estat firststage` command.)*
+1\. What is the Kleibergen-Paap F-statistic? Does `wardNGO` pass the standard rule-of-thumb threshold of $F > 10$ for instrument strength? *(Note: `ivreg2` reports this automatically, unlike `ivreg` which requires a separate `estat firststage` command.)*
 2\. Based on the endogeneity test, is `CA` statistically endogenous? Is IV justified for this application?
 3\. We have exactly one instrument (`wardNGO`) for one endogenous variable (`CA`). This means we are *exactly identified*. Does `ivreg2` report a Hansen J-statistic? Why or why not? *(Hint: the overidentification test requires at least one more instrument than endogenous variables.)*
 
