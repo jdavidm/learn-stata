@@ -1,31 +1,31 @@
 ---
 layout: exercise
 topic: Standard Errors & Inference
-title: Failing with Few Clusters
+title: Wild Cluster Bootstrap
 language: Stata
 ---
 
-What if our data is clustered? For example, countries might be clustered within `region`. As we learned previously, we can use `vce(cluster region)`. However, clustered standard errors rely on asymptotic theory—they require a *large number of clusters* (typically $>40$) to be accurate. 
+Clustered standard errors rely on asymptotic theory and require a large number of independent clusters (typically 40+) to be reliable. In this exercise you will test what happens when you cluster at a level with relatively few clusters, and then correct using the Wild Cluster Bootstrap.
 
-Our dataset only has 3 regions! This means `vce(cluster)` will severely miscalculate the standard error. The solution is the **Wild Cluster Bootstrap**, a computationally intensive method deployed using David Roodman's `boottest` package.
-
-*(Note: You may need to run `ssc install boottest` first).*
-
-- Run the standard clustered regression:
+- Using `Michler_JEEM.dta` (maize only), run the panel IV regression clustering at the **ward** level (`ward_id`) instead of the household level:
 
 ```stata
-* clustered regression
-	reg             lexp gnppc, vce(cluster region)
+* panel iv clustered at ward level
+	xtivreg2        lnyield lnbasal lntop lnseed lnaream2 pdate pdate2 ///
+	                    i.year (CA = wardNGO), fe cluster(ward_id)
 ```
 
-- Note the p-value on `gnppc`. Is it surprisingly small?
-- Now run the wild cluster bootstrap via post-estimation on that variable:
+- Note the p-value on `CA` from this regression.
+- Now apply the Wild Cluster Bootstrap via post-estimation to get a more reliable p-value:
 
 ```stata
-* wild cluster bootstrap
-	boottest        gnppc
+* wild cluster bootstrap for CA coefficient
+	boottest        CA
 ```
 
-1. Does having only 3 clusters inflate our standard significance initially, or does wild bootstrapping confirm we are highly significant?
+*(Note: You may need to run `ssc install boottest` first.)*
+
+1\. How many unique wards are there in the maize sample? Is this above or below the commonly cited minimum of 40 clusters?
+2\. Compare the analytical cluster-robust p-value (from `xtivreg2`) with the wild cluster bootstrap p-value (from `boottest`). Does the bootstrap make you more or less confident in the significance of the CA effect?
 
 ---

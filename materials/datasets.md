@@ -21,5 +21,6 @@ title: List of datasets
 | Life expectancy (no Swaziland) | dta | <https://jdavidm.github.io/learn-stata/data/lifeexp_no-sw.dta> |
 | LSMS household | dta | <https://jdavidm.github.io/learn-stata/data/lsms_household.dta> |
 | LSMS plot | dta | <https://jdavidm.github.io/learn-stata/data/plot_dataset.dta> |
+| Conservation agriculture | dta | <https://jdavidm.github.io/learn-stata/data/Michler_JEEM.dta> |
 | Monte Carlo simulation | dta | <https://jdavidm.github.io/learn-stata/data/mc_data.dta> |
 | Mroz earns | dta | <https://jdavidm.github.io/learn-stata/data/Mroz.dta> |

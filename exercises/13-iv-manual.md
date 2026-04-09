@@ -5,16 +5,42 @@ title: Manual 2SLS
 language: Stata
 ---
 
-Let's perform Two-Stage Least Squares (2SLS) by hand using `Mroz.dta` to understand the mechanics! We are interested in estimating the returns to education (`educ`) on log wages (`lwage`), but `educ` is endogenous due to omitted variable bias (e.g., unobserved ambition or ability). 
+In this exercise you will apply Two-Stage Least Squares by hand using data from [Michler et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0095069617307532), which studies the impact of conservation agriculture (CA) on crop yields in Zimbabwe. CA adoption (`CA`) is endogenous — farmers who adopt CA may differ systematically from those who don't. We instrument CA adoption using `wardNGO`, the number of other households in the same ward that received NGO support for CA.
 
-To solve this we will use instruments: mother's education (`motheduc`) and father's education (`fatheduc`).
+- Load `"$data/Michler_JEEM.dta"` and keep only maize observations (`keep if crops == 1`).
+- Run a naive **OLS** regression of `lnyield` on `CA` with the following controls: `lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`, clustering standard errors at the `rc` level. Store the results as `ols`.
+- Run the **First Stage**: Regress the endogenous variable (`CA`) on the instrument (`wardNGO`) and all the same controls (`lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`), clustering at `rc`. Store as `first`.
+- Generate the predicted fitted values from the first stage using `predict CA_hat, xb`.
+- Run the **Second Stage**: Regress `lnyield` on `CA_hat` and the same controls, clustering at `rc`. Store as `manual`.
+- Export a two-column table comparing OLS and Manual 2SLS:
 
-- Open a new script and load `"$data/Mroz.dta"`.
-- Run the **First Stage**: Regress your endogenous right-hand side variable (`educ`) on your instruments (`motheduc` and `fatheduc`) and all other exogenous controls (`exper` and `expersq`).
-- Immediately after, generate the predicted fitted values using `predict educ_hat, xb`.
-- Run the **Second Stage**: Regress your outcome variable `lwage` on your predicted treatment `educ_hat` alongside your initial exogenous controls (`exper` and `expersq`).
-- Run the naive OLS regression (`reg lwage educ exper expersq`) to compare. 
+```stata
+* compare ols and manual 2sls
+	esttab          ols manual using "$answ/13-iv-manual.tex", replace ///
+	                    b(3) se(3) ///
+	                    keep(CA CA_hat) ///
+	                    star(* 0.10 ** 0.05 *** 0.01) ///
+	                    mtitles("OLS" "Manual 2SLS") ///
+	                    stats(N r2, labels("Observations" "R-squared") ///
+	                          fmt(0 3)) ///
+	                    noobs booktabs nonum collabels(none) ///
+	                    nobaselevels nogaps fragment label ///
+	                    prehead("\begin{tabular}{l*{2}{c}} " ///
+	                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+	                        "& \multicolumn{1}{c}{OLS} & " ///
+	                        "\multicolumn{1}{c}{Manual 2SLS} " ///
+	                        "\\ \midrule") ///
+	                    postfoot("\hline \hline \\[-1.8ex] " ///
+	                        "\multicolumn{3}{p{0.8\linewidth}}{\small " ///
+	                        "\noindent \textit{Note}: Dependent variable " ///
+	                        "is log maize yield. Standard errors " ///
+	                        "clustered at household level in " ///
+	                        "parentheses. Manual 2SLS standard errors " ///
+	                        "are incorrect. " ///
+	                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+	                        "\end{tabular}")
+```
 
-1. Did the returns to education coefficient go up or down compared to the naive OLS?
+1\. Does the coefficient on CA increase or decrease when you move from OLS to the manual 2SLS? What does this tell you about the direction of the selection bias?
 
 ---
