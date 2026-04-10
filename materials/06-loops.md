@@ -290,3 +290,9 @@ Loops can be harder to debug because one or two bad iterations are buried in man
 4. **Check that the loop boundaries are what you think**  
    - Off-by-one errors (`1/10` vs `0/9`) are common.  
    - Use small ranges while you’re testing.
+
+### Summary
+
+- Loops ('foreach', 'forvalues') safely automate repetitive blocks of code.
+- 'while' loops execute conditionally as long as an expression remains true.
+- Loop logic streamlines tasks that must be scaled across numerous variables or files.

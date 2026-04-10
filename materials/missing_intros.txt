@@ -1,0 +1,757 @@
+﻿--- 01-check-that-your-code-runs.md ---
+---
+layout: page
+element: notes
+title: Check That Your Code Runs
+language: Stata
+---
+
+### Setup
+
+> Make sure that you open your Stata Project first, then run the project.do file every time
+
+### Introduction to Reproducibility
+
+* Goal - rerun full analysis with a single click (or command)
+* First step - Make sure your code runs anytime and anywhere
+  * next day (who has gotten code working & had it not work the next day?)
+	* desktop vs. laptop
+	* collaborators
+	* advisor
+
+### Make sure things you did before don't matter
+
+* Computers store the results of each command run in sequence
+* Change something
+* Looks like it still works
+
+--- 01-course-intro.md ---
+---
+layout: page
+element: notes
+title: Course Introduction
+---
+
+### Welcome
+
+* Introduce yourself
+* Have students introduce themselves
+
+### Course goals
+
+1.	Introduce students to coding languages used in economic analysis.
+2.	Familiarize students with a specific language.
+3.	Apply that language to answer quantitative economic research questions.
+4.	Prepare students for job market and graduate school applications.
+
+### Expected background
+
+* Assumes no background in Stata or any of the other things we'll learn
+* Assumes a familiarity with statistics (AAE 339 or equivalent)
+
+### Teaching methods
+
+
+--- 01-git-intro.md ---
+---
+layout: page
+element: notes
+title: A quick introduction to Git and GitHub
+---
+
+## Introduction
+
+Who has a directory on their computer with a bunch of filenames that look like
+these?
+
+![notFinal.doc]({{ site.baseurl }}/images/phd101212s.gif)
+
+And how about one that looks like this?
+
+
+![Ph.D Thesis Modified: too many times]({{ site.baseurl }}/images/phd052810s.gif)
+
+What we're going to learn about today is how to get rid of folders like this and
+keep the same kind of backup and change information in a more useful way.
+
+Version control gives you a better way to track changes to things like data
+files and code in a more manageable way. That's important because when the
+reviews come back on your paper and ask you to perform some additional analyses
+and you open up this directory, it can be pretty difficult to figure out which
+
+--- 01-large-language-models.md ---
+---
+layout: page
+element: notes
+title: Large Language Models
+language: Stata
+---
+
+### Introduction
+
+* Who's heard about ChatGPT and AI Coding Assistants?
+* These are large language models (LLMs)
+* Since there is lots of code written by software developers on the internet they are pretty good at generating code
+* And since there are lots of lessons on how to learn to code on the internet they can also be good generating text that explains code
+
+* There are a variety of meaningful ethical concerns about using LLMs
+* Writing code with them when lacking the background to evaluate that code can also be dangerous
+* But they can be useful
+* In the AIDE Lab we use these tools to help students debug code
+* We also use it as a tool to do actual new research
+
+### Using LLMs for learning
+
+* LLMs can be useful for learning and you are allowed to use them for in this course
+* Using them to directly answer the exercises won't help you learn, because humans need practice to learn
+* That's why we have exercises
+
+--- 01-stata-intro.md ---
+---
+
+layout: page
+element: notes
+title: Introduction to Stata
+language: Stata
+---
+
+> Remind students to install Stata
+>
+> Have students open Github Desktop
+>
+> Have students open Stata.
+
+### Stata
+
+* Programming language
+* IDE - Integrated Development Environment
+* A statistics and data analysis environment
+* Now can run simulations, do ML, produce markdown files, interact with Python
+* R is what runs all of the code we will write this semester
+* Separate from RStudio
+
+### Stata Graphic User Interface (GUI)
+
+
+--- 02-code-execution.md ---
+---
+layout: page
+element: notes
+title: Code Execution
+language: Stata
+---
+
+### Basic code execution
+
+* When we run a chunk of code it runs from top to bottom in order
+* It runs the first line, then the second line, and so on
+* This means that order is important
+* Write code to calculate GDP growth from GDP in 2025 and 2024
+
+```stata
+    clear           all
+    set obs         1
+    gen             gdp_d = gdp_25 - gdp_24 / gdp_24
+    gen             gdp_24 = 12.9
+    gen             gdp_25 = 13.5
+    display         gdp_d
+```
+
+* Returns an error because neither `gdp_24` or `gdp_25` exists yet
+
+
+--- 02-dev-enviro.md ---
+---
+layout: page
+element: notes
+title: Setting Up Your Development Environment
+language: Stata
+---
+
+### Introduction to development environments
+
+* Goal - fully reproducible cleaning and analysis
+* Code should be able to rerun full analysis with a single click (or command)
+* First step - Make sure your code runs anytime and anywhere
+  * next day (who has gotten code working & had it not work the next day?)
+	* desktop vs. laptop
+	* collaborators
+	* advisor
+
+### Make sure things you did before don't matter
+
+* Computers store the results of each command run in sequence
+* Change something
+* Looks like it still works
+* Only works because of something you did earlier in the same session
+
+### Clearing environments
+
+--- 02-house-style.md ---
+---
+layout: page
+title: House Style
+---
+
+When writing code, ensure you use **headings** and **subheadings**, **bookmarks**, **documentation**, **tabs**, and **comments** in a way that is consistent with template .do files. Every assignment must also create a `.log` file that records your work.
+
+* Headings open large sections of code and are numbered. For assignments, headings should correspond with an exercise. Headings are bookmarked with `**# 1`. Subheadings are numbered following the heading but with a decimal point followed by a number. For assignments, subheadings should correspond with a sub-questions within an exercise. Subheadings are bookmarketed at one level down with `**## 1.1`.
+
+* Documentation precedes smaller code blocks and start with a single *. Documentation should be concise but clear and focus on design and purpose, not mechanics.
+
+* Tabs should be used to create white space for easy reading. Commands should immediately follow a documentation and be one tab in. The data or object that the command operates on should be tabbed several spaces over, so that one can, at a glance, determine the command and the object of that command. If you need to break the line, then tab in three times.
+
+* Comments follow code blocks and report on the result/output of that code block. Not all code blocks need comments but they can be useful, especially in when dropping or merging data or if the codeblock is particularly complicated. Comments are tabbed so they are directly below the command they comment on and start with three ***.
+
+All code should be written in lowercase lettering except in extraordinary cases when an uppercase letter is necessary to convey information that lowercase lettering cannot get across.
+
+## Example of house style
+
+Every `.do` file that you turn in must have a preamble that contains the following information and is in the following "house syle".
+
+```stata
+* course: 597A
+* assignment: 1
+* created on: dec 25
+
+--- 02-paths.md ---
+---
+layout: page
+element: notes
+title: Pathways
+language: Stata
+---
+
+* So far in this course we've been
+    * Creating data right in the Stata window: `gen`
+    * Downloading data from the internet directly into Stata: `sysuse`
+    * Opening data files where Stata knows to find them: `use`
+* Inputing and outputting data files on your own computer is not much more complicated, as long as you are working with a small  number of files for a single project
+* Things become more complicated when we have many files to clean, combine, and analyze
+* Things become much more complicated when we want to share data and code with others
+* But in this lesson we'll learn how to do this effectively
+
+### Introduction to paths
+
+* To use data stored on a computer we need to tell Stata where it is
+* This is done using paths
+* This is a description of the directories where our files are stored
+* Let's go to the course website and download some data
+* [https://jdavidm.github.io/learn-stata/materials/datasets]({{ site.baseurl }}/materials/datasets)
+* This page contains all of the data we use in class
+* Download `eth_allrounds_final.dta` data
+
+--- 03-data-mgmt.md ---
+---
+layout: page
+element: notes
+title: Manipulating Data
+language: Stata
+---
+
+### Manipulating Data
+
+A lot of applied economics work is about **reshaping and combining data** so that you can run the analysis you care about. This can involve:
+  * Replacing the value of existing variables (`replace`)
+  * Creating new variables (`gen` and `egen`)
+  * Aggregating data (`collapse`)
+  * Stacking datasets (`append`)
+  * Joining datasets (`merge`)
+  
+These operations are the building blocks for going from raw survey data to analysis-ready panels, combining different data sources, and creating the summary datasets used in tables and figures.
+
+### Creating variables
+
+You already know how to use `gen` to make new variables from existing ones. Stata has an "extended generate" (`egen`) command that comes with a number of built in functions that allow you to create variables using calculations that otherwise would be very tedious and verbose to code up. The big advantage of `egen` is that it:
+  * works across **multiple variables in the same row** (e.g., row means),
+  * or across **multiple observations** (e.g., group means, counts, ranks).
+The general syntax is:
+
+
+--- 03-label-data.md ---
+---
+layout: page
+element: notes
+title: Label Variables and Values
+language: Stata
+---
+
+### Why labels matter
+
+Clean, well-labeled data are much easier to:
+
+* Read a month from now (or in the middle of the night before a deadline),
+* Share with collaborators,
+* Use in regression tables and graphs.
+
+Stata gives us **three main kinds of labels**:
+
+* **Dataset labels** â€“ a short description of the whole dataset  
+* **Variable labels** â€“ a human-readable description of what each variable is  
+* **Value labels** â€“ human-readable labels for the *values* of a variable (e.g., `1 = female`, `0 = male`)
+
+### Labeling variables
+
+A **variable label** is a short description attached to a variable.
+
+
+--- 03-tidy-data.md ---
+---
+layout: page
+element: notes
+title: Tidy Data
+language: Stata
+---
+
+### Types of data in Stata
+
+* Essentially two types of data
+    * Numeric - numbers on which the computer can do math
+    * Strings - all non-numerica data on which computers cannot do math
+
+* Stata has five ways to store numeric data, each with a different property and storage requirement
+
+|         |                        |                       |   Closest to |       |
+| Storage |                        |                       |   0 without  |       |
+| type    |                Minimum |               Maximum |   being 0    | bytes |
+|---------|------------------------|-----------------------|--------------|-------|
+|  byte   |                   -127 |                   100 |   +/-1       |   1   |
+|  int    |                -32,767 |                32,740 |   +/-1       |   2   |
+|  long   |         -2,147,483,647 |         2,147,483,620 |   +/-1       |   4   |
+|  float  | -1.70141173319 x 10^38 | 1.70141173319 x 10^38 |   +/-10^-38  |   4   |
+|  double | -8.9884656743 x 10^307 | 8.9884656743 x 10^307 |   +/-10^-323 |   8   |
+|---------|------------------------|-----------------------|--------------|-------|
+
+--- 04-dist-graph.md ---
+---
+layout: page
+element: notes
+title: Graphing Distributions
+language: Stata
+---
+
+In the last lecture you saw how to describe a distribution using tables (`tab`) and summary statistics (`sum`). In this lecture weâ€™ll focus on graphs for a *single* numeric variable:
+- How to make and interpret **histograms**
+- How to make and interpret **kernel density plots**
+- How to use key options to control these graphs
+
+Throughout this lecture we will continue to use the system data set `nlsw88.dta`. Remember, as we walk through these lectures, you should be taking notes and coding in a .do file.
+
+### Why graphs?
+
+When we use `sum` Stata calculates statistics that give numerical summaries of the distribution of a variable. Last lecture we focused on the **center** and **spread** of a distribution. Both of those words have a clear visual component - in your mind you picture center and spread as positions in space. So, it makes sense that we would like to actually visualize these concepts, not just have numbers to summarize them. Graphs let us see the entire shape of that distribution â€” where values are common, where theyâ€™re rare, how spread out they are, and whether thereâ€™s skew or different â€œlumpsâ€ in the data.
+
+Two big ideas for today:
+- A **histogram** cuts the x-axis into bins and counts how many observations fall in each bin.
+- A **kernel density plot** is like a smoothed histogram â€” instead of bars, you get a smooth curve that shows where observations are concentrated.
+
+Both plots are different ways of visualizing the same thing: the distribution of a variable.
+
+### Histograms in Stata
+
+--- 04-distributions.md ---
+---
+layout: page
+element: notes
+title: Distributions of Variables
+language: Stata
+---
+
+When we collect data, we donâ€™t just care about *individual* observations. We care about what values are common, whatâ€™s rare, and whatâ€™s extreme.
+
+Thatâ€™s what a **distribution** is:
+
+> A description of the probability that each possible value of a variable will occur.
+
+In this lecture we will:
+- Define what we mean by the distribution of a variable  
+- See how to describe distributions with **tables** in Stata  
+- Learn how to **summarize** a distribution with a few key numbers (center and spread)
+
+Throughout this lecture we will use the system data set `nlsw88.dta`. So start by loading it using the `sysuse` command. Remember, as we walk through these lectures, you should be taking notes and coding in a `.do` file.
+
+### Distributions of data
+
+Suppose we have a tiny dataset with four observations of exam scores:
+
+- `score = 2, 5, 5, 6`
+
+--- 05-condition.md ---
+---
+layout: page
+element: notes
+title: Conditional Distributions
+language: Stata
+---
+
+In this lecture we are going to move from just drawing scatter plots to more systematically describing **how one variable behaves, given another**. This lecture is about **conditional distributions**:
+
+- How does yield vary **by** irrigation status?  
+- How does fertilizer use differ **across** households with different assets?  
+- How can we summarize these patterns with tables, graphs, and conditional means?
+
+Weâ€™ll keep using the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`.
+
+### Conditional distributions: idea
+
+A **conditional distribution** is the distribution of a variable `Y` for some subset defined by another variable `X`:
+- Distribution of `yield_kg` **given** the plot is irrigated (`irr == 1`)  
+- Distribution of `nitrogen_kg` **given** the household is in the top asset group  
+
+Weâ€™ll mostly look at:
+- Conditional distributions by **group** (discrete `X`), and  
+- **Conditional means** when `X` is continuous (using simple binning).
+
+
+--- 05-lfit.md ---
+---
+layout: page
+element: notes
+title: Line Fitting
+language: Stata
+---
+
+In this lecture, we build on scatter plots and conditional means to **summarize relationships with lines**.
+
+Weâ€™ll keep using the Ethiopia LSMS-ISA plot-level data, `eth_allrounds_final`, and focus on:
+- Adding fitted lines to scatter plots  
+- Interpreting slopes as changes in `Y` per unit of `X`  
+- Letting the relationship differ across groups (controlling for a variable)
+
+### Adding a fitted line
+Weâ€™ll use:
+- `yield_kg` â€“ plot-level yield (kg)  
+- `nitrogen_kg` â€“ kilograms of nitrogen applied  
+- `irr` â€“ 1 if plot is irr, 0 otherwise  
+
+A basic scatter plot:
+
+```stata
+* scatter of yield vs nitrogen
+    scatter         yield_kg nitrogen_kg, ///
+
+--- 05-scatter.md ---
+---
+layout: page
+element: notes
+title: Making and Beautifying Scatter Plots
+language: Stata
+---
+
+In Week 5 we move from describing **single variables** to describing **relationships between variables**. The main tool for seeing relationships between two numeric variables is the **scatter plot**.
+
+For this lecture weâ€™ll use the plot-level panel dataset from Ethiopia, `eth_allrounds_final`, based on the World Bank LSMS-ISA survey. Each row is (roughly) a plot-year observation with variables on production, inputs, and household characteristics.
+
+As always, you should be taking notes and coding in a `.do` file as we go.
+
+### Why scatter plots?
+
+When we suspect that one variable might be related to another (for example, yield and fertilizer), a scatter plot lets us:
+- Put one variable on the x-axis and one on the y-axis  
+- See whether values tend to **move together** (positive or negative correlation)  
+- Spot **nonlinear patterns**, **clusters**, and **outliers**
+
+Today weâ€™ll focus on:
+- Making basic scatter plots in Stata  
+- Tweaking labels and appearance so the plots are readable and useful
+
+The basic Stata syntax is:
+
+--- 06-loops.md ---
+---
+layout: page
+element: notes
+title: Loops and Programming Commands
+language: Stata
+---
+
+In this second lecture on programming fundamentals weâ€™ll build on macros and focus on **automation**:
+
+- Writing loops to repeat tasks safely and quickly  
+- Using `forvalues` and `foreach` for different kinds of lists  
+- Understanding Stataâ€™s `while` loop  
+- Using the programming `if` command (different from the `if` *qualifier*)  
+- Using `continue` and `continue, break` to control loop flow  
+
+Weâ€™ll again mostly use `sysuse auto` and small examples so that the focus stays on the **logic**.
+
+### Implicit vs explicit looping
+
+Stata already loops over observations for you:
+
+```stata
+    gen             logincome = log(income)
+```
+
+
+--- 06-macros.md ---
+---
+layout: page
+element: notes
+title: Macros and Storing Results
+language: Stata
+---
+
+In Week 6 we start digging into Stata as a programming language rather than just a calculator.
+
+This first lecture focuses on:
+
+- What macros are and why theyâ€™re useful  
+- Different types of macros (local vs global) and when to use each  
+- How to store results from commands in macros and scalars  
+- Good habits and common pitfalls when using macros
+
+Weâ€™ll mostly use the `auto` data set that comes with Stata so load it now using `sysuse`.
+
+### Why macros?
+So far youâ€™ve mostly typed literal text into your commands:
+
+```stata
+    regress             price mpg weight foreign
+```
+
+
+--- 06-programs.md ---
+---
+layout: page
+element: notes
+title: Writing Custom Stata Programs
+language: Stata
+---
+
+In previous lectures, we learned how to use locals and loops to automate repetitive tasks. But what if you have a complex sequence of commands that you need to run dozens of times across different datasets, or within a simulation? 
+
+For that, you don't just want a loopâ€”you want to write your own Stata command. Stata allows you to package any set of commands into a custom **program**. 
+
+### Defining a Basic Program
+
+To create a program, we use the `program define` command (or just `program`), followed by the name we want to give it. We end the program with the `end` command.
+
+```stata
+program hello_world
+    display "Hello, world! This is my first Stata program."
+end
+```
+
+Once Stata runs this block of code, `hello_world` is stored in its memory. You can now type `hello_world` anywhere in your `.do` file or command window, and Stata will execute the code inside it.
+
+```text
+. hello_world
+
+--- 07-problem.md ---
+---
+layout: page
+element: notes
+title: Problem Decomposition
+language: Stata
+---
+
+### Why talk about problem decomposition?
+
+* Up to now we've focused on specific Stata commands: `sum`, `gen`, `merge`, `graph`, etc.
+* Real tasks in applied economics rarely look like "run a single command"
+    * Clean multiple raw data files
+    * Merge them together
+    * Construct variables
+    * Check that code runs on another computer
+    * Produce a table or figure for a paper
+* These are multi-step problems. If you try to solve them in one shot, youâ€™ll get stuck and frustrated.
+* Problem decomposition is the skill of:
+    * Slowing down
+    * **Thinking before you code**
+    * Breaking a big problem into small, testable steps
+
+![Your problem: Image of an angry hippopotamus. Your problem broken down into pieces: 4 cute pictures of Moo Deng an adorable baby pygmy hippo. Angry hippo image from: https://www.fotocommunity.de/photo/angry-hippo-again-huber-tom/43184827](../moo-deng-problem-decomposition.png)
+
+### Three-step problem decomposition workflow
+
+--- 08-dags.md ---
+---
+layout: page
+element: notes
+title: Causal Diagrams (DAGs) and Stata Simulations
+language: Stata
+---
+
+In this lecture we introduce **causal diagrams**â€”directed acyclic graphs (DAGs)â€”and connect them to the simulations and identification ideas from the previous lecture. We will
+- Define DAGs and basic pieces (nodes, arrows, paths)  
+- Introduce **confounders**, **colliders**, and **mediators**  
+- Use Stata simulations to show how conditioning on different variables affects associations  
+- Connect DAGs back to identification and future regression work
+
+### What is a DAG?
+
+A **directed acyclic graph (DAG)** is:
+- A set of nodes (variables)  
+- Connected by directed arrows (causal relationships)  
+- With no cycles (you canâ€™t follow arrows and return to the start)
+
+Example:
+
+```text
+fert  â†’  yield
+soil_q â†’  fert
+
+--- 08-identification.md ---
+---
+layout: page
+element: notes
+title: Identification, DGPs, and Research Design
+language: Stata
+---
+
+This week we pivot from describing data to using Stata as a tool for thinking about causal questions and research design. This forms the bridge between representing correlational relationships with tables and figures to estimating causal relationships with regression analysis.
+
+This lecture focuses on:
+- What a data generating process (DGP) is  
+- What identification means (and why itâ€™s different from association)  
+- How simulations and conditional means help you reason about research design before we learn regression  
+
+### The data generating process (DGP)
+
+A data generating process is the (usually hidden) set of rules that create the data we observe.
+
+Examples:
+
+- Gravity is part of the DGP that generates data on falling objects  
+- Supply and demand are part of the DGP that generates price/quantity data  
+- In economics, preferences, technologies, policies, and constraints are pieces of a DGP  
+
+The DGP is the causal story that created the dataset. We donâ€™t observe that story directlyâ€”we only observe the variables it leaves behind. Identification is the problem of deciding when the variation we do observe is enough to pin down the causal effect we care about.
+
+--- 09-std-errors-gpt.md ---
+---
+layout: page
+element: notes
+title: Regression II â€” Standard Errors and Inference
+language: Stata
+---
+
+Regression gives you coefficient estimates (the â€œlineâ€), but it also gives you uncertainty measures:
+
+- **standard errors**
+- **confidence intervals**
+- **t-statistics**
+- **p-values**
+
+This lecture is about where those uncertainty numbers come from, and why you should treat the default standard errors as â€œguilty until proven innocent.â€
+
+These notes track the â€œYour Standard Errors Are Probably Wrongâ€ section of Chapter 13 in *The Effect*. îˆ€citeîˆ‚turn10view0îˆ
+
+---
+
+## 1. What is a standard error?
+
+A **standard error (SE)** is the estimated standard deviation of an estimatorâ€™s sampling distribution.
+
+Informally:
+
+--- 11-FE.md ---
+---
+layout: page
+element: notes
+title: One-Way Fixed Effects
+language: Stata
+---
+
+When we estimate a model like:
+
+$$
+\text{yield}_{it} = \beta_0 + \beta_1 \text{fertilizer}_{it} + u_{it},
+$$
+
+we often worry about unobserved heterogeneity (recall confounders from [Week 8: DAGs]({{ site.baseurl }}/materials/08-dags/)). For instance, farmer ability or soil quality might be correlated with both fertilizer use and crop yield. If these unobserved factors are constant over time for each household, we can use panel data to control for them using **Fixed Effects**.
+
+We will use the maize dataset, `eth_allrounds_final`, which contains observations for households (`hh_id_obs`) over multiple survey rounds (`wave`). 
+
+```stata
+* load dataset and create inputs
+	use             "$data/eth_allrounds_final.dta", clear
+	keep if         crop_name == "MAIZE"
+	gen             fert = nitrogen_kg / plot_area_GPS
+
+* regress pooled OLS (no time controls)
+	reg             yield_kg fert, vce(cluster hh_id_obs)
+
+--- 11-twfe.md ---
+---
+layout: page
+element: notes
+title: Two-Way Fixed Effects
+language: Stata
+---
+
+While One-Way Fixed Effects absorb unobserved, time-invariant heterogeneity across individuals, **Two-Way Fixed Effects (TWFE)** go a step further. We add time fixed effects to absorb any unobserved macroeconomic shocks or trends that affect all individuals in a given time period identically.
+
+The classic TWFE model is
+
+$$
+    Y_{it} = \beta D_{it} + \alpha_i + \gamma_t + \epsilon_{it},
+$$
+
+where $\alpha_i$ are individual fixed effects and $\gamma_t$ are time fixed effects. For a long time, TWFE was the undisputed gold standard for analyzing panel data. You simply included `i.wave` in your `xtreg`:
+
+```stata
+* estimate TWFE using xtreg and i.wave
+	xtreg           yield_kg fert i.wave, fe vce(cluster hh_id_obs)
+```
+
+Recent years have seen new commands for estimating 2+ levels of fixed effects as well as a growing recognitition that TWFE estimates can be wrong under certain, commonly occuring circumstances. We will return to this issue later in this section.
+
+### The `reghdfe` Command
+
+--- 12-did.md ---
+---
+layout: page
+element: notes
+title: Difference-in-Differences
+language: Stata
+---
+
+Difference-in-Differences (DiD) is one of the most widely used methods for estimating causal effects in observational data. When we have panel data (repeated observations of the same units over time), DiD allows us to control for unobserved confounding factors that are constant over time (just like fixed effects).
+
+This lecture covers:
+- The intuition behind the 2x2 DiD model
+- The critical "Parallel Trends" assumption
+- Implementing DiD using Two-Way Fixed Effects (TWFE)
+- Continuous Treatment DiD
+
+We will use data from [Cheng and Hoekstra (2013)](https://doi.org/10.3368/jhr.48.3.821) on the "Castle Doctrine" laws (the expanded right to use lethal force in self-defense). The target is studying the effect of these laws (`post = 1` after passing the law) on the natural log of the state's homicide rate (`l_homicide`). Our panel identifier is state (`sid`) and our time metric is `year`.
+
+### The 2x2 DiD Model
+
+The simplest DiD setup involves 2 groups (Treatment and Control) and 2 time periods (Pre-treatment and Post-treatment). 
+
+The intuition is that the Control group provides the counterfactual: it shows us what the trend in the outcome would have been for the Treatment group if they had not been treated.
+
+A basic 2x2 DiD regression is:
+$$ Y_{it} = \beta_0 + \beta_1 Treat_i + \beta_2 Post_t + \beta_3 (Treat_i \times Post_t) + \epsilon_{it} $$
+
+--- 12-event-studies.md ---
+---
+layout: page
+element: notes
+title: Event Studies
+language: Stata
+---
+
+In the previous lecture we estimated a single Difference-in-Differences coefficient using Two-Way Fixed Effects (TWFE). That coefficient told us the *average* effect of the Castle Doctrine on homicides â€” but a single number hides a lot:
+
+1. Were treatment and control groups trending similarly *before* the law passed?
+2. Did the effect kick in immediately, or build over time?
+
+An **event study** regression answers both questions by estimating a separate treatment effect for every period relative to the intervention. The result is a *dynamic treatment effects curve* rather than a single point estimate.
+
+This lecture covers:
+- Building lead and lag dummies to estimate an event study
+- Interpreting pre-treatment leads as evidence for parallel trends
+- Visualizing the event study with `coefplot`
+- The Bacon decomposition: understanding what TWFE actually estimates under staggered adoption
+
+We continue using the Castle Doctrine dataset (`castle.dta`). Our outcome is the log homicide rate (`l_homicide`), identified by state (`sid`) across years (`year`). Recall from the previous lecture that the TWFE coefficient on `cdl` was approximately 0.08 â€” an 8% increase in homicides. Now let's see what's behind that number.
+
+If you don't have the castle data still loaded, then re-load the data set and define the global macros as we did in the previous lecture.	
+
+```stata
+
+

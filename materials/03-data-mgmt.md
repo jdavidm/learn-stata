@@ -246,3 +246,8 @@ If `isid` fails, your merge assumptions are wrong and you should fix the keys or
 
 
 > Do [Exercise 8 - Merge Data]({{ site.baseurl }}/exercises/03-merge/)
+### Summary
+
+- Reshaping and combining data are critical preliminary steps in most analysis pipelines.
+- Use 'gen' and 'replace' for variables, and 'egen' for row-level or grouped calculations.
+- Efficient aggregation ('collapse') and stacking ('append') build your final analytical dataset.

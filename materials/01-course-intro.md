@@ -112,3 +112,9 @@ title: Course Introduction
 ### First day demo
 
 * With the time we have left I will introduce Github and Stata
+
+### Summary
+
+- This course introduces coding languages for economic analysis.
+- Our goal is to prepare for quantitative economic research.
+- We assume familiarity with basic statistics but no coding background.

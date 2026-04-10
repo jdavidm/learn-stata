@@ -226,3 +226,9 @@ Reading the ridgeline plot:
 - Pre-treatment ridges (negative values) should look similar to each other — another way to assess parallel trends
 - Post-treatment ridges should shift rightward if the Castle Doctrine increased homicides across the board, not just on average
 - If only the right tail shifts, the effect may be driven by a few high-crime states rather than a broad increase
+
+### Summary
+
+- Event studies decompose DiD estimates to show treatment effects dynamically over time (leads and lags).
+- The pre-period leads allow us to visually evaluate the plausibility of the parallel trends assumption.
+- Post-period lags reveal whether treatment effects compound, fade, or kick in immediately.

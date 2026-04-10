@@ -169,3 +169,9 @@ language: Stata
 > Do [Exercise 1.1-1.3 - Basic Expressions]({{ site.baseurl }}/exercises/01-basic-expressions/)
 
 > Do [Exercise 2 - Basic Variables]({{ site.baseurl }}/exercises/01-basic-variables/)
+
+### Summary
+
+- Stata is both a programming language and an Integrated Development Environment (IDE).
+- Stata allows us to manage data, run statistical analyses, and produce deliverables.
+- The GUI includes specialized windows for commands, results, variables, and history.

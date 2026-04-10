@@ -105,3 +105,9 @@ Because `add_numbers` returned a scalar, you can now access `r(total)` anywhere 
 ### Why does this matter?
 
 Writing `rclass` programs is the foundation of **Monte Carlo simulations**. Stata's built-in `simulate` command works by calling a custom program thousands of times, passing in different noise parameters via `args`, and automatically catching the `r()` values your program returns on every single iteration!
+
+### Summary
+
+- Wrapping tasks into custom Stata programs enables massive reuse across datasets.
+- 'program define' encapsulates logic analogous to custom functions in other languages.
+- This is best suited for complex, repetitive pipelines or dynamic simulation routines.

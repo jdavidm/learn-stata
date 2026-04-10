@@ -330,3 +330,9 @@ This keeps your code:
 - Easier to modify later  
 
 In the next lecture we’ll lean heavily on macros as we learn how to **write loops** and add simple **programming commands** (`forvalues`, `foreach`, `while`, `if`, `continue`) to your Stata toolkit.
+
+### Summary
+
+- Macros let you store parameters, file names, or variable lists to avoid hardcoded duplication.
+- Locals strictly exist within the executing block, while globals span the Stata session.
+- Use macros to store regression results and parameters dynamically.

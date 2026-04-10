@@ -163,3 +163,9 @@ In later weeks we’ll build on this to do more formal regression analysis, but 
 
 - Use lines to summarize **average relationships**, and  
 - See how those relationships change **across groups** (controlling for key variables).
+
+### Summary
+
+- Fitted lines overlay relationships onto scatter plots to summarize linear trends.
+- The slope represents the marginal change in Y given a unit change in X.
+- Layering fitted lines by group visualizes how relationships differ across covariates.

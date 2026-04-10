@@ -167,3 +167,9 @@ language: Stata
 * This idea of projects as folders is also important for how we share code
 * Version control works with the projects as folders structure
 * We can also zip a the project folder and send it to someone else and they can work with it
+
+### Summary
+
+- Paths dictate exactly where Stata looks for or saves files on your computer.
+- Use structured directories and relative/absolute paths to organize your project.
+- Robust path management is required to collaborate effectively across different computers.

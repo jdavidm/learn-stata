@@ -272,3 +272,8 @@ When you get a new variable, a good “distribution and summary” workflow in S
    - Note center (mean, median)  
    - Note spread (standard deviation, range, IQR)  
    - Check min/max for impossible values or outliers  
+### Summary
+
+- A distribution conveys the probability of observing every possible value of a variable.
+- Summary statistics condense distributions into key metrics like the mean and variance.
+- Always look at the distribution of your variables before running regressions.

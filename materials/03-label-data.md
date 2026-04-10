@@ -284,3 +284,8 @@ However, if the first region in Ethiopia `= 1` and the first state in Nigeria al
 *Solution*: If you think you might eventually combine different data sets, choose ID numbers that are unique to that data set. So, since Ethiopia comes before Nigeria in the alphabet, I can think of `Ethiopia = 1` and `Nigeria = 2`. Then when I come to assigning identifiers to `admin_1` in Ethiopia the first region takes the value `101` and in Nigeria the first state takes the value `201`. This principle extends to identifying jurisdictions in `admin_2`, `admin_3`, etc.
 
 In fact, this solution is a basic principle in generating unique IDs and it is why household or individual IDs in a data set are often so long. The IDs are frequently created by **concatenating** all the administrative jurisdictions together. For example, a household with ID `101040201` is likely the first household (`household = 1`) interviewed in the second level-3 administrative region (`admin_3 = 2`), which is the fourth level-2 administrative region (`admin_2 = 4`), which is in the first level-1 administrative region (`admin_1 = 1`), in the first country (`country = 1`). The zeros go into the ID because their are likely more than 9 adminitrative zones or households, meaning we need to use `01` instead of just `1` to get the IDs to have the same number of characters.
+### Summary
+
+- Well-labeled data is vital for readability, sharing, and clear tables/graphs.
+- Implement dataset, variable, and value labels systematically.
+- Descriptive labels prevent confusion and errors months down the line.

@@ -238,3 +238,9 @@ When you’re stuck, often the fastest way forward is:
 
 > Add more structure and comments before adding more Stata commands.
 
+
+### Summary
+
+- Break massive applied tasks down into granular, actionable, testable steps.
+- Thinking and planning before coding saves hours of disorganized debugging.
+- Test individual components before attempting the fully integrated pipeline.

@@ -46,3 +46,9 @@ language: Stata
 * This will remind you to check that everything is running and fix any issues
 * It will also make grading much easier because when I run your code it will run
 * At the start of the semester if the code doesn't run when I go grade I'll DM you on Slack and give you a chance to fix it before grading
+
+### Summary
+
+- Always make sure your code runs from start to finish.
+- Reproducibility is key: your code should run on any computer at any time.
+- Avoid relying on state created interactively in the middle of a session.

@@ -231,3 +231,9 @@ When you get a new continuous variable in Stata, a good workflow now is:
 Then describe:
 
 - Center, spread, skew, and any outliers — in words — based on both numbers and graphs.
+
+### Summary
+
+- Visualization translates statistical summaries of center and spread into intuitive shapes.
+- Histograms bin data to show frequency, while kernel density plots offer smoothed representations.
+- Graphical distribution analysis helps detect skew, multi-modality, and outliers quickly.

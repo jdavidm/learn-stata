@@ -192,3 +192,9 @@ In the next lectures this week, we’ll build on scatter plots to:
 
 - Look at **conditional distributions** (what yield or input use looks like for given levels of another variable or across groups), and  
 - Fit and interpret **lines** through scatter plots to summarize relationships.
+
+### Summary
+
+- Scatter plots are the primary tool for assessing the bivariate relationship between continuous variables.
+- They reveal correlation direction, non-linearities, and influential outliers.
+- Proper formatting (labels, titles, legends) is essential for professional delivery.

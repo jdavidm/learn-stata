@@ -168,3 +168,9 @@ When you want to understand how `Y` behaves given `X`:
 ```
 
 In the next lecture we’ll connect these conditional means to **line fitting**, where we summarize the relationship between `X` and `Y` with a straight line (or other simple functions) on top of a scatter plot.
+
+### Summary
+
+- Conditional distributions show how one variable behaves given the value of another.
+- Group comparisons (discrete conditioners) and binning (continuous conditioners) help reveal relationships.
+- Summarizing by groups isolates variance and highlights specific phenomena.

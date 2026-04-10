@@ -98,3 +98,9 @@ language: Stata
 
 * There is an [Assignment Turn In Checklist]({{ site.baseurl }}/materials/turn-in-checklist/) to help
 * To reinforce this important step in coding the last required exercise each week is the check that your code runs
+
+### Summary
+
+- A reproducible development environment guarantees your results aren't dependent on manual tweaks.
+- Always start sessions by clearing the environment to remove artifacts from past runs.
+- Strive for 'single-click' reproducibility.

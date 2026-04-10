@@ -212,3 +212,9 @@ messy and what we could do to improve it.
 * In this class you can save data as `.dta` files
 * In general, it is best practice to save data in plain text files
 * The most common being `.csv`
+
+### Summary
+
+- Tidy data principles standardize how observations and variables are stored.
+- Stata distinguishes string and numeric data, with varying precision limits for numbers.
+- Choose the correct storage type (byte, int, long, double) for efficiency.

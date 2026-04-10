@@ -106,3 +106,9 @@ That's it!!! Following these steps ensures that your work is saved and tracked a
 * Work on things simultaneously (this is important for the replication project)
 * See what changes others have made
 * Everyone has the most recent version of everything
+
+### Summary
+
+- Version control replaces messy file naming conventions (like 'final_v2.doc').
+- Git allows collaboration, tracking, and reverting changes effectively.
+- GitHub provides a cloud-based backup and sharing layer for Git repositories.

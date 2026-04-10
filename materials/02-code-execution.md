@@ -98,3 +98,8 @@ language: Stata
     * Conditionals: `if`, `&`, and `||` (or)
     * Loops: `foreach`, `forevery`, assignment of `locals`
     * Replacing or removing values: `replace`, `drop`, `drop if`
+### Summary
+
+- Stata executes code sequentially from top to bottom.
+- The order of commands strictly dictates the state of your session.
+- Variables must be created before they can be referenced in calculations.

@@ -207,3 +207,9 @@ Practical workflow:
 4. Choose an adjustment strategy consistent with the DAG  
 
 This week we implement ideas with simulation + conditional means. Next week regression will implement adjustment sets more directly.
+
+### Summary
+
+- Causal diagrams represent structural relationships (nodes and directed arrows) to formalize your DGP.
+- Visualizing confounders, colliders, and mediators prevents structural econometric errors.
+- They clarify which variables must be conditioned on to achieve causal identification.

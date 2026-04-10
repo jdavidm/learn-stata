@@ -120,3 +120,8 @@ Here, `cap log close` ensures any open `.log` files are closed before openning a
 A `.log` file for each assignment does not need to be submitted with your assignment. It is there for two reasons.
 1. For your own record to help you reconstruct the past if you make a mistake
 2. In case there is a concern about plagarism or inappropriate use of generative AI, the `.log` file provides evidence that you wrote the code.
+### Summary
+
+- Strictly adhere to house style constraints: lowercase commands, clean spacing, and well-organized logs.
+- Use numbered headings for code sections, mapped to specific exercises or steps.
+- White space (tabbing) improves readability for you and collaborators.

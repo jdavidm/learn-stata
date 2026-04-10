@@ -196,3 +196,9 @@ In this lecture we practiced:
 - Using difference-in-means and conditional means to reason about confounding  
 
 Next week, regression with controls will automate conditioning. Later, FE, DiD, event studies, and IV are all about finding identifying variation when simple conditioning isn’t enough.
+
+### Summary
+
+- Identification isolates the precise variation required to infer a causal effect.
+- The Data Generating Process (DGP) is the theoretical structural model creating your observed data.
+- A solid research design ensures you only estimate the pathway of interest, ignoring confounding variance.

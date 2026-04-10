@@ -133,3 +133,9 @@ Rerun `project.do` and save it (you may also need to install `drdid`). Now that 
 `csdid` first calculates all the pair-wise difference-in-differences. The `estat simple` command then calculates the average treatment effect for the entire treated group, which it estimates as 9.96, much closer to the true value of 9.8.
 
 > Do [Exercise 7 - Modern TWFE Solutions]({{ site.baseurl }}/exercises/11-bacon/)
+
+### Summary
+
+- Two-Way Fixed Effects (TWFE) eliminate both unit-specific and time-specific unobserved heterogeneity.
+- Time fixed effects control for macroeconomic shocks hitting the entire panel simultaneously.
+- In modern econometrics, recognize that basic TWFE can mix heterogeneous dynamic effects during staggered rollouts.

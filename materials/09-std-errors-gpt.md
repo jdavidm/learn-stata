@@ -190,3 +190,9 @@ Quick summary commands:
 ```
 
 Next lecture: **additional concerns** — weights, collinearity, and measurement error.
+
+### Summary
+
+- Standard errors convey the uncertainty surrounding your specific coefficient estimate.
+- Default standard errors often rely on theoretically flawed assumptions (like homoskedasticity).
+- Consider default assumptions 'guilty until proven innocent' and use modern alternative variances (e.g., robust, clustered).

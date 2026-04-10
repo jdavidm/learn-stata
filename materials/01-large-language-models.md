@@ -42,3 +42,9 @@ language: Stata
     2. [Statalist](https://www.statalist.org/forums/) is a forum where you can ask questions and get answers. Often your question has already been asked and answered
     3. [Stack Overflow](https://stackoverflow.com/questions) or [Cross Validated](https://stats.stackexchange.com/), which are the coding- and stats-focused Stacks on [Stack Exchange](https://stats.stackexchange.com/)
 * You can also use LLMs to help debug your code, which we'll talk about more when we talk about debugging, but trying to fix bugs yourself is also important to learning
+
+### Summary
+
+- LLMs like ChatGPT generate code and explanations based on vast training data.
+- Always evaluate their output, as AI assistants can introduce subtle errors.
+- Use LLMs as a learning aid, but do not bypass actual practice and exercises.
