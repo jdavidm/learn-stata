@@ -238,24 +238,24 @@ H0: mean = 12.3                          Degrees of freedom =     2245
   - The **standard error** of the mean
   - The **t statistic**
   - The **degrees of freedom**
-  - The **p-value** (for different alternatives)
+  - The ***p*-value** (for different alternatives)
 
-#### Step 4: Use the theoretical distribution to get a p-value
+#### Step 4: Use the theoretical distribution to get a *p*-value
 
 Under $H_0: \mu = 12.3$, the t-statistic follows a **t-distribution**.
 - We ask: *How likely is it to get a t-statistic this extreme (or more extreme) if $H_0$ were true?*
-- That probability is the **p-value**.
+- That probability is the ***p*-value**.
 
 In Stata’s output, look at the line labeled something like `Pr(|T| > |t|)`
-- Small p-value → our observed mean is **unlikely** if the true mean were 12.3.
-- Large p-value → our observed mean is **plausible** under $H_0$.
+- Small *p*-value → our observed mean is **unlikely** if the true mean were 12.3.
+- Large *p*-value → our observed mean is **plausible** under $H_0$.
 
 #### Step 5: Decide whether to reject the null hypothesis
 
 We need a decision rule to tell us *how small is small enough* for us to be confident that the mean of `ttl_exp` is not equal to 12.3.
 - We pick a threshold $\alpha$ (often 0.05).
-- If p-value < $\alpha$, we **reject $H_0$**.
-- If p-value ≥ $\alpha$, we **do not reject $H_0$**.
+- If *p*-value < $\alpha$, we **reject $H_0$**.
+- If *p*-value ≥ $\alpha$, we **do not reject $H_0$**.
 
 Looking at the Stata output
 - For `Ha: mean > 12.3` (meaning our $H_0: \mu < 12.3$), we reject the hypothesis at the 1% level.
@@ -295,4 +295,4 @@ The key message is:
 4. **Hypothesis testing**  
    - We formalized this idea with a 5-step procedure.
    - We used `ttest` to see if our data are consistent with a particular **theoretical mean** \(\mu\).
-   - A small p-value means “this data would be rare if that theoretical distribution were true,” so we rule that theoretical distribution out.
+   - A small *p*-value means “this data would be rare if that theoretical distribution were true,” so we rule that theoretical distribution out.

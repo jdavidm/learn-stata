@@ -10,7 +10,7 @@ Regression gives you coefficient estimates (the “line”), but it also gives y
 - **standard errors**
 - **confidence intervals**
 - **t-statistics**
-- **p-values**
+- ***p*-values**
 
 This lecture is about where those uncertainty numbers come from, and why you should treat the default standard errors as “guilty until proven innocent.”
 

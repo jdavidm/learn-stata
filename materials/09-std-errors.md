@@ -22,10 +22,10 @@ We'll continue with simulated yield, fertilizer, and soil quality data so we can
 A coefficient tells you the estimated effect size. In the previous lecture and last week's lectures on identification we focused on **bias** in estimating the causal effect. Today we are going to focus on the standard error, which tells you how precise that estimate is. This is known as **inference**. Together they give you:
 
 - **t-statistic** = coefficient / standard error  
-- **p-value**: probability of seeing your estimate (or larger) if the true effect were zero  
+- ***p*-value**: probability of seeing your estimate (or larger) if the true effect were zero  
 - **Confidence intervals**: a range of plausible values for the true effect
 
-If the standard error is wrong, then the t-statistic, p-value, and confidence interval are all wrong — even if the coefficient itself is fine. So getting standard errors right is essential.
+If the standard error is wrong, then the t-statistic, *p*-value, and confidence interval are all wrong — even if the coefficient itself is fine. So getting standard errors right is essential.
 
 ### OLS assumptions about the error term
 
@@ -165,7 +165,7 @@ In Stata, just add `, robust`:
 
 Notice:
 - The **coefficients** are identical — robust standard errors change nothing about the point estimates  
-- The **standard errors** (and therefore t-stats, p-values, CIs) change  
+- The **standard errors** (and therefore t-stats, *p*-values, CIs) change  
 - Sometimes robust SEs are larger (heteroskedasticity made default SEs too optimistic); sometimes they're smaller
 
 Robust standard errors are so common that many applied economists use them by default.
@@ -286,7 +286,7 @@ Let's return to the i.i.d. data and compare how standard errors change across me
     reg             yield fert soil_q, robust
 ```
 
-Look at how the standard errors (and therefore p-values) on `fert` change. The coefficients stay the same across both — only the uncertainty estimates differ.
+Look at how the standard errors (and therefore *p*-values) on `fert` change. The coefficients stay the same across both — only the uncertainty estimates differ.
 
 ### Bootstrap standard errors
 
@@ -328,7 +328,7 @@ Bootstrap is especially useful when:
 - **Heteroskedasticity** (changing error variance) makes default SEs wrong → use `robust`  
 - **Within-cluster correlation** (shared shocks) makes even robust SEs wrong → use `vce(cluster ...)`  
 - **Bootstrap** is an alternative that uses resampling instead of formulas  
-- Standard error corrections change inference (p-values, CIs) but **never** change the point estimates  
+- Standard error corrections change inference (*p*-values, CIs) but **never** change the point estimates  
 - In applied economics, it is common practice to always use at least robust standard errors
 
 Next lecture: additional regression concerns — weights, collinearity, and measurement error.

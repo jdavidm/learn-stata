@@ -9,7 +9,7 @@ Last week we used simulations and conditional means to think about identificatio
 
 This lecture covers:
 - The `regress` (`reg`) command for simple (single-variable) regression  
-- Interpreting coefficients, standard errors, and p-values  
+- Interpreting coefficients, standard errors, and *p*-values  
 - Adding controls (multivariate regression)  
 - Connecting regression to the DAG / identification ideas from Week 8  
 - Getting fancier: factor variables, interactions, and polynomials
