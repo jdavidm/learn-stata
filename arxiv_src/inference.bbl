@@ -1,0 +1,546 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Abadie, Athey, Imbens, and Wooldridge}{Abadie
+  et~al.}{2017}]{abadie_when_2017}
+Abadie, A., S.~Athey, G.~Imbens, and J.~Wooldridge (2017).
+\newblock When {Should} {You} {Adjust} {Standard} {Errors} for {Clustering}?
+\newblock National Bureau of Economic Research Working Paper No. 24003.
+
+\bibitem[\protect\citeauthoryear{Abadie, Athey, Imbens, and Wooldridge}{Abadie
+  et~al.}{2020}]{abadie_samplingbased_2020}
+Abadie, A., S.~Athey, G.~W. Imbens, and J.~M. Wooldridge (2020).
+\newblock Sampling‐{Based} versus {Design}‐{Based} {Uncertainty} in
+  {Regression} {Analysis}.
+\newblock {\em Econometrica\/}~{\em 88\/}(1), 265--296.
+
+\bibitem[\protect\citeauthoryear{Abadie and Cattaneo}{Abadie and
+  Cattaneo}{2018}]{abadie_econometric_2018}
+Abadie, A. and M.~D. Cattaneo (2018).
+\newblock Econometric {Methods} for {Program} {Evaluation}.
+\newblock {\em Annual Review of Economics\/}~{\em 10\/}(1), 465--503.
+
+\bibitem[\protect\citeauthoryear{Anderson}{Anderson}{2008}]{anderson_multiple_2008}
+Anderson, M.~L. (2008).
+\newblock Multiple {Inference} and {Gender} {Differences} in the {Effects} of
+  {Early} {Intervention}: {A} {Reevaluation} of the {Abecedarian}, {Perry}
+  {Preschool}, and {Early} {Training} {Projects}.
+\newblock {\em Journal of the American Statistical Association\/}~{\em
+  103\/}(484), 1481--1495.
+
+\bibitem[\protect\citeauthoryear{Angrist and Pischke}{Angrist and
+  Pischke}{2009}]{angrist_mostly_2009}
+Angrist, J. and J.-S. Pischke (2009).
+\newblock {\em Mostly {Harmless} {Econometrics}: {An} {Empiricist}’s
+  {Companion}}.
+\newblock Princeton: Princeton University Press.
+
+\bibitem[\protect\citeauthoryear{Baum, Schaffer, and Stillman}{Baum
+  et~al.}{2002}]{baum_ivreg2_2002}
+Baum, C.~F., M.~E. Schaffer, and S.~Stillman (2002).
+\newblock {IVREG2}: {Stata} module for extended instrumental variables/{2SLS}
+  and {GMM} estimation.
+\newblock Statistical Software Components S425401, Boston College Department of
+  Economics, revised 26 Jun 2020.
+
+\bibitem[\protect\citeauthoryear{Baum, Schaffer, and Stillman}{Baum
+  et~al.}{2007}]{baum_enhanced_2007}
+Baum, C.~F., M.~E. Schaffer, and S.~Stillman (2007).
+\newblock Enhanced {Routines} for {Instrumental} {Variables}/{Generalized}
+  {Method} of {Moments} {Estimation} and {Testing}.
+\newblock {\em Stata Journal\/}~{\em 7\/}(4), 465--506.
+
+\bibitem[\protect\citeauthoryear{Bell and McCaffrey}{Bell and
+  McCaffrey}{2002}]{bell_bias_2002}
+Bell, R.~M. and D.~F. McCaffrey (2002).
+\newblock Bias reduction in standard errors for linear regression with
+  multiple-stage samples.
+\newblock {\em Survey Methodology\/}~{\em 28\/}(2), 169--181.
+
+\bibitem[\protect\citeauthoryear{Belloni, Chernozhukov, and Hansen}{Belloni
+  et~al.}{2014}]{belloni_high-dimensional_2014}
+Belloni, A., V.~Chernozhukov, and C.~Hansen (2014).
+\newblock High-{Dimensional} {Methods} and {Inference} on {Structural} and
+  {Treatment} {Effects}.
+\newblock {\em Journal of Economic Perspectives\/}~{\em 28\/}(2), 29--50.
+
+\bibitem[\protect\citeauthoryear{Benjamini and Hochberg}{Benjamini and
+  Hochberg}{1995}]{benjamini_controlling_1995}
+Benjamini, Y. and Y.~Hochberg (1995).
+\newblock Controlling the {False} {Discovery} {Rate}: {A} {Practical} and
+  {Powerful} {Approach} to {Multiple} {Testing}.
+\newblock {\em Journal of the Royal Statistical Society: Series B
+  (Methodological)\/}~{\em 57\/}(1), 289--300.
+
+\bibitem[\protect\citeauthoryear{Benjamini, Krieger, and Yekutieli}{Benjamini
+  et~al.}{2006}]{benjamini_adaptive_2006}
+Benjamini, Y., A.~M. Krieger, and D.~Yekutieli (2006).
+\newblock Adaptive linear step-up procedures that control the false discovery
+  rate.
+\newblock {\em Biometrika\/}~{\em 93\/}(3), 491--507.
+
+\bibitem[\protect\citeauthoryear{Bertrand, Duflo, and Mullainathan}{Bertrand
+  et~al.}{2004}]{bertrand_how_2004}
+Bertrand, M., E.~Duflo, and S.~Mullainathan (2004).
+\newblock How {Much} {Should} {We} {Trust} {Differences}-in-{Differences}
+  {Estimates}?
+\newblock {\em Quarterly Journal of Economics\/}~{\em 119\/}(1), 249--275.
+
+\bibitem[\protect\citeauthoryear{Bonferroni}{Bonferroni}{1935}]{bonferroni_il_1935}
+Bonferroni, C.~E. (1935).
+\newblock Il calcolo delle assicurazioni su gruppi di teste.
+\newblock In {\em Studi in {Onore} del {Professore} {Salvatore} {Ortu}
+  {Carboni}}, pp.\  13--60. Rome.
+
+\bibitem[\protect\citeauthoryear{Brodeur, Cook, and Heyes}{Brodeur
+  et~al.}{2020}]{brodeur_methods_2020}
+Brodeur, A., N.~Cook, and A.~Heyes (2020).
+\newblock Methods {Matter}: p-{Hacking} and {Publication} {Bias} in {Causal}
+  {Analysis} in {Economics}.
+\newblock {\em American Economic Review\/}~{\em 110\/}(11), 3634--3660.
+
+\bibitem[\protect\citeauthoryear{Cameron, Gelbach, and Miller}{Cameron
+  et~al.}{2008}]{cameron_bootstrap-based_2008}
+Cameron, A.~C., J.~B. Gelbach, and D.~L. Miller (2008).
+\newblock Bootstrap-{Based} {Improvements} for {Inference} with {Clustered}
+  {Errors}.
+\newblock {\em Review of Economics and Statistics\/}~{\em 90\/}(3), 414--427.
+
+\bibitem[\protect\citeauthoryear{Cameron, Gelbach, and Miller}{Cameron
+  et~al.}{2011}]{cameron_robust_2011}
+Cameron, A.~C., J.~B. Gelbach, and D.~L. Miller (2011).
+\newblock Robust {Inference} {With} {Multiway} {Clustering}.
+\newblock {\em Journal of Business \& Economic Statistics\/}~{\em 29\/}(2),
+  238--249.
+
+\bibitem[\protect\citeauthoryear{Cameron and Miller}{Cameron and
+  Miller}{2015}]{cameron_practitioners_2015}
+Cameron, A.~C. and D.~L. Miller (2015).
+\newblock A {Practitioner}’s {Guide} to {Cluster}-{Robust} {Inference}.
+\newblock {\em Journal of Human Resources\/}~{\em 50\/}(2), 317--372.
+
+\bibitem[\protect\citeauthoryear{Cameron and Trivedi}{Cameron and
+  Trivedi}{2005}]{cameron_microeconometrics_2005}
+Cameron, A.~C. and P.~K. Trivedi (2005).
+\newblock {\em Microeconometrics: {Methods} and {Applications}}.
+\newblock Cambridge: Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Carter, Schnepel, and Steigerwald}{Carter
+  et~al.}{2017}]{carter_asymptotic_2017}
+Carter, A.~V., K.~T. Schnepel, and D.~G. Steigerwald (2017).
+\newblock Asymptotic {Behavior} of a \textit{t} -{Test} {Robust} to {Cluster}
+  {Heterogeneity}.
+\newblock {\em Review of Economics and Statistics\/}~{\em 99\/}(4), 698--709.
+
+\bibitem[\protect\citeauthoryear{Casey, Glennerster, and Miguel}{Casey
+  et~al.}{2012}]{casey_reshaping_2012}
+Casey, K., R.~Glennerster, and E.~Miguel (2012).
+\newblock Reshaping {Institutions}: {Evidence} on {Aid} {Impacts} {Using} a
+  {Preanalysis} {Plan}*.
+\newblock {\em The Quarterly Journal of Economics\/}~{\em 127\/}(4),
+  1755--1812.
+
+\bibitem[\protect\citeauthoryear{Clarke}{Clarke}{2016}]{clarke_rwolf_2016}
+Clarke, D. (2016).
+\newblock {RWOLF}: {Stata} module to calculate {Romano}-{Wolf} stepdown
+  p-values for multiple hypothesis testing.
+\newblock Statistical Software Components S458276, Boston College Department of
+  Economics, revised 08 Jul 2020.
+
+\bibitem[\protect\citeauthoryear{Clarke, Romano, and Wolf}{Clarke
+  et~al.}{2019}]{clarke_romano-wolf_2019}
+Clarke, D., J.~P. Romano, and M.~Wolf (2019).
+\newblock The {Romano}-{Wolf} {Multiple} {Hypothesis} {Correction} in {Stata}.
+\newblock {\em Stata Journal\/}~{\em 20\/}(4), 812--843.
+
+\bibitem[\protect\citeauthoryear{Davidson and MacKinnon}{Davidson and
+  MacKinnon}{1993}]{davidson_estimation_1993}
+Davidson, R. and J.~G. MacKinnon (1993).
+\newblock {\em Estimation and {Inference} in {Economics}}.
+\newblock Oxford: Oxford University Press.
+
+\bibitem[\protect\citeauthoryear{Davidson and MacKinnon}{Davidson and
+  MacKinnon}{2006}]{davidson_bootstrap_2006}
+Davidson, R. and J.~G. MacKinnon (2006).
+\newblock Bootstrap {Methods} in {Econometrics}.
+\newblock In H.~Hassani, T.~C. Mills, and K.~Patterson (Eds.), {\em Palgrave
+  {Handbook} of {Econometrics} {Volume} 1: {Econometric} {Theory}}. London:
+  Palgrave Macmillan.
+
+\bibitem[\protect\citeauthoryear{Deaton}{Deaton}{2010}]{deaton_instruments_2010}
+Deaton, A. (2010).
+\newblock Instruments, {Randomization}, and {Learning} about {Development}.
+\newblock {\em Journal of Economic Literature\/}~{\em 48\/}(2), 424--455.
+
+\bibitem[\protect\citeauthoryear{Efron}{Efron}{1979}]{efron_bootstrap_1979}
+Efron, B. (1979).
+\newblock Bootstrap {Methods}: {Another} {Look} at the {Jackknife}.
+\newblock {\em Annals of Statistics\/}~{\em 7\/}(1), 1--26.
+
+\bibitem[\protect\citeauthoryear{Efron}{Efron}{1982}]{efron_jackknife_1982}
+Efron, B. (1982).
+\newblock {\em The jackknife, the bootstrap, and other resampling plans}.
+\newblock Number~38 in {CBMS}-{NSF} {Regional} {Conference} {Series} in
+  {Applied} {Mathematics}. Philadelphia: Society for Industrial and Applied
+  Mathematics.
+
+\bibitem[\protect\citeauthoryear{Eicker}{Eicker}{1967}]{eicker_limit_1967}
+Eicker, F. (1967).
+\newblock Limit {Theorems} for {Regressions} with {Unequal} and {Dependent}
+  {Errors}.
+\newblock In L.~M. Le~Cam and J.~Neyman (Eds.), {\em Proceedings of the
+  {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}},
+  Volume 5.1, pp.\  59--82. Berkeley: University of California Press.
+
+\bibitem[\protect\citeauthoryear{Fisher}{Fisher}{1935}]{fisher_design_1935}
+Fisher, R.~A. (1935).
+\newblock {\em The {Design} of {Experiments}}.
+\newblock Edinburgh: Oliver \& Boyd.
+
+\bibitem[\protect\citeauthoryear{Ganong and Jäger}{Ganong and
+  Jäger}{2018}]{ganong_permutation_2018}
+Ganong, P. and S.~Jäger (2018).
+\newblock A {Permutation} {Test} for the {Regression} {Kink} {Design}.
+\newblock {\em Journal of the American Statistical Association\/}~{\em
+  113\/}(522), 494--504.
+
+\bibitem[\protect\citeauthoryear{Heckman}{Heckman}{2010}]{heckman_building_2010}
+Heckman, J.~J. (2010).
+\newblock Building {Bridges} between {Structural} and {Program} {Evaluation}
+  {Approaches} to {Evaluating} {Policy}.
+\newblock {\em Journal of Economic Literature\/}~{\em 48\/}(2), 356--398.
+
+\bibitem[\protect\citeauthoryear{Heckman, Moon, Pinto, and Savelyev}{Heckman
+  et~al.}{2010}]{heckman_analyzing_2010}
+Heckman, J.~J., S.~H. Moon, R.~Pinto, and P.~Savelyev (2010).
+\newblock Analyzing social experiments as implemented: {A} reexamination of the
+  evidence from the {HighScope} {Perry} {Preschool} {Program}.
+\newblock {\em Quantitative Economics\/}~{\em 1\/}(1), 1--46.
+
+\bibitem[\protect\citeauthoryear{Heckman, Pinto, Shaikh, and Yavitz}{Heckman
+  et~al.}{2011}]{heckman_inference_2011}
+Heckman, J.~J., R.~Pinto, A.~M. Shaikh, and A.~Yavitz (2011).
+\newblock Inference with imperfect randomization: {The} case of the {Perry}
+  preschool program.
+\newblock National Bureau of Economic Research Working Paper No. 16935.
+
+\bibitem[\protect\citeauthoryear{Hesterberg}{Hesterberg}{2015}]{hesterberg_what_2015}
+Hesterberg, T.~C. (2015).
+\newblock What {Teachers} {Should} {Know} {About} the {Bootstrap}: {Resampling}
+  in the {Undergraduate} {Statistics} {Curriculum}.
+\newblock {\em American Statistician\/}~{\em 69\/}(4), 371--386.
+
+\bibitem[\protect\citeauthoryear{Heß}{Heß}{2017}]{hes_randomization_2017}
+Heß, S. (2017).
+\newblock Randomization {Inference} with {Stata}: {A} {Guide} and {Software}.
+\newblock {\em Stata Journal\/}~{\em 17\/}(3), 630--651.
+
+\bibitem[\protect\citeauthoryear{Holm}{Holm}{1979}]{holm_simple_1979}
+Holm, S. (1979).
+\newblock A {Simple} {Sequentially} {Rejective} {Multiple} {Test} {Procedure}.
+\newblock {\em Scandinavian Journal of Statistics\/}~{\em 6\/}(2), 65--70.
+
+\bibitem[\protect\citeauthoryear{Horowitz}{Horowitz}{2001}]{horowitz_bootstrap_2001}
+Horowitz, J.~L. (2001).
+\newblock The {Bootstrap}.
+\newblock In J.~J. Heckman and E.~E. Leamer (Eds.), {\em Handbook of
+  {Econometrics}}, Volume~5, pp.\  3159--3228. Amsterdam: Elsevier.
+
+\bibitem[\protect\citeauthoryear{Horowitz}{Horowitz}{2019}]{horowitz_bootstrap_2019}
+Horowitz, J.~L. (2019).
+\newblock Bootstrap {Methods} in {Econometrics}.
+\newblock {\em Annual Review of Economics\/}~{\em 11}, 193--224.
+
+\bibitem[\protect\citeauthoryear{Huber}{Huber}{1967}]{huber_behavior_1967}
+Huber, P.~J. (1967).
+\newblock The {Behavior} of {Maximum} {Likelihood} {Estimates} {Under}
+  {Nonstandard} {Conditions}.
+\newblock In L.~M. Le~Cam and J.~Neyman (Eds.), {\em Proceedings of the
+  {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}},
+  Volume 5.1, pp.\  221--233. Berkeley: University of California Press.
+
+\bibitem[\protect\citeauthoryear{Imbens}{Imbens}{2010}]{imbens_better_2010}
+Imbens, G.~W. (2010).
+\newblock Better {LATE} {Than} {Nothing}: {Some} {Comments} on {Deaton} (2009)
+  and {Heckman} and {Urzua} (2009).
+\newblock {\em Journal of Economic Literature\/}~{\em 48\/}(2), 399--423.
+
+\bibitem[\protect\citeauthoryear{Imbens and Kolesár}{Imbens and
+  Kolesár}{2016}]{imbens_robust_2016}
+Imbens, G.~W. and M.~Kolesár (2016).
+\newblock Robust {Standard} {Errors} in {Small} {Samples}: {Some} {Practical}
+  {Advice}.
+\newblock {\em Review of Economics and Statistics\/}~{\em 98\/}(4), 701--712.
+
+\bibitem[\protect\citeauthoryear{Imbens and Rubin}{Imbens and
+  Rubin}{2015}]{imbens_causal_2015}
+Imbens, G.~W. and D.~B. Rubin (2015).
+\newblock {\em Causal {Inference} for {Statistics}, {Social}, and {Biomedical}
+  {Sciences}}.
+\newblock Cambridge: Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Janzen and Michler}{Janzen and
+  Michler}{2021}]{janzen_ulysses_2021}
+Janzen, S.~A. and J.~D. Michler (2021).
+\newblock Ulysses' pact or {Ulysses}' raft: {Using} pre‐analysis plans in
+  experimental and nonexperimental research.
+\newblock {\em Applied Economic Perspectives and Policy\/}.
+
+\bibitem[\protect\citeauthoryear{Kerwin}{Kerwin}{2017}]{kerwin_randomization_2017}
+Kerwin, J.~T. (2017).
+\newblock Randomization inference vs. bootstrapping for p-values.
+\newblock Ceteris Non Paribus,
+  https://jasonkerwin.com/nonparibus/2017/09/25/randomization-inference-vs-bootstrapping-p-values.
+
+\bibitem[\protect\citeauthoryear{Kling, Liebman, and Katz}{Kling
+  et~al.}{2007}]{kling_experimental_2007}
+Kling, J.~R., J.~B. Liebman, and L.~F. Katz (2007).
+\newblock Experimental {Analysis} of {Neighborhood} {Effects}.
+\newblock {\em Econometrica\/}~{\em 75\/}(1), 83--119.
+
+\bibitem[\protect\citeauthoryear{Lee and Shaikh}{Lee and
+  Shaikh}{2014}]{lee_multiple_2014}
+Lee, S. and A.~M. Shaikh (2014).
+\newblock Multiple {Testing} and {Heterogeneous} {Treatment} {Effects}:
+  {Re}-{Evaluating} the {Effect} of {Progresa} on {School} {Enrollment}.
+\newblock {\em Journal of Applied Econometrics\/}~{\em 29\/}(4), 612--626.
+
+\bibitem[\protect\citeauthoryear{Liang and Zeger}{Liang and
+  Zeger}{1986}]{liang_longitudinal_1986}
+Liang, K.-Y. and S.~L. Zeger (1986).
+\newblock Longitudinal data analysis using generalized linear models.
+\newblock {\em Biometrika\/}~{\em 73\/}(1), 13--22.
+
+\bibitem[\protect\citeauthoryear{List, Shaikh, and Xu}{List
+  et~al.}{2019}]{list_multiple_2019}
+List, J.~A., A.~M. Shaikh, and Y.~Xu (2019).
+\newblock Multiple hypothesis testing in experimental economics.
+\newblock {\em Experimental Economics\/}~{\em 22\/}(4), 773--793.
+
+\bibitem[\protect\citeauthoryear{Liu}{Liu}{1988}]{liu_bootstrap_1988}
+Liu, R.~Y. (1988).
+\newblock Bootstrap {Procedures} under some {Non}-{I}.{I}.{D}. {Models}.
+\newblock {\em Annals of Statistics\/}~{\em 16\/}(4), 1696--1708.
+
+\bibitem[\protect\citeauthoryear{MacKinnon}{MacKinnon}{2006}]{mackinnon_bootstrap_2006}
+MacKinnon, J.~G. (2006).
+\newblock Bootstrap {Methods} in {Econometrics}.
+\newblock Queen’s Economics Department Working Paper No. 1028.
+
+\bibitem[\protect\citeauthoryear{MacKinnon and White}{MacKinnon and
+  White}{1985}]{mackinnon_heteroskedasticity-consistent_1985}
+MacKinnon, J.~G. and H.~White (1985).
+\newblock Some {Heteroskedasticity}-{Consistent} {Covariance} {Matrix}
+  {Estimators} with {Improved} {Finite} {Sample} {Properties}.
+\newblock {\em Journal of Econometrics\/}~{\em 29\/}(3), 305--325.
+
+\bibitem[\protect\citeauthoryear{McKenzie}{McKenzie}{2012}]{mckenzie_beyond_2012}
+McKenzie, D. (2012).
+\newblock Beyond baseline and follow-up: {The} case for more {T} in
+  experiments.
+\newblock {\em Journal of Development Economics\/}~{\em 99\/}(2), 210--221.
+
+\bibitem[\protect\citeauthoryear{McKenzie}{McKenzie}{2017}]{mckenzie_finally_2017}
+McKenzie, D. (2017).
+\newblock Finally, a way to do easy randomization inference in {Stata}!
+\newblock World Bank Development Impact Blog,
+  https://blogs.worldbank.org/impactevaluations/finally-way-do-easy-randomization-inference-stata.
+
+\bibitem[\protect\citeauthoryear{Meinshausen, Maathuis, and
+  Bühlmann}{Meinshausen et~al.}{2011}]{meinshausen_asymptotic_2011}
+Meinshausen, N., M.~H. Maathuis, and P.~Bühlmann (2011).
+\newblock Asymptotic optimality of the {Westfall}--{Young} permutation
+  procedure for multiple testing under dependence.
+\newblock {\em Annals of Statistics\/}~{\em 39\/}(6), 3369--3391.
+\newblock arXiv: 1106.2068.
+
+\bibitem[\protect\citeauthoryear{Morgan and Winship}{Morgan and
+  Winship}{2015}]{morgan_counterfactuals_2015}
+Morgan, S.~L. and C.~Winship (2015).
+\newblock {\em Counterfactuals and {Causal} {Inference}: {Methods} and
+  {Principles} for {Social} {Research}\/} (2nd ed.).
+\newblock Cambridge: Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Neyman}{Neyman}{1923}]{neyman_application_1923}
+Neyman, J. (1923).
+\newblock On the {Application} of {Probability} {Theory} to {Agricultural}
+  {Experiments}. {Essay} on {Principles}. {Section} 9.
+\newblock {\em Statistical Science\/}~{\em 5\/}(4), 465--480.
+
+\bibitem[\protect\citeauthoryear{{\"{O}}zler}{{\"{O}}zler}{2012}]{ozler_beware_2012}
+{\"{O}}zler, B. (2012).
+\newblock Beware of studies with a small number of clusters.
+\newblock World Bank Development Impact Blog,
+  https://blogs.worldbank.org/impactevaluations/beware-of-studies-with-a-small-number-of-clusters.
+
+\bibitem[\protect\citeauthoryear{Pustejovsky and Tipton}{Pustejovsky and
+  Tipton}{2018}]{pustejovsky_small-sample_2018}
+Pustejovsky, J.~E. and E.~Tipton (2018).
+\newblock Small-{Sample} {Methods} for {Cluster}-{Robust} {Variance}
+  {Estimation} and {Hypothesis} {Testing} in {Fixed} {Effects} {Models}.
+\newblock {\em Journal of Business \& Economic Statistics\/}~{\em 36\/}(4),
+  672--683.
+
+\bibitem[\protect\citeauthoryear{Reif}{Reif}{2017}]{reif_wyoung_2017}
+Reif, J. (2017).
+\newblock {WYOUNG}: {Stata} module to perform multiple testing corrections.
+\newblock Statistical Software Components S458440, Boston College Department of
+  Economics, revised 29 August 2020.
+
+\bibitem[\protect\citeauthoryear{Romano, Shaikh, and Wolf}{Romano
+  et~al.}{2010}]{romano_hypothesis_2010}
+Romano, J.~P., A.~M. Shaikh, and M.~Wolf (2010).
+\newblock Hypothesis {Testing} in {Econometrics}.
+\newblock {\em Annual Review of Economics\/}~{\em 2}, 75--104.
+
+\bibitem[\protect\citeauthoryear{Romano and Wolf}{Romano and
+  Wolf}{2005a}]{romano_exact_2005}
+Romano, J.~P. and M.~Wolf (2005a).
+\newblock Exact and {Approximate} {Stepdown} {Methods} for {Multiple}
+  {Hypothesis} {Testing}.
+\newblock {\em Journal of the American Statistical Association\/}~{\em
+  100\/}(469), 94--108.
+
+\bibitem[\protect\citeauthoryear{Romano and Wolf}{Romano and
+  Wolf}{2005b}]{romano_stepwise_2005}
+Romano, J.~P. and M.~Wolf (2005b).
+\newblock Stepwise {Multiple} {Testing} as {Formalized} {Data} {Snooping}.
+\newblock {\em Econometrica\/}~{\em 73\/}(4), 1237--1282.
+
+\bibitem[\protect\citeauthoryear{Romano and Wolf}{Romano and
+  Wolf}{2010}]{romano_balanced_2010}
+Romano, J.~P. and M.~Wolf (2010).
+\newblock Balanced control of generalized error rates.
+\newblock {\em Annals of Statistics\/}~{\em 38\/}(1), 598--633.
+
+\bibitem[\protect\citeauthoryear{Roodman}{Roodman}{2015}]{roodman_boottest_2015}
+Roodman, D. (2015).
+\newblock {BOOTTEST}: {Stata} module to provide fast execution of the wild
+  bootstrap with null imposed.
+\newblock Statistical Software Components S458121, Boston College Department of
+  Economics, revised 16 Dec. 2020.
+
+\bibitem[\protect\citeauthoryear{Roodman, Nielsen, MacKinnon, and Webb}{Roodman
+  et~al.}{2019}]{roodman_fast_2019}
+Roodman, D., M.~{\O}. Nielsen, J.~G. MacKinnon, and M.~D. Webb (2019).
+\newblock Fast and wild: {Bootstrap} inference in {Stata} using boottest.
+\newblock {\em Stata Journal\/}~{\em 19\/}(1), 4--60.
+
+\bibitem[\protect\citeauthoryear{Rosenbaum}{Rosenbaum}{2002}]{rosenbaum_observational_2002}
+Rosenbaum, P.~R. (2002).
+\newblock {\em Observational {Studies}\/} (2nd ed.).
+\newblock New York: Springer.
+
+\bibitem[\protect\citeauthoryear{Seidel and Xu}{Seidel and
+  Xu}{2016}]{seidel_mhtexp_2016}
+Seidel, J. and Y.~Xu (2016).
+\newblock {MHTEXP}: {Stata} module to perform multiple hypothesis testing
+  correction procedure.
+\newblock Statistical Software Components S458153, Boston College Department of
+  Economics.
+
+\bibitem[\protect\citeauthoryear{Steinmayr}{Steinmayr}{2020}]{steinmayr_mhtreg_2020}
+Steinmayr, A. (2020).
+\newblock {MHTREG}: {Stata} module for multiple hypothesis testing controlling
+  for {FWER}.
+\newblock Statistical Software Components S458853, Boston College Department of
+  Economics.
+
+\bibitem[\protect\citeauthoryear{Tipton and Pustejovsky}{Tipton and
+  Pustejovsky}{2015}]{tipton_small-sample_2015}
+Tipton, E. and J.~E. Pustejovsky (2015).
+\newblock Small-{Sample} {Adjustments} for {Tests} of {Moderators} and {Model}
+  {Fit} {Using} {Robust} {Variance} {Estimation} in {Meta}-{Regression}.
+\newblock {\em Journal of Educational and Behavioral Statistics\/}~{\em
+  40\/}(6), 604--634.
+
+\bibitem[\protect\citeauthoryear{Tyszler, Pustejovsky, and Tipton}{Tyszler
+  et~al.}{2017}]{tyszler_reg_sandwich_2017}
+Tyszler, M., J.~E. Pustejovsky, and E.~Tipton (2017).
+\newblock {REG}\_sandwich: {Stata} module to compute cluster-robust (sandwich)
+  variance estimators with small-sample corrections for linear regression.
+\newblock Statistical Software Components S458352, Boston College Department of
+  Economics, revised 31 May 2017.
+
+\bibitem[\protect\citeauthoryear{Vivalt and Coville}{Vivalt and
+  Coville}{2021}]{vivalt_how_2021}
+Vivalt, E. and A.~Coville (2021).
+\newblock How {Do} {Policy}-{Makers} {Update} {Their} {Beliefs}?
+\newblock
+  http://evavivalt.com/wp-content/uploads/How-Do-Policymakers-Update.pdf.
+
+\bibitem[\protect\citeauthoryear{Viviano, Wuthrich, and Niehaus}{Viviano
+  et~al.}{2021}]{viviano_when_2021}
+Viviano, D., K.~Wuthrich, and P.~Niehaus (2021).
+\newblock ({When}) should you adjust inferences for multiple hypothesis
+  testing?
+\newblock arXiv: 2104.13367.
+
+\bibitem[\protect\citeauthoryear{Westfall and Troendle}{Westfall and
+  Troendle}{2008}]{westfall_multiple_2008}
+Westfall, P.~H. and J.~F. Troendle (2008).
+\newblock Multiple {Testing} with {Minimal} {Assumptions}.
+\newblock {\em Biometrical Journal\/}~{\em 50\/}(5), 745--755.
+
+\bibitem[\protect\citeauthoryear{Westfall and Young}{Westfall and
+  Young}{1993}]{westfall_resampling_1993}
+Westfall, P.~H. and S.~S. Young (1993).
+\newblock {\em Resampling {Based} {Multiple} {Testing}: {Examples} and
+  {Methods} for p-{Value} {Adjustment}}.
+\newblock New York: John Wiley \& Sons.
+
+\bibitem[\protect\citeauthoryear{White}{White}{1980}]{white_heteroskedasticity-consistent_1980}
+White, H. (1980).
+\newblock A {Heteroskedasticity}-{Consistent} {Covariance} {Matrix} {Estimator}
+  and a {Direct} {Test} for {Heteroskedasticity}.
+\newblock {\em Econometrica\/}~{\em 48\/}(4), 817--838.
+
+\bibitem[\protect\citeauthoryear{Wooldridge}{Wooldridge}{2010}]{wooldridge_econometric_2010}
+Wooldridge, J.~M. (2010).
+\newblock {\em Econometric {Analysis} of {Cross} {Section} and {Panel} {Data}}.
+\newblock Cambridge: MIT Press.
+
+\bibitem[\protect\citeauthoryear{Wu}{Wu}{1986}]{wu_jacknife_1986}
+Wu, C. (1986).
+\newblock Jacknife, {Bootstrap} and {Other} {Resampling} {Methods} in
+  {Regression} {Analysis}.
+\newblock {\em Annals of Statistics\/}~{\em 14\/}(4), 1261--1295.
+
+\bibitem[\protect\citeauthoryear{Young}{Young}{2016a}]{young_edfreg_2016}
+Young, A. (2016a).
+\newblock {EDFREG}: {Effective} degrees of freedom corrections for {Stata}.
+\newblock https://personal.lse.ac.uk/YoungA/, revised October 2016.
+
+\bibitem[\protect\citeauthoryear{Young}{Young}{2016b}]{young_improved_2016}
+Young, A. (2016b).
+\newblock Improved, {Nearly} {Exact}, {Statistical} {Inference} with {Robust}
+  and {Clustered} {Covariance} {Matrices} using {Effective} {Degrees} of
+  {Freedom} {Corrections}.
+\newblock Working Paper, London School of Economics.
+
+\bibitem[\protect\citeauthoryear{Young}{Young}{2019}]{young_channeling_2019}
+Young, A. (2019).
+\newblock Channeling {Fisher}: {Randomization} {Tests} and the {Statistical}
+  {Insignificance} of {Seemingly} {Significant} {Experimental} {Results}.
+\newblock {\em Quarterly Journal of Economics\/}~{\em 134\/}(2), 557--598.
+
+\bibitem[\protect\citeauthoryear{Young}{Young}{2020a}]{young_asymptotically_2020}
+Young, A. (2020a).
+\newblock Asymptotically {Robust} {Randomization} {Confidence} {Intervals} for
+  {Parametric} {OLS} {Regression}.
+\newblock Working Paper, London School of Economics.
+
+\bibitem[\protect\citeauthoryear{Young}{Young}{2020b}]{young_randcmd_2020}
+Young, A. (2020b).
+\newblock {RANDCMD}: {Stata} module to compute randomization inference
+  p-values.
+\newblock Statistical Software Components S458774, Boston College Department of
+  Economics.
+
+\bibitem[\protect\citeauthoryear{Ziliak and McCloskey}{Ziliak and
+  McCloskey}{2008}]{ziliak_cult_2008}
+Ziliak, S.~T. and D.~N. McCloskey (2008).
+\newblock {\em The {Cult} of {Statistical} {Significance}: {How} the {Standard}
+  {Error} {Cost} {Us} {Jobs}, {Justice}, and {Lives}}.
+\newblock Ann Arbor: University of Michigan Press.
+
+\end{thebibliography}
