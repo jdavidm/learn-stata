@@ -67,7 +67,8 @@ if $pack == 1 {
 					carryforward missings xtivreg2 fre coefplot colrspace
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
 					eventstudyinteract avar grc1leg2 reghdfe require
-					bacondecomp csdid eventdd xtevent matsort erepost" ;
+					bacondecomp csdid eventdd xtevent matsort erepost boottest
+					ritest" ;
     #delimit cr
 	
 	* install packages that are on ssc	

@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Standard Errors
-title: Multiple Hypothesis Testing
+title: Challenge 13
 language: Stata
 ---
 
@@ -159,8 +159,6 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 #### Part 6 — Compare All Corrections
 
 1\. Create a summary table (by hand or in Stata) with one row per crop and columns for: raw *p*-value, Bonferroni, Holm, Westfall-Young, and Anderson *q*-value.
-2\. Which crops have a statistically significant effect of CA after each correction? Do any results that were significant at the 5% level lose significance under the FWER corrections?
-3\. Are the Anderson *q*-values more or less conservative than the Holm-corrected *p*-values? Why might this be the case?
-4\. In a pre-analysis plan, would you classify these five crop regressions as a single "family" of hypotheses? Why or why not?
+2\. Which crops have a statistically significant effect of CA after each correction? Do any results that were significant at the 5% level lose significance under the corrections?
 
 ---
