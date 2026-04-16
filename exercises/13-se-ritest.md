@@ -25,7 +25,7 @@ If standard errors are theoretically messy or you want a fully non-parametric p-
 	twoway          (kdensity _pm_1, lwidth(medthick) ///
 	                    lcolor(sky) lpattern(dash)), ///
 	                    ytitle("Density") ///
-	                    xtitle("Hypothetical treatment effect estimate") ///
+	                    xtitle("Hypothetical treatment effect") ///
 	                    title("CA effect on yield (t/ha)") ///
 	                    xline(`true_b', lpattern(solid) ///
 	                        lwidth(thin) lcolor(sky)) ///
@@ -37,10 +37,10 @@ If standard errors are theoretically messy or you want a fully non-parametric p-
 	                        j(left) size(vsmall) place(nw) ///
 	                        orient(vertical)) ///
 	                    legend(off)
-	graph export    "$answ/13-ri-kdensity.png", replace
 ```
 
 2\. What is the RI p-value?
+
 3\. How does the RI p-value compare to the p-value from the standard `ivreg2` regression?
 
 ---

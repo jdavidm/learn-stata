@@ -20,7 +20,7 @@ The manual 2SLS from the previous exercise produces correct coefficients but inc
 	                (iv, label("IV (2SLS)")), ///
 	                    keep(CA CA_hat) xline(0) ///
 	                    title("Effect of CA on Maize Yield: " ///
-						"OLS vs Manual vs IV") ///
+	                    "OLS vs Manual vs IV") ///
 	                    xtitle("Coefficient on CA and CA_hat") ///
 	                    graphregion(color(white))
 	graph export    "$answ/13-iv-coefplot.png", replace

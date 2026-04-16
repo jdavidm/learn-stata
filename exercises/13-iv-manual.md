@@ -18,29 +18,28 @@ In this week's exercises, you will be using data from [Michler et al. (2019)](ht
 
 ```stata
 * compare ols and manual 2sls
-	esttab          ols manual using "$answ/13-iv-manual.tex", replace ///
-	                    b(3) se(3) ///
-	                    keep(CA) rename(CA_hat CA) nodepvars ///
-	                    star(* 0.10 ** 0.05 *** 0.01) ///
-	                    nomtitles ///
-	                    stats(N r2, labels("Observations" "R-squared") ///
-	                          fmt(0 3)) ///
-	                    noobs booktabs nonum collabels(none) ///
-	                    nobaselevels nogaps fragment label ///
-	                    prehead("\begin{tabular}{l*{2}{c}} " ///
-	                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-	                        "& \multicolumn{1}{c}{OLS} & " ///
-	                        "\multicolumn{1}{c}{Manual 2SLS} " ///
-	                        "\\ \midrule") ///
-	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{3}{p{\linewidth}}{\small " ///
-	                        "\noindent \textit{Note}: Dependent var. " ///
-	                        "is log maize yield. Standard errors " ///
-	                        "clustered at household level in " ///
-	                        "parentheses. Manual 2SLS standard errors " ///
-	                        "are incorrect. " ///
-	                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
-	                        "\end{tabular}")
+	esttab      ols manual using "$answ/13-iv-manual.tex", replace ///
+	                b(3) se(3) ///
+	                keep(CA) rename(CA_hat CA) nodepvars ///
+	                star(* 0.10 ** 0.05 *** 0.01) ///
+	                nomtitles fmt(0 3)) ///
+	                stats(N r2, labels("Observations" "R-squared") /// 
+	                noobs booktabs nonum collabels(none) ///
+	                nobaselevels nogaps fragment label ///
+	                prehead("\begin{tabular}{l*{2}{c}} " ///
+	                    "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+	                    "& \multicolumn{1}{c}{OLS} & " ///
+	                    "\multicolumn{1}{c}{Manual 2SLS} " ///
+	                    "\\ \midrule") ///
+	                postfoot("\hline \hline \\[-1.8ex] " ///
+	                    "\multicolumn{3}{p{\linewidth}}{\small " ///
+	                    "\noindent \textit{Note}: Dependent var. " ///
+	                    "is log maize yield. Standard errors " ///
+	                    "clustered at household level in " ///
+	                    "parentheses. Manual 2SLS standard errors " ///
+	                    "are incorrect. " ///
+	                    "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+	                    "\end{tabular}")
 ```
 
 2\. Does the coefficient on CA increase or decrease when you move from OLS to the manual 2SLS? What does this tell you about the direction of the selection bias?

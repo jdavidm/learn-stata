@@ -18,7 +18,7 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 	use             "$data/Michler_JEEM.dta", clear
 
 * estimate crop-specific production functions
-	local crops     `" "Maize" "Groundnut" "Sorghum" "Millet" "Cowpea" "'
+	local crops `" "Maize" "Groundnut" "Sorghum" "Millet" "Cowpea" "'
 	local i = 1
 
 	foreach c of local crops {
@@ -43,28 +43,27 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 
 ```stata
 * five-crop comparison table
-	esttab          Maize Groundnut Sorghum Millet Cowpea ///
-	                    using "$answ/13-se-mht.tex", replace ///
-	                    b(3) se(3) ///
-	                    keep(CA) ///
-	                    star(* 0.10 ** 0.05 *** 0.01) ///
-	                    mtitles("Maize" "Groundnut" "W. Sorghum" ///
-	                        "Millet" "Cowpea") ///
-	                    stats(N, labels("Observations") fmt(0)) ///
-	                    noobs booktabs nonum collabels(none) ///
-	                    nobaselevels nogaps fragment label ///
-	                    prehead("\begin{tabular}{l*{5}{c}} " ///
-	                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-	                        "& \multicolumn{5}{c}{Dependent Variable: " ///
-	                        "Log Yield} \\ \midrule") ///
-	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{6}{p{0.95\linewidth}}{\small " ///
-	                        "\noindent \textit{Note}: Each column is a " ///
-	                        "separate OLS regression for the indicated " ///
-	                        "crop. Standard errors clustered at the " ///
-	                        "household level in parentheses. " ///
-	                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
-	                        "\end{tabular}")
+	esttab      Maize Groundnut Sorghum Millet Cowpea ///
+	                using "$answ/13-se-mht.tex", replace ///
+	                b(3) se(3) keep(CA) ///
+	                star(* 0.10 ** 0.05 *** 0.01) ///
+	                mtitles("Maize" "Groundnut" "W. Sorghum" ///
+	                    "Millet" "Cowpea") ///
+	                stats(N, labels("Observations") fmt(0)) ///
+	                noobs booktabs nonum collabels(none) ///
+	                nobaselevels nogaps fragment label ///
+	                prehead("\begin{tabular}{l*{5}{c}} " ///
+	                    "\\[-1.8ex]\hline \hline \\[-1.8ex] & " ///
+	                    "& \multicolumn{5}{c}{Dependent Variable: " ///
+	                    "Log Yield} \\ \midrule") ///
+	                postfoot("\hline \hline \\[-1.8ex] " ///
+	                    "\multicolumn{6}{p{0.95\linewidth}}{\small " ///
+	                    "\noindent \textit{Note}: Each column is a " ///
+	                    "separate OLS regression for the indicated " ///
+	                    "crop. Standard errors clustered at the " ///
+	                    "household level in parentheses. " ///
+	                    "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+	                    "\end{tabular}")
 ```
 
 #### Part 3 — Bonferroni and Holm Corrections
