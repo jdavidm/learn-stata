@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Causal Effects
+topic: Research Design
 title: Simulating a Confounded DGP
 language: Stata
 ---

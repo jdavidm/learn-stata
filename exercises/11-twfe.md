@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Two-Way Fixed Effects
+topic: Fixed Effects
 title: Adding Time Fixed Effects
 language: Stata
 ---

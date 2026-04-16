@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Producing Results
+topic: LaTeX
 title: Challenge 10
 language: Stata
 ---

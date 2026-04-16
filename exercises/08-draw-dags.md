@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: Drawing DAGs for Simple DGPs
 language: Stata
 ---

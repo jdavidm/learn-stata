@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Causal Effects
+topic: Research Design
 title: Conditioning on a Confounder
 language: Stata
 ---

@@ -4,7 +4,7 @@ element: assignment
 title: Difference-in-Differences
 language: Stata
 exercises: ['Continuous Treatment DiD', 'Parallel Trends in Interventions', 'Continuous Interacted DiD', 'Event Study Regression', 'Event Plot with `coefplot`', 'Treatment Adoption Heatmap', 'Using the `eventdd` Package', 'Check That Your Code Runs', 'Challenge 12']
-points: [10, 10, 10, 10, 10, 10, 10, 5, 'Challenge - 25']
+points: [10, 10, 10, 10, 15, 20, 20, 5, 'Challenge - 20']
 ---
 
 ### Learning Objectives

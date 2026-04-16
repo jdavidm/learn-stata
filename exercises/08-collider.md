@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: Collider Bias Simulation
 language: Stata
 ---

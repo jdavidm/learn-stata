@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: Confounding and Conditional Means
 language: Stata
 ---

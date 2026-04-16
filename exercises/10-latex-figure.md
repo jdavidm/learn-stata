@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: LaTeX Figures
+topic: LaTeX
 title: Inserting a Stata Figure
 language: Stata
 ---

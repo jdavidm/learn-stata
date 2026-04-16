@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: LaTeX Figures
+topic: LaTeX
 title: Multi-Model `coefplot`
 language: Stata
 ---

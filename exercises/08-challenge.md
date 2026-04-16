@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: Challenge 8
 language: Stata
 ---

@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Two-Way Fixed Effects
+topic: Fixed Effects
 title: Staggered Adoption Cohorts
 language: Stata
 ---

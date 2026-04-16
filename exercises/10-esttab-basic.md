@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: LaTeX Tables
+topic: LaTeX
 title: Basic `esttab` Table
 language: Stata
 ---

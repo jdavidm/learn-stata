@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Regression
+topic: Standard Errors
 title: Clustered Standard Errors
 language: Stata
 ---

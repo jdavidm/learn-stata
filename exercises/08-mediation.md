@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Research design
+topic: Research Design
 title: Mediation and Conditional Means
 language: Stata
 ---

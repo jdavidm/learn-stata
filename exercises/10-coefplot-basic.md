@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: LaTeX Figures
+topic: LaTeX
 title: Basic `coefplot`
 language: Stata
 ---

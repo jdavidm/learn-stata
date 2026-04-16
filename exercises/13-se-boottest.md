@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: Standard Errors & Inference
+topic: Standard Errors
 title: Wild Cluster Bootstrap
 language: Stata
 ---

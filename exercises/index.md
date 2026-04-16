@@ -17,7 +17,7 @@ languages: ['Stata', 'Git', 'LaTeX']
   {% for exercise in site.pages %}
     {% if exercise.layout == 'exercise' and exercise.language == language %}
      <tr>
-      <td nowrap>{{ exercise.topic | replace:'and','&'  }}</td>
+      <td nowrap>{{ exercise.topic | replace:' and ',' & '  }}</td>
       <td nowrap><a href="{{ exercise.url | prepend: site.baseurl }}">
         {{ exercise.title }}</a></td>
       {% capture output_file %}{{ exercise.url | remove: 'exercises' | remove: '/' | prepend: '/solutions/' }}{% endcapture %}

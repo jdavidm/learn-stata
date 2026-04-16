@@ -1,6 +1,6 @@
 ---
 layout: exercise
-topic: LaTeX Tables
+topic: LaTeX
 title: Multi-Column Table with Notes
 language: Stata
 ---
