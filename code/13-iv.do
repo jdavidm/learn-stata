@@ -119,7 +119,7 @@
 						"OLS vs Manual vs IV") ///
 	                    xtitle("Coefficient on CA and CA_hat") ///
 	                    graphregion(color(white))
-	graph export    "$answ/13-iv-coefplot.png", replace
+	graph export    "$answ/13-iv-comparison-2.png", replace
 
 **## 2.3 - interpretation
 
@@ -189,7 +189,7 @@
 	                    title("CA Effect Across Specifications") ///
 	                    xtitle("Coefficient on CA") ///
 	                    graphregion(color(white))
-	graph export    "$answ/13-iv-panel-coefplot.png", replace
+	graph export    "$answ/13-iv-panel-2.png", replace
 
 **## 3.3 - interpretation
 

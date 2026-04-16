@@ -1,0 +1,3 @@
+[3] The coefficient in the panel regression is smaller than the coefficient in the cross-sectional regression. This is because the panel regression is controlling for time-invariant unobserved heterogeneity, which is biasing the coefficient in the cross-sectional regression upwards.
+
+[4] The coefficient in the panel iv regressions blows up. This is likely because the instrument is not valid in the panel data (most likely it is a week instrument once we control for household FE). 

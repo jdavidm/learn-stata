@@ -1,0 +1,3 @@
+[3] Yes, the manual and ivreg2 coefficients are identical. This is because both methods are calculating the same thing: the 2SLS estimate of the effect of the treatment on the outcome, adjusting for the control variables.
+
+[4] No, the standard errors are different. This is because the manual method is using the default OLS standard errors, while ivreg2 is using robust standard errors.

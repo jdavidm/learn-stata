@@ -1,0 +1,1 @@
+[2] increases. This is because the endogeneity bias is negative in this case, so removing it increases the coefficient on the treatment.

@@ -11,7 +11,7 @@ Before trusting any IV estimate, we must test whether our instrument is actually
 	- Add the `first` option to display both first- and second-stage results
 	- Add the `endog(CA)` option to display the Durbin-Wu-Hausman Test
 
-1\. What is the Kleibergen-Paap F-statistic? Does `wardNGO` pass the standard rule-of-thumb threshold of $F > 10$ for instrument strength?
+1\. Does `wardNGO` pass the standard rule-of-thumb threshold of $F > 10$ for instrument strength using the Kleibergen-Paap F-statistic?
 
 2\. Based on the endogeneity test, is `CA` statistically endogenous?
 
