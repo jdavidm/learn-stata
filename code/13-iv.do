@@ -93,7 +93,7 @@
 	                        "\multicolumn{1}{c}{Manual 2SLS} " ///
 	                        "\\ \midrule") ///
 	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{3}{p{\linewidth}}{\small " ///
+	                        "\multicolumn{4}{p{\linewidth}}{\small " ///
 	                        "\noindent \textit{Note}: Dependent variable " ///
 	                        "is log maize yield. Standard errors " ///
 	                        "clustered at household level in " ///

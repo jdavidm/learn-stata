@@ -7,12 +7,14 @@ language: Stata
 
 In the previous exercises we estimated the effect of conservation agriculture on maize yields using cross-sectional IV. But the `Michler_JEEM.dta` dataset is actually a **panel**: households (`rc`) are observed over multiple years. This means we can absorb time-invariant household heterogeneity with fixed effects *while* instrumenting for CA adoption.
 
-- Using `Michler_JEEM.dta` (maize only), declare the panel structure with `xtset rc year`.
+For whatever reason, `xtivre2` can't hand factor-variable operators like `i.year`. So, before running your regressions, use the Stata command `qui tab year, gen(y_)` to create dummy variables for each year and include these in your regressions.
+
+- Using `Michler_JEEM.dta` (maize only), declare the panel structure with `xtset rc`.
 - Run a **fixed effects** regression using `xtreg` using the same variables as in the previous exercises but adding `fe`and `cluster(rc)`. Store as `fe`.
 - Run a **panel IV** regression using `xtivreg2` using the same variables as in the previous exercises but adding `fe` and `cluster(rc)`. Store as `fe_iv`.
 
 
-1\. Adapt your previous table to add 2 more columns. Order results as ols, manual, iv, fe, fe_iv. Export and put into Overleaf.
+1\. Adapt your previous table to add 2 more columns. Order results as `ols`, `manual`, `iv`, `fe`, `fe_iv`. Export and put into Overleaf.
 
 2\. Adapt your previous `coefplot` to include all 5 specifications and export to Overleaf.
 
