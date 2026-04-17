@@ -389,6 +389,9 @@
 * load data
 	use             "$data/Michler_JEEM.dta", clear
 
+* create year dummies (eststo can't handle i.year inside loops)
+	qui tab         year, gen(y_)
+
 * estimate crop-specific production functions
 	local crops     `" "Maize" "Sorghum" "Millet" "Groundnut" "Cowpea" "'
 	local i = 1
@@ -400,7 +403,7 @@
 	    count
 	    if r(N) > 0 {
 	        reg         lnyield CA lnbasal lntop lnseed lnaream2 ///
-	                        pdate pdate2 i.year, vce(cluster rc)
+	                        pdate pdate2 y_*, vce(cluster rc)
 	        eststo      `c'
 
 	        * store the p-value on CA for later
@@ -414,16 +417,100 @@
 	    local       ++i
 	}
 
-**## part 2 - five-crop comparison table
+**## part 2 - bonferroni and holm corrections
 
+* collect the 5 p-values
+	matrix          pvals = (`p1', `p2', `p3', `p4', `p5')
+	matrix colnames pvals = Maize Sorghum Millet Groundnut Cowpea
+
+* bonferroni: multiply each p-value by 5
+	local crops     `" "Maize" "Sorghum" "Millet" "Groundnut" "Cowpea" "'
+	local j = 1
+	foreach c of local crops {
+	    local       p_bonf`j' = min(pvals[1,`j'] * 5, 1)
+	    local       ++j
+	}
+
+* holm: sort p-values and apply step-down penalties
+	preserve
+	clear
+	set             obs 5
+	gen             crop_name = ""
+	gen             crop_id   = .
+	gen             pval      = .
+	replace         crop_name = "Maize"     in 1
+	replace         crop_name = "Sorghum"   in 2
+	replace         crop_name = "Millet"    in 3
+	replace         crop_name = "Groundnut" in 4
+	replace         crop_name = "Cowpea"    in 5
+	forvalues       j = 1/5 {
+	    replace     crop_id = `j'     in `j'
+	    replace     pval    = `p`j''  in `j'
+	}
+
+	sort            pval
+	gen             rank   = _n
+	gen             holm_p = min(pval * (5 - rank + 1), 1)
+
+* enforce monotonicity (holm adjusted p-values must be non-decreasing)
+	replace         holm_p = holm_p[_n-1] if holm_p < holm_p[_n-1] ///
+	                    & _n > 1
+
+* store holm p-values back into locals by crop id
+	forvalues       j = 1/5 {
+	    su          holm_p if crop_id == `j', meanonly
+	    local       p_holm`j' = r(mean)
+	}
+	list            crop_name pval holm_p, clean noobs
+	restore
+
+**## part 3 - westfall-young correction
+
+* westfall-young adjusted p-values
+	use             "$data/Michler_JEEM.dta", clear
+	wyoung          lnyield, cmd(reg OUTCOMEVAR CA lnbasal lntop ///
+	                    lnseed lnaream2 pdate pdate2 i.year, ///
+	                    vce(cluster rc)) cluster(rc) ///
+	                    familyp(CA) subgroup(crop) ///
+	                    reps(100) seed(123)
+
+* store westfall-young p-values (wyoung returns matrix r(table))
+	matrix          wy = r(table)
+	forvalues       j = 1/5 {
+	    local       p_wy`j' = wy[`j', 4]
+	}
+
+**## part 4 - summary table with all p-values
+
+* attach corrected p-values to each stored estimate
+	local crops     `" "Maize" "Sorghum" "Millet" "Groundnut" "Cowpea" "'
+	local j = 1
+	foreach c of local crops {
+	    estimates   restore `c'
+	    estadd      scalar raw_p   = `p`j''
+	    estadd      scalar bonf_p  = `p_bonf`j''
+	    estadd      scalar holm_p  = `p_holm`j''
+	    estadd      scalar wy_p    = `p_wy`j''
+	    estimates   drop `c'
+	    estimates   store `c'
+	    local       ++j
+	}
+
+* export summary table
 	esttab          Maize Sorghum Millet Groundnut Cowpea ///
-	                    using "$answ/13-se-mht.tex", replace ///
-	                    b(3) se(3) ///
-	                    keep(CA) ///
-	                    star(* 0.10 ** 0.05 *** 0.01) ///
+	                    using "$answ/13-challenge.tex", replace ///
+	                    b(3) nostar ///
+	                    keep(CA) nodepvars ///
 	                    mtitles("Maize" "Sorghum" "Millet" ///
 	                        "Groundnut" "Cowpea") ///
-	                    stats(N, labels("Observations") fmt(0)) ///
+	                    stats(raw_p bonf_p holm_p wy_p N r2, ///
+	                        labels("Raw \textit{p}-value" ///
+	                            "Bonferroni \textit{p}" ///
+	                            "Holm \textit{p}" ///
+	                            "Westfall-Young \textit{p}" ///
+	                            "\midrule Observations" ///
+	                            "R-squared") ///
+	                        fmt(3 3 3 3 0 3)) ///
 	                    noobs booktabs nonum collabels(none) ///
 	                    nobaselevels nogaps fragment label ///
 	                    prehead("\begin{tabular}{l*{5}{c}} " ///
@@ -434,87 +521,15 @@
 	                        "\multicolumn{6}{p{\linewidth}}{\small " ///
 	                        "\noindent \textit{Note}: Each column is a " ///
 	                        "separate OLS regression for the indicated " ///
-	                        "crop. Standard errors clustered at the " ///
-	                        "household level in parentheses. " ///
-	                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
+	                        "crop. Reported \textit{p}-values are for " ///
+	                        "the null hypothesis that " ///
+	                        "$\beta_{\text{CA}} = 0$. " ///
+	                        "Bonferroni and Holm adjust for 5 " ///
+	                        "hypotheses. Westfall-Young uses 1,000 " ///
+	                        "bootstrap replications.} " ///
 	                        "\end{tabular}")
 
-**## part 3 - bonferroni and holm corrections
-
-* collect the 5 p-values
-	matrix          pvals = (`p1', `p2', `p3', `p4', `p5')
-	matrix colnames pvals = Maize Sorghum Millet Groundnut Cowpea
-
-* bonferroni: multiply each p-value by 5
-	di              "=== Bonferroni Correction ==="
-	forvalues       j = 1/5 {
-	    local       p_bonf = min(pvals[1,`j'] * 5, 1)
-	    di          "  Crop `j': raw p = " %6.4f pvals[1,`j'] ///
-	                    "  Bonferroni p = " %6.4f `p_bonf'
-	}
-
-* holm: sort p-values and apply step-down penalties
-	di              _n "=== Holm Correction ==="
-	preserve
-	clear
-	set             obs 5
-	gen             crop = ""
-	gen             pval = .
-	replace         crop = "Maize"     in 1
-	replace         crop = "Sorghum"   in 2
-	replace         crop = "Millet"    in 3
-	replace         crop = "Groundnut" in 4
-	replace         crop = "Cowpea"    in 5
-	replace         pval = `p1'        in 1
-	replace         pval = `p2'        in 2
-	replace         pval = `p3'        in 3
-	replace         pval = `p4'        in 4
-	replace         pval = `p5'        in 5
-
-	sort            pval
-	gen             rank = _n
-	gen             holm_p = min(pval * (5 - rank + 1), 1)
-
-* enforce monotonicity (holm adjusted p-values must be non-decreasing)
-	replace         holm_p = holm_p[_n-1] if holm_p < holm_p[_n-1] ///
-	                    & _n > 1
-	list            crop pval holm_p, clean noobs
-	restore
-
-**## part 4 - westfall-young correction
-
-* westfall-young adjusted p-values
-	use             "$data/Michler_JEEM.dta", clear
-	wyoung          lnyield, cmd(reg OUTCOMEVAR CA lnbasal lntop ///
-	                    lnseed lnaream2 pdate pdate2 i.year ///
-	                    if crop == GROUPVAR, vce(cluster rc)) ///
-	                    familyp(CA) ///
-	                    subgroup(crop) ///
-	                    reps(1000) seed(123)
-
-**## part 5 - anderson sharpened q-values
-
-* prepare p-value dataset for anderson's procedure
-	clear
-	set             obs 5
-	gen             crop = ""
-	gen             pval = .
-	replace         crop = "Maize"     in 1
-	replace         crop = "Sorghum"   in 2
-	replace         crop = "Millet"    in 3
-	replace         crop = "Groundnut" in 4
-	replace         crop = "Cowpea"    in 5
-	replace         pval = `p1'        in 1
-	replace         pval = `p2'        in 2
-	replace         pval = `p3'        in 3
-	replace         pval = `p4'        in 4
-	replace         pval = `p5'        in 5
-
-* run anderson's sharpened q-value procedure
-	do              "$code/fdr_sharpened_qvalues.do"
-	list            crop pval bky06_qval, clean noobs
-
-**## part 6 - interpretation
+**## part 5 - interpretation
 
 
 **********************************************************************

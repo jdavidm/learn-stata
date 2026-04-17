@@ -1,0 +1,3 @@
+[2] 0.0000
+
+[3] The RI p-value is smaller than the iv p-value. This is because the RI is robust to violations of the exogeneity assumption, while the iv p-value is not.
