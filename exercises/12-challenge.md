@@ -7,7 +7,7 @@ language: Stata
 
 This challenge combines Difference-in-Differences with a Monte Carlo (MC) simulation and ridgeline plots to explore how measurement error attenuates regression estimates. The data is also from the [Impact evaluations in data-scarce environments](https://doi.org/10.1016/j.jdeveco.2025.103648) paper though it is a different dataset. By the end of the exercise you will have replicated Figure 2 in that paper. First, you will estimate a baseline model, add simulated noise to a continuous variable, and visualize the loss of statistical significance using `joyplot`.
 
-#### Challenge 12.1 — Baseline Regression and Coefplot
+#### Part 1 — Baseline Regression and Coefplot
 
 - Download the `mc_data.dta` dataset from the course webpage and then load it into Stata.
 - Regress yield on:
@@ -19,7 +19,7 @@ This challenge combines Difference-in-Differences with a Monte Carlo (MC) simula
 - Store the results using `eststo baseline`.
 - Use `coefplot` to visualize the coefficients. Keep only the flood variables and the flood-variety interaction terms. Format the plot cleanly, include a vertical reference line at $0$, export it, and import it into your Overleaf document.
 
-#### Challenge 12.2 — Monte Carlo Simulation (Measurement Error)
+#### Part 2 — Monte Carlo Simulation (Measurement Error)
 
 Now, we will test how robust the `subfld` coefficient is if we assume the continuous outcome variable (`yield`) is measured with error. To do this, we are going to use Stata's custom program function. We will write a program that adds normally distributed noise to `yield` and then runs the same regression as in Part 12.1. We will then loop through different levels of noise and store the results. We've not dealt with programs before but it is covered in a [lecture in week 6]({{ site.baseurl }}/materials/06-programs). [Note that the entire Monte Carlo simulation takes about **20 minutes** to run on my machine.]
 
@@ -87,7 +87,7 @@ Now, we will test how robust the `subfld` coefficient is if we assume the contin
 
 How many regressions did we just run in total?
 
-#### Challenge 12.3 — Visualize P-Value Attenuation
+#### Part 3 — Visualize P-Value Attenuation
 
 - Use `joyplot` to visualize the distribution of `p_subfld` grouped by the `noise` level. Include the following options to match the example plot exactly:
   - Add horizontal lines for each group using `yline`.

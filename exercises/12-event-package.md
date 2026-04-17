@@ -12,4 +12,5 @@ Manual dummy-shifting and binning works but is inherently repetitive across proj
 - Use the `method()` option to control for unit and time fixed effects and cluster standard errors by `district_id`.
 - Use the `graph_op()` option to set the y-axis title.
 - Upload the resulting plot to your Overleaf document.
+
 ---
