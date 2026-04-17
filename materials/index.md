@@ -46,6 +46,8 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Event Studies]({{ site.baseurl }}/materials/12-event-studies) 
 - [Instrumental Variables]({{ site.baseurl }}/materials/13-iv)
 - [Standard Errors & Inference]({{ site.baseurl }}/materials/13-se)
+- [Basic Regression Discontinuity]({{ site.baseurl }}/materials/14-rdd)
+- [Extensions of RDD]({{ site.baseurl }}/materials/14-rdd-extensions)
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)
