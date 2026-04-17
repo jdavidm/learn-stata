@@ -1,7 +1,7 @@
 ---
 layout: page
 element: lecture
-title: Regression Discontinuity Designs
+title: Regression Discontinuity
 language: Stata
 ---
 
