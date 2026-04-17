@@ -1,0 +1,1 @@
+[2] Robust standard errors are larger than the default standard errors, and the HC2 standard errors are larger than the robust standard errors. The clustered standard errors are the largest of all. This is because as we cluster on more and more variables, we are accounting for more and more sources of correlation in the data, which increases the standard errors.

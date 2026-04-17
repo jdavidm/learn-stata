@@ -10,7 +10,7 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 #### Part 1 — Estimate Crop-Specific Production Functions
 
 - Load `"$data/Michler_JEEM.dta"`.
-- The `crops` variable takes five values: `1` = Maize, `2` = Groundnut, `3` = W. Sorghum, `4` = Millet, `5` = Cowpea.
+- The `crop` variable takes five values: `1` = Maize, `2` = Sorghum, `3` = Millet, `4` = Groundnut, `5` = Cowpea.
 - Loop over each crop, subset the data, and run the OLS production function regression of `lnyield` on `CA lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`, clustering standard errors at the household (`rc`) level. Store each set of results with a descriptive name:
 
 ```stata
@@ -18,19 +18,22 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 	use             "$data/Michler_JEEM.dta", clear
 
 * estimate crop-specific production functions
-	local crops `" "Maize" "Groundnut" "Sorghum" "Millet" "Cowpea" "'
+	local crops `" "Maize" "Sorghum" "Millet" "Groundnut" "Cowpea" "'
 	local i = 1
 
 	foreach c of local crops {
 	    preserve
-	    keep if     crops == `i'
+	    keep if     crop == `i'
 
-	    reg         lnyield CA lnbasal lntop lnseed lnaream2 ///
-	                    pdate pdate2 i.year, vce(cluster rc)
-	    eststo      `c'
+	    count
+	    if r(N) > 0 {
+	        reg         lnyield CA lnbasal lntop lnseed lnaream2 ///
+	                        pdate pdate2 i.year, vce(cluster rc)
+	        eststo      `c'
 
-	    * store the p-value on CA for later
-	    local       p`i' = r(table)[4,1]
+	        * store the p-value on CA for later
+	        local       p`i' = r(table)[4,1]
+	    }
 
 	    restore
 	    local       ++i
@@ -43,12 +46,12 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 
 ```stata
 * five-crop comparison table
-	esttab      Maize Groundnut Sorghum Millet Cowpea ///
+	esttab      Maize Sorghum Millet Groundnut Cowpea ///
 	                using "$answ/13-se-mht.tex", replace ///
 	                b(3) se(3) keep(CA) ///
 	                star(* 0.10 ** 0.05 *** 0.01) ///
-	                mtitles("Maize" "Groundnut" "W. Sorghum" ///
-	                    "Millet" "Cowpea") ///
+	                mtitles("Maize" "Sorghum" "Millet" ///
+	                    "Groundnut" "Cowpea") ///
 	                stats(N, labels("Observations") fmt(0)) ///
 	                noobs booktabs nonum collabels(none) ///
 	                nobaselevels nogaps fragment label ///
@@ -73,7 +76,7 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 ```stata
 * collect the 5 p-values
 	matrix          pvals = (`p1', `p2', `p3', `p4', `p5')
-	matrix colnames pvals = Maize Groundnut Sorghum Millet Cowpea
+	matrix colnames pvals = Maize Sorghum Millet Groundnut Cowpea
 
 * bonferroni: multiply each p-value by 5
 	di              "=== Bonferroni Correction ==="
@@ -91,9 +94,9 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 	gen             crop = ""
 	gen             pval = .
 	replace         crop = "Maize"     in 1
-	replace         crop = "Groundnut" in 2
-	replace         crop = "Sorghum"   in 3
-	replace         crop = "Millet"    in 4
+	replace         crop = "Sorghum"   in 2
+	replace         crop = "Millet"    in 3
+	replace         crop = "Groundnut" in 4
 	replace         crop = "Cowpea"    in 5
 	replace         pval = `p1'        in 1
 	replace         pval = `p2'        in 2
@@ -121,9 +124,9 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 	use             "$data/Michler_JEEM.dta", clear
 	wyoung          lnyield, cmd(reg OUTCOMEVAR CA lnbasal lntop ///
 	                    lnseed lnaream2 pdate pdate2 i.year ///
-	                    if crops == GROUPVAR, vce(cluster rc)) ///
+	                    if crop == GROUPVAR, vce(cluster rc)) ///
 	                    familyp(CA) ///
-	                    subgroup(crops) ///
+	                    subgroup(crop) ///
 	                    reps(1000) seed(123)
 ```
 
@@ -140,9 +143,9 @@ In the previous exercises we estimated the effect of conservation agriculture (C
 	gen             crop = ""
 	gen             pval = .
 	replace         crop = "Maize"     in 1
-	replace         crop = "Groundnut" in 2
-	replace         crop = "Sorghum"   in 3
-	replace         crop = "Millet"    in 4
+	replace         crop = "Sorghum"   in 2
+	replace         crop = "Millet"    in 3
+	replace         crop = "Groundnut" in 4
 	replace         crop = "Cowpea"    in 5
 	replace         pval = `p1'        in 1
 	replace         pval = `p2'        in 2

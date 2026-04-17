@@ -7,7 +7,7 @@ language: Stata
 
 In this week's exercises, you will be using data from [Michler et al. (2019)](https://www.sciencedirect.com/science/article/pii/S0095069617307532), which studies the impact of conservation agriculture (CA) on crop yields in Zimbabwe. CA adoption (`CA`) is endogenous — farmers who adopt CA may differ systematically from those who don't. In the paper, we instrument CA adoption using `wardNGO`, the number of other households in the same ward that received NGO support for CA.
 
-- Load `"$data/Michler_JEEM.dta"` and keep only maize observations (`keep if crops == 1`).
+- Load `"$data/Michler_JEEM.dta"` and keep only maize observations (`keep if crop == 1`).
 - Run a naive **OLS** regression of `lnyield` on `CA` with the following controls: `lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`, clustering standard errors at the `rc` level. Store the results as `ols`.
 - Run the **First Stage**: Regress the endogenous variable (`CA`) on the instrument (`wardNGO`) and all the same controls (`lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`), clustering at `rc`. Store as `first`.
 - Generate the predicted fitted values from the first stage using `predict CA_hat, xb`.

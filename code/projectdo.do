@@ -68,7 +68,7 @@ if $pack == 1 {
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
 					eventstudyinteract avar grc1leg2 reghdfe require
 					bacondecomp csdid eventdd xtevent matsort erepost boottest
-					ritest" ;
+					ritest wyoung" ;
     #delimit cr
 	
 	* install packages that are on ssc	
@@ -89,11 +89,17 @@ if $pack == 1 {
 		}
 
 	* install -xfill and dm89_1 - packages
-		net install xfill,	replace from("https://www.sealedenvelope.com/")
+		net install xfill, replace ///
+			from("https://www.sealedenvelope.com/")
 		
 	* install csdid
-		net install csdid, replace from("https://raw.githubusercontent.com/friosavila/csdid_drdid/main/code/")
-	
+		net install csdid, replace ///
+			from("https://raw.githubusercontent.com/friosavila/csdid_drdid/main/code/")
+
+	* install boottest
+		net install boottest, replace ///
+            from("https://raw.githubusercontent.com/droodman/boottest/master/")
+					
 	* update all ado files
 		ado update, update
 
@@ -119,4 +125,3 @@ if $pack == 1 {
 *	do				"$code/10-results.do"
 *	do				"$code/11-FE.do"
 *	do				"$code/12-did.do"
-*	do				"$code/13-iv.do"

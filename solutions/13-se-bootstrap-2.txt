@@ -1,0 +1,1 @@
+[2] The bootstrapped standard errors are larger but close to the clustered standard errors.

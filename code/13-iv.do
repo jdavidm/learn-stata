@@ -22,7 +22,7 @@
 
 * load data
 	use             "$data/Michler_JEEM.dta", clear
-	keep if         crops == 1
+	keep if         crop == 1
 
 * naive ols
 	reg             lnyield CA lnbasal lntop lnseed lnaream2 ///
@@ -130,7 +130,7 @@
 
 * reload data (need to drop CA_hat and start fresh)
 	use             "$data/Michler_JEEM.dta", clear
-	keep if         crops == 1
+	keep if         crop == 1
 
 * create year dummies (xtivreg2 can't handle i.year)
 	qui tab         year, gen(y_)
@@ -212,7 +212,7 @@
 
 * reload data
 	use             "$data/Michler_JEEM.dta", clear
-	keep if         crops == 1
+	keep if         crop == 1
 
 * default (uncorrected) standard errors
 	ivreg2          lnyield lnbasal lntop lnseed lnaream2 ///
@@ -259,7 +259,7 @@
 	                        "\multicolumn{1}{c}{Clustered} " ///
 	                        "\\ \midrule") ///
 	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{5}{p{0.9\linewidth}}{\small " ///
+	                        "\multicolumn{5}{p{\linewidth}}{\small " ///
 	                        "\noindent \textit{Note}: Dependent variable " ///
 	                        "is log maize yield. CA instrumented with " ///
 	                        "wardNGO. All models include input controls " ///
@@ -299,7 +299,7 @@
 	                        "\multicolumn{1}{c}{Bootstrap} " ///
 	                        "\\ \midrule") ///
 	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{6}{p{0.9\linewidth}}{\small " ///
+	                        "\multicolumn{6}{p{\linewidth}}{\small " ///
 	                        "\noindent \textit{Note}: Dependent variable " ///
 	                        "is log maize yield. CA instrumented with " ///
 	                        "wardNGO. Bootstrap uses 1,000 reps. " ///
@@ -314,41 +314,17 @@
 **********************************************************************
 
 * iv regression clustered at ward level
-	ivreg2          lnyield lnbasal lntop lnseed lnaream2 ///
+* (use ivregress rather than ivreg2 for boottest compatibility)
+	ivregress       2sls lnyield lnbasal lntop lnseed lnaream2 ///
 	                    pdate pdate2 i.year (CA = wardNGO), ///
-	                    cluster(ward_id)
-	eststo          ward
+	                    vce(cluster ward_id)
 
 * wild cluster bootstrap for CA coefficient
-	boottest        CA
-	eststo          wboot
+* discard flushes cached Mata libraries after reinstall
+	discard
+	cap noisily boottest CA
 
-**## 7.1 - seven-column table (add ward + wboot to exercise 6 table)
-
-	esttab          def robust hc2 cluster boot ward wboot ///
-	                    using "$answ/13-se-boottest.tex", replace ///
-	                    b(3) se(3) keep(CA) nomtitles ///
-	                    star(* 0.10 ** 0.05 *** 0.01) ///
-	                    stats(N, labels("Observations") fmt(0)) ///
-	                    noobs booktabs nonum collabels(none) ///
-	                    nobaselevels nogaps fragment label ///
-	                    prehead("\begin{tabular}{l*{7}{c}} " ///
-	                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-	                        "& \multicolumn{1}{c}{Uncorr.} & " ///
-	                        "\multicolumn{1}{c}{Robust} & " ///
-	                        "\multicolumn{1}{c}{HC2} & " ///
-	                        "\multicolumn{1}{c}{Cluster} & " ///
-	                        "\multicolumn{1}{c}{Boot} & " ///
-	                        "\multicolumn{1}{c}{Ward} & " ///
-	                        "\multicolumn{1}{c}{WCB} " ///
-	                        "\\ \midrule") ///
-	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{8}{p{\linewidth}}{\small " ///
-	                        "\noindent \textit{Note}: Dependent variable " ///
-	                        "is log maize yield. CA instrumented with " ///
-	                        "wardNGO. " ///
-	                        "* p$<$0.10, ** p$<$0.05, *** p$<$0.01.} " ///
-	                        "\end{tabular}")
+**## 7.1 - interpretation
 
 **## 7.2 - interpretation
 
@@ -359,12 +335,12 @@
 
 * reload data
 	use             "$data/Michler_JEEM.dta", clear
-	keep if         crops == 1
+	keep if         crop == 1
 
 * save true coefficient
 	reg             lnyield CA lnbasal lntop lnseed lnaream2 ///
 	                    pdate pdate2 i.year, cluster(rc)
-	local           true_b = _b[CA]
+	global          true_b = _b[CA]
 
 * randomization inference
 	ritest          CA _b[CA], reps(1000) seed(0) nodots ///
@@ -374,8 +350,8 @@
 
 * save ri p-value
 	matrix          pvalues = r(p)
-	local           ri_p = pvalues[1,1]
-	local           ri_p : di %5.3f `ri_p'
+	global          ri_p = pvalues[1,1]
+	global          ri_p : di %5.3f ${ri_p}
 
 **## 8.1 - kdensity plot
 
@@ -388,17 +364,18 @@
 	                    ytitle("Density") ///
 	                    xtitle("Hypothetical treatment effect estimate") ///
 	                    title("CA effect on yield (t/ha)") ///
-	                    xline(`true_b', lpattern(solid) ///
+	                    xscale(range(${true_b})) ///
+	                    xline(${true_b}, lpattern(solid) ///
 	                        lwidth(thin) lcolor(sky)) ///
-	                    text(.18 `=`true_b'-.01' "CA TE", ///
+	                    text(.18 `=${true_b} - .01' "CA TE", ///
 	                        color(sky) j(left) size(vsmall) ///
 	                        place(nw) orient(vertical)) ///
-	                    text(2.2 `=`true_b'-.01' ///
-	                        "p-value = `ri_p'", color(sky) ///
+	                    text(2.2 `=${true_b} - .01' ///
+	                        "p-value = ${ri_p}", color(sky) ///
 	                        j(left) size(vsmall) place(nw) ///
 	                        orient(vertical)) ///
 	                    legend(off)
-	graph export    "$answ/13-ri-kdensity.png", replace
+	graph export    "$answ/13-se-ritest-1.png", replace
 
 **## 8.2 - interpretation
 
@@ -413,19 +390,25 @@
 	use             "$data/Michler_JEEM.dta", clear
 
 * estimate crop-specific production functions
-	local crops     `" "Maize" "Groundnut" "Sorghum" "Millet" "Cowpea" "'
+	local crops     `" "Maize" "Sorghum" "Millet" "Groundnut" "Cowpea" "'
 	local i = 1
 
 	foreach c of local crops {
 	    preserve
-	    keep if     crops == `i'
+	    keep if     crop == `i'
 
-	    reg         lnyield CA lnbasal lntop lnseed lnaream2 ///
-	                    pdate pdate2 i.year, vce(cluster rc)
-	    eststo      `c'
+	    count
+	    if r(N) > 0 {
+	        reg         lnyield CA lnbasal lntop lnseed lnaream2 ///
+	                        pdate pdate2 i.year, vce(cluster rc)
+	        eststo      `c'
 
-	    * store the p-value on CA for later
-	    local       p`i' = r(table)[4,1]
+	        * store the p-value on CA for later
+	        local       p`i' = r(table)[4,1]
+	    }
+	    else {
+	        di "  No observations for `c' (crop == `i'), skipping."
+	    }
 
 	    restore
 	    local       ++i
@@ -433,13 +416,13 @@
 
 **## part 2 - five-crop comparison table
 
-	esttab          Maize Groundnut Sorghum Millet Cowpea ///
+	esttab          Maize Sorghum Millet Groundnut Cowpea ///
 	                    using "$answ/13-se-mht.tex", replace ///
 	                    b(3) se(3) ///
 	                    keep(CA) ///
 	                    star(* 0.10 ** 0.05 *** 0.01) ///
-	                    mtitles("Maize" "Groundnut" "W. Sorghum" ///
-	                        "Millet" "Cowpea") ///
+	                    mtitles("Maize" "Sorghum" "Millet" ///
+	                        "Groundnut" "Cowpea") ///
 	                    stats(N, labels("Observations") fmt(0)) ///
 	                    noobs booktabs nonum collabels(none) ///
 	                    nobaselevels nogaps fragment label ///
@@ -448,7 +431,7 @@
 	                        "& \multicolumn{5}{c}{Dependent Variable: " ///
 	                        "Log Yield} \\ \midrule") ///
 	                    postfoot("\hline \hline \\[-1.8ex] " ///
-	                        "\multicolumn{6}{p{0.95\linewidth}}{\small " ///
+	                        "\multicolumn{6}{p{\linewidth}}{\small " ///
 	                        "\noindent \textit{Note}: Each column is a " ///
 	                        "separate OLS regression for the indicated " ///
 	                        "crop. Standard errors clustered at the " ///
@@ -460,7 +443,7 @@
 
 * collect the 5 p-values
 	matrix          pvals = (`p1', `p2', `p3', `p4', `p5')
-	matrix colnames pvals = Maize Groundnut Sorghum Millet Cowpea
+	matrix colnames pvals = Maize Sorghum Millet Groundnut Cowpea
 
 * bonferroni: multiply each p-value by 5
 	di              "=== Bonferroni Correction ==="
@@ -478,9 +461,9 @@
 	gen             crop = ""
 	gen             pval = .
 	replace         crop = "Maize"     in 1
-	replace         crop = "Groundnut" in 2
-	replace         crop = "Sorghum"   in 3
-	replace         crop = "Millet"    in 4
+	replace         crop = "Sorghum"   in 2
+	replace         crop = "Millet"    in 3
+	replace         crop = "Groundnut" in 4
 	replace         crop = "Cowpea"    in 5
 	replace         pval = `p1'        in 1
 	replace         pval = `p2'        in 2
@@ -504,9 +487,9 @@
 	use             "$data/Michler_JEEM.dta", clear
 	wyoung          lnyield, cmd(reg OUTCOMEVAR CA lnbasal lntop ///
 	                    lnseed lnaream2 pdate pdate2 i.year ///
-	                    if crops == GROUPVAR, vce(cluster rc)) ///
+	                    if crop == GROUPVAR, vce(cluster rc)) ///
 	                    familyp(CA) ///
-	                    subgroup(crops) ///
+	                    subgroup(crop) ///
 	                    reps(1000) seed(123)
 
 **## part 5 - anderson sharpened q-values
@@ -517,9 +500,9 @@
 	gen             crop = ""
 	gen             pval = .
 	replace         crop = "Maize"     in 1
-	replace         crop = "Groundnut" in 2
-	replace         crop = "Sorghum"   in 3
-	replace         crop = "Millet"    in 4
+	replace         crop = "Sorghum"   in 2
+	replace         crop = "Millet"    in 3
+	replace         crop = "Groundnut" in 4
 	replace         crop = "Cowpea"    in 5
 	replace         pval = `p1'        in 1
 	replace         pval = `p2'        in 2

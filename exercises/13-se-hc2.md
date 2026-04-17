@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Standard Errors
-title: Robust Standard Errors
+title: Robust & ClusteredStandard Errors
 language: Stata
 ---
 
