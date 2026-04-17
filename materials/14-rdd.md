@@ -7,7 +7,7 @@ language: Stata
 
 Difference-in-Differences and Instrumental Variables are powerful tools, but both require assumptions about unobservables — parallel trends, exclusion restrictions — that can be difficult to defend. This week we study a design where identification comes from something much more concrete: a **cutoff**.
 
-San Diego is a large, prosperous US city. As you drive south through it, incomes decline a bit — maybe from $85,000 to $55,000 over 16 miles to the border district of San Ysidro. It's a smooth, gradual gradient. Then you take one step over the US-Mexico border into Tijuana and household incomes crash to $20,000. Nothing about geography or the people changes in that single step. What changes is the *policy regime*. That abrupt break — smooth trend, sudden jump — is the logic of regression discontinuity.
+San Diego is a large, prosperous US city. As you drive south through it, incomes decline a bit — maybe from \$85,000 to \$55,000 over 16 miles to the border district of San Ysidro. It's a smooth, gradual gradient. Then you take one step over the US-Mexico border into Tijuana and household incomes crash to \$20,000. Nothing about geography or the people changes in that single step. What changes is the *policy regime*. That abrupt break — smooth trend, sudden jump — is the logic of regression discontinuity.
 
 Whenever treatment is assigned based on whether a running variable crosses a threshold, individuals just on either side of that threshold are effectively randomly assigned. This is the core insight of **Regression Discontinuity Design (RDD)**.
 

@@ -31,6 +31,7 @@ Now, we will test how robust the `subfld` coefficient is if we assume the contin
   Multiply these by `np` to get the error mean and standard deviation. Save these asl locals called `ymm` and `ysd`.
   - Replace `yield` with `yield` plus some random noise that is normally distributed (`rnormal()`) with mean 0 and standard deviation `ysd`.
   - Replace `yield` again but this time set `yield = 0` if `yield` is less than 0. This is to ensure values of yield do not fall below 0.
+  - Return a scalar called `mean` that is the mean of `yield`.
   - Run the exact same baseline regression from Part 12.1.
 - Now we will run the Monte Carlo simulation using a single loop. This goes after you've used `end` to close the program.
   - Start by clearing memory and creating an empty temporary file (`building`) to collect our results in.
@@ -74,7 +75,7 @@ Now, we will test how robust the `subfld` coefficient is if we assume the contin
 ```stata
 * label stuff for graph
 	capture label drop noise
-	forvalues i = 0/20 {
+	forvalues i = 0/10 {
 		if `i' < 10 {
         label define noise `i' "0.0`i'{&sigma}", add
 		}
