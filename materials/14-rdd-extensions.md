@@ -88,7 +88,7 @@ First-stage estimates. Outcome: vet_wwko. Running variable: qob_minus_kw.
 -------------------------------------------------------------------------------
 
 Treatment effect estimates. Outcome: home_ownership. Running variable: qob_minus_kw. Treatment Status: vet_wwko.
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
                  | Point         | Robust Inference
                  | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
 ------------------+------------------------------------------------------------
