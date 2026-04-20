@@ -165,10 +165,10 @@ Mass points detected in the running variable.
 
 Sharp RD estimates using local polynomial regression.
 
-      Cutoff c = 0 | Left of c  Right of c            Number of obs =       1948
--------------------+----------------------            BW type       =      mserd
-     Number of obs |      1127         821            Kernel        = Triangular
-Eff. Number of obs |       291         194            VCE method    =         NN
+      Cutoff c = 0 | Left of c  Right of c          Number of obs =       1948
+-------------------+----------------------          BW type       =      mserd
+     Number of obs |      1127         821          Kernel        = Triangular
+Eff. Number of obs |       291         194          VCE method    =         NN
     Order est. (p) |         1           1
     Order bias (q) |         2           2
        BW est. (h) |     0.005       0.005
@@ -177,12 +177,12 @@ Eff. Number of obs |       291         194            VCE method    =         NN
         Unique obs |       841         639
 
 Outcome: support. Running variable: income_centered.
---------------------------------------------------------------------------------
-                   | Point         | Robust Inference
-                   | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
--------------------+------------------------------------------------------------
-         RD Effect |   .0247       | 0.6238        0.533    -.097391     .188325
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                 | Point         | Robust Inference
+                 | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
+------------------+------------------------------------------------------------
+       RD Effect |   .0247       | 0.6238        0.533    -.097391     .188325
+-------------------------------------------------------------------------------
 Estimates adjusted for mass points in the running variable.
 ```
 

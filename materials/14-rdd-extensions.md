@@ -68,10 +68,10 @@ Mass points detected in the running variable.
 
 Fuzzy RD estimates using local polynomial regression.
 
-      Cutoff c = 0 | Left of c  Right of c            Number of obs =      56901
--------------------+----------------------            BW type       =      mserd
-     Number of obs |     28776       28125            Kernel        = Triangular
-Eff. Number of obs |      6911        6756            VCE method    =         NN
+      Cutoff c = 0 | Left of c  Right of c          Number of obs =      56901
+-------------------+----------------------          BW type       =      mserd
+     Number of obs |     28776       28125          Kernel        = Triangular
+Eff. Number of obs |      6911        6756          VCE method    =         NN
     Order est. (p) |         1           1
     Order bias (q) |         2           2
        BW est. (h) |     2.797       2.797
@@ -80,20 +80,20 @@ Eff. Number of obs |      6911        6756            VCE method    =         NN
         Unique obs |        12          12
 
 First-stage estimates. Outcome: vet_wwko. Running variable: qob_minus_kw.
---------------------------------------------------------------------------------
-                   | Point         | Robust Inference
-                   | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
--------------------+------------------------------------------------------------
-         RD Effect | -.01172       | 0.4212        0.674    -.049723     .026274
---------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+                 | Point         | Robust Inference
+                 | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
+------------------+------------------------------------------------------------
+       RD Effect | -.01172       | 0.4212        0.674    -.049723     .026274
+-------------------------------------------------------------------------------
 
 Treatment effect estimates. Outcome: home_ownership. Running variable: qob_minus_kw. Treatment Status: vet_wwko.
 --------------------------------------------------------------------------------
-                   | Point         | Robust Inference
-                   | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
--------------------+------------------------------------------------------------
-         RD Effect |  1.8785       | 1.2601        0.208    -2.81729     12.9629
---------------------------------------------------------------------------------
+                 | Point         | Robust Inference
+                 | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
+------------------+------------------------------------------------------------
+       RD Effect |  1.8785       | 1.2601        0.208    -2.81729     12.9629
+-------------------------------------------------------------------------------
 Estimates adjusted for mass points in the running variable.
 ```
 
@@ -121,7 +121,7 @@ The `rural_roads` replication package that we are using for exercises this week 
 
 ```stata
 * load density data (includes obs outside estimation bandwidth)
-    use "$data/gov_transfers_density.dta, clear
+    use "$data/gov_transfers_density.dta", clear
 
 * limit to the bandwidth ourselves
     keep if         abs(income_centered) < .02
