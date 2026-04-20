@@ -77,7 +77,7 @@ Before estimating anything, we should graph the data. A plot of binned means is 
 
 You should see a visible jump at the cutoff: observations to the left (lower income, eligible for transfers) show higher government support than observations to the right. This is the visual signature of RDD — a smooth trend with an abrupt break.
 
-> Do [Exercise 1 - Binned Means Plot]({{ site.baseurl }}/exercises/14-rdd-binplot/)
+> Do [Exercise 1 - RD Plot]({{ site.baseurl }}/exercises/14-rdd-plot/)
 
 #### The OLS approach
 
@@ -126,7 +126,7 @@ Rather than fitting a global polynomial, we can restrict our attention to observ
 
 The kernel-weighted estimate here is smaller and less precise than the polynomial version. That's the bias-variance tradeoff at work: by zooming in close, we reduce bias (observations far from the cutoff can't distort our estimate), but we also lose observations. The data was already limited to a narrow range around the cutoff, so further restricting the bandwidth is aggressive here.
 
-> Do [Exercise 2 - OLS Regression Discontinuity]({{ site.baseurl }}/exercises/14-rdd-ols/)
+> Do [Exercise 2 - Reduced-Form RD]({{ site.baseurl }}/exercises/14-rdd-ols/)
 
 ### Using `rdrobust`
 
@@ -174,7 +174,7 @@ In practice, researchers report how the RDD estimate changes across a range of b
 
 If the estimate is fairly stable across bandwidths, that's reassuring. If it swings wildly, you should think carefully about which bandwidth range is most credible given the context.
 
-> Do [Exercise 3 - Using rdrobust]({{ site.baseurl }}/exercises/14-rdd-rdrobust/)
+> Do [Exercise 3 - Using `rdrobust`]({{ site.baseurl }}/exercises/14-rdd-rdrobust/)
 
 ### Summary
 

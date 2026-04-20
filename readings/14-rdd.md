@@ -18,3 +18,7 @@ Here are some helpful, accessible resources for learning how to implement Regres
 * **Video Tutorial**: [Regression Discontinuity Design in Stata](https://www.youtube.com/watch?v=kYJv13Pz_y4) (A practical walkthrough of basic RDD estimation and plotting).
 * **UCLA IDRE Stata FAQ**: [How can I do a regression discontinuity analysis in Stata?](https://stats.oarc.ucla.edu/stata/faq/how-can-i-do-a-regression-discontinuity-analysis-in-stata/) (A clear step-by-step written guide).
 * **World Bank DIME Wiki**: [Regression Discontinuity Design](https://dimewiki.worldbank.org/Regression_Discontinuity) (Includes concept overview and Stata implementation tips).
+
+## Supplementary Reading
+
+* Garg, T. 2021. "Ecosystems and Human Health: The Local Benefits of Forest Cover in Indonesia." *Journal of Environmental Economics and Management*, 54: 101365. The exercises this week use replication data from this paper, which studies how rural road construction in India affects agricultural burning and air pollution using a fuzzy RDD.

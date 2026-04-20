@@ -60,7 +60,9 @@ The coefficient on `vet_wwko` is the fuzzy RDD estimate: veteran status (and its
 
 The `fuzzy()` option tells `rdrobust` to instrument treatment with the cutoff indicator, performing a local-polynomial fuzzy RDD. As with the sharp case, the automated and by-hand estimates may differ — here because `rdrobust` picks a much narrower bandwidth (around 3.4 quarters vs. our imposed 12). Whether the narrow or wide bandwidth is more appropriate is a substantive judgment about how far from the cutoff observations are still comparable.
 
-> Do [Exercise 4 - Fuzzy RDD]({{ site.baseurl }}/exercises/14-rdd-fuzzy/)
+> Do [Exercise 4 - First Stage]({{ site.baseurl }}/exercises/14-rdd-first-stage/)
+
+> Do [Exercise 5 - Fuzzy RDD]({{ site.baseurl }}/exercises/14-rdd-fuzzy/)
 
 ### Diagnostic checks
 
@@ -74,7 +76,7 @@ The intuition is simple: if track-and-field tryouts have a cutoff of 5:37 for a 
 
 In the government transfers data, manipulation is unlikely. The running variable is a predicted income score based on multiple factors, determined before anyone knew who would qualify. People couldn't easily manipulate it. But we should still check.
 
-The `rddensity` package implements the test from Cattaneo, Jansson, and Ma (2020). Install it by adding it to your `project.do` package loop (use `findit rddensity` if it is not on SSC).
+The `rural_roads` replication package includes a custom Stata command of this test called `dc_density` based on McCrary (2008). You must add the `dc_density` program from the replication code `00_setup.do` script to your `project.do` file so that it is available to use.
 
 ```stata
 * load density data (includes obs outside estimation bandwidth)
@@ -84,10 +86,14 @@ The `rddensity` package implements the test from Cattaneo, Jansson, and Ma (2020
     keep if         abs(income_centered) < .02
 
 * run the discontinuity check
-    rddensity       income_centered, c(0)
+    dc_density      income_centered, breakpoint(0) ///
+                        generate(Xj Yj r0 fhat se_fhat) ///
+                        graphname("density_plot.eps")
 ```
 
-A non-significant test statistic is what we hope for: no evidence that individuals bunched on one side of the cutoff. You should also **plot** the density to visually inspect for bunching — the `rddensity` command can produce this with a `plot` option. Look for a smooth distribution with no suspicious gap or pile-up at zero.
+A non-significant test statistic is what we hope for: no evidence that individuals bunched on one side of the cutoff. The `dc_density` command automatically produces a plot for you to visually inspect for bunching. Look for a smooth distribution with no suspicious gap or pile-up at zero.
+
+> Do [Exercise 6 - Density Test]({{ site.baseurl }}/exercises/14-rdd-density/)
 
 #### Placebo outcomes: checking for other discontinuities
 
@@ -103,7 +109,7 @@ If treatment is the only thing that changes at the cutoff, then variables that t
 
 Finding effects on placebo outcomes would cast doubt on the design. If you test a long list of placebo variables, expect a few to show nonzero effects by random chance — that's not necessarily fatal. But systematic failures suggest something is wrong at the cutoff.
 
-> Do [Exercise 5 - Diagnostics]({{ site.baseurl }}/exercises/14-rdd-diagnostics/)
+> Do [Exercise 7 - Placebo Outcomes]({{ site.baseurl }}/exercises/14-rdd-placebo/)
 
 ### What does RDD estimate?
 
