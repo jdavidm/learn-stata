@@ -19,7 +19,7 @@ This lecture covers:
 - The "zoom in and go simple" approach: bandwidth and kernel weighting
 - Using the `rdrobust` package for local polynomial estimation
 
-We follow Chapter 20 of [*The Effect*](https://theeffectbook.net/ch-RegressionDiscontinuity.html) closely and use its example data from [Manacorda, Miguel, and Vigorito (2011)](https://doi.org/10.1257/app.3.3.1) and [Fetter (2013)](https://doi.org/10.1257/pol.5.2.111). The Manacorda, Miguel, and Vigorito (2011) data is called `gov_transfers.dta` while the Fetter (2013) data is called `mortgages.dta`. Both are available on the [list of datasets page]({{ site.baseurl }}/materials/datasets/).
+We follow Chapter 20 of [*The Effect*](https://theeffectbook.net/ch-RegressionDiscontinuity.html) closely and use its example data from [Manacorda, Miguel, and Vigorito (2011)](https://doi.org/10.1257/app.3.3.1) which is called `gov_transfers.dta` and is available on the [list of datasets page]({{ site.baseurl }}/materials/datasets/).
 
 ### The idea behind regression discontinuity
 
