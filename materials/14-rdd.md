@@ -7,7 +7,7 @@ language: Stata
 
 Difference-in-Differences and Instrumental Variables are powerful tools, but both require assumptions about unobservables — parallel trends, exclusion restrictions — that can be difficult to defend. This week we study a design where identification comes from something much more concrete: a **cutoff**.
 
-San Diego is a large, prosperous US city. As you drive south through it, incomes decline a bit — maybe from \$85,000 to \$55,000 over 16 miles to the border district of San Ysidro. It's a smooth, gradual gradient. Then you take one step over the US-Mexico border into Tijuana and household incomes crash to \$20,000. Nothing about geography or the people changes in that single step. What changes is the *policy regime*. That abrupt break — smooth trend, sudden jump — is the logic of regression discontinuity.
+San Diego is a large, prosperous US city. As you drive south through it, incomes decline a bit — maybe from \\$85,000 to \\$55,000 over 16 miles to the border district of San Ysidro. It's a smooth, gradual gradient. Then you take one step over the US-Mexico border into Tijuana and household incomes crash to \\$20,000. Nothing about geography or the people changes in that single step. What changes is the *policy regime*. That abrupt break — smooth trend, sudden jump — is the logic of regression discontinuity.
 
 Whenever treatment is assigned based on whether a running variable crosses a threshold, individuals just on either side of that threshold are effectively randomly assigned. This is the core insight of **Regression Discontinuity Design (RDD)**.
 
@@ -19,7 +19,7 @@ This lecture covers:
 - The "zoom in and go simple" approach: bandwidth and kernel weighting
 - Using the `rdrobust` package for local polynomial estimation
 
-We follow Chapter 20 of [*The Effect*](https://theeffectbook.net/ch-RegressionDiscontinuity.html) closely and use its example data from [Manacorda, Miguel, and Vigorito (2011)](https://doi.org/10.1257/app.3.3.1) and [Fetter (2013)](https://doi.org/10.1257/pol.5.2.111). The `causaldata` package provides both datasets. If you have not installed `causaldata`, add it to your `project.do` package loop, set `$pack = 1`, run `project.do`, then set `$pack = 0`.
+We follow Chapter 20 of [*The Effect*](https://theeffectbook.net/ch-RegressionDiscontinuity.html) closely and use its example data from [Manacorda, Miguel, and Vigorito (2011)](https://doi.org/10.1257/app.3.3.1) and [Fetter (2013)](https://doi.org/10.1257/pol.5.2.111). The Manacorda, Miguel, and Vigorito (2011) data is called `gov_transfers.dta` while the Fetter (2013) data is called `mortgages.dta`. Both are available on the [list of datasets page]({{ site.baseurl }}/materials/datasets/).
 
 ### The idea behind regression discontinuity
 
@@ -59,7 +59,9 @@ Before estimating anything, we should graph the data. A plot of binned means is 
 
 ```stata
 * load government transfers data
-    causaldata gov_transfers.dta, use clear download
+    use "$data/gov_transfers.dta", clear
+
+preserve
 
 * create bins. 15 bins on either side of the cutoff from
 * -.02 to .02, plus 0, means we want "steps" of...
@@ -73,6 +75,8 @@ Before estimating anything, we should graph the data. A plot of binned means is 
     twoway          (line support bins) || ///
                         (function y = 0, horiz range(support)), ///
                         xti("Centered Income") yti("Support")
+
+restore
 ```
 
 You should see a visible jump at the cutoff: observations to the left (lower income, eligible for transfers) show higher government support than observations to the right. This is the visual signature of RDD — a smooth trend with an abrupt break.
@@ -94,13 +98,10 @@ Notice the lack of control variables. This is intentional. The whole idea of RDD
 We can also use a second-order polynomial to allow for curvature:
 
 ```stata
-* reload the data
-    causaldata gov_transfers.dta, use clear download
-
 * include the running variable, its square (by interaction with itself)
 * and interactions of both with treatment, and robust standard errors
-    reg             support i.participation##c.income_centered ///
-                        ##c.income_centered, robust
+    reg     support i.participation##c.income_centered##c.income_centered, ///
+                robust
 ```
 
 The coefficient on `1.participation` is the RDD estimate: approximately 9.3 percentage points increase in government support.
@@ -156,7 +157,45 @@ Install `rdrobust` by adding it to your `project.do` package loop:
     rdplot          support income_centered, c(0)
 ```
 
-`rdrobust` reports the conventional estimate, the bias-corrected estimate, and a robust confidence interval. The `rdplot` command produces a publication-quality binned-means graph with fitted polynomials on each side of the cutoff.
+`rdrobust` reports the conventional estimate, the bias-corrected estimate, and a robust confidence interval. 
+
+```text
+.     rdrobust        support income_centered, c(0)
+Mass points detected in the running variable.
+
+Sharp RD estimates using local polynomial regression.
+
+      Cutoff c = 0 | Left of c  Right of c            Number of obs =       1948
+-------------------+----------------------            BW type       =      mserd
+     Number of obs |      1127         821            Kernel        = Triangular
+Eff. Number of obs |       291         194            VCE method    =         NN
+    Order est. (p) |         1           1
+    Order bias (q) |         2           2
+       BW est. (h) |     0.005       0.005
+       BW bias (b) |     0.010       0.010
+         rho (h/b) |     0.509       0.509
+        Unique obs |       841         639
+
+Outcome: support. Running variable: income_centered.
+--------------------------------------------------------------------------------
+                   | Point         | Robust Inference
+                   | Estimate      | z-stat        P>|z|    [95% Conf. Interval]
+-------------------+------------------------------------------------------------
+         RD Effect |   .0247       | 0.6238        0.533    -.097391     .188325
+--------------------------------------------------------------------------------
+Estimates adjusted for mass points in the running variable.
+```
+
+There's a lot going on here compared to standard OLS output. Let's break it down:
+
+- **Data-driven Bandwidth**: `BW type = mserd` means `rdrobust` chose an optimal bandwidth using an MSE-optimal selector. The chosen bandwidth `BW est. (h)` is 0.005, which is quite narrow!
+- **Effective Observations**: Because the bandwidth is narrow, we're throwing away a lot of data. The full sample `Number of obs` is 1,948, but the `Eff. Number of obs` (observations actually within the bandwidth on either side of the cutoff) is only 291 on the left and 194 on the right.
+- **Kernel Weighting**: `Kernel = Triangular` means it's applying a triangular kernel weight (giving more weight to observations closer to the cutoff), just like we did by hand.
+- **Local Polynomial**: `Order est. (p) = 1` indicates it's fitting a local linear regression (an order 1 polynomial).
+- **The Estimate**: The actual jump at the cutoff is the **Point Estimate**, which is `0.0247` (or about 2.5 percentage points). This is much smaller than our manual OLS estimate.
+- **Robust Inference**: Because we threw away so much data by zooming in, our estimate is noisier. The z-statistic uses robust bias-corrected standard errors. Under these optimal settings, the effect has a p-value of `0.533` — it is no longer statistically significant! 
+
+The `rdplot` command also produces a publication-quality binned-means graph with fitted polynomials on each side of the cutoff.
 
 The output from `rdrobust` may differ substantially from our by-hand estimates — possibly even in sign — because it selects a potentially narrower bandwidth. This illustrates an important lesson: **you should not blindly accept the defaults**. Just because we have a pre-packaged command does not mean we can let it make all the decisions. Explore the sensitivity of your results to different bandwidths and polynomial orders.
 

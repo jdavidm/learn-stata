@@ -68,7 +68,7 @@ if $pack == 1 {
 					joyplot schemepack heatplot ridgeline graphfunctions labutil 
 					eventstudyinteract avar grc1leg2 reghdfe require
 					bacondecomp csdid eventdd xtevent matsort erepost boottest
-					ritest wyoung" ;
+					ritest wyoung rdrobust" ;
     #delimit cr
 	
 	* install packages that are on ssc	
