@@ -11,8 +11,8 @@
 **# 0 - setup
 **********************************************************************
 
-* define rural roads data path (modify the start of the path for your computer)
-	global			rr "C:/Users/YourName/OneDrive - University of Arizona/Michler, Jeffrey David - (jdmichler)'s files - rural_roads/data"
+* define rural roads data path
+	global			rr "C:/Users/jdmichler/OneDrive - University of Arizona/rural_roads/data"
 
 * baseline controls
 	global			blcontrols primary_school med_center elect ///
@@ -31,7 +31,7 @@
 
 * load data (cross-section)
 	use             "$rr/gjp_main_working.dta", clear
-	keep if         year == 2012
+	*keep if         year == 2012
 
 * rd plot of fire counts
 	rdplot          fires10km v_pop if abs(v_pop) <= 250, ///
@@ -39,7 +39,7 @@
 						graph_options(xtitle("Population minus threshold") ///
 						ytitle("Annual fire count (10 km)") ///
 						graphregion(color(white)))
-	graph export    "$answ/14-rdd-plot.png", replace
+	graph export    "$answ/14-rdd-plot-1.png", replace
 
 **## 1.1 - interpretation
 	*** there is visual evidence of a discontinuity at the
@@ -50,9 +50,6 @@
 **********************************************************************
 **# exercise 2 - Reduced-Form RD
 **********************************************************************
-
-* load data
-	use             "$rr/gjp_main_working.dta", clear
 
 * unweighted reduced form - fires
 	reghdfe         fires10km t left right, ///
@@ -113,17 +110,13 @@
 **# exercise 3 - Using rdrobust
 **********************************************************************
 
-* load data (cross-section)
-	use             "$rr/gjp_main_working.dta", clear
-	keep if         year == 2012
-
 * default rdrobust
 	rdrobust        fires10km v_pop, c(0)
 	*** note the optimal bandwidth and number of observations
 
 * bandwidth sensitivity
-	matrix          bw_results = J(6, 4, .)
-	local           bandwidths 25 50 75 100 150 200
+	matrix          bw_results = J(8, 4, .)
+	local           bandwidths 25 50 75 100 125 150 175 200
 	local           row = 1
 
 	foreach bw of local bandwidths {
@@ -150,7 +143,7 @@
 						xtitle("Bandwidth") ///
 						legend(off) ///
 						graphregion(color(white))
-	graph export    "$answ/14-rdd-bw.png", replace
+	graph export    "$answ/14-rdd-bw-2.png", replace
 	restore
 
 **## 3.1 - interpretation

@@ -81,6 +81,16 @@ restore
 
 You should see a visible jump at the cutoff: observations to the left (lower income, eligible for transfers) show higher government support than observations to the right. This is the visual signature of RDD — a smooth trend with an abrupt break.
 
+Alternatively, there is a dedicated package for RDD analysis called `rdrobust` that includes a convenient command for generating these plots without having to collapse the data manually: `rdplot`. By default, `rdplot` will attempt to choose the optimal number of bins, but you can customize the plot to match our manual approach using options. You can use an `if` condition (or the `subset()` option) to restrict the range of the running variable, and the `nbins()` option to set the number of bins on each side of the cutoff.
+
+We will explore the rest of the `rdrobust` package later in this lecture, but you can use `rdplot` now as a faster, more flexible alternative to the manual `twoway` approach:
+
+```stata
+* use rdplot to generate the binned-means graph, matching our manual plot
+* by restricting to a bandwidth of .02 and using 15 bins per side
+    rdplot          support income_centered if abs(income_centered) <= .02, c(0) nbins(15 15)
+```
+
 > Do [Exercise 1 - RD Plot]({{ site.baseurl }}/exercises/14-rdd-plot/)
 
 #### The OLS approach

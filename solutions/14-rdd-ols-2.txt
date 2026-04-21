@@ -1,0 +1,3 @@
+[2] the coefficient on t captures the jump in fire counts at the population threshold. 
+
+[3] kernel weighting gives more influence to observations close to the cutoff, potentially changing the estimate by reweighting the sample toward more comparable villages
