@@ -155,9 +155,6 @@
 **# exercise 4 - First Stage
 **********************************************************************
 
-* load data
-	use             "$rr/gjp_main_working.dta", clear
-
 * first-stage regression
 	reghdfe         receivedroad t left right $blcontrols ///
 						[aw = kernel_tri_ik], ///
@@ -173,7 +170,7 @@
 						graph_options(xtitle("Population minus threshold") ///
 						ytitle("Received road") ///
 						graphregion(color(white)))
-	graph export    "$answ/14-rdd-first-stage.png", replace
+	graph export    "$answ/14-rdd-fs-1.png", replace
 	restore
 
 **## 4.1 - interpretation

@@ -1,0 +1,3 @@
+[2] The coefficient is 0.230. This means that crossing the threshold increases the probability of receiving a road by 23 percentage points.
+
+[3] Yes, the first stage is very strong with an F-statistic of 60.72. This is well above the conventional rule-of-thumb threshold of 10.
