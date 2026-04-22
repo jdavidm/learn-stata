@@ -15,9 +15,9 @@ If villages can manipulate their population to cross the eligibility threshold, 
 
 ```stata
 * run density test
-	dc_density      v_pop, breakpoint(0) ///
-						generate(Xj Yj r0 fhat se_fhat) ///
-						graphname("$answ/14-rdd-density-1.png")
+    dc_density      v_pop, breakpoint(0) ///
+                        generate(Xj Yj r0 fhat se_fhat) ///
+                        graphname("$answ/14-rdd-density-1.png")
 
 ```
 
