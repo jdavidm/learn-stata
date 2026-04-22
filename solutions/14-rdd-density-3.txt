@@ -1,0 +1,1 @@
+[3] The estimated log-difference is 0.084, with a standard error of 0.018. This is statistically significant at the 1% level, suggesting that there is evidence of manipulation in the running variable.

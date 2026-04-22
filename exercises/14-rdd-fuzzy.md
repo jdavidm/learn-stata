@@ -14,7 +14,8 @@ Now we estimate the fuzzy RD — the causal effect of **actually receiving a roa
 - Store results as `iv_fires`.
 - Finally, calculate the control group mean for fires within the effective sample (`if e(sample) & t == 0`) and store it as a scalar called `depvarmean`.
 - Run the same specification for `pm25` (replace `fires10km` with `pm25` and `fires2001_10km` with `pm25_bl2001` as the baseline control). Store as `iv_pm`. and again calculate the control group mean for pm25 within the effective sample and store it as `depvarmean`.
-- Make sure you still have the reduced-form estimates from Exercise 2 (`rf2`) and the first-stage estimate from Exercise 4 (`fs`) stored. Export a four-column table:
+
+1\. Export a four-column table. Make sure you still have the reduced-form estimates from Exercise 2 (`rf2`) and the first-stage estimate from Exercise 4 (`fs`) stored.
 
 ```stata
 * four-column table
@@ -34,8 +35,7 @@ Now we estimate the fuzzy RD — the causal effect of **actually receiving a roa
                     nobaselevels nogaps fragment label ///
                     prehead("\begin{tabular}{l*{4}{c}} " ///
                         "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-                        "& \multicolumn{1}{c}{1st Stage} " ///
-                        "& \multicolumn{1}{c}{RF} " ///
+                        "& \multicolumn{2}{c}{1st Stage} " ///
                         "& \multicolumn{2}{c}{Fuzzy RD (IV)}" ///
                         " \\ \midrule") ///
                     postfoot("\hline \hline \\[-1.8ex] " ///
@@ -49,8 +49,6 @@ Now we estimate the fuzzy RD — the causal effect of **actually receiving a roa
                         "*** p$<$0.01.} " ///
                         "\end{tabular}")
 ```
-
-1\. How does the IV (fuzzy RD) fire estimate compare to the reduced-form estimate from Exercise 2? Why are they different? (*Hint*: think about the first-stage coefficient.)
 
 2\. Does road construction increase or decrease air pollution? Is this consistent with the direction of the fire effect?
 

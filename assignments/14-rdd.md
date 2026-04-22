@@ -16,7 +16,6 @@ points: [10, 15, 15, 10, 15, 10, 15, 10, 'Challenge - 20']
 > - Use `rdrobust` for data-driven bandwidth selection and bias-corrected estimation
 > - Assess bandwidth sensitivity of RD estimates
 > - Run diagnostic checks: density tests and placebo outcome tests
-> - Produce publication-quality tables and figures in LaTeX
 
 {% include reading.html %}
 

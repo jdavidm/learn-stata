@@ -36,17 +36,18 @@ In this exercise you will use the `rdrobust` package for data-driven bandwidth s
 	preserve
 	clear
 	svmat           bw_results
-	rename          (bw_results1 bw_results2 bw_results3 bw_results4) ///
-                        (bandwidth estimate ci_lo ci_hi)
+	rename         (bw_results1 bw_results2 bw_results3 ///
+	                   bw_results4) (bandwidth estimate ///
+                       ci_lo ci_hi)
 
-	twoway          (rcap ci_lo ci_hi bandwidth, lcolor(navy)) ///
-                        (scatter estimate bandwidth, ///
-                        mcolor(navy) msymbol(circle)), ///
-                        yline(0, lcolor(maroon) lpattern(dash)) ///
-                        ytitle("RD Estimate") ///
-                        xtitle("Bandwidth") ///
-                        legend(off) ///
-                        graphregion(color(white))
+	twoway         (rcap ci_lo ci_hi bandwidth, lcolor(navy)) ///
+                       (scatter estimate bandwidth, ///
+                       mcolor(navy) msymbol(circle)), ///
+                       yline(0, lcolor(maroon) lpattern(dash)) ///
+                       ytitle("RD Estimate") ///
+                       xtitle("Bandwidth") ///
+                       legend(off) ///
+                       graphregion(color(white))
 	graph export	"$answ/14-rdd-bw.png", replace
 	restore
 ```

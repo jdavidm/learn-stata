@@ -1,0 +1,3 @@
+[2] Land, dist, elect, and med_center show statistically significant discontinuities at the 5% level. However, only dist is substantially larger than what we would expect by chance.
+
+[3] No, this is not a concern. We would expect about 1 out of 20 variables to be statistically significant at the 5% level by random chance. Since we only found one, it is likely due to random chance.
