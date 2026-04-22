@@ -1,0 +1,22 @@
+\begin{tabular}{l*{5}{c}} 
+\\[-1.8ex]\hline \hline \\[-1.8ex]
+                    &\multicolumn{1}{c}{Road}&\multicolumn{2}{c}{Annual fire activity}   &\multicolumn{2}{c}{Annual average PM 2.5}  \\\cmidrule(lr){2-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+                    &\multicolumn{1}{c}{1st stage}&\multicolumn{1}{c}{RF}&\multicolumn{1}{c}{IV}&\multicolumn{1}{c}{RF}&\multicolumn{1}{c}{IV}\\
+\midrule
+Above threshold     &       0.230\sym{***}&       0.366\sym{**} &                     &       0.107\sym{**} &                     \\
+                    &     (0.017)         &     (0.152)         &                     &     (0.045)         &                     \\
+Road built          &                     &                     &       1.590\sym{**} &                     &       0.463\sym{**} \\
+                    &                     &                     &     (0.667)         &                     &     (0.199)         \\
+\midrule
+Observations        &      133812         &      133788         &      133788         &      133788         &      133788         \\
+Control group mean  &        0.26         &        2.77         &        2.77         &       42.59         &       42.59         \\
+\hline \hline \\[-1.8ex] 
+\multicolumn{6}{p{\linewidth}}{\small 
+\noindent \textit{Note}: All models 
+include baseline controls, 
+district-threshold and year FE, and 
+triangular kernel weights. Std.\ errors 
+clustered at village level. 
+* p$<$0.10, ** p$<$0.05, 
+*** p$<$0.01.} 
+\end{tabular}

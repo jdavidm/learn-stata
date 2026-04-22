@@ -20,9 +20,7 @@ Replicate the core results of Table 2 from Garg et al. (2021). The table has fiv
   4. **Reduced-form PM 2.5**: Same as (2) but with `pm25` and baseline `pm25_bl2001`. Store as `rf_pm`.
   5. **IV PM 2.5**: Same as (3) but with `pm25` and baseline `pm25_bl2001`. Store as `iv_pm`.
 - For each model, use `estadd scalar depvarmean = r(mean)` to attach the control-group mean for villages where `t == 0`.
-
-
-1\. Export all five columns to a single LaTeX table:
+- Export all five columns to a single LaTeX table:
 
 ```stata
 * export table 2 replication
@@ -62,12 +60,12 @@ Replicate the core results of Table 2 from Garg et al. (2021). The table has fiv
 
 #### Part 2 — Bandwidth Sensitivity
 
-- Using the IV fires specification from Part 1, re-estimate the model at several bandwidth windows. You can impose different bandwidths by restricting the sample to `abs(v_pop) <= bw`. Loop over bandwidths of 25, 50, 75, 100, 150, 200, and 250:
+- Using the IV fires specification from Part 1, re-estimate the model at several bandwidth windows. You can impose different bandwidths by restricting the sample to `abs(v_pop) <= bw`. Loop over bandwidths of 25, 50, 75, 100, 150, 200, and 250.
 
 ```stata
 * bandwidth sensitivity for IV fires
-    matrix          bw_iv = J(7, 4, .)
-    local           bws 25 50 75 100 150 200 250
+    matrix          bw_iv = J(10, 4, .)
+    local           bws 25 50 75 100 125 150 175 200 225 250
     local           row = 1
 
     foreach bw of local bws {
@@ -87,7 +85,7 @@ Replicate the core results of Table 2 from Garg et al. (2021). The table has fiv
     }
 ```
 
-- Convert the matrix to a dataset and create a coefficient plot showing the IV estimate ± 95% CI at each bandwidth. Add a horizontal reference line at zero and a vertical reference line at the IK default bandwidth (look up what `rdrobust` chose in Exercise 3). Export and import into Overleaf.
+- Convert the matrix to a dataset and create a coefficient plot showing the IV estimate ± 95% CI at each bandwidth. Add a horizontal reference line at zero. Export and import into Overleaf.
 
 #### Part 3 — Subgroup Analysis
 
@@ -97,7 +95,7 @@ The paper argues that road access increases agricultural fires because roads red
 
 ```stata
 * subgroup indicators
-    gen             burning_crops = (rice_hi == 1 | sugar_hi == 1)
+    gen          burning_crops = (rice_hi == 1 | sugar_hi == 1)
 ```
 
 - Re-run the IV fires and IV PM 2.5 specifications separately for `burning_crops == 1` and `burning_crops == 0`. Store as `iv_fires_hi`, `iv_pm_hi`, `iv_fires_lo`, `iv_pm_lo`. Save the control-group mean for each.
@@ -105,44 +103,44 @@ The paper argues that road access increases agricultural fires because roads red
 
 ```stata
 * subgroup table
-    esttab          iv_fires_hi iv_pm_hi iv_fires_lo iv_pm_lo ///
-                        using "$answ/14-challenge-subgroup.tex", ///
-                        replace ///
-                        b(3) se(3) ///
-                        keep(receivedroad) ///
-                        coeflabels(receivedroad "Road built") ///
-                        star(* 0.10 ** 0.05 *** 0.01) ///
-                        mgroups("High rice/sugar" ///
-                            "Low rice/sugar", ///
-                            pattern(1 0 1 0) ///
-                            prefix(\multicolumn{@span}{c}{) ///
-                            suffix(}) span ///
-                            erepeat(\cmidrule(lr){@span})) ///
-                        mtitles("Fires" "PM 2.5" ///
-                            "Fires" "PM 2.5") ///
-                        stats(N depvarmean, ///
-                            labels("Observations" ///
-                                "Control group mean") ///
-                            fmt(0 2)) ///
-                        noobs booktabs nonum collabels(none) ///
-                        nobaselevels nogaps fragment label ///
-                        prehead("\begin{tabular}{l*{4}{c}} " ///
-                            "\\[-1.8ex]\hline \hline \\[-1.8ex]") ///
-                        postfoot("\hline \hline \\[-1.8ex] " ///
-                            "\multicolumn{5}{p{\linewidth}}{\small " ///
-                            "\noindent \textit{Note}: All models " ///
-                            "include baseline controls, " ///
-                            "district-threshold and year FE. " ///
-                            "Std.\ errors clustered at village " ///
-                            "level. " ///
-                            "* p$<$0.10, ** p$<$0.05, " ///
-                            "*** p$<$0.01.} " ///
-                            "\end{tabular}")
+    esttab      iv_fires_hi iv_pm_hi iv_fires_lo iv_pm_lo ///
+                  using "$answ/14-challenge-subgroup.tex", ///
+                  replace ///
+                  b(3) se(3) ///
+                  keep(receivedroad) ///
+                  coeflabels(receivedroad "Road built") ///
+                  star(* 0.10 ** 0.05 *** 0.01) ///
+                  mgroups("High rice/sugar" ///
+                        "Low rice/sugar", ///
+                        pattern(1 0 1 0) ///
+                        prefix(\multicolumn{@span}{c}{) ///
+                        suffix(}) span ///
+                        erepeat(\cmidrule(lr){@span})) ///
+                  mtitles("Fires" "PM 2.5" ///
+                        "Fires" "PM 2.5") ///
+                  stats(N depvarmean, ///
+                        labels("Observations" ///
+                            "Control group mean") ///
+                        fmt(0 2)) ///
+                  noobs booktabs nonum collabels(none) ///
+                  nobaselevels nogaps fragment label ///
+                  prehead("\begin{tabular}{l*{4}{c}} " ///
+                        "\\[-1.8ex]\hline \hline \\[-1.8ex]") ///
+                  postfoot("\hline \hline \\[-1.8ex] " ///
+                        "\multicolumn{5}{p{\linewidth}}{\small " ///
+                        "\noindent \textit{Note}: All models " ///
+                        "include baseline controls, " ///
+                        "district-threshold and year FE. " ///
+                        "Std.\ errors clustered at village " ///
+                        "level. " ///
+                        "* p$<$0.10, ** p$<$0.05, " ///
+                        "*** p$<$0.01.} " ///
+                        "\end{tabular}")
 ```
 
 #### Part 4 — Interpretation
 
-1. Does the effect of road construction on fires concentrate in high rice/sugar regions? What does that tell you about the *mechanism* linking roads to fires?
-2. Why is the subgroup analysis informative for the paper's argument, and how does it differ from simply adding an interaction term?
+- Does the effect of road construction on fires concentrate in high rice/sugar regions? What does that tell you about the *mechanism* linking roads to fires?
+- Why is the subgroup analysis informative for the paper's argument, and how does it differ from simply adding an interaction term?
 
 ---
