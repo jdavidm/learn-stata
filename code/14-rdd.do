@@ -12,7 +12,7 @@
 **********************************************************************
 
 * define rural roads data path
-	global			rr "C:/Users/jdmichler/OneDrive - University of Arizona/rural_roads/data"
+	global			rr "C:/Users/jdmic/OneDrive - University of Arizona/rural_roads/data"
 
 * baseline controls
 	global			blcontrols primary_school med_center elect ///
@@ -208,42 +208,41 @@
 
 **## 5.1 - four-column table
 
-	esttab          fs rf2 iv_fires iv_pm ///
-						using "$answ/14-rdd-fuzzy.tex", replace ///
-						b(3) se(3) ///
-						keep(t receivedroad) ///
-						coeflabels(t "Above threshold" ///
-							receivedroad "Road built") ///
-						star(* 0.10 ** 0.05 *** 0.01) ///
-						mtitles("Road" "Fires" "Fires" "PM 2.5") ///
-						stats(N depvarmean, ///
-							labels("Observations" ///
-								"Control group mean") ///
-							fmt(0 2)) ///
-						noobs booktabs nonum collabels(none) ///
-						nobaselevels nogaps fragment label ///
-						prehead("\begin{tabular}{l*{4}{c}} " ///
-							"\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-							"& \multicolumn{1}{c}{1st Stage} " ///
-							"& \multicolumn{1}{c}{RF} " ///
-							"& \multicolumn{2}{c}{Fuzzy RD (IV)}" ///
-							" \\ \midrule") ///
-						postfoot("\hline \hline \\[-1.8ex] " ///
-							"\multicolumn{5}{p{\linewidth}}{\small " ///
-							"\noindent \textit{Note}: All models " ///
-							"include baseline controls, " ///
-							"district-threshold and year FE, and " ///
-							"triangular kernel weights. Std.\ errors " ///
-							"clustered at village level. " ///
-							"* p$<$0.10, ** p$<$0.05, " ///
-							"*** p$<$0.01.} " ///
-							"\end{tabular}")
-
+    esttab      fs rf2 iv_fires iv_pm ///
+                    using "$answ/14-rdd-fuzzy.tex", replace ///
+                    b(3) se(3) ///
+                    keep(t receivedroad) ///
+                    coeflabels(t "Above threshold" ///
+                        receivedroad "Road built") ///
+                    star(* 0.10 ** 0.05 *** 0.01) ///
+                    mtitles("Road" "Fires" "Fires" "PM 2.5") ///
+                    stats(N depvarmean, ///
+                        labels("Observations" ///
+                            "Control group mean") ///
+                        fmt(0 2)) ///
+                    noobs booktabs nonum collabels(none) ///
+                    nobaselevels nogaps fragment label ///
+                    prehead("\begin{tabular}{l*{4}{c}} " ///
+                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                        "& \multicolumn{2}{c}{1st Stage} " ///
+                        "& \multicolumn{2}{c}{Fuzzy RD (IV)}" ///
+                        " \\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                        "\multicolumn{5}{p{\linewidth}}{\small " ///
+                        "\noindent \textit{Note}: All models " ///
+                        "include baseline controls, " ///
+                        "district-threshold and year FE, and " ///
+                        "triangular kernel weights. Std.\ errors " ///
+                        "clustered at village level. " ///
+                        "* p$<$0.10, ** p$<$0.05, " ///
+                        "*** p$<$0.01.} " ///
+                        "\end{tabular}")
+dfsfds
 **## 5.2 - interpretation
 	*** the iv estimate is the reduced-form estimate scaled by the
 	*** first-stage coefficient: iv = rf / fs
-
-
+14, 11 - 2291
+11, 10
 **********************************************************************
 **# exercise 6 - Density Test
 **********************************************************************
@@ -258,7 +257,7 @@
 	cap drop        Xj Yj r0 fhat se_fhat
 	dc_density      v_pop, breakpoint(0) ///
 						generate(Xj Yj r0 fhat se_fhat) ///
-						graphname("$answ/14-rdd-density.eps")
+						graphname("$answ/14-rdd-density-1.png")
 
 * histogram of running variable
 	twoway          (histogram v_pop if v_pop < 0, ///
@@ -271,25 +270,19 @@
 						legend(order(1 "Below" 2 "Above") ///
 							ring(0) pos(1)) ///
 						graphregion(color(white))
-	graph export    "$answ/14-rdd-density.png", replace
-
-**## 6.1 - interpretation
-	*** report the test statistic and p-value. a non-significant
-	*** result suggests no evidence of manipulation
+	graph export    "$answ/14-rdd-density-2.png", replace
 
 **## 6.2 - interpretation
-	*** the running variable is census population which is
-	*** administratively determined and difficult for villages
-	*** to manipulate
+	*** report the test statistic and p-value. a non-significant
+	*** result suggests no evidence of manipulation
 
 
 **********************************************************************
 **# exercise 7 - Placebo Outcomes
 **********************************************************************
 
-* load data (cross-section)
+* load data
 	use             "$rr/gjp_main_working.dta", clear
-	keep if         year == 2012
 
 * placebo outcome list
 	local           placebos primary_school med_center elect ///
@@ -340,7 +333,7 @@
 							labsize(vsmall)) ///
 						legend(off) ///
 						graphregion(color(white))
-	graph export    "$answ/14-rdd-placebo.png", replace
+	graph export    "$answ/14-rdd-placebo-1.png", replace
 	restore
 
 **## 7.1 - interpretation
@@ -443,8 +436,8 @@
 **## part 2 - bandwidth sensitivity
 
 * bandwidth sensitivity for iv fires
-	matrix          bw_iv = J(7, 4, .)
-	local           bws 25 50 75 100 150 200 250
+    matrix          bw_iv = J(10, 4, .)
+    local           bws 25 50 75 100 125 150 175 200 225 250
 	local           row = 1
 
 	foreach bw of local bws {
@@ -479,7 +472,7 @@
 						xtitle("Bandwidth (population)") ///
 						legend(off) ///
 						graphregion(color(white))
-	graph export    "$answ/14-challenge-bw.png", replace
+	graph export    "$answ/14-challenge-2.png", replace
 	restore
 
 
