@@ -12,7 +12,7 @@ If we aren't satisfied with analytical approximations of standard errors, we can
 - Bootstrap the regression 1,000 times.
 - Cluster the standard errors at the household (`rc`) level.
 
-1. Adapt the table code from Exercise 5 to add a fifth column for the bootstrap results and export to Overleaf.
+1. Adapt the table code from Exercise 1 to add a fifth column for the bootstrap results and export to Overleaf.
 2. Are the bootstrapped standard errors closer to the robust or the clustered standard errors from the previous exercise?
 
 
