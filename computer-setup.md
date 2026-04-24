@@ -56,3 +56,24 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
     ![Create new file in Overleaf]({{ site.baseurl }}/images/overleaf_new_file.png)
 5. Go to the file `michler.tex` and copy everything in that file.
 6. Paste the content that you copied into the file with your name.
+
+## Java (for H2O Machine Learning)
+
+Stata 19's `h2oml` commands (random forest, gradient boosting) require an H2O cluster, which runs on Java. You must install a **Java Runtime Environment (JRE)** before using H2O.
+
+1. Check if Java is already installed by opening a terminal (Command Prompt on Windows, Terminal on Mac) and typing:
+    ```
+    java -version
+    ```
+    If you see a version number (e.g., `java version "17.0.x"`), Java is installed and you can skip to step 4.
+
+2. If Java is not installed, download the latest JRE from [Adoptium (Eclipse Temurin)](https://adoptium.net/). Select the **LTS** version (currently Java 21) for your operating system and install it.
+
+3. After installation, close and reopen your terminal, then run `java -version` again to confirm the installation succeeded.
+
+4. In Stata, test that H2O can start by running:
+    ```stata
+    h2o init
+    h2o shutdown
+    ```
+    If both commands execute without errors, Java and H2O are configured correctly. If you encounter errors, consult Stata's documentation on [H2O setup](https://www.stata.com/manuals/h2oh2o.pdf) or the [StataCorp YouTube video on H2O setup](https://www.youtube.com/watch?v=Y1aPrScIdtg).

@@ -48,6 +48,8 @@ languages: ['Stata', 'Git', 'LaTeX']
 - [Standard Errors & Inference]({{ site.baseurl }}/materials/13-se)
 - [Basic Regression Discontinuity]({{ site.baseurl }}/materials/14-rdd)
 - [Extensions of RDD]({{ site.baseurl }}/materials/14-rdd-extensions)
+- [Setup, Prediction, and Lasso]({{ site.baseurl }}/materials/15-ml-setup-lasso)
+- [Ensemble Trees and Model Interpretation]({{ site.baseurl }}/materials/15-ml-trees)
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)
