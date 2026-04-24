@@ -7,7 +7,7 @@ language: Stata
 
 If standard errors are theoretically messy or you want a fully non-parametric p-value, you can bypass the standard error calculation entirely using Randomization Inference (RI). RI randomly permutes the treatment variable thousands of times, generating a distribution of placebo coefficients. Your actual coefficient is then compared against this distribution.
 
-- Using `Michler_JEEM.dta` (maize only), first run the OLS regression of `lnyield` on `CA` with the same controls (`lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`), clustering at `rc`, and save the true coefficient on `CA` in a global called `true_b`.
+- Using `Michler_JEEM.dta` (maize only), first run the OLS regression of `lnyield` on `CA` with the same controls (`lnbasal lntop lnseed lnaream2 pdate pdate2 i.year`), clustering standard errors at `rc`, and save the true coefficient on `CA` in a global called `true_b`.
 - Run `ritest` to permute `CA` 1,000 times setting the seed at 0 and then save (`saving`) the permutation distribution in a file called `ri_yield`.
 - Finally, save the p-value from the randomization inference in a global called `ri_p`. Use globals rather than locals because `use, clear` wipes locals from memory.
 
