@@ -3,7 +3,7 @@ layout: page
 title: Computer Setup
 ---
 
-<a href="#Stata">Stata</a> \| <a href="#Slack">Slack Desktop</a> \| <a href="#GitHub">GitHub</a> \| <a href="#GitHubDesktop">GitHub Desktop</a> \| <a href="#GitBash">Git Bash</a> \| <a href="#GitLFS">Git Large File Storage</a> \| <a href="#Overleaf">Overleaf and LaTeX</a> \| <a href="#Java">Java</a>
+<a href="#Stata">Stata</a> \| <a href="#Slack">Slack Desktop</a> \| <a href="#GitHub">GitHub</a> \| <a href="#GitHubDesktop">GitHub Desktop</a> \| <a href="#GitBash">Git Bash</a> \| <a href="#GitLFS">Git Large File Storage</a> \| <a href="#Overleaf">Overleaf and LaTeX</a> \| <a href="#Java">Java and H2O</a>
 
 ***AAE 497A/597A students will need their own laptops set up with Stata before the first class meeting along with Github Desktop and Slack Desktop by week 2.***
 
@@ -109,24 +109,52 @@ GitHub has a file size limit of 100 MB. Some of the Stata datasets we use in thi
 5. Go to the file `michler.tex` and copy everything in that file.
 6. Paste the content that you copied into the file with your name.
 
-## Java (for H2O Machine Learning) <a name="Java"></a>
+## Java and H2O Setup (for Machine Learning) <a name="Java"></a>
 
-Stata 19's `h2oml` commands (random forest, gradient boosting) require a Java Runtime Environment (JRE) installed on your computer. You need to install Java before using any H2O commands in Stata.
+Stata 19's `h2oml` commands (random forest, gradient boosting) require two things to be installed on your computer: **Java** and the **H2O machine learning library**. Follow all the steps below.
+
+### Step A — Install Java
 
 1. Check if Java is already installed. Open **Git Bash** (Windows) or **Terminal** (Mac) and type:
     ```
     java -version
     ```
-    If you see a version number (e.g., `java version "17.0.12"` or `openjdk version "21.0.4"`), Java is already installed and you can skip to step 5.
-2. If you see an error like `'java' is not recognized` or `command not found`, you need to install Java. Go to [https://adoptium.net/](https://adoptium.net/).
-3. The website should automatically detect your operating system. Click the large download button for the **Latest LTS Release** (currently Java 21). Save the installer to your computer and run it. Accept all the default settings.
-4. After installation, close and reopen Git Bash (or Terminal), then type `java -version` again. You should now see a version number. If you still see an error, restart your computer and try again.
-5. Open Stata and type the following two commands in the Command window, one at a time:
+2. If you see a version number (e.g., `java version "17.0.12"` or `openjdk version "21.0.4"`), Java is already installed. Skip ahead to **Step B**.
+3. If you see an error like `'java' is not recognized` or `command not found`, you need to install Java. Go to [https://adoptium.net/](https://adoptium.net/).
+4. The website should automatically detect your operating system. Click the large download button for the **Latest LTS Release** (currently Java 21). Save the installer to your computer and run it. Accept all the default settings.
+5. After installation, close and reopen Git Bash (or Terminal), then type `java -version` again. You should now see a version number. If you still see an error, restart your computer and try again.
+
+### Step B — Download the H2O library
+
+6. Go to the H2O download page: [https://h2o.ai/resources/download/](https://h2o.ai/resources/download/).
+7. Under **H2O Open Source**, click the **Download H2O** button. This will download a `.zip` file (the file name will look something like `h2o-3.46.0.10.zip`). Save it somewhere easy to find, like your Downloads folder.
+8. Unzip the file. On Windows, right-click the `.zip` file and select "Extract All..." On Mac, double-click the `.zip` file.
+9. Open the unzipped folder. Inside, you will see a file named `h2o.jar`. This is the only file you need from this folder.
+
+### Step C — Place `h2o.jar` where Stata can find it
+
+10. Open Stata. In the Command window, type:
+    ```stata
+    sysdir
+    ```
+11. Stata will display a list of directory paths. Look for the one labeled **PLUS**. It will look something like:
+    - **Windows**: `C:\ado\plus\`
+    - **Mac**: `/Users/yourusername/ado/plus/`
+12. Open that folder in File Explorer (Windows) or Finder (Mac). If the folder does not exist, create it.
+13. Inside the PLUS folder, create a new folder called `jar`. The result should be:
+    - **Windows**: `C:\ado\plus\jar\`
+    - **Mac**: `/Users/yourusername/ado/plus/jar/`
+14. Copy the `h2o.jar` file (from step 9) into this `jar` folder.
+
+### Step D — Test that everything works
+
+15. In Stata, type the following command in the Command window:
     ```stata
     h2o init
     ```
-    Wait for Stata to display a message confirming that the H2O cluster has started. Then type:
+16. Wait for Stata to display a message confirming that the H2O cluster has started. You should see output that includes "H2O cluster up" or similar. If you see an error about `h2o.jar not found`, go back to steps 10–14 and make sure the `h2o.jar` file is in the correct `jar` folder inside your PLUS directory.
+17. Once the cluster has started, shut it down by typing:
     ```stata
     h2o shutdown
     ```
-6. If both commands run without errors, Java and H2O are configured correctly and you are ready for the machine learning assignments.
+18. If both commands run without errors, Java and H2O are configured correctly and you are ready for the machine learning assignments.
