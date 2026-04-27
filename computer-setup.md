@@ -49,63 +49,53 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 
 ## Git Bash <a name="GitBash"></a>
 
-**Git Bash** is a command-line application that lets you run Git commands on your computer. While GitHub Desktop provides a visual interface for common Git tasks, some operations — like configuring Git Large File Storage (below) — require typing commands in a terminal. Git Bash gives you a Unix-style terminal on Windows that understands Git commands.
+Git Bash is a command-line application that lets you run Git commands on your computer by typing them into a terminal window. While GitHub Desktop provides a visual interface for common Git tasks, some operations — like setting up Git Large File Storage (below) — require typing commands directly. Git Bash gives you a terminal on Windows that understands Git commands.
 
-**Mac users**: You do not need to install Git Bash. Your Mac already has a built-in Terminal application (found in Applications → Utilities → Terminal) that works the same way. macOS also comes with Git pre-installed. You can verify by opening Terminal and typing `git --version`.
+**Mac users**: You do not need to install Git Bash. Your Mac already has a built-in Terminal application (found in Applications → Utilities → Terminal) that works the same way. macOS also comes with Git pre-installed.
+1. Open Terminal (Applications → Utilities → Terminal).
+2. Type `git --version` and press Enter.
+3. You should see output like `git version 2.39.5`. If you see this, you are ready to proceed to [Git Large File Storage](#GitLFS).
 
 **Windows users**:
-1. Download Git for Windows from [https://git-scm.com/downloads/win](https://git-scm.com/downloads/win).
-2. Run the installer. You can accept all the default settings — just click "Next" through each screen and then "Install."
-3. Once installed, you can open Git Bash by searching for "Git Bash" in the Windows Start menu. You should see a dark terminal window with a blinking cursor.
-4. Verify the installation by typing the following command and pressing Enter:
+1. Go to [https://git-scm.com/downloads/win](https://git-scm.com/downloads/win).
+2. Click the download link for your system (64-bit is most common). Save the installer to your computer.
+3. Run the installer. Accept all the default settings — just click "Next" through each screen and then click "Install."
+4. Once installed, open Git Bash by clicking the Windows Start menu and searching for "Git Bash." Click on it. You should see a dark terminal window with a blinking cursor.
+5. Type the following command and press Enter:
     ```
     git --version
     ```
-    You should see output like `git version 2.47.1.windows.1` (the exact version number may differ). If you see an error instead, try restarting your computer and repeating this step.
+6. You should see output like `git version 2.47.1.windows.1` (the exact number may differ). If you see this, Git Bash is installed correctly. If you see an error, restart your computer and try again from step 4.
 
 ## Git Large File Storage <a name="GitLFS"></a>
 
-GitHub has a file size limit of 100 MB. **Git Large File Storage (Git LFS)** is an extension that lets you store large files — such as datasets (`.dta`, `.csv`), images, and other binary files — outside the main Git repository while still tracking them through Git. When you clone or pull a repository that uses Git LFS, the large files are downloaded automatically.
+GitHub has a file size limit of 100 MB. Some of the Stata datasets we use in this course are larger than that, so we need a way to handle them. **Git Large File Storage (Git LFS)** is an extension that stores large files (like `.dta` datasets) outside the main repository while still letting you push and pull them through GitHub Desktop as usual. You need to install Git LFS so that these large files download correctly when you clone or pull the course repository.
 
-We use Git LFS in this course because some of our Stata datasets exceed GitHub's file size limit. Without Git LFS, you would not be able to push or pull these files.
-
-**Prerequisites**: You must have Git Bash (Windows) or Terminal (Mac) installed before proceeding. See the [Git Bash](#GitBash) section above.
-
-### Installing Git LFS
-
-1. Download Git LFS from [https://git-lfs.com](https://git-lfs.com) and run the installer.
-
-2. Open **Git Bash** (Windows) or **Terminal** (Mac) and run the following command to set up Git LFS on your computer:
+1. Go to [https://git-lfs.com](https://git-lfs.com) and click the **Download** button.
+2. Run the installer. Accept all default settings.
+3. Open **Git Bash** (Windows) or **Terminal** (Mac).
+4. Type the following command and press Enter:
     ```
     git lfs install
     ```
-    You should see `Git LFS initialized` in the output. You only need to run this command once per computer.
-
-### Configuring Git LFS for the course repository
-
-After installing Git LFS, you need to tell Git which file types to track with LFS. Your instructor has already configured this for the course repository, so you should not need to do this step yourself. However, if you are setting up a new repository, here is how it works:
-
-1. Open **Git Bash** (Windows) or **Terminal** (Mac).
-
-2. Navigate to your repository folder. For example:
+5. You should see the message `Git LFS initialized`. This means Git LFS is set up on your computer. You only need to run this command once.
+6. Now navigate to your course repository folder. In Git Bash, type:
     ```
     cd /c/Users/your-username/git/repo-name
     ```
-
-3. Tell Git LFS to track a file type. For example, to track all `.dta` files:
+    Replace `your-username` with your Windows username and `repo-name` with the name of the course repository folder. On Mac, the path will look like `cd ~/git/repo-name`.
+7. Tell Git LFS to track `.dta` files by typing:
     ```
     git lfs track "*.dta"
     ```
-    This creates (or updates) a `.gitattributes` file in your repository that tells Git which files should be handled by LFS.
-
-4. Make sure to add and commit the `.gitattributes` file:
+8. You should see the message `Tracking "*.dta"`. This creates a file called `.gitattributes` in your repository that tells Git which files to handle with LFS.
+9. Add and commit the `.gitattributes` file:
     ```
     git add .gitattributes
-    git commit -m "Track .dta files with Git LFS"
+    git commit -m "Track dta files with Git LFS"
     git push
     ```
-
-For more information, see the [GitHub documentation on configuring Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage).
+10. Your instructor may have already completed steps 7–9 for the course repository. If you see a message that `.gitattributes` already exists or that `*.dta` is already tracked, that is fine — you are all set.
 
 ## Overleaf and LaTeX <a name="Overleaf"></a>
 1.  Create an account on [Overleaf](https://www.overleaf.com/) using using the `Sign up for
@@ -121,21 +111,22 @@ For more information, see the [GitHub documentation on configuring Git LFS](http
 
 ## Java (for H2O Machine Learning) <a name="Java"></a>
 
-Stata 19's `h2oml` commands (random forest, gradient boosting) require an H2O cluster, which runs on Java. You must install a **Java Runtime Environment (JRE)** before using H2O.
+Stata 19's `h2oml` commands (random forest, gradient boosting) require a Java Runtime Environment (JRE) installed on your computer. You need to install Java before using any H2O commands in Stata.
 
-1. Check if Java is already installed by opening a terminal (Command Prompt on Windows, Terminal on Mac) and typing:
+1. Check if Java is already installed. Open **Git Bash** (Windows) or **Terminal** (Mac) and type:
     ```
     java -version
     ```
-    If you see a version number (e.g., `java version "17.0.x"`), Java is installed and you can skip to step 4.
-
-2. If Java is not installed, download the latest JRE from [Adoptium (Eclipse Temurin)](https://adoptium.net/). Select the **LTS** version (currently Java 21) for your operating system and install it.
-
-3. After installation, close and reopen your terminal, then run `java -version` again to confirm the installation succeeded.
-
-4. In Stata, test that H2O can start by running:
+    If you see a version number (e.g., `java version "17.0.12"` or `openjdk version "21.0.4"`), Java is already installed and you can skip to step 5.
+2. If you see an error like `'java' is not recognized` or `command not found`, you need to install Java. Go to [https://adoptium.net/](https://adoptium.net/).
+3. The website should automatically detect your operating system. Click the large download button for the **Latest LTS Release** (currently Java 21). Save the installer to your computer and run it. Accept all the default settings.
+4. After installation, close and reopen Git Bash (or Terminal), then type `java -version` again. You should now see a version number. If you still see an error, restart your computer and try again.
+5. Open Stata and type the following two commands in the Command window, one at a time:
     ```stata
     h2o init
+    ```
+    Wait for Stata to display a message confirming that the H2O cluster has started. Then type:
+    ```stata
     h2o shutdown
     ```
-    If both commands execute without errors, Java and H2O are configured correctly. If you encounter errors, consult Stata's documentation on [H2O setup](https://www.stata.com/manuals/h2oh2o.pdf) or the [StataCorp YouTube video on H2O setup](https://www.youtube.com/watch?v=Y1aPrScIdtg).
+6. If both commands run without errors, Java and H2O are configured correctly and you are ready for the machine learning assignments.
