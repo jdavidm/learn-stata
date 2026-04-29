@@ -79,14 +79,14 @@ Stata 19 introduced deep integration with [H2O](https://h2o.ai/), an open-source
 > [!IMPORTANT]
 > H2O requires **Stata 19** and a **Java Runtime Environment (JRE)** installed on your machine. If you have not already installed Java, follow the instructions on the [Computer Setup]({{ site.baseurl }}/computer-setup/) page. If you encounter errors when initializing H2O, consult Stata's documentation on H2O setup or the [StataCorp YouTube video on H2O setup](https://www.youtube.com/watch?v=Y1aPrScIdtg).
 
-The H2O workflow in Stata has three steps:
+The H2O workflow in Stata has four steps:
 
 ```stata
 * 1. start the H2O cluster (launches a Java process)
     h2o init
 
 * 2. push your Stata dataset to an H2O frame
-    _h2oframe put, replace
+    _h2oframe put, into(newframename)
 
 * 3. (do your ML work here — random forest, GBM, etc.)
 

@@ -125,3 +125,6 @@ if $pack == 1 {
 *	do				"$code/10-results.do"
 *	do				"$code/11-FE.do"
 *	do				"$code/12-did.do"
+*	do				"$code/13-iv.do"
+*	do				"$code/14-rdd.do"
+*	do				"$code/15-ml.do"
