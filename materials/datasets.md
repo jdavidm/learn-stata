@@ -16,7 +16,7 @@ title: List of datasets
 | Land tenure | dta | <https://jdavidm.github.io/learn-stata/data/tenuredata.dta> |
 | Life expectancy | dta | <https://jdavidm.github.io/learn-stata/data/lifeexp.dta> |
 | LSMS household | dta | <https://jdavidm.github.io/learn-stata/data/lsms_household.dta> |
-| LSMS plot | dta | <https://jdavidm.github.io/learn-stata/data/plot_dataset.dta> |
+| LSMS plot | dta | <https://github.com/jdavidm/learn-stata/raw/refs/heads/main/data/plot_dataset.dta?download=> |
 | Conservation agriculture | dta | <https://jdavidm.github.io/learn-stata/data/Michler_JEEM.dta> |
 | Monte Carlo simulation | dta | <https://jdavidm.github.io/learn-stata/data/mc_data.dta> |
 | Mortgages | dta | <https://jdavidm.github.io/learn-stata/data/mortgages.dta> |

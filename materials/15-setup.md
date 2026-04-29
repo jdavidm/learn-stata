@@ -9,7 +9,7 @@ For fourteen weeks we have built a causal-inference toolkit: fixed effects, diff
 
 Prediction problems are everywhere in applied economics. Which households are most likely to fall into poverty? Where should a government target an agricultural extension program? Which loan applicants will default? In each case, the goal is not to estimate a causal effect but to make an accurate forecast using whatever variables are available — even variables that would be "bad controls" in a causal model.
 
-Machine learning (ML) gives us a family of algorithms designed to maximize prediction accuracy while guarding against **overfitting** — the tendency of a model to memorize the training data at the expense of performance on new data. This lecture introduces the core ideas aof ML and how to use ML tools in Stata.
+Machine learning (ML) gives us a family of algorithms designed to maximize prediction accuracy while guarding against **overfitting** — the tendency of a model to memorize the training data at the expense of performance on new data. This lecture introduces the core ideas of ML and how to use ML tools in Stata.
 
 This lecture covers:
 - When prediction (rather than causal inference) is the right goal
@@ -17,7 +17,7 @@ This lecture covers:
 - Train/test splits and cross-validation
 - Setting up H2O in Stata for advanced ML algorithms
 
-We will use `eth_allrounds_final.dta` — the Ethiopia maize panel data from Weeks 11–13 — as our running example in the lecture. The task: **predict maize yield** (`yield_kg`) using household, plot, and weather variables. Students already know this data, so we can focus on the new methods rather than data cleaning. For the exercises, you will work with a larger, multi-country dataset (`plot_dataset.dta`) described in the first exercise.
+We will use `eth_allrounds_final.dta` — the Ethiopia maize panel data from Weeks 11–13 — as our running example in the lecture. The task: **predict maize yield** (`yield_kg`) using household, plot, and weather variables. You already know this data, so we can focus on the new methods rather than explaining and exploring the data.
 
 ### Prediction vs. causal inference
 
