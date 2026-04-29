@@ -52,7 +52,7 @@ Purchase a [6-month copy of Stata BE](https://www.stata.com/order/new/edu/profpl
 Git Bash is a command-line application that lets you run Git commands on your computer by typing them into a terminal window. While GitHub Desktop provides a visual interface for common Git tasks, some operations — like setting up Git Large File Storage (below) — require typing commands directly. Git Bash gives you a terminal on Windows that understands Git commands.
 
 **Mac users**: You do not need to install Git Bash. Your Mac already has a built-in Terminal application (found in Applications → Utilities → Terminal) that works the same way. macOS also comes with Git pre-installed.
-1. Open Terminal (Applications → Utilities → Terminal).
+1. Open Terminal, Command Prompt, or PowerShell.
 2. Type `git --version` and press Enter.
 3. You should see output like `git version 2.39.5`. If you see this, you are ready to proceed to [Git Large File Storage](#GitLFS).
 
@@ -107,7 +107,7 @@ Stata 19's `h2oml` commands (random forest, gradient boosting) require two thing
     ```
     java -version
     ```
-2. If you see a version number (e.g., `java version "17.0.12"` or `openjdk version "21.0.4"`), Java is already installed. Skip ahead to **Step B**.
+2. If you see a version number (e.g., `java version "25.0.3"` or `openjdk version "21.0.4"`), Java is already installed. Skip ahead to **Step B**.
 3. If you see an error like `'java' is not recognized` or `command not found`, you need to install Java. Go to [https://adoptium.net/](https://adoptium.net/){:target="_blank"}.
 4. The website should automatically detect your operating system. Click the large download button for the **Latest LTS Release** (currently Java 21). Save the installer to your computer and run it. Accept all the default settings.
 5. After installation, close and reopen Git Bash (or Terminal), then type `java -version` again. You should now see a version number. If you still see an error, restart your computer and try again.
@@ -115,7 +115,7 @@ Stata 19's `h2oml` commands (random forest, gradient boosting) require two thing
 ### Step B — Download the H2O library
 
 6. Go to the H2O download page: [https://h2o.ai/resources/download/](https://h2o.ai/resources/download/){:target="_blank"}.
-7. Under **H2O Open Source**, click the **Download H2O** button. This will download a `.zip` file (the file name will look something like `h2o-3.46.0.10.zip`). Save it somewhere easy to find, like your Downloads folder.
+7. Under **H2O Open Source Platform**, click the **Latest Stable Release** button and then the **Download H2O** button. This will download a `.zip` file (the file name will look something like `h2o-3.46.0.10.zip`). Save it somewhere easy to find, like your Downloads folder.
 8. Unzip the file. On Windows, right-click the `.zip` file and select "Extract All..." On Mac, double-click the `.zip` file.
 9. Open the unzipped folder. Inside, you will see a file named `h2o.jar`. This is the only file you need from this folder.
 
@@ -126,7 +126,7 @@ Stata 19's `h2oml` commands (random forest, gradient boosting) require two thing
     sysdir
     ```
 11. Stata will display a list of directory paths. Look for the one labeled **PLUS**. It will look something like:
-    - **Windows**: `C:\ado\plus\`
+    - **Windows**: `C:\Users\yourusername\ado\plus\` or just `C:\ado\plus\`.
     - **Mac**: `/Users/yourusername/ado/plus/`
 12. Open that folder in File Explorer (Windows) or Finder (Mac). If the folder does not exist, create it.
 13. Inside the PLUS folder, create a new folder called `jar`. The result should be:
@@ -140,10 +140,13 @@ Stata 19's `h2oml` commands (random forest, gradient boosting) require two thing
     ```stata
     h2o init
     ```
-16. Wait for Stata to display a message confirming that the H2O cluster has started. You should see output that includes "H2O cluster up" or similar. If you see an error about `h2o.jar not found`, go back to steps 10–14 and make sure the `h2o.jar` file is in the correct `jar` folder inside your PLUS directory.
+16. Wait for Stata to display a message confirming that the H2O cluster has started. You should see output that includes "H2O cluster up" or similar. If you see an error about `h2o.jar not found`, go back to steps 10–14 and make sure the `h2o.jar` file is in the correct `jar` folder inside your PLUS directory. If you see a Firewall alert, click the boxes next to domain network and private networks and the click the **Allow access** button.
+
+    ![Allow Firewall Access]({{ site.baseurl }}/images/firewall.png)
+
 17. Once the cluster has started, shut it down by typing:
     ```stata
-    h2o shutdown
+    h2o shutdown, force
     ```
 18. If both commands run without errors, Java and H2O are configured correctly and you are ready for the machine learning assignments.
 
