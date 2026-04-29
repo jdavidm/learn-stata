@@ -2,7 +2,7 @@
 * assignment: 15
 * created on: 24 apr 26
 * created by: jdm
-* edited on: 24 apr 26
+* edited on: 29 apr 26
 * edited by: jdm
 * stata v.19.5
 
@@ -11,17 +11,12 @@
 **# 0 - setup
 **********************************************************************
 
-* define paths
-	global		root	"$data"
-	global		export	"$data/assignments/answers"
-	global		logout	"$data/assignments/logs"
-
 * open log
 	cap             log close
 	log             using "$logout/15-ml.log", append
 
 * load data
-	use             "$root/plot_dataset.dta", clear
+	use             "$data/plot_dataset.dta", clear
 
 
 **********************************************************************
@@ -29,11 +24,10 @@
 **********************************************************************
 
 * examine the data
-	tab             country
-	sum             yield_kg, detail
+	sum             yield_kg
 
 * set seed for reproducibility
-	set seed        597
+	set seed        8675309
 
 * create random split variable
 	gen             u = runiform()
@@ -46,19 +40,15 @@
 	h2o init
 
 * push data to H2O frame
-	_h2oframe put, replace
+	_h2oframe put, into(plot_data)
+
 
 **## 1.1 - report split
 	*** report the number of training and test observations
 	count if        sample == 1
 	count if        sample == 0
 
-**## 1.2 - interpretation
-	*** setting a seed ensures the random split is reproducible.
-	*** without it, each run produces a different split and
-	*** different results, making the analysis non-replicable.
-
-
+	
 **********************************************************************
 **# exercise 2 - Lasso for Prediction
 **********************************************************************
