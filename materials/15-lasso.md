@@ -89,7 +89,7 @@ The key question: how well does each model predict on **data it has never seen**
 
 ```stata
 * compare in-sample and out-of-sample MSE for both models
-    lassogof cv adaptive, over(sample) postselection
+    lassogof cv adpt, over(sample) postselection
 ```
 
 `lassogof` reports the MSE for each model in each sample. The `postselection` option uses postselection coefficients (OLS re-estimated on the lasso-selected variables) rather than the penalized coefficients — this often gives better out-of-sample predictions. The MSE for `sample == 2` (the test set) is the out-of-sample MSE — the number that tells us how well the model generalizes.
