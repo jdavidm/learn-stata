@@ -333,208 +333,68 @@
 
 
 **********************************************************************
-**# exercise 6 - Model Comparison
+**# Challenge 15 - Model Comparison and Deployment
 **********************************************************************
 
-* OLS on training data
-	reg             yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
-						if sample == 1
-	predict         yhat_ols
-	gen             sq_err_ols = (yield_kg - yhat_ols)^2
+**## part 1 - model comparison
 
 * collect out-of-sample MSE for each model
-	matrix          compare = J(5, 2, .)
-	matrix rownames compare = OLS Lasso ElasticNet RF GBM
-	matrix colnames compare = MSE RMSE
+    matrix          compare = J(4, 2, .)
+    matrix rownames compare = Lasso ElasticNet RF GBM
+    matrix colnames compare = MSE RMSE
 
-	local           row = 1
-	foreach model in ols lasso enet rf gbm {
-		sum         sq_err_`model' if sample == 2
-		matrix      compare[`row', 1] = r(mean)
-		matrix      compare[`row', 2] = sqrt(r(mean))
-		local       ++row
-	}
-	matrix list     compare, format(%12.1f)
+    local           row = 1
+    foreach model in lasso enet rf gbm {
+        sum         sq_err_`model' if sample == 2
+        matrix      compare[`row', 1] = r(mean)
+        matrix      compare[`row', 2] = sqrt(r(mean))
+        local       ++row
+    }
+    matrix list     compare, format(%12.1f)
 
 * create dataset from matrix for export
-	preserve
-	clear
-	svmat           compare
-	gen             model = ""
-	replace         model = "OLS" in 1
-	replace         model = "Lasso" in 2
-	replace         model = "Elastic Net" in 3
-	replace         model = "Random Forest" in 4
-	replace         model = "Gradient Boosting" in 5
-	order           model
-	rename          (compare1 compare2) (mse rmse)
-	export delimited "$export/15-ml-compare.csv", replace
+    preserve
+    clear
+    svmat           compare
+    gen             model = ""
+    replace         model = "Lasso" in 1
+    replace         model = "Elastic Net" in 2
+    replace         model = "Random Forest" in 3
+    replace         model = "Gradient Boosting" in 4
+    order           model
+    rename          (compare1 compare2) (mse rmse)
+    export delimited "$export/15-ml-compare.csv", replace
 
 * create bar chart
-	gen             id = _n
-	twoway          (bar mse id, ///
-						barwidth(0.7) color(navy%70)), ///
-						xlabel(1 "OLS" 2 "Lasso" 3 "E-Net" ///
-							4 "RF" 5 "GBM", angle(0)) ///
-						ytitle("Out-of-Sample MSE") ///
-						xtitle("") ///
-						graphregion(color(white))
-	graph export    "$export/15-ml-compare.png", replace
-	restore
+    gen             id = _n
+    twoway          (bar mse id, ///
+                        barwidth(0.7) color(navy%70)), ///
+                        xlabel(1 "Lasso" 2 "E-Net" 3 "RF" 4 "GBM", angle(0)) ///
+                        ytitle("Out-of-Sample MSE") ///
+                        xtitle("") ///
+                        graphregion(color(white))
+    graph export    "$export/15-ml-compare.png", replace
+    restore
 
-**## 6.1 - interpretation
-	*** rank models from best to worst based on out-of-sample MSE.
-	*** tree-based methods (RF, GBM) typically outperform linear
-	*** methods when there are nonlinearities and interactions.
+**## part 2 - deployment
 
+* assuming your best model is GBM and it is currently active
+* generate predictions for all observations
+    predict         future_yield
 
-**********************************************************************
-**# exercise 7 - SHAP and Variable Importance
-**********************************************************************
+* check how many are missing before
+    count if        yield_kg == .
 
-* re-estimate GBM (to ensure it is the active h2oml model)
-	h2oml gbregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(500) maxdepth(5) ///
-						learnrate(0.05) cv(5)
+* impute missing yields
+    replace         yield_kg = future_yield if yield_kg == .
 
-* SHAP summary plot
-	h2omlgraph shapsummary
-	graph export    "$export/15-ml-shap.png", replace
+* check how many are missing after
+    count if        yield_kg == .
 
-* partial dependence plots for top predictors
-	h2omlgraph pdp nitrogen_kg
-	graph export    "$export/15-ml-pdp-nitrogen.png", replace
-
-	h2omlgraph pdp seed_kg
-	graph export    "$export/15-ml-pdp-seed.png", replace
-
-* variable importance for GBM
-	h2omlgraph varimp
-	graph export    "$export/15-ml-varimp-gbm.png", replace
-
-**## 7.1 - interpretation
-	*** describe the relationship between variable values and
-	*** SHAP values for the top three variables
-
-**## 7.2 - interpretation
-	*** discuss any nonlinear relationships revealed by PDPs
-
-**## 7.3 - interpretation
-	*** compare GBM variable importance to lasso selection
-
-**## 7.4 - interpretation
-	*** high variable importance does not imply causation.
-	*** predictive importance means the variable helps
-	*** forecast the outcome, but the relationship may be
-	*** driven by confounders. causal claims require the
-	*** tools from weeks 8-14 (FE, DiD, IV, RDD).
-
-
-**********************************************************************
-**# challenge 15 - Full ML Workflow
-**********************************************************************
-
-**## part 1 - new prediction target
-
-* lasso to predict harvest value
-	lasso linear    harvest_value_USD plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						nb_seasonal_crop ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
-						if sample == 1
-	predict         yhat_val_lasso
-	gen             sq_err_val_lasso = ///
-						(harvest_value_USD - yhat_val_lasso)^2
-	sum             sq_err_val_lasso if sample == 2
-
-* GBM to predict harvest value
-	h2oml gbregress harvest_value_USD plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						nb_seasonal_crop ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(500) maxdepth(5) ///
-						learnrate(0.05) cv(5)
-	predict         yhat_val_gbm
-	gen             sq_err_val_gbm = ///
-						(harvest_value_USD - yhat_val_gbm)^2
-	sum             sq_err_val_gbm if sample == 2
-
-**## part 2 - comparison table
-
-* collect MSE results
-	matrix          chal = J(2, 2, .)
-	matrix rownames chal = Lasso GBM
-	matrix colnames chal = MSE RMSE
-
-	sum             sq_err_val_lasso if sample == 2
-	matrix          chal[1, 1] = r(mean)
-	matrix          chal[1, 2] = sqrt(r(mean))
-
-	sum             sq_err_val_gbm if sample == 2
-	matrix          chal[2, 1] = r(mean)
-	matrix          chal[2, 2] = sqrt(r(mean))
-
-	matrix list     chal, format(%12.4f)
-
-**## part 3 - interpretation
-
-* SHAP summary plot for harvest value GBM
-	h2omlgraph shapsummary
-	graph export    "$export/15-challenge-shap.png", replace
-
-**## part 4 - reflection
-	*** 1. report which model predicts harvest value better
-	*** 2. discuss which variables are important for predicting
-	***    harvest value and whether they would be bad controls
-	***    in a causal regression
-	*** 3. discuss whether a single ML model trained on all
-	***    seven countries predicts well for each individual
-	***    country
-	*** 4. a trained ML model could identify low-harvest-value
-	***    households for cash transfer targeting, using only
-	***    observable plot characteristics and input use
+**## part 3 - reflection
+    *** discuss the economic implications of using machine learning
+    *** to impute missing harvest data rather than dropping
+    *** observations with missing yield data.
 
 
 **********************************************************************
@@ -542,9 +402,11 @@
 **********************************************************************
 
 * shut down H2O
-	h2o shutdown
+    _h2oframe remove train_frame
+    _h2oframe remove test_frame
+    h2o shutdown
 
 * close log
-	cap             log close
+    cap             log close
 
 /* end */

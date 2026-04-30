@@ -5,39 +5,77 @@ title: Challenge 15
 language: Stata
 ---
 
-This challenge asks you to apply the full ML workflow — from data preparation through model comparison and interpretation — to a new prediction task using `plot_dataset.dta`.
+This challenge asks you to compare the out-of-sample performance of the machine learning models you trained in the previous exercises, select the best one, and then deploy it to impute missing crop yield data. 
 
-#### Part 1 — New Prediction Target
+#### Part 1 — Model Comparison
 
-Instead of predicting `yield_kg`, predict `harvest_value_USD` (the value of the plot harvest in US dollars) using the other available covariates. Predicting the value of agricultural output is a genuine applied problem — for example, in estimating poverty rates or targeting agricultural support programs.
+Now that you have fit lasso, elastic net, random forest, and gradient boosting on `plot_dataset.dta`, it is time to compare them systematically on out-of-sample performance.
 
-- Using `plot_dataset.dta` with your existing train/test split (the `sample` variable from Exercise 1).
-- Run two models on the training set:
-  1. **Lasso**: Use `lasso linear` with covariates `plot_area_GPS`, `seed_kg`, `nitrogen_kg`, `total_labor_days`, `total_hired_labor_days`, `improved`, `used_pesticides`, `organic_fertilizer`, `irrigated`, `intercropped`, `nb_seasonal_crop`, `age_manager`, `female_manager`, `formal_education_manager`, `plot_slope`, `elevation`, `dist_market`, `dist_popcenter`, `soil_fertility_index`, `crop_shock`, `drought_shock`, and factor variables `i.wave` and `i.admin_1`.
-  2. **Gradient boosting**: Use `h2oml gbregress` with the same covariates (without `i.` prefixes). Use `ntrees(500)`, `maxdepth(5)`, `learnrate(0.05)`, and `cv(5)`.
+- Create a comparison table. Store the MSE values in a matrix and display them:
 
-- Generate predictions from both models and compute the out-of-sample MSE on the test set.
+```stata
+* collect results
+    matrix          compare = J(4, 2, .)
+    matrix rownames compare = Lasso ElasticNet RF GBM
+    matrix colnames compare = MSE RMSE
 
-#### Part 2 — Comparison Table
+    local           row = 1
+    foreach model in lasso enet rf gbm {
+        sum         sq_err_`model' if sample == 2
+        matrix      compare[`row', 1] = r(mean)
+        matrix      compare[`row', 2] = sqrt(r(mean))
+        local       ++row
+    }
+    matrix list     compare, format(%12.1f)
+```
 
-- Create a matrix comparing the out-of-sample MSE and RMSE for lasso and GBM.
-- Export the comparison as a LaTeX table to `"$answ/15-challenge-compare.tex"`. Use `esttab` or manually build the table.
+- Export a dataset of the results:
 
-#### Part 3 — Interpretation
+```stata
+* create a dataset from the matrix for export
+    preserve
+    clear
+    svmat           compare
+    gen             model = ""
+    replace         model = "Lasso" in 1
+    replace         model = "Elastic Net" in 2
+    replace         model = "Random Forest" in 3
+    replace         model = "Gradient Boosting" in 4
+    order           model
+    rename          (compare1 compare2) (mse rmse)
+    export delimited "$export/15-ml-compare.csv", replace
+    restore
+```
 
-- Run `h2omlgraph shapsummary` on the GBM model. Export the SHAP summary plot to `"$answ/15-challenge-shap.png"`.
-- Import both the comparison table and the SHAP plot into your Overleaf document.
+1. Rank the four models from best (lowest MSE) to worst. Which model wins? By how much does it improve over the second-best model?
 
-#### Part 4 — Reflection
+2. Create a bar chart showing the out-of-sample MSE for each model. Export and import into your Overleaf document.
 
-Answer the following questions in your Overleaf write-up:
+#### Part 2 — Deployment
 
-1. Which model predicts harvest value better — lasso or GBM? By how much?
+The dataset `plot_dataset.dta` has 257,154 observations, but only 228,448 observations actually have data on `yield_kg`. The remaining 28,706 observations have missing yield data! The goal of this part is to use the winning machine learning model to predict what the harvest would have been for those plots.
 
-2. Examine the SHAP summary plot. Which variables are most important for predicting harvest value? Are any of these variables ones that you would *not* use in a causal regression of harvest value on inputs? Why?
+- Make sure your best-performing model is the active model in memory (if it's an H2O model, make sure `train_frame` is active and you've re-estimated it if necessary).
+- Generate predictions for the *entire* dataset using `predict`.
+- Replace the missing `yield_kg` values with the predicted values.
 
-3. The `plot_dataset.dta` contains observations from seven countries. Do you think a single ML model trained on all countries predicts well for each individual country? How might you test this? What are the implications for using ML to target agricultural programs across different contexts?
+```stata
+* assuming your best model is GBM and it is currently active
+* generate predictions for all observations
+    predict future_yield
 
-4. Suppose a development organization wants to identify the poorest farming households (those with the lowest harvest value) for a cash transfer program, but they can only observe plot characteristics and input use — not actual harvest. How could a trained ML model help? Would you use lasso or GBM? Why?
+* check how many are missing before
+    count if yield_kg == .
+
+* impute missing yields
+    replace yield_kg = future_yield if yield_kg == .
+
+* check how many are missing after
+    count if yield_kg == .
+```
+
+3. How many missing `yield_kg` observations did your model successfully impute? Use `count if yield_kg == .` before and after to verify.
+
+4. Think about the economic implications of what you just did. If you were an agricultural researcher or policymaker, what is one major advantage of using machine learning to impute missing harvest data rather than just dropping those observations from your analysis?
 
 ---

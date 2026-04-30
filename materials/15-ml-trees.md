@@ -276,3 +276,5 @@ ML is a powerful prediction tool, but it does not replace causal inference. Here
 - **Compare models** on out-of-sample MSE using a held-out test set
 - **Interpret** ML models with variable importance (`h2omlgraph varimp`), partial dependence plots (`h2omlgraph pdp`), and SHAP values (`h2omlgraph shapsummary`)
 - ML is for prediction; use causal-inference tools (Weeks 8–14) for estimating treatment effects — but the two can complement each other through methods like double ML
+
+> Do [Challenge 15 - Model Comparison and Deployment]({{ site.baseurl }}/exercises/15-challenge/)
