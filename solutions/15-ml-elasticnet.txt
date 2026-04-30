@@ -1,0 +1,5 @@
+[1] 28 in lasso; 44 in both ridge and elastic net
+
+[2] The number of variables selected by lasso declines as α decreases from 1 to 0. Ridge regression, with α = 0, selects all variables. This is because ridge regression shrinks coefficients but does not set them to zero.
+
+[3] Elastic net and ridge (MSE = 1.11e+12) perform much better than lasso (MSE = 8.93e+11) in this case. 

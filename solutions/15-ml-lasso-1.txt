@@ -1,3 +1,4 @@
-[1] plot_area_GPS, used_pesticides, organic_fertilizer, intercropped, female_manager, formal_education_manager, plot_slope, elevation, dist_popcenter, soil_fertility_index, crop_shock, drought_shock, wave_1, wave 3, admin_2, admin_3, admin_4, admin_5, admin_6, admin_7, admin_13
+[1] in cv but not adpt: total_labor_days, dist_market, dist_popcenter, millet, other, wheat, tropic-warm/arid, tropic-warm/semiarid
+    in adpt but not cv: none 
 
-[3] 180,157; 76,997
+[3] adaptive lasso performs better because it has a smaller MSE in the test set.

@@ -26,27 +26,18 @@
 * examine the data
 	sum             yield_kg
 
-* set seed for reproducibility
-	set seed        8675309
-
 * create random split variable
-	gen             u = runiform()
-	gen             sample = (u < 0.70)
-	*** sample == 1 is training, sample == 0 is test
-	drop            u
-	tab             sample
-
-* initialize H2O cluster
-	h2o init
-
-* push data to H2O frame
-	_h2oframe put, into(plot_data)
-
+    splitsample,    generate(sample) split(0.70 0.30) rseed(8675309)
+    
+* label the values of sample
+    lab def         svalues 1 "Training" 2 "Testing"
+    lab val         sample svalues
+    tab             sample
 
 **## 1.1 - report split
-	*** report the number of training and test observations
-	count if        sample == 1
-	count if        sample == 0
+    *** report the number of training and test observations
+    count if        sample == 1
+    count if        sample == 2
 
 	
 **********************************************************************
@@ -54,42 +45,53 @@
 **********************************************************************
 
 * fit lasso on training data
-	lasso linear    yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
-						if sample == 1
+    lasso linear    yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.crop i. agro_ecological_zone ///
+						i.wave i.country ///
+                        if sample == 1
+    estimates store cv
 
-* inspect selected variables
-	lassocoef, display(coef, standardized)
+* fit adaptive lasso on training data
+    lasso linear    yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.crop i. agro_ecological_zone ///
+						i.wave i.country ///
+                        if sample == 1, selection(adaptive)
+    estimates store adpt
 
-* plot the cross-validation curve
-	cvplot
-	graph export    "$export/15-ml-cvplot.png", replace
+* inspect and compare selected variables
+    lassocoef cv adpt, display(coef, standardized)
 
-* report goodness of fit
-	lassogof
+* plot the cross-validation curves
+    estimates restore cv
+    cvplot
+    graph export    "$answ/15-ml-lasso-2.png", replace
 
-* generate predictions
-	predict         yhat_lasso
+    estimates restore adpt
+    cvplot
+    graph export    "$answ/15-ml-lasso-3.png", replace
 
-* compute out-of-sample MSE
-	gen             sq_err_lasso = (yield_kg - yhat_lasso)^2
-	sum             sq_err_lasso if sample == 0
-
-**## 2.1 - interpretation
-	*** report the number of selected variables and which
-	*** were dropped. out-of-sample MSE is better because
-	*** it measures how well the model generalizes to new
-	*** data, not how well it memorizes the training data.
+* report goodness of fit out-of-sample
+    lassogof cv adpt, over(sample) postselection
 
 
 **********************************************************************
@@ -113,7 +115,7 @@
 	lassocoef, display(coef, standardized)
 	predict         yhat_a1
 	gen             sq_err_a1 = (yield_kg - yhat_a1)^2
-	sum             sq_err_a1 if sample == 0
+	sum             sq_err_a1 if sample == 2
 
 * elastic net (alpha = 0.5)
 	elasticnet linear yield_kg plot_area_GPS seed_kg ///
@@ -132,7 +134,7 @@
 	lassocoef, display(coef, standardized)
 	predict         yhat_a5
 	gen             sq_err_enet = (yield_kg - yhat_a5)^2
-	sum             sq_err_enet if sample == 0
+	sum             sq_err_enet if sample == 2
 
 * ridge (alpha = 0)
 	elasticnet linear yield_kg plot_area_GPS seed_kg ///
@@ -151,7 +153,7 @@
 	lassocoef, display(coef, standardized)
 	predict         yhat_a0
 	gen             sq_err_a0 = (yield_kg - yhat_a0)^2
-	sum             sq_err_a0 if sample == 0
+	sum             sq_err_a0 if sample == 2
 
 **## 3.1 - interpretation
 	*** as alpha decreases from 1 to 0, more variables are
@@ -186,7 +188,7 @@
 
 * compute out-of-sample MSE
 	gen             sq_err_rf = (yield_kg - yhat_rf)^2
-	sum             sq_err_rf if sample == 0
+	sum             sq_err_rf if sample == 2
 
 * variable importance plot
 	h2omlgraph varimp
@@ -213,7 +215,7 @@
 						ntrees(200) maxdepth(3) cv(5)
 	predict         yhat_rf3
 	gen             sq_err_rf3 = (yield_kg - yhat_rf3)^2
-	sum             sq_err_rf3 if sample == 0
+	sum             sq_err_rf3 if sample == 2
 
 * deep trees (maxdepth = 20)
 	h2oml rfregress yield_kg plot_area_GPS seed_kg ///
@@ -232,7 +234,7 @@
 						ntrees(200) maxdepth(20) cv(5)
 	predict         yhat_rf20
 	gen             sq_err_rf20 = (yield_kg - yhat_rf20)^2
-	sum             sq_err_rf20 if sample == 0
+	sum             sq_err_rf20 if sample == 2
 
 	*** shallow trees have higher bias (underfit), deep trees
 	*** may have slightly higher variance (overfit).
@@ -265,7 +267,7 @@
 
 * compute out-of-sample MSE
 	gen             sq_err_gbm = (yield_kg - yhat_gbm)^2
-	sum             sq_err_gbm if sample == 0
+	sum             sq_err_gbm if sample == 2
 
 **## 5.1 - interpretation
 	*** report MSE and compare to random forest.
@@ -293,7 +295,7 @@
 						learnrate(0.3) cv(5)
 	predict         yhat_gbm_hi
 	gen             sq_err_gbm_hi = (yield_kg - yhat_gbm_hi)^2
-	sum             sq_err_gbm_hi if sample == 0
+	sum             sq_err_gbm_hi if sample == 2
 
 	*** a higher learning rate makes each tree contribute more,
 	*** which can cause overfitting. smaller learning rates
@@ -328,7 +330,7 @@
 
 	local           row = 1
 	foreach model in ols lasso enet rf gbm {
-		sum         sq_err_`model' if sample == 0
+		sum         sq_err_`model' if sample == 2
 		matrix      compare[`row', 1] = r(mean)
 		matrix      compare[`row', 2] = sqrt(r(mean))
 		local       ++row
@@ -445,7 +447,7 @@
 	predict         yhat_val_lasso
 	gen             sq_err_val_lasso = ///
 						(harvest_value_USD - yhat_val_lasso)^2
-	sum             sq_err_val_lasso if sample == 0
+	sum             sq_err_val_lasso if sample == 2
 
 * GBM to predict harvest value
 	h2oml gbregress harvest_value_USD plot_area_GPS seed_kg ///
@@ -467,7 +469,7 @@
 	predict         yhat_val_gbm
 	gen             sq_err_val_gbm = ///
 						(harvest_value_USD - yhat_val_gbm)^2
-	sum             sq_err_val_gbm if sample == 0
+	sum             sq_err_val_gbm if sample == 2
 
 **## part 2 - comparison table
 
@@ -476,11 +478,11 @@
 	matrix rownames chal = Lasso GBM
 	matrix colnames chal = MSE RMSE
 
-	sum             sq_err_val_lasso if sample == 0
+	sum             sq_err_val_lasso if sample == 2
 	matrix          chal[1, 1] = r(mean)
 	matrix          chal[1, 2] = sqrt(r(mean))
 
-	sum             sq_err_val_gbm if sample == 0
+	sum             sq_err_val_gbm if sample == 2
 	matrix          chal[2, 1] = r(mean)
 	matrix          chal[2, 2] = sqrt(r(mean))
 
