@@ -11,7 +11,7 @@ The prediction task for this week is to forecast **crop yield** (`yield_kg`) usi
 
 - Load `plot_dataset.dta`.
 
-1.\ Examine the data. How many observations are there? What is the mean yield?
+1\. Examine the data. How many observations are there? What is the mean yield?
 
 - Create a random train/test split. Set a seed for reproducibility (`8675309`), generate a uniform random variable (`runiform()`) called `u`, and generate a variable called `sample` that defines the training set as observations where the random value is below 0.70 (70% training, 30% test).
 
