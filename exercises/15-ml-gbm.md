@@ -22,14 +22,13 @@ Gradient boosting builds trees sequentially — each new tree corrects the error
                         dist_market dist_popcenter ///
                         soil_fertility_index ///
                         crop_shock drought_shock ///
-                        wave admin_1 ///
-                        if sample == 1, ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
                         ntrees(500) maxdepth(5) ///
                         learnrate(0.05) cv(5)
 ```
 
-- Generate predictions with `predict yhat_gbm`.
-- Compute the out-of-sample MSE on the test set.
+- Evaluate the out-of-sample MSE on the testing frame using `h2omlgof`.
 
 1. Report the out-of-sample MSE. Compare it to the random forest MSE from Exercise 4. Which model performs better?
 

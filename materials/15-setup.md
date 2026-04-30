@@ -98,16 +98,21 @@ The H2O workflow in Stata has four steps:
 * 1. start the H2O cluster (launches a Java process)
     h2o init
 
-* 2. push your Stata dataset to an H2O frame
-    _h2oframe put, into(newframename)
+* 2. push your training and testing datasets to separate H2O frames
+    _h2oframe put if sample == 1, into(train_frame) current
+    _h2oframe put if sample == 2, into(test_frame)
 
 * 3. (do your ML work here — random forest, GBM, etc.)
 
-* 4. when finished, shut down the H2O cluster
+* 4. to free up memory, you can remove frames you no longer need
+    _h2oframe remove framename
+
+* 5. when finished, disconnect from the H2O cluster and shut it down
+    h2o disconnect
     h2o shutdown
 ```
 
-`h2o init` starts a local H2O server. `_h2oframe put` transfers the currently loaded Stata dataset to H2O's memory (as an "H2O frame"). After fitting models, `h2o shutdown` closes the H2O process and frees memory.
+`h2o init` starts a local H2O server. `_h2oframe put` transfers the data to H2O's memory (as "H2O frames"). We push the training and testing sets separately so we can evaluate out-of-sample performance later. You can free up memory on the cluster by dropping specific frames with `_h2oframe remove`. After fitting models, `h2o disconnect` disconnects from the H2O cluster and `h2o shutdown` closes the H2O process and frees all memory.
 
 For this week we will use H2O only for random forest and gradient boosting (Lecture 3). Lasso and elastic net use Stata's native commands and do not require H2O.
 

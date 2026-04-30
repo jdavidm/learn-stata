@@ -12,6 +12,9 @@ Make sure H2O is initialized and your data is loaded in an H2O frame (from Exerc
 - Fit a random forest to predict `yield_kg` on the training set. Use 200 trees, a maximum depth of 10, and 5-fold cross-validation:
 
 ```stata
+* make sure the training frame is the active frame
+    _h2oframe change train_frame
+
 * fit random forest
     h2oml rfregress yield_kg plot_area_GPS seed_kg ///
                         nitrogen_kg total_labor_days ///
@@ -24,20 +27,21 @@ Make sure H2O is initialized and your data is loaded in an H2O frame (from Exerc
                         dist_market dist_popcenter ///
                         soil_fertility_index ///
                         crop_shock drought_shock ///
-                        wave admin_1 ///
-                        if sample == 1, ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
                         ntrees(200) maxdepth(10) cv(5)
 ```
 
 Note: When using `h2oml`, do not include the `i.` prefix for factor variables. H2O handles categorical variables internally. Pass `wave` and `admin_1` without `i.`.
 
-- Generate predictions with `predict yhat_rf`.
-- Compute the out-of-sample MSE on the test set:
+- Set the testing frame and compute the out-of-sample MSE using `h2omlgof`:
 
 ```stata
-* out-of-sample MSE
-    gen             sq_err_rf = (yield_kg - yhat_rf)^2
-    sum             sq_err_rf if sample == 0
+* set the testing frame for post-estimation
+    h2omlpostestframe test_frame
+
+* report out-of-sample goodness of fit
+    h2omlgof
 ```
 
 - Generate a variable importance plot:

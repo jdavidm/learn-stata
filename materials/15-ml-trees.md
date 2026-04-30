@@ -15,7 +15,7 @@ This lecture covers:
 - Model interpretation: variable importance, partial dependence plots, and SHAP values
 - When to use ML in economics
 
-We continue using `eth_allrounds_final.dta` and the train/test split from Exercise 1.
+We continue using `eth_allrounds_final.dta` and the train/test split from the first lecture.
 
 ### Decision trees
 
@@ -50,9 +50,12 @@ By averaging many diverse trees, the random forest dramatically reduces variance
 
 #### Using `h2oml rfregress` in Stata
 
-H2O's random forest command in Stata is `h2oml rfregress`. Before using it, make sure H2O is initialized and your data is pushed to an H2O frame (see Exercise 1).
+H2O's random forest command in Stata is `h2oml rfregress`. Before using it, make sure H2O is initialized and your data is pushed to an H2O frame (see first lecture).
 
 ```stata
+* make sure the training frame is the active frame
+    _h2oframe change train_frame
+
 * fit a random forest
     h2oml rfregress yield_kg nitrogen_kg seed_kg ///
                         total_labor_days total_hired_labor_days ///
@@ -73,15 +76,14 @@ Key options:
 - `maxdepth()`: Maximum depth of each tree. Deeper trees are more flexible but more prone to overfitting.
 - `cv()`: Number of cross-validation folds. H2O performs internal k-fold CV and reports the CV MSE.
 
-After fitting, generate predictions:
+After fitting, we can evaluate the model's out-of-sample MSE using the native H2O goodness-of-fit command. Since H2O stores its data on the Java cluster, we must first tell it to use our testing frame for post-estimation calculations:
 
 ```stata
-* generate predictions on the full dataset
-    predict         yhat_rf
+* set the testing frame for post-estimation
+    h2omlpostestframe test_frame
 
-* compute out-of-sample MSE
-    gen             sq_err_rf = (yield_kg - yhat_rf)^2
-    sum             sq_err_rf if sample == 0
+* report out-of-sample goodness of fit
+    h2omlgof
 ```
 
 > Do [Exercise 4 - Random Forest]({{ site.baseurl }}/exercises/15-ml-rf/)
@@ -126,47 +128,14 @@ Key options:
 - `learnrate()`: How much each tree contributes. Typical values: 0.01–0.1. Lower values require more trees but tend to generalize better.
 - `cv()`: Cross-validation folds for internal evaluation.
 
-```stata
-* generate predictions
-    predict         yhat_gbm
+After fitting, evaluate the out-of-sample MSE (assuming the test frame is still set as the post-estimation frame):
 
-* compute out-of-sample MSE
-    gen             sq_err_gbm = (yield_kg - yhat_gbm)^2
-    sum             sq_err_gbm if sample == 0
+```stata
+* report out-of-sample goodness of fit
+    h2omlgof
 ```
 
 > Do [Exercise 5 - Gradient Boosting]({{ site.baseurl }}/exercises/15-ml-gbm/)
-
-### Model comparison
-
-After fitting multiple models, we need a principled way to compare them. The key metric is **out-of-sample MSE** — prediction error on data the model has never seen. Lower MSE means better prediction.
-
-We compare five models:
-1. **OLS** — plain linear regression with all covariates
-2. **Lasso** — penalized linear regression with variable selection
-3. **Elastic net** — blended L1/L2 penalty
-4. **Random forest** — ensemble of independent trees
-5. **Gradient boosting** — ensemble of sequential trees
-
-```stata
-* collect out-of-sample MSE for each model
-    foreach model in ols lasso enet rf gbm {
-        sum         sq_err_`model' if sample == 0
-        local       mse_`model' = r(mean)
-    }
-
-* display comparison
-    di as text "Model Comparison (Out-of-Sample MSE)"
-    di as text "OLS:          " as result %12.1f `mse_ols'
-    di as text "Lasso:        " as result %12.1f `mse_lasso'
-    di as text "Elastic Net:  " as result %12.1f `mse_enet'
-    di as text "Random Forest:" as result %12.1f `mse_rf'
-    di as text "GBM:          " as result %12.1f `mse_gbm'
-```
-
-Typically, gradient boosting and random forest outperform lasso and OLS for prediction, especially when there are nonlinearities and interactions in the data. But this is not guaranteed — the relative performance depends on the data-generating process. If the true relationship is approximately linear, lasso may perform nearly as well with a much simpler model.
-
-> Do [Exercise 6 - Model Comparison]({{ site.baseurl }}/exercises/15-ml-compare/)
 
 ### Model interpretation
 
@@ -209,7 +178,74 @@ The SHAP summary plot shows every variable on the y-axis. For each variable, eac
 - If high values of nitrogen (red dots) cluster on the right (positive SHAP), nitrogen increases predicted yield.
 - If the dots spread widely, the variable's effect varies across observations (potential heterogeneity).
 
-> Do [Exercise 7 - SHAP and Variable Importance]({{ site.baseurl }}/exercises/15-ml-shap/)
+> Do [Exercise 6 - SHAP and Variable Importance]({{ site.baseurl }}/exercises/15-ml-shap/)
+
+### Model comparison
+
+After fitting multiple models, we need a principled way to compare them. The key metric is **out-of-sample MSE** — prediction error on data the model has never seen. Lower MSE means better prediction.
+
+We compare five models:
+1. **Lasso** — penalized linear regression with variable selection
+2. **Elastic net** — blended L1/L2 penalty
+3. **Random forest** — ensemble of independent trees
+4. **Gradient boosting** — ensemble of sequential trees
+
+> **Why calculate MSE manually?** Notice that we use `predict` and calculate the squared errors manually here, rather than using `lassogof` or `h2omlgof`. This is because we are comparing models that live in two completely different computational environments! OLS, Lasso, and Elastic Net live natively in Stata's memory, while Random Forest and GBM live on the external H2O Java cluster. Neither environment's built-in goodness-of-fit command can "see" the other's models. Generating `yhat` predictions and bringing them all into the main Stata dataset is the only way to compare them side-by-side.
+
+```stata
+* (assuming you generated predictions as yhat_`model' for all models)
+* collect out-of-sample MSE for each model
+    foreach model in lasso enet rf gbm {
+        gen         sq_err_`model' = (yield_kg - yhat_`model')^2
+        sum         sq_err_`model' if sample == 2
+        local       mse_`model' = r(mean)
+    }
+
+* display comparison
+    di as text "Model Comparison (Out-of-Sample MSE)"
+    di as text "Lasso:        " as result %12.1f `mse_lasso'
+    di as text "Elastic Net:  " as result %12.1f `mse_enet'
+    di as text "Random Forest:" as result %12.1f `mse_rf'
+    di as text "GBM:          " as result %12.1f `mse_gbm'
+```
+
+Typically, gradient boosting and random forest outperform lasso and OLS for prediction, especially when there are nonlinearities and interactions in the data. But this is not guaranteed — the relative performance depends on the data-generating process. If the true relationship is approximately linear, lasso may perform nearly as well with a much simpler model.
+
+#### Deployment: What do we do with the winning model?
+
+We've trained five models, evaluated them on our test set, and picked the one with the lowest out-of-sample MSE. Now what? What is the actual economic use case?
+
+In traditional econometrics, the end goal is the model itself: we estimate an OLS regression, look at the coefficient and p-value for a specific policy variable, and write a paper about its causal effect.
+
+In machine learning, **the model is just a tool to generate predictions for new, unknown data.**
+
+Once we identify the winning model, we "deploy" it. We take our trained model and apply it to a completely new dataset where we **do not know the outcome $Y$**. 
+
+For example:
+- **Targeting Policy:** You train a model to predict household poverty ($Y$) using satellite imagery features ($X$) for a sample of villages where you conducted an expensive survey. Once you find the best model, you feed it satellite imagery for *the rest of the country* (where you have no survey data) to predict their poverty levels. The government then uses these predictions to target cash transfers.
+- **Forecasting:** An agricultural insurance program uses historical data to train a model predicting crop yields based on early-season weather. Every new season, they feed current weather into the model to predict that year's harvest, allowing them to pre-position funds for payouts before the harvest even happens.
+
+We don't look at the model to say "X causes Y." We use the model as an automated prediction engine for the real world.
+
+#### Deployment in Stata
+
+We can simulate this directly in Stata. Imagine it is mid-season: we have data on plot size, fertilizer used, and seeds planted for five farms, but the harvest hasn't happened yet, so their `yield_kg` is currently missing. We want to predict what their yield *will* be using our trained gradient boosting model.
+
+```stata
+* simulate "new" data where the outcome is unknown
+    preserve
+    keep in 1/5
+    replace yield_kg = .
+
+* use our trained model to forecast the missing yields
+    predict future_yield
+
+* view our predictions
+    list nitrogen_kg seed_kg plot_area_GPS future_yield
+    restore
+```
+
+Notice that the `predict` command does not need $Y$ (`yield_kg`) to make predictions once the model is trained—it only needs the $X$ covariates.
 
 ### When to use ML in economics
 

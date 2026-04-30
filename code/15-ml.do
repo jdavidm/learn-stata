@@ -34,6 +34,13 @@
     lab val         sample svalues
     tab             sample
 
+* initialize H2O cluster
+    h2o init
+
+* push training and testing data to separate H2O frames
+    _h2oframe put if sample == 1, into(train_frame) current
+    _h2oframe put if sample == 2, into(test_frame)
+
 **## 1.1 - report split
     *** report the number of training and test observations
     count if        sample == 1
@@ -100,95 +107,97 @@
 
 * lasso via elasticnet (alpha = 1)
 	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.crop i. agro_ecological_zone ///
+						i.wave i.country ///
 						if sample == 1, alpha(1)
-	lassocoef, display(coef, standardized)
-	predict         yhat_a1
-	gen             sq_err_a1 = (yield_kg - yhat_a1)^2
-	sum             sq_err_a1 if sample == 2
+						
+    estimates store 	alph1
 
 * elastic net (alpha = 0.5)
 	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
-						if sample == 1, alpha(0.5)
-	lassocoef, display(coef, standardized)
-	predict         yhat_a5
-	gen             sq_err_enet = (yield_kg - yhat_a5)^2
-	sum             sq_err_enet if sample == 2
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.crop i. agro_ecological_zone ///
+						i.wave i.country ///
+						if sample == 1, alpha(0.5) ///
+						grid(100, ratio(1e-5)) stop(0)
+						
+    estimates store 	alph5
 
 * ridge (alpha = 0)
 	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						i.wave i.admin_1 ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.crop i. agro_ecological_zone ///
+						i.wave i.country ///
 						if sample == 1, alpha(0)
-	lassocoef, display(coef, standardized)
-	predict         yhat_a0
-	gen             sq_err_a0 = (yield_kg - yhat_a0)^2
-	sum             sq_err_a0 if sample == 2
+						
+    estimates store 	alph0
+	
+* inspect and compare selected variables
+    lassocoef 			alph1 alph5 alph0, display(coef, standardized)
 
-**## 3.1 - interpretation
-	*** as alpha decreases from 1 to 0, more variables are
-	*** retained. ridge keeps all variables with nonzero
-	*** coefficients. ridge is preferred when many predictors
-	*** are correlated — lasso arbitrarily drops some from
-	*** the correlated group, while ridge shrinks them all.
-
-
+* compare in-sample and out-of-sample MSE for both models
+    lassogof 			alph1 alph5 alph0, over(sample) postselection
+	
+	
 **********************************************************************
 **# exercise 4 - Random Forest
 **********************************************************************
 
+* make sure the training frame is the active frame
+    _h2oframe change train_frame
+
 * fit random forest
-	h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(200) maxdepth(10) cv(5)
+    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
+                        ntrees(200) maxdepth(10) cv(5)
 
-* generate predictions
-	predict         yhat_rf
+* set testing frame and report out-of-sample goodness of fit
+    h2omlpostestframe test_frame
+    h2omlgof
 
-* compute out-of-sample MSE
-	gen             sq_err_rf = (yield_kg - yhat_rf)^2
-	sum             sq_err_rf if sample == 2
+* generate predictions (kept so the loop below works)
+    predict         yhat_rf
+    gen             sq_err_rf = (yield_kg - yhat_rf)^2
+    sum             sq_err_rf if sample == 2
 
 * variable importance plot
 	h2omlgraph varimp
@@ -199,42 +208,44 @@
 
 **## 4.2 - depth sensitivity
 * shallow trees (maxdepth = 3)
-	h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(200) maxdepth(3) cv(5)
-	predict         yhat_rf3
-	gen             sq_err_rf3 = (yield_kg - yhat_rf3)^2
-	sum             sq_err_rf3 if sample == 2
+    _h2oframe change train_frame
+    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
+                        ntrees(200) maxdepth(3) cv(5)
+
+    h2omlpostestframe test_frame
+    h2omlgof
 
 * deep trees (maxdepth = 20)
-	h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(200) maxdepth(20) cv(5)
-	predict         yhat_rf20
-	gen             sq_err_rf20 = (yield_kg - yhat_rf20)^2
-	sum             sq_err_rf20 if sample == 2
+    _h2oframe change train_frame
+    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
+                        ntrees(200) maxdepth(20) cv(5)
+
+    h2omlpostestframe test_frame
+    h2omlgof
 
 	*** shallow trees have higher bias (underfit), deep trees
 	*** may have slightly higher variance (overfit).
@@ -245,29 +256,34 @@
 **# exercise 5 - Gradient Boosting
 **********************************************************************
 
+* make sure the training frame is the active frame
+    _h2oframe change train_frame
+
 * fit gradient boosting model
-	h2oml gbregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(500) maxdepth(5) ///
-						learnrate(0.05) cv(5)
+    h2oml gbregress yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
+                        ntrees(500) maxdepth(5) ///
+                        learnrate(0.05) cv(5)
 
-* generate predictions
-	predict         yhat_gbm
+* set testing frame and report out-of-sample goodness of fit
+    h2omlpostestframe test_frame
+    h2omlgof
 
-* compute out-of-sample MSE
-	gen             sq_err_gbm = (yield_kg - yhat_gbm)^2
-	sum             sq_err_gbm if sample == 2
+* generate predictions (kept so the loop below works)
+    predict         yhat_gbm
+    gen             sq_err_gbm = (yield_kg - yhat_gbm)^2
+    sum             sq_err_gbm if sample == 2
 
 **## 5.1 - interpretation
 	*** report MSE and compare to random forest.
@@ -278,28 +294,42 @@
 
 **## 5.2 - learning rate sensitivity
 * high learning rate
-	h2oml gbregress yield_kg plot_area_GPS seed_kg ///
-						nitrogen_kg total_labor_days ///
-						total_hired_labor_days improved ///
-						used_pesticides organic_fertilizer ///
-						irrigated intercropped ///
-						age_manager female_manager ///
-						formal_education_manager ///
-						plot_slope elevation ///
-						dist_market dist_popcenter ///
-						soil_fertility_index ///
-						crop_shock drought_shock ///
-						wave admin_1 ///
-						if sample == 1, ///
-						ntrees(500) maxdepth(5) ///
-						learnrate(0.3) cv(5)
-	predict         yhat_gbm_hi
-	gen             sq_err_gbm_hi = (yield_kg - yhat_gbm_hi)^2
-	sum             sq_err_gbm_hi if sample == 2
+    _h2oframe change train_frame
+    h2oml gbregress yield_kg plot_area_GPS seed_kg ///
+                        nitrogen_kg total_labor_days ///
+                        total_hired_labor_days improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        plot_slope elevation ///
+                        dist_market dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        crop agro_ecological_zone ///
+                        wave country, ///
+                        ntrees(500) maxdepth(5) ///
+                        learnrate(0.3) cv(5)
 
-	*** a higher learning rate makes each tree contribute more,
-	*** which can cause overfitting. smaller learning rates
-	*** make finer corrections and often generalize better.
+    h2omlpostestframe test_frame
+    h2omlgof
+
+    *** a higher learning rate makes each tree contribute more,
+    *** which can cause overfitting. smaller learning rates
+    *** make finer corrections and often generalize better.
+
+**## 5.3 - deployment
+* simulate "new" data where the outcome is unknown
+    preserve
+    keep in 1/5
+    replace yield_kg = .
+
+* use our trained GBM model to forecast the missing yields
+    predict future_yield
+
+* view our predictions
+    list nitrogen_kg seed_kg plot_area_GPS future_yield
+    restore
 
 
 **********************************************************************
