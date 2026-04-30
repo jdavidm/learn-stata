@@ -66,7 +66,11 @@ Stata provides the `splitsample` command for creating reproducible random splits
 
 ```stata
 * split data: 70% training (sample==1), 30% testing (sample==2)
-    splitsample, generate(sample) split(0.70 0.30) rseed(8675309)
+    splitsample,     generate(sample) split(0.70 0.30) rseed(8675309)
+    
+* label the values of sample
+    lab def           svalues 1 "Training" 2 "Testing"
+    lab val           sample svalues
 ```
 
 `splitsample` randomly assigns each observation to a group — here, group 1 (training) or group 2 (testing) — based on the specified proportions. Setting `rseed()` ensures the split is reproducible. When we fit models, we restrict to the training set with `if sample == 1`; when we evaluate, we use `over(sample)` to see performance on both groups simultaneously.

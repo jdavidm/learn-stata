@@ -115,20 +115,6 @@ When α = 1, elastic net is lasso. When α = 0, elastic net is ridge. Values in 
 #### Using `elasticnet linear` in Stata
 
 ```stata
-* elastic net with alpha = 0.5 (equal blend of lasso and ridge)
-    elasticnet linear yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.wave i.admin_1, ///
-                        alpha(0.5)
-
 * for ridge regression, set alpha = 0
     elasticnet linear yield_kg nitrogen_kg seed_kg ///
                         total_labor_days total_hired_labor_days ///
@@ -142,7 +128,23 @@ When α = 1, elastic net is lasso. When α = 0, elastic net is ridge. Values in 
                         crop_shock drought_shock ///
                         i.wave i.admin_1, ///
                         alpha(0)
+
+* elastic net with alpha = 0.5 (equal blend of lasso and ridge)
+    elasticnet linear yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.wave i.admin_1, ///
+                        alpha(0.5)
 ```
+
+*Note: When running the elastic net code with `alpha(0.5)`, you may encounter an error stating "No minimum of cross-validation function found" and "No lambda selected." This happens because the optimal penalty for this specific training split is so close to zero that Stata reaches the end of its default search grid without finding a clear turning point in the cross-validation error. Effectively, the model is saying that the "optimal" penalty for this particular training split is close to zero, meaning it basically just wants to run regular OLS without any penalty! To fix this, you can force Stata to search a wider range of smaller penalty values and disable early stopping by adding the options `grid(100, ratio(1e-5)) stop(0)` to the command.*
 
 > Do [Exercise 3 - Elastic Net and Ridge]({{ site.baseurl }}/exercises/15-ml-elasticnet/)
 
@@ -150,6 +152,5 @@ When α = 1, elastic net is lasso. When α = 0, elastic net is ridge. Values in 
 
 - **Lasso** shrinks coefficients and performs variable selection via an L1 penalty; use `lasso linear` in Stata
 - **Ridge** shrinks but keeps all variables via an L2 penalty; **elastic net** blends both; use `elasticnet linear` in Stata
-- **H2O** provides access to ensemble tree methods (random forest, gradient boosting) through Stata 19's `h2oml` commands — we will use these in the next lecture
 
 Next lecture: Ensemble Trees and Model Interpretation.
