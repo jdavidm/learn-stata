@@ -13,8 +13,7 @@ The prediction task for this week is to forecast **crop yield** (`yield_kg`) usi
 
 1\. Examine the data. How many observations are there? What is the mean yield?
 
-- Create a random train/test split. Set a seed for reproducibility (`8675309`), generate a uniform random variable (`runiform()`) called `u`, and generate a variable called `sample` that defines the training set as observations where the random value is below 0.70 (70% training, 30% test).
-
+- Create a random train/test split using `splitsample`. Split 70% training and 30% test, generate a variable called `sample`, and set the random seed to `8675309`. Label the values of `sample` so that 1 is "Training" and 2 is "Testing".
 
 2\. How many observations are in the training set? How many are in the test set? Report the numbers.
 

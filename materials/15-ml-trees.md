@@ -24,16 +24,16 @@ A **decision tree** recursively partitions the data based on the variable and sp
 The result is a tree-shaped set of if/then rules:
 
 ```text
-Is rainfall > 800mm?
-├── Yes: Is nitrogen > 50 kg/ha?
+Is seed_kg > 20?
+├── Yes: Is nitrogen_kg > 50?
 │   ├── Yes: predict yield = 2,400 kg/ha
 │   └── No:  predict yield = 1,600 kg/ha
-└── No:  Is plot_area > 2 ha?
+└── No:  Is plot_area_GPS > 2 ha?
     ├── Yes: predict yield = 900 kg/ha
     └── No:  predict yield = 1,100 kg/ha
 ```
 
-Trees are powerful because they automatically capture **nonlinearities** (the effect of nitrogen depends on rainfall) and **interactions** (the split structure creates implicit interactions). No need to specify `c.rain##c.nitrogen` — the tree finds it.
+Trees are powerful because they automatically capture **nonlinearities** (the effect of nitrogen depends on seed quantity) and **interactions** (the split structure creates implicit interactions). No need to specify `c.seed_kg##c.nitrogen_kg` — the tree finds it.
 
 But single trees have a fatal flaw: they **overfit aggressively**. A deep tree can create a separate leaf for nearly every observation, memorizing the training data perfectly but performing terribly on new data. This is the extreme high-variance end of the bias-variance tradeoff.
 
@@ -54,13 +54,17 @@ H2O's random forest command in Stata is `h2oml rfregress`. Before using it, make
 
 ```stata
 * fit a random forest
-    h2oml rfregress yield_kg rain_total rain_season ///
-                        rain_dev nitrogen phosphorus ///
-                        pesticide_any organic_fert ///
-                        plot_area_GPS dist_road ///
-                        hh_size age_head educ_head ///
-                        female_head extension_visit ///
-                        round region, ///
+    h2oml rfregress yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        wave admin_1, ///
                         ntrees(200) maxdepth(10) cv(5)
 ```
 
@@ -101,13 +105,17 @@ Gradient boosting is often the best-performing ML algorithm for tabular data (th
 
 ```stata
 * fit a gradient boosting model
-    h2oml gbregress yield_kg rain_total rain_season ///
-                        rain_dev nitrogen phosphorus ///
-                        pesticide_any organic_fert ///
-                        plot_area_GPS dist_road ///
-                        hh_size age_head educ_head ///
-                        female_head extension_visit ///
-                        round region, ///
+    h2oml gbregress yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        wave admin_1, ///
                         ntrees(500) maxdepth(5) ///
                         learnrate(0.05) cv(5)
 ```
@@ -181,8 +189,8 @@ This produces a bar chart ranking variables by their importance. The most import
 
 ```stata
 * partial dependence plot for the top predictor
-    h2omlgraph pdp rain_total
-    h2omlgraph pdp nitrogen
+    h2omlgraph pdp seed_kg
+    h2omlgraph pdp nitrogen_kg
 ```
 
 PDPs can reveal nonlinear relationships that OLS would miss. For example, the effect of nitrogen on yield might be positive up to 100 kg/ha and then flatten — a pattern that a tree ensemble captures automatically.
@@ -198,7 +206,7 @@ PDPs can reveal nonlinear relationships that OLS would miss. For example, the ef
 
 The SHAP summary plot shows every variable on the y-axis. For each variable, each dot represents one observation. The horizontal position shows the SHAP value (positive = pushes prediction up, negative = pushes prediction down). The color shows the variable's value (red = high, blue = low). This gives a rich picture of the model's behavior:
 
-- If high values of rainfall (red dots) cluster on the right (positive SHAP), rainfall increases predicted yield.
+- If high values of nitrogen (red dots) cluster on the right (positive SHAP), nitrogen increases predicted yield.
 - If the dots spread widely, the variable's effect varies across observations (potential heterogeneity).
 
 > Do [Exercise 7 - SHAP and Variable Importance]({{ site.baseurl }}/exercises/15-ml-shap/)

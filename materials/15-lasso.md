@@ -33,46 +33,66 @@ Why is this useful for economists?
 Stata 16+ includes a native `lasso linear` command. The syntax is straightforward:
 
 ```stata
-* lasso with cross-validation to predict yield
-    lasso linear    yield_kg rain_total rain_season ///
-                        rain_dev nitrogen phosphorus ///
-                        pesticide_any organic_fert ///
-                        plot_area_GPS dist_road ///
-                        hh_size age_head educ_head ///
-                        female_head extension_visit ///
-                        i.round i.region
+* lasso with cross-validation to predict yield (training set only)
+    lasso linear    yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.wave i.admin_1 ///
+                        if sample == 1
+    estimates store     cv
 ```
 
-Stata automatically performs 10-fold cross-validation over a grid of λ values. After fitting, we use post-estimation commands to inspect the results:
+Notice two things: we restrict the estimation to the training set with `if sample == 1`, and we use `estimates store` to save the results under the name `cv`. Storing estimates allows us to compare multiple models later.
+
+Stata automatically performs 10-fold cross-validation over a grid of λ values. We can also fit lasso using an alternative selection method — **adaptive lasso** — which uses BIC-like criteria instead of cross-validation:
+
+```stata
+* adaptive lasso on the training set
+    lasso linear    yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.wave i.admin_1 ///
+                        if sample == 1, selection(adaptive)
+    estimates store     adpt
+```
+
+After fitting, we use post-estimation commands to inspect the results:
 
 ```stata
 * which variables were selected? display nonzero coefficients
-    lassocoef, display(coef, standardized)
+    lassocoef cv adpt, display(coef, standardized)
 
 * plot the cross-validation curve (MSE vs. lambda)
+    estimates restore   cv
     cvplot
-
-* report goodness of fit
-    lassogof
 ```
 
-`lassocoef` shows which variables survived the penalty — their coefficients are nonzero. `cvplot` graphs the cross-validation MSE against λ, showing the optimal penalty. `lassogof` reports in-sample and out-of-sample fit statistics.
+`lassocoef` shows which variables survived the penalty — their coefficients are nonzero. Passing both stored model names lets us compare which variables each method selected. `cvplot` graphs the cross-validation MSE against λ, showing the optimal penalty.
 
-#### Generating predictions
+#### Evaluating model fit
 
-To generate predictions for the test set:
+The key question: how well does each model predict on **data it has never seen**? `lassogof` with the `over()` option computes MSE separately for each group in the split variable — training and testing:
 
 ```stata
-* predict on all observations (lasso uses its selected model)
-    predict         yhat_lasso
-
-* compute out-of-sample MSE on the test set
-    gen             sq_err_lasso = (yield_kg - yhat_lasso)^2
-    sum             sq_err_lasso if sample == 0
-    *** the mean of sq_err_lasso is the out-of-sample MSE
+* compare in-sample and out-of-sample MSE for both models
+    lassogof cv adaptive, over(sample) postselection
 ```
 
-Here `sample == 0` indicates the test set (we'll create this variable in Exercise 1).
+`lassogof` reports the MSE for each model in each sample. The `postselection` option uses postselection coefficients (OLS re-estimated on the lasso-selected variables) rather than the penalized coefficients — this often gives better out-of-sample predictions. The MSE for `sample == 2` (the test set) is the out-of-sample MSE — the number that tells us how well the model generalizes.
 
 > Do [Exercise 2 - Lasso for Prediction]({{ site.baseurl }}/exercises/15-ml-lasso/)
 
@@ -96,23 +116,31 @@ When α = 1, elastic net is lasso. When α = 0, elastic net is ridge. Values in 
 
 ```stata
 * elastic net with alpha = 0.5 (equal blend of lasso and ridge)
-    elasticnet linear yield_kg rain_total rain_season ///
-                        rain_dev nitrogen phosphorus ///
-                        pesticide_any organic_fert ///
-                        plot_area_GPS dist_road ///
-                        hh_size age_head educ_head ///
-                        female_head extension_visit ///
-                        i.round i.region, ///
+    elasticnet linear yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.wave i.admin_1, ///
                         alpha(0.5)
 
 * for ridge regression, set alpha = 0
-    elasticnet linear yield_kg rain_total rain_season ///
-                        rain_dev nitrogen phosphorus ///
-                        pesticide_any organic_fert ///
-                        plot_area_GPS dist_road ///
-                        hh_size age_head educ_head ///
-                        female_head extension_visit ///
-                        i.round i.region, ///
+    elasticnet linear yield_kg nitrogen_kg seed_kg ///
+                        total_labor_days total_hired_labor_days ///
+                        plot_area_GPS improved ///
+                        used_pesticides organic_fertilizer ///
+                        irrigated intercropped ///
+                        age_manager female_manager ///
+                        formal_education_manager ///
+                        hh_size dist_popcenter ///
+                        soil_fertility_index ///
+                        crop_shock drought_shock ///
+                        i.wave i.admin_1, ///
                         alpha(0)
 ```
 

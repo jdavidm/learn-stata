@@ -62,6 +62,15 @@ $$MSE = \frac{1}{n_{test}} \sum_{i \in test} (y_i - \hat{y}_i)^2$$
 
 A model that overfits will have low MSE on the training set but high MSE on the test set. A model that generalizes well will have similar MSE on both.
 
+Stata provides the `splitsample` command for creating reproducible random splits:
+
+```stata
+* split data: 70% training (sample==1), 30% testing (sample==2)
+    splitsample, generate(sample) split(0.70 0.30) rseed(8675309)
+```
+
+`splitsample` randomly assigns each observation to a group — here, group 1 (training) or group 2 (testing) — based on the specified proportions. Setting `rseed()` ensures the split is reproducible. When we fit models, we restrict to the training set with `if sample == 1`; when we evaluate, we use `over(sample)` to see performance on both groups simultaneously.
+
 #### k-fold cross-validation
 
 The holdout approach wastes data — 30% of our observations are never used for training. **k-fold cross-validation** is more efficient:
