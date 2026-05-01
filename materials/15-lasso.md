@@ -33,8 +33,8 @@ Why is this useful for economists?
 Stata 16+ includes a native `lasso linear` command. The syntax is straightforward:
 
 ```stata
-* lasso with cross-validation to predict yield (training set only)
-    lasso linear    yield_kg nitrogen_kg seed_kg ///
+* define covariates
+    global inputs   nitrogen_kg seed_kg ///
                         total_labor_days total_hired_labor_days ///
                         plot_area_GPS improved ///
                         used_pesticides organic_fertilizer ///
@@ -44,9 +44,15 @@ Stata 16+ includes a native `lasso linear` command. The syntax is straightforwar
                         hh_size dist_popcenter ///
                         soil_fertility_index ///
                         crop_shock drought_shock ///
-                        i.wave i.admin_1 ///
+                        i.wave i.admin_1
+
+* lasso with cross-validation to predict yield (training set only)
+    lasso linear    yield_kg $inputs ///
                         if sample == 1
     estimates store     cv
+
+* generate predictions for later comparison
+    predict         yhat_lasso
 ```
 
 Notice two things: we restrict the estimation to the training set with `if sample == 1`, and we use `estimates store` to save the results under the name `cv`. Storing estimates allows us to compare multiple models later.
@@ -55,17 +61,7 @@ Stata automatically performs 10-fold cross-validation over a grid of λ values. 
 
 ```stata
 * adaptive lasso on the training set
-    lasso linear    yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.wave i.admin_1 ///
+    lasso linear    yield_kg $inputs ///
                         if sample == 1, selection(adaptive)
     estimates store     adpt
 ```
@@ -116,32 +112,15 @@ When α = 1, elastic net is lasso. When α = 0, elastic net is ridge. Values in 
 
 ```stata
 * for ridge regression, set alpha = 0
-    elasticnet linear yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.wave i.admin_1, ///
+    elasticnet linear yield_kg $inputs, ///
                         alpha(0)
 
 * elastic net with alpha = 0.5 (equal blend of lasso and ridge)
-    elasticnet linear yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.wave i.admin_1, ///
+    elasticnet linear yield_kg $inputs, ///
                         alpha(0.5)
+
+* generate predictions
+    predict         yhat_enet
 ```
 
 *Note: When running the elastic net code with `alpha(0.5)`, you may encounter an error stating "No minimum of cross-validation function found" and "No lambda selected." This happens because the optimal penalty for this specific training split is so close to zero that Stata reaches the end of its default search grid without finding a clear turning point in the cross-validation error. Effectively, the model is saying that the "optimal" penalty for this particular training split is close to zero, meaning it basically just wants to run regular OLS without any penalty! To fix this, you can force Stata to search a wider range of smaller penalty values and disable early stopping by adding the options `grid(100, ratio(1e-5)) stop(0)` to the command.*

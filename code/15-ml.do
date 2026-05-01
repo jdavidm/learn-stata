@@ -51,37 +51,26 @@
 **# exercise 2 - Lasso for Prediction
 **********************************************************************
 
+global inputs   seed_kg nitrogen_kg total_labor_days ///
+                    total_hired_labor_days improved ///
+                    used_pesticides organic_fertilizer ///
+                    irrigated intercropped ///
+                    age_manager female_manager ///
+                    formal_education_manager ///
+                    plot_slope elevation ///
+                    dist_market dist_popcenter ///
+                    soil_fertility_index ///
+                    crop_shock drought_shock ///
+                    i.crop i.agro_ecological_zone ///
+                    i.wave i.country
+
 * fit lasso on training data
-    lasso linear    yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.crop i. agro_ecological_zone ///
-						i.wave i.country ///
+    lasso linear    yield_kg $inputs ///
                         if sample == 1
     estimates store cv
 
 * fit adaptive lasso on training data
-    lasso linear    yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.crop i. agro_ecological_zone ///
-						i.wave i.country ///
+    lasso linear    yield_kg $inputs ///
                         if sample == 1, selection(adaptive)
     estimates store adpt
 
@@ -97,6 +86,10 @@
     cvplot
     graph export    "$answ/15-ml-lasso-3.png", replace
 
+* generate predictions for final comparison (using standard lasso)
+    estimates restore cv
+    predict         yhat_lasso
+
 * report goodness of fit out-of-sample
     lassogof cv adpt, over(sample) postselection
 
@@ -106,56 +99,20 @@
 **********************************************************************
 
 * lasso via elasticnet (alpha = 1)
-	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.crop i. agro_ecological_zone ///
-						i.wave i.country ///
+	elasticnet linear yield_kg $inputs ///
 						if sample == 1, alpha(1)
 						
     estimates store 	alph1
 
 * elastic net (alpha = 0.5)
-	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.crop i. agro_ecological_zone ///
-						i.wave i.country ///
+	elasticnet linear yield_kg $inputs ///
 						if sample == 1, alpha(0.5) ///
 						grid(100, ratio(1e-5)) stop(0)
 						
     estimates store 	alph5
 
 * ridge (alpha = 0)
-	elasticnet linear yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        i.crop i. agro_ecological_zone ///
-						i.wave i.country ///
+	elasticnet linear yield_kg $inputs ///
 						if sample == 1, alpha(0)
 						
     estimates store 	alph0
@@ -166,6 +123,10 @@
 * compare in-sample and out-of-sample MSE for both models
     lassogof 			alph1 alph5 alph0, over(sample) postselection
 	
+* generate predictions for final comparison (using alpha = 0.5)
+    estimates restore alph5
+    predict         yhat_enet
+	
 	
 **********************************************************************
 **# exercise 4 - Random Forest
@@ -174,30 +135,19 @@
 * make sure the training frame is the active frame
     _h2oframe change train_frame
 
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
 * fit random forest
-    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        crop agro_ecological_zone ///
-                        wave country, ///
+    h2oml rfregress yield_kg `h2o_inputs', ///
                         ntrees(200) maxdepth(10) cv(5)
 
 * set testing frame and report out-of-sample goodness of fit
     h2omlpostestframe test_frame
     h2omlgof
 
-* generate predictions (kept so the loop below works)
+* generate predictions (kept so the final loop works)
     predict         yhat_rf
-    gen             sq_err_rf = (yield_kg - yhat_rf)^2
-    sum             sq_err_rf if sample == 2
 
 * variable importance plot
 	h2omlgraph varimp
@@ -209,19 +159,10 @@
 **## 4.2 - depth sensitivity
 * shallow trees (maxdepth = 3)
     _h2oframe change train_frame
-    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        crop agro_ecological_zone ///
-                        wave country, ///
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
+    h2oml rfregress yield_kg `h2o_inputs', ///
                         ntrees(200) maxdepth(3) cv(5)
 
     h2omlpostestframe test_frame
@@ -229,19 +170,10 @@
 
 * deep trees (maxdepth = 20)
     _h2oframe change train_frame
-    h2oml rfregress yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        crop agro_ecological_zone ///
-                        wave country, ///
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
+    h2oml rfregress yield_kg `h2o_inputs', ///
                         ntrees(200) maxdepth(20) cv(5)
 
     h2omlpostestframe test_frame
@@ -259,31 +191,20 @@
 * make sure the training frame is the active frame
     _h2oframe change train_frame
 
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
 * fit gradient boosting model
-    h2oml gbregress yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        crop agro_ecological_zone ///
-                        wave country, ///
+    h2oml gbregress yield_kg `h2o_inputs', ///
                         ntrees(500) maxdepth(5) ///
-                        learnrate(0.05) cv(5)
+                        lrate(0.05) cv(5)
 
 * set testing frame and report out-of-sample goodness of fit
     h2omlpostestframe test_frame
     h2omlgof
 
-* generate predictions (kept so the loop below works)
+* generate predictions (kept so the final loop works)
     predict         yhat_gbm
-    gen             sq_err_gbm = (yield_kg - yhat_gbm)^2
-    sum             sq_err_gbm if sample == 2
 
 **## 5.1 - interpretation
 	*** report MSE and compare to random forest.
@@ -295,21 +216,12 @@
 **## 5.2 - learning rate sensitivity
 * high learning rate
     _h2oframe change train_frame
-    h2oml gbregress yield_kg plot_area_GPS seed_kg ///
-                        nitrogen_kg total_labor_days ///
-                        total_hired_labor_days improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        plot_slope elevation ///
-                        dist_market dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        crop agro_ecological_zone ///
-                        wave country, ///
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
+    h2oml gbregress yield_kg `h2o_inputs', ///
                         ntrees(500) maxdepth(5) ///
-                        learnrate(0.3) cv(5)
+                        lrate(0.3) cv(5)
 
     h2omlpostestframe test_frame
     h2omlgof
@@ -345,6 +257,7 @@
 
     local           row = 1
     foreach model in lasso enet rf gbm {
+        gen         sq_err_`model' = (yield_kg - yhat_`model')^2
         sum         sq_err_`model' if sample == 2
         matrix      compare[`row', 1] = r(mean)
         matrix      compare[`row', 2] = sqrt(r(mean))
@@ -352,7 +265,23 @@
     }
     matrix list     compare, format(%12.1f)
 
-* create dataset from matrix for export
+* export results to latex
+    esttab          matrix(compare) using "$answ/15-ml-compare.tex", replace ///
+                        nomtitles noobs booktabs ///
+                        collabels("MSE" "RMSE") ///
+                        fragment label ///
+                        prehead("\begin{tabular}{l*{2}{c}} " ///
+                            "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                            "& \multicolumn{2}{c}{Out-of-Sample Prediction Error} " ///
+                            "\\ \midrule") ///
+                        postfoot("\hline \hline \\[-1.8ex] " ///
+                            "\multicolumn{3}{p{\linewidth}}{\small " ///
+                            "\noindent \textit{Note}: MSE is Mean Squared Error. " ///
+                            "RMSE is Root Mean Squared Error. Models evaluated " ///
+                            "on the 20 percent testing sample.} " ///
+                            "\end{tabular}")
+
+* create dataset from matrix for bar chart
     preserve
     clear
     svmat           compare
@@ -363,7 +292,6 @@
     replace         model = "Gradient Boosting" in 4
     order           model
     rename          (compare1 compare2) (mse rmse)
-    export delimited "$export/15-ml-compare.csv", replace
 
 * create bar chart
     gen             id = _n

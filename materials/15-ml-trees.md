@@ -56,18 +56,11 @@ H2O's random forest command in Stata is `h2oml rfregress`. Before using it, make
 * make sure the training frame is the active frame
     _h2oframe change train_frame
 
-* fit a random forest
-    h2oml rfregress yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        wave admin_1, ///
+* strip i. prefixes since H2O doesn't support them
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
+* fit a random forest model on the training frame
+    h2oml rfregress yield_kg `h2o_inputs', ///
                         ntrees(200) maxdepth(10) cv(5)
 ```
 
@@ -84,6 +77,9 @@ After fitting, we can evaluate the model's out-of-sample MSE using the native H2
 
 * report out-of-sample goodness of fit
     h2omlgof
+
+* generate predictions for later comparison
+    predict         yhat_rf
 ```
 
 > Do [Exercise 4 - Random Forest]({{ site.baseurl }}/exercises/15-ml-rf/)
@@ -106,26 +102,19 @@ Gradient boosting is often the best-performing ML algorithm for tabular data (th
 #### Using `h2oml gbregress` in Stata
 
 ```stata
+* strip i. prefixes for H2O commands
+    local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
 * fit a gradient boosting model
-    h2oml gbregress yield_kg nitrogen_kg seed_kg ///
-                        total_labor_days total_hired_labor_days ///
-                        plot_area_GPS improved ///
-                        used_pesticides organic_fertilizer ///
-                        irrigated intercropped ///
-                        age_manager female_manager ///
-                        formal_education_manager ///
-                        hh_size dist_popcenter ///
-                        soil_fertility_index ///
-                        crop_shock drought_shock ///
-                        wave admin_1, ///
+    h2oml gbregress yield_kg `h2o_inputs', ///
                         ntrees(500) maxdepth(5) ///
-                        learnrate(0.05) cv(5)
+                        lrate(0.05) cv(5)
 ```
 
 Key options:
 - `ntrees()`: Number of boosting iterations (trees). More trees allow finer corrections. Too many can overfit, but the learning rate mitigates this.
 - `maxdepth()`: Depth of each individual tree. GBM typically uses *shallower* trees than random forest (depth 3–8 is common) because complexity comes from the ensemble, not individual trees.
-- `learnrate()`: How much each tree contributes. Typical values: 0.01–0.1. Lower values require more trees but tend to generalize better.
+- `lrate()`: How much each tree contributes. Typical values: 0.01–0.1. Lower values require more trees but tend to generalize better.
 - `cv()`: Cross-validation folds for internal evaluation.
 
 After fitting, evaluate the out-of-sample MSE (assuming the test frame is still set as the post-estimation frame):
@@ -133,6 +122,9 @@ After fitting, evaluate the out-of-sample MSE (assuming the test frame is still 
 ```stata
 * report out-of-sample goodness of fit
     h2omlgof
+
+* generate predictions for later comparison
+    predict         yhat_gbm
 ```
 
 > Do [Exercise 5 - Gradient Boosting]({{ site.baseurl }}/exercises/15-ml-gbm/)
