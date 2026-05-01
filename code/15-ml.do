@@ -230,23 +230,6 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
     *** which can cause overfitting. smaller learning rates
     *** make finer corrections and often generalize better.
 
-**## 5.3 - deployment
-* simulate "new" data where the outcome is unknown
-    preserve
-    keep in 1/5
-    replace yield_kg = .
-
-* push new data to an H2O frame for prediction
-    _h2oframe put, into(deploy_frame)
-    _h2oframe change deploy_frame
-
-* use our trained GBM model to forecast the missing yields
-    predict         future_yield
-
-* view our predictions
-    list            nitrogen_kg seed_kg plot_area_GPS future_yield
-    restore
-
 
 **********************************************************************
 **# exercise 6 - SHAP and Variable Importance

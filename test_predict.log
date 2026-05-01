@@ -1,0 +1,73 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       MP—Parallel Edition
+
+ Statistics and Data Science       Copyright 1985-2025 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-782-8272        https://www.stata.com
+                                   979-696-4600        service@stata.com
+
+Stata license: Single-user 4-core , expiring 31 Aug 2026
+Serial number: 501909220406
+  Licensed to: Jeffrey D. Michler
+               University of Arizona
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+      3. More than 2 billion observations are allowed; see help obs_advice.
+      4. Maximum number of variables is set to 90,000 but can be increased;
+          see help set_maxvar.
+
+. do test_predict.do 
+
+. clear all
+
+. set more off
+
+. h2o init
+Connecting to the H2O cluster running at http://127.0.0.1:54321. Successful.
+------------------------------------------------------------------------------
+H2O cluster uptime:        8 hours 14 mins
+H2O cluster timezone:      America/Phoenix
+H2O data parsing timezone: UTC
+H2O cluster version:       3.46.0.10
+H2O cluster version age:   1 month and 18 days
+H2O cluster total nodes:   1
+H2O cluster free memory:   5.298 Gb
+H2O cluster total cores:   8
+H2O cluster allowed cores: 8
+H2O cluster status:        locked, healthy
+H2O connection url:        http://127.0.0.1:54321
+------------------------------------------------------------------------------
+
+. 
+. // load data
+. use "data/plot_dataset.dta", clear
+
+. splitsample, split(0.7 0.3) rseed(8675309) generate(sample)
+
+. 
+. // define inputs
+. global inputs "nitrogen_kg total_labor_days seed_kg weed_days i.crop i.agro_e
+> cological_zone i.wave i.country"
+
+. local h2o_inputs = subinstr("$inputs", "i.", "", .)
+
+. 
+. // push to h2o
+. _h2oframe put, into(mydata)
+
+Progress (%): 0 0.5 100
+
+. _h2oframe change mydata
+
+. _h2oframe split, gen(train_frame test_frame) ratio(0.7 0.3) seed(8675309)
+option into() required
+r(198);
+
+end of do-file
+r(198);
