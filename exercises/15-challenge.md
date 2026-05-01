@@ -32,20 +32,20 @@ Now that you have fit lasso, elastic net, random forest, and gradient boosting o
 
 ```stata
 * export results to latex
-    esttab          matrix(compare) using "$answ/15-ml-compare.tex", replace ///
-                        nomtitles noobs booktabs ///
-                        collabels("MSE" "RMSE") ///
-                        fragment label ///
-                        prehead("\begin{tabular}{l*{2}{c}} " ///
-                            "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
-                            "& \multicolumn{2}{c}{Out-of-Sample Prediction Error} " ///
-                            "\\ \midrule") ///
-                        postfoot("\hline \hline \\[-1.8ex] " ///
-                            "\multicolumn{3}{p{\linewidth}}{\small " ///
-                            "\noindent \textit{Note}: MSE is Mean Squared Error. " ///
-                            "RMSE is Root Mean Squared Error. Models evaluated " ///
-                            "on the 20 percent testing sample.} " ///
-                            "\end{tabular}")
+    esttab      matrix(compare) using "$answ/15-ml-compare.tex", replace ///
+                    nomtitles noobs booktabs ///
+                    collabels("MSE" "RMSE") ///
+                    fragment label ///
+                    prehead("\begin{tabular}{l*{2}{c}} " ///
+                        "\\[-1.8ex]\hline \hline \\[-1.8ex] " ///
+                        "& \multicolumn{2}{c}{Out-of-Sample Prediction Error} " ///
+                        "\\ \midrule") ///
+                    postfoot("\hline \hline \\[-1.8ex] " ///
+                        "\multicolumn{3}{p{\linewidth}}{\small " ///
+                        "\noindent \textit{Note}: MSE is Mean Squared Error. " ///
+                        "RMSE is Root Mean Squared Error. Models evaluated " ///
+                        "on the 20 percent testing sample.} " ///
+                        "\end{tabular}")
 ```
 
 2\. Rank the four models from best (lowest MSE) to worst. Which model wins? By how much does it improve over the second-best model?
