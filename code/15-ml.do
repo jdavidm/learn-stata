@@ -2,7 +2,7 @@
 * assignment: 15
 * created on: 24 apr 26
 * created by: jdm
-* edited on: 29 apr 26
+* edited on: 1 may 26
 * edited by: jdm
 * stata v.19.5
 
@@ -33,13 +33,6 @@
     lab def         svalues 1 "Training" 2 "Testing"
     lab val         sample svalues
     tab             sample
-
-* initialize H2O cluster
-    h2o init
-
-* push training and testing data to separate H2O frames
-    _h2oframe put if sample == 1, into(train_frame) current
-    _h2oframe put if sample == 2, into(test_frame)
 
 **## 1.1 - report split
     *** report the number of training and test observations
@@ -132,9 +125,13 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 **# exercise 4 - Random Forest
 **********************************************************************
 
-* make sure the training frame is the active frame
-    _h2oframe change train_frame
+* initialize H2O cluster
+    h2o init
 
+* push training and testing data to separate H2O frames
+    _h2oframe put if sample == 1, into(train_frame) current
+    _h2oframe put if sample == 2, into(test_frame)
+	
 * strip i. prefixes for H2O commands
     local h2o_inputs = subinstr("$inputs", "i.", "", .)
 
@@ -147,7 +144,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
     h2omlgof
 
 * generate predictions (kept so the final loop works)
-    predict         yhat_rf
+     cap noisily h2omlpredict       yhat_rf
 
 * variable importance plot
 	h2omlgraph varimp
@@ -204,7 +201,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
     h2omlgof
 
 * generate predictions (kept so the final loop works)
-    predict         yhat_gbm
+	cap noisily h2omlpredict       yhat_gbm
 
 **## 5.1 - interpretation
 	*** report MSE and compare to random forest.
@@ -244,10 +241,10 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 
 * generate partial dependence plots for the two most important predictors
 * (assuming nitrogen_kg and seed_kg for this example)
-    h2omlgraph pdp, var(nitrogen_kg)
+    h2omlgraph pdp crop
     graph export    "$answ/15-ml-shap-2.png", replace
 
-    h2omlgraph pdp, var(seed_kg)
+    h2omlgraph pdp dist_popcenter
     graph export    "$answ/15-ml-shap-3.png", replace
 
 * generate SHAP summary plot
@@ -266,6 +263,9 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 
 **## part 1 - model comparison
 
+    clear
+    _h2oframe get      test_frame
+	
 * collect out-of-sample MSE for each model
     matrix          compare = J(4, 2, .)
     matrix rownames compare = Lasso ElasticNet RF GBM
@@ -274,7 +274,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
     local           row = 1
     foreach model in lasso enet rf gbm {
         gen         sq_err_`model' = (yield_kg - yhat_`model')^2
-        sum         sq_err_`model' if sample == 2
+        sum         sq_err_`model' if sample == "Testing"
         matrix      compare[`row', 1] = r(mean)
         matrix      compare[`row', 2] = sqrt(r(mean))
         local       ++row
@@ -308,14 +308,19 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 * generate predictions for all observations
     predict         future_yield
 
+    clear
+    _h2oframe get      test_frame
+	
 * check how many are missing before
     count if        yield_kg == .
-
+	sum				yield_kg
+	
 * impute missing yields
     replace         yield_kg = future_yield if yield_kg == .
 
 * check how many are missing after
     count if        yield_kg == .
+	sum				yield_kg
 
 **## part 3 - reflection
     *** discuss the economic implications of using machine learning
@@ -330,7 +335,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 * shut down H2O
     _h2oframe remove train_frame
     _h2oframe remove test_frame
-    h2o shutdown
+    h2o shutdown, force
 
 * close log
     cap             log close

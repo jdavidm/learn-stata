@@ -17,7 +17,4 @@ The prediction task for this week is to forecast **crop yield** (`yield_kg`) usi
 
 2\. How many observations are in the training set? How many are in the test set? Report the numbers.
 
-- Initialize the H2O cluster with `h2o init`. If you have not installed Java, follow the instructions on the [Computer Setup]({{ site.baseurl }}/computer-setup/) page first.
-- Push the training data to an H2O frame named `train_frame` and make it current. Then push the testing data to an H2O frame named `test_frame`.
-
 ---
