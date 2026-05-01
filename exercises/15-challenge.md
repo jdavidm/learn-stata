@@ -54,7 +54,8 @@ Now that you have fit lasso, elastic net, random forest, and gradient boosting o
 
 The dataset `plot_dataset.dta` has 257,154 observations, but only 228,448 observations actually have data on `yield_kg`. The remaining 28,706 observations have missing yield data! The goal of this part is to use the winning machine learning model to predict what the harvest would have been for those plots.
 
-- Make sure your best-performing model is the active model in memory (if it's an H2O model, make sure `train_frame` is active and you've re-estimated it if necessary).
+- Make sure your best-performing model is the active model in memory.
+- If it's an H2O model, push the full dataset to a new H2O frame (e.g., `_h2oframe put, into(full_data)`) and make it the active frame (`_h2oframe change full_data`).
 - Generate predictions for the *entire* dataset using `predict`.
 - Replace the missing `yield_kg` values with the predicted values.
 

@@ -229,6 +229,10 @@ We can simulate this directly in Stata. Imagine it is mid-season: we have data o
     keep in 1/5
     replace yield_kg = .
 
+* push new data to an H2O frame for prediction
+    _h2oframe put, into(deploy_frame)
+    _h2oframe change deploy_frame
+
 * use our trained model to forecast the missing yields
     predict future_yield
 

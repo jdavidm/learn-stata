@@ -151,7 +151,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 
 * variable importance plot
 	h2omlgraph varimp
-	graph export    "$export/15-ml-varimp-rf.png", replace
+	graph export    "$answ/15-rf-1.png", replace
 
 **## 4.1 - interpretation
 	*** report out-of-sample MSE and compare to lasso
@@ -236,12 +236,45 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
     keep in 1/5
     replace yield_kg = .
 
+* push new data to an H2O frame for prediction
+    _h2oframe put, into(deploy_frame)
+    _h2oframe change deploy_frame
+
 * use our trained GBM model to forecast the missing yields
-    predict future_yield
+    predict         future_yield
 
 * view our predictions
-    list nitrogen_kg seed_kg plot_area_GPS future_yield
+    list            nitrogen_kg seed_kg plot_area_GPS future_yield
     restore
+
+
+**********************************************************************
+**# exercise 6 - SHAP and Variable Importance
+**********************************************************************
+
+* make sure the training frame is the active frame
+    _h2oframe change train_frame
+
+* generate variable importance plot
+    h2omlgraph varimp
+    graph export    "$answ/15-ml-shap-1.png", replace
+
+* generate partial dependence plots for the two most important predictors
+* (assuming nitrogen_kg and seed_kg for this example)
+    h2omlgraph pdp, var(nitrogen_kg)
+    graph export    "$answ/15-ml-shap-2.png", replace
+
+    h2omlgraph pdp, var(seed_kg)
+    graph export    "$answ/15-ml-shap-3.png", replace
+
+* generate SHAP summary plot
+    h2omlgraph shapsummary
+    graph export    "$answ/15-ml-shap-4.png", replace
+
+**## 6.1 - interpretation
+    *** Example interpretation of the SHAP summary plot:
+    *** Higher nitrogen application (red) is associated with positive
+    *** SHAP values, meaning it pushes yield predictions upward.
 
 
 **********************************************************************
@@ -281,32 +314,14 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
                             "on the 20 percent testing sample.} " ///
                             "\end{tabular}")
 
-* create dataset from matrix for bar chart
-    preserve
-    clear
-    svmat           compare
-    gen             model = ""
-    replace         model = "Lasso" in 1
-    replace         model = "Elastic Net" in 2
-    replace         model = "Random Forest" in 3
-    replace         model = "Gradient Boosting" in 4
-    order           model
-    rename          (compare1 compare2) (mse rmse)
-
-* create bar chart
-    gen             id = _n
-    twoway          (bar mse id, ///
-                        barwidth(0.7) color(navy%70)), ///
-                        xlabel(1 "Lasso" 2 "E-Net" 3 "RF" 4 "GBM", angle(0)) ///
-                        ytitle("Out-of-Sample MSE") ///
-                        xtitle("") ///
-                        graphregion(color(white))
-    graph export    "$export/15-ml-compare.png", replace
-    restore
 
 **## part 2 - deployment
 
 * assuming your best model is GBM and it is currently active
+* push the full dataset to H2O to get predictions for everyone
+    _h2oframe put, into(full_data)
+    _h2oframe change full_data
+
 * generate predictions for all observations
     predict         future_yield
 
