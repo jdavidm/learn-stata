@@ -165,9 +165,9 @@ PDPs can reveal nonlinear relationships that OLS would miss. For example, the ef
     h2omlgraph shapsummary
 ```
 
-The SHAP summary plot shows every variable on the y-axis. For each variable, each dot represents one observation. The horizontal position shows the SHAP value (positive = pushes prediction up, negative = pushes prediction down). The color shows the variable's value (red = high, blue = low). This gives a rich picture of the model's behavior:
+The SHAP summary plot shows every variable on the y-axis. For each variable, each dot represents one observation. The horizontal position shows the SHAP value (positive = pushes prediction up, negative = pushes prediction down). The shading shows the variable's value (darker = higher, lighter = lower). This gives a rich picture of the model's behavior:
 
-- If high values of nitrogen (red dots) cluster on the right (positive SHAP), nitrogen increases predicted yield.
+- If high values of nitrogen (darker dots) cluster on the right (positive SHAP), nitrogen increases predicted yield.
 - If the dots spread widely, the variable's effect varies across observations (potential heterogeneity).
 
 > Do [Exercise 6 - SHAP and Variable Importance]({{ site.baseurl }}/exercises/15-ml-shap/)

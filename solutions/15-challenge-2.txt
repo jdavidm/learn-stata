@@ -1,3 +1,7 @@
-[1] 
+[2] random forst (7.43e+11), lasso (8.93e+11), gradient boosting (9.87e+11), elastic net (1.11e+12)
 
-[2] 
+[3] 8,672 missing values were imputed
+
+[4] mean yields wentt from 20,746 before imputation to 26,173 after imputation
+
+[5] ?

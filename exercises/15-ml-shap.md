@@ -13,7 +13,7 @@ ML models are powerful predictors but can be hard to interpret. This exercise us
 
 3. Generate a SHAP summary plot, export it, and import it into Overleaf.
 
-4. Examine the SHAP summary plot. For the top three variables, describe the relationship between the variable's value (color) and its SHAP value (horizontal position). For example: "Higher nitrogen application (red) is associated with positive SHAP values, meaning it pushes yield predictions upward."
+4. Examine the SHAP summary plot. For the top three variables, describe the relationship between the variable's value (shading) and its SHAP value (horizontal position). For example: "Higher nitrogen application (darker dots) is associated with positive SHAP values, meaning it pushes yield predictions upward."
 
 
 ---

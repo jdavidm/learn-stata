@@ -1,3 +1,3 @@
-[1] 
+[1] 9.87e+11
 
-[2]
+[2] 1.12e+12 which is larger than the initial RF model. A higher learning rate makes each tree contribute more, which can cause overfitting. 

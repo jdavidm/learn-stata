@@ -48,19 +48,22 @@ Now that you have fit lasso, elastic net, random forest, and gradient boosting o
                         "\end{tabular}")
 ```
 
-2\. Rank the four models from best (lowest MSE) to worst. Which model wins? By how much does it improve over the second-best model?
+2\. Rank the four models from best (lowest MSE) to worst. Which model wins?
 
 #### Part 2 — Deployment
 
 The dataset `plot_dataset.dta` has 257,154 observations, but only 228,448 observations actually have data on `yield_kg`. The remaining 28,706 observations have missing yield data! The goal of this part is to use the winning machine learning model to predict what the harvest would have been for those plots.
 
-- Make sure your best-performing model is the active model in memory.
-- If it's an H2O model, push the full dataset to a new H2O frame (e.g., `_h2oframe put, into(full_data)`) and make it the active frame (`_h2oframe change full_data`).
-- Generate predictions for the *entire* dataset using `predict`.
+- Gradient boosting is the active model in memory, so we will use that for imputing the missing yield values.
+- Push the full dataset to a new H2O frame (e.g., `_h2oframe put, into(full_data)`) and make it the active frame (`_h2oframe change full_data`).
+- Generate predictions for the *entire* dataset using `predict`. Call the predicted values `future_yield`.
+- Bring these values back into Stata using `clear` and then `_h2oframe get      test_frame`.
 - Replace the missing `yield_kg` values with the predicted values.
 
 3\. How many missing `yield_kg` observations did your model successfully impute? Use `count if yield_kg == .` before and after to verify.
 
-4\. Think about the economic implications of what you just did. If you were an agricultural researcher or policymaker, what is one major advantage of using machine learning to impute missing harvest data rather than just dropping those observations from your analysis?
+4\. How did mean yields change from before to after the imputation?
+
+5\. Think about the economic implications of what you just did. If you were an agricultural researcher or policymaker, what is one major advantage of using machine learning to impute missing harvest data rather than just dropping those observations from your analysis?
 
 ---

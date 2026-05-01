@@ -1,1 +1,1 @@
-[4] 
+[4] One crop type has a very high shape value. Because of this, the x-axis does not do a good job of showing the distribution of the rest of the SHAP values.

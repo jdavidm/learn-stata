@@ -1,3 +1,3 @@
-[2] 
+[2] 7.23e+11, smaller than lasso and elastic net
 
-[3]
+[3] distance to population center, elevation

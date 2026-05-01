@@ -148,7 +148,7 @@ global inputs   seed_kg nitrogen_kg total_labor_days ///
 
 * variable importance plot
 	h2omlgraph varimp
-	graph export    "$answ/15-rf-1.png", replace
+	graph export    "$answ/15-ml-rf-1.png", replace
 
 **## 4.1 - interpretation
 	*** report out-of-sample MSE and compare to lasso
