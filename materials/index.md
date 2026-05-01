@@ -54,6 +54,8 @@ languages: ['Stata', 'Git', 'LaTeX']
 
 ## Github <a name="Github"></a>
 -   [Git Introduction]({{ site.baseurl }}/materials/01-git-intro)
+-   [A Quick Introduction to Git and GitHub]({{ site.baseurl }}/materials/git-in-30-minutes)
+-   [Git Collaboration Example]({{ site.baseurl }}/materials/git-collaboration-example)
 
 ## LaTeX <a name="LaTeX"></a>
 - [Introducing LaTeX via Overleaf]({{ site.baseurl }}/materials/10-latex)

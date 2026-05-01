@@ -1,7 +1,7 @@
 ---
 layout: exercise
 topic: Machine Learning
-title: Model Comparison and Deployment
+title: Challenge 15
 language: Stata
 ---
 
@@ -28,7 +28,7 @@ Now that you have fit lasso, elastic net, random forest, and gradient boosting o
     matrix list     compare, format(%12.1f)
 ```
 
-- Export a LaTeX table of the results for your Overleaf document:
+1\. Export a LaTeX table of the results for your Overleaf document:
 
 ```stata
 * export results to latex
@@ -48,25 +48,7 @@ Now that you have fit lasso, elastic net, random forest, and gradient boosting o
                             "\end{tabular}")
 ```
 
-- In order to visualize the results, create a dataset from the matrix:
-
-```stata
-* create a dataset from the matrix for visualization
-    preserve
-    clear
-    svmat           compare
-    gen             model = ""
-    replace         model = "Lasso" in 1
-    replace         model = "Elastic Net" in 2
-    replace         model = "Random Forest" in 3
-    replace         model = "Gradient Boosting" in 4
-    order           model
-    rename          (compare1 compare2) (mse rmse)
-```
-
-1\. Rank the four models from best (lowest MSE) to worst. Which model wins? By how much does it improve over the second-best model?
-
-2\. Create a bar chart showing the out-of-sample MSE for each model using the newly created dataset. Make sure to `restore` when you are done. Export and import into your Overleaf document.
+2\. Rank the four models from best (lowest MSE) to worst. Which model wins? By how much does it improve over the second-best model?
 
 #### Part 2 — Deployment
 
