@@ -1,0 +1,77 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\jdmic\git\learn-stata\code\final-exam.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}12 May 2026, 09:39:23
+{txt}
+{com}. 
+. 
+. **********************************************************************
+. **# 1 - data management (weeks 3–4)
+. **********************************************************************
+. 
+. * load lsms household data
+.         Use                     "$root/lsms_household.dta", clear
+{err}command {bf}Use{sf} is unrecognized
+{txt}{search r(199), local:r(199);}
+
+end of do-file
+
+{search r(199), local:r(199);}
+
+{com}. do "C:\Users\jdmic\AppData\Local\Temp\STD4d90_000000.tmp"
+{txt}
+{com}. * course: AAE 497A/597A
+. * assignment: final exam
+. * created on: 10 may 26
+. * created by: jdm
+. * edited on: 12 may 26
+. * edited by: jdm
+. * Stata v.19.5
+. 
+. * ============================================================================
+. * FINAL EXAM — DEBUGGING
+. * ============================================================================
+. *
+. * instructions:
+. *
+. *   this .do file is FULL of bugs (> 25 & < 30). your job is to find and fix
+. *    them so the code runs cleanly from start to finish.
+. *
+. *   the file is organized into 8 independent sections, each separated by a
+. *   header. each section loads its own data, so you do NOT need to fix earlier
+. *   sections before working on later ones. work on whatever sections you feel
+. *   most confident about first.
+. *
+. *   not all bugs are syntax errors; some are conceptual errors, meaning that
+. *   the code runs, but it doesn't do what it's supposed to do. to determine
+. *   this, you may need to inspect the output and make sure it makes sense.
+. *
+. *   you may use Stata help documentation (e.g., `help regress`) but no other
+. *   outside sources.
+. *
+. *   for each bug you fix, leave a brief comment below the bug explaining 
+. *   what was wrong and what you changed, using three stars (***). for example:
+. *
+. *       *** changed `=` to `==` because `if` requires a logical comparison
+. *
+. *   good luck! you have spent a whole semester building these skills. now
+. *   you get to show what you can do.
+. *
+. * ============================================================================
+. 
+. **********************************************************************
+. **# 0 - setup
+. **********************************************************************
+. 
+. * define paths
+.         global  root    "https://jdavidm.github.io/learn-stata/data"
+{txt}
+{com}.         global  logout  "C:/Users/jdmichler/semester26/logs"
+{txt}
+{com}. 
+. * open log
+.         cap             log             close
+{smcl}
+{com}{sf}{ul off}
