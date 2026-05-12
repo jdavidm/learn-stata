@@ -42,7 +42,7 @@
 **********************************************************************
 
 * define paths
-	global	root 	"https://jdavidm.github.io/learn-stata/data"
+	global	root 	"https://media.githubusercontent.com/media/jdavidm/learn-stata/main/data"
 	global	logout	"C:/Users/jdmichler/semester26/logs"
 
 * open log
@@ -228,7 +228,7 @@ estimates store s3
 					keep(q_f_ha lt_f_ha 1.irrig 1.tenure) ///
 					order(q_f_ha lt_f_ha 1.irrig 1.tenure)
 					indicate("Site FE = *.site" "Year FE = *.year") ///
-					stats(N r2, labels("Observations" "R-squared") fmt(0 3)) ///
+					stats(n r2, labels("Observations" "R-squared") fmt(0 3)) ///
 					label
 
 * coefficient plot
@@ -270,8 +270,10 @@ estimates store s3
 	reg			dm_yield dm_fert, vce(cluster qnno)
 	eststo		dm
 
-* xtreg fixed effects
+* set qnno and tindex as panel identifiers
 	xtset		qnno
+
+* xtreg fixed effects
 	xtreg		yield totfertcostha, fe vce(cluster qnno)
 	eststo		fe
 
@@ -284,7 +286,7 @@ estimates store s3
 					b(3) se(3) ///
 					keep(totfertcostha d_fert dm_fert) ///
 					star(* 0.10 ** 0.05 *** 0.01) ///
-					stats(N r2, labels("Observations" "R-squared") fmt(0 3))
+					stats(N R2, labels("Observations" "R-squared") fmt(0 3))
 
 
 **********************************************************************
@@ -310,12 +312,14 @@ estimates store s3
 * generate relative time
 	gen			ry = year - first_seed
 
-* create pre-treatment indicators for event study
+* create 9 pre-treatment indicators for event study
 	forvalues	k = 10(-1)2 {
 		gen			g_`k' = ry == -`k'
 		label var	g_`k' "-`k'"
 	}
-	forvalues	k = 0/8 {
+
+* create 9 post-treatment indicators for event study
+	forvalues	k = 1/8 {
 		gen			g`k' = ry == `k'
 		label var	g`k' "`k'"
 	}
@@ -324,9 +328,9 @@ estimates store s3
 	xtreg		evi_med g_* g0-g8 i.year, ///
 					fe vce(cluster district_id)
 
-* coefficient plot of event study
+* coefficient plot of event study with red line at time 0 (9.5)
 	coefplot,	drop(_cons *.year) ///
-					vertical xline(10) ///
+					vertical xline(7, lcolor(maron))  ///
 					title("Event Study: EVI Response to Seed Adoption") ///
 					ytitle("Coefficient") xtitle("Event Time")
 
@@ -352,7 +356,7 @@ estimates store s3
 * manual 2SLS - generate predicted values
 	predict		CA_hat
 
-* second stage
+* second stage using predicted values
 	reg			lnyield CA lnbasal lntop lnseed lnaream2 ///
 					pdate pdate2 i.year, cluster(rc)
 	eststo		manual_iv
@@ -363,12 +367,12 @@ estimates store s3
 					cluster(rc) first
 	eststo		iv
 
-* compare OLS and IV
+* compare coefficients and standard errors across OLS, manual 2SLS, and IV 
 	esttab		ols_iv manual_iv iv, ///
 					b(3) se(3) keep(CA) ///
 					rename(CA_hat CA) ///
 					star(* 0.10 ** 0.05 *** 0.01) ///
-					stats(N r2, labels("Observations" "R-squared") fmt(0 3))
+					stats(N r2, labels("Observations" R-squared") fmt(0 3))
 
 
 **********************************************************************
